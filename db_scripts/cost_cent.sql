@@ -1,4 +1,5 @@
 create table cost_cent{
-	employee_name text
+	dce_fk char references employess (dce),
 };
 
+--create or replace function 
