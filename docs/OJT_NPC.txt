@@ -1,0 +1,90 @@
+* Add Item (Purchase):
+	 - input purchase order 
+	 - edit IRR
+	 - printing of IRR
+
+* Withdrawal Item:
+	 - printing of WRS
+	 - printing of gate pass
+
+* Return Item:
+	 - fill-up of GARV form
+	 - confirmation of GARV form
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+DATABASE:
+
+`* Product (Profile)
+	 - item_name
+	 - supplier_name 	c
+	 - supplier_address
+	 - serial number 	c
+	 - quantity
+	 - model 			c
+	 - amount (unit cost)
+	 - function(s):
+	 	~ get_prodprof
+	 	~ add_prodprof (edit)
+
+* Supplier (Profile)
+	 - supplier_name
+	 - deliverables
+	 - unit cost (?)
+	 - function(s):
+	 	~ get_supprof
+	 	~ add_supprof
+
+* Customer (Profile) (?) - - -
+
+
+* Cost_center (library)
+	 - name
+	 - name of head (?)
+	 - function(s):
+	 	~ get_costcenofc
+	 	~ add_costcenofc
+
+* Inventory_stat (library)
+	 - property custodian
+	 - P.O. num
+	 - SLC_num
+	 - IRR num
+	 - item_name
+	 - receive_date(?) 
+	 - quantity
+	 - function(s):
+	 	~ get_inventstat
+	 	~ add_inventstat
+	 	~ get_itemcount
+	 	~ get_itemstatus
+
+`* Employee (Profile)
+	 - dce (id)
+	 - name
+	 - department/division
+	 - position
+	 - function(s):
+	 	~ get_empprof
+	 	~ add_empprof
+
+`* PAR
+	 - name_employee (foreign key - employee profile)
+	 - item (foreign key - inventory station)
+	 - function(s):
+	 	~ get_par(employee)
+
+`* stock_items
+	 - name
+	 - function:
+	 	~ get/verify/check_returnitem
+
+* job_order (library) (?)
+	 - item name
+	 - function(s):
+	 	~ get_joborder
+	 	~ add_joborder 
+
+
+* Pending
+
