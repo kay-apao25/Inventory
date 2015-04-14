@@ -6,9 +6,8 @@ create table pending{
   serial_number char,
   model text,
   amount numeric,
-  description text,
-  constraint product_pk (serial_number, supplier_name, model)
-};
+  description text
+}
 
 -- HOW TO USE:
 -- SELECT add_prodprof('computer', 'Iligan City', 'Keira Montiel', 'none', 'lala', 3, 1326.88);
