@@ -47,6 +47,7 @@ create or replace
 $$
 	delete * from PAR where
 		dce_FK = $1 and asset_code_FK = $2;
+	returns 'Done';
 $$
  language 'sql';
  --select del_par(dce, asset_code);
