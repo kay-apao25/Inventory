@@ -4,7 +4,7 @@ create table PAR(
 );
 
 create or replace
-	function add_par(in text, in text, out text)
+	function add_par(in char, in int, out text)
 	returns text as
 $$
 	declare
@@ -32,7 +32,7 @@ language 'plpgsql';
 -- select add_par(dce, asset_code);
 
 create or replace
-	function get_par(in text, out text)
+	function get_par(in char, out text)
 	returns setof record as
 
 $$
@@ -42,7 +42,7 @@ $$
  --select get_par(employee);
 
 create or replace
- 	function del_par(in text, in text)
+ 	function del_par(in char, in int)
  	returns text as
 $$
 	delete * from PAR where
@@ -58,7 +58,7 @@ create table stock_items(
 );
 
 create or replace
-	function add_garv(in text, in text, out text)
+	function add_garv(in char, in int, out text)
 	returns text as
 $$
 	declare
