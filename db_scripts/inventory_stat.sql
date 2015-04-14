@@ -38,11 +38,11 @@ $$ language sql;
 
 
 create table inventory_stat(
- 	property_cust_fk text references employee(name),
+ 	property_cust_fk char references employee(dce),
 	PO_num bigint,
 	SLC_num int,
 	IRR_num int primary key,
-	asset_code_fk int references product(asset_code),
+	asset_code_fk serial references product(asset_code),
 	receive_date date,
 	inspection_date date,
 	inspection_request_date date,
@@ -51,7 +51,7 @@ create table inventory_stat(
 
 
 CREATE OR REPLACE
-  FUNCTION add_item( p_property_cust_fk text, p_PO_num bigint, p_asset_code_fk int, p_receive_date date, p_inspection_date date, 
+  FUNCTION add_item( p_property_cust_fk char, p_PO_num bigint, p_asset_code_fk int, p_receive_date date, p_inspection_date date, 
   							p_inspection_request_date date, p_quantity int)
   RETURNS text as
 
@@ -62,7 +62,7 @@ $BODY$
 
   begin
     
-    select into v_IRR_num IRR_num from employee
+    select into v_IRR_num IRR_num from inventory_stat
     where IRR_num = v_IRR_num;
 
     if v_IIR isnull then
@@ -81,11 +81,11 @@ $BODY$
 language 'plpgsql';
 
 
-create or replace function get_inventstat(in text, out int)
+create or replace function get_inventstat(in int, out int)
   returns int as
 
 $$
-    select quantity from employee
+    select quantity from inventory_stat
     where IRR_num = $1;
 $$
   language 'sql';
