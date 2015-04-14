@@ -39,7 +39,7 @@ language 'plpgsql';
 
 
 create or replace function get_employ_depart_pos(in text, out text)
-  returns setof record as
+  returns text as
 
 $$
     select position from employee
@@ -48,7 +48,7 @@ $$
   language 'sql';
  
 create or replace function get_employ_depart_name(in text, out text)
-  returns setof record as
+  returns text as
 
 $$
     select name from employee
