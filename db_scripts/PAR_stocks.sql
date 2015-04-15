@@ -1,11 +1,15 @@
 create table PAR(
   dce_FK char references employee(dce),
   asset_code_FK int primary key references product(asset_code),
-  par_date date
+  par_date date,
+  par_no char,
+  amt_cost numeric,
+  description text,
+  remark text
 );
 
 create or replace
-	function add_par(dce_ char, asset_code_ int, date_ date)
+	function add_par(dce_ char, asset_code_ int, date_ date, par_no_ char)
 	returns text as
 $$
 	declare
@@ -64,7 +68,8 @@ $$
 create table stock_items(
   dce_FK char references employee(dce),
   asset_code_FK int primary key references product(asset_code),
-  garv_date date
+  garv_date date,
+  garv_no char
 );
 
 create or replace

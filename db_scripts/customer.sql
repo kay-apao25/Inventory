@@ -1,8 +1,11 @@
 create table customer(
    dce char primary key,
    name text,
-   department text,
-   position text
+   cost_center_no char,
+   credit_limit numeric,
+   debit_amt numeric,
+   credit_amt numeric,
+   balance_amt numeric
 );
 
 
