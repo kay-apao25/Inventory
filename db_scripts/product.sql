@@ -1,9 +1,9 @@
 create table product(
-	asset_code serial primary key,
-	nsn char, *
-  slc_num int, *
-  inv_station_no char,
-  cost_center_no char, *
+	asset_code serial,
+	nsn char, 
+  slc_num int, 
+  inv_station_no_fk char references inventory_stat(inv_station_no),
+  cost_center_no_fk int references cost_cent(cost_center_no), 
   item_name text,
   generic_name text,
   brand text,
@@ -24,6 +24,7 @@ create table product(
   amount numeric,
   description text,
   remark text
+  constraint product_pk primary key (asset_code, cost_center_no_fk)
 );
 
 -- HOW TO USE:

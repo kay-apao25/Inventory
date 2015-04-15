@@ -38,9 +38,9 @@ $$ language sql;
 
 
 create table inventory_stat(
- 	inv_station_no char,
+ 	inv_station_no char primary key,
   station_description text,
-  cost_center_no text
+  cost_center_no_fk int references cost_cent(cost_center_no)
 );
 
 
