@@ -38,18 +38,9 @@ $$ language sql;
 
 
 create table inventory_stat(
- 	property_cust_fk char references employee(dce),
-	PO_num bigint,
-	SLC_num int,
-	IV_num serial,
-	IRR_num int primary key,
-	asset_code_fk serial references product(asset_code),
-	invoice_num char,
-	receive_date date,
-	inspection_date date,
-	inspection_request_date date,
-	delivered_date date,
-	quantity int
+ 	inv_station_no char,
+  station_description text,
+  cost_center_no text
 );
 
 
