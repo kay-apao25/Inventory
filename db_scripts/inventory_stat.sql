@@ -38,34 +38,28 @@ $$ language sql;
 
 
 create table inventory_stat(
- 	inv_station_no char primary key,
+  inv_station_no char primary key,
   station_description text,
   cost_center_no_fk int references cost_cent(cost_center_no)
 );
 
 
 CREATE OR REPLACE
-  FUNCTION add_item( p_property_cust_fk char, p_PO_num bigint, p_asset_code_fk int, p_invoice_num char, p_receive_date date, p_inspection_date date, 
-  							p_inspection_request_date date, p_delivered_date date, p_quantity int)
+  FUNCTION add_item(p_inv_station_no char, p_station_description text, p_cost_center_no_fk int)
   RETURNS text as
 
 $BODY$
   declare
-    v_IRR_num int;
-    v_SLC_num int;
+    v_inv_station_no char;
 
   begin
     
-    select into v_IRR_num IRR_num from inventory_stat
-    where IRR_num = v_IRR_num;
+    select into v_inv_station_no inv_station_no from inventory_stat
+    where inv_station_no = p_inv_station_no;
 
-    if v_IIR isnull then
-      select make_random_id() into v_IRR_num;
-      select make_random_id() into v_SLC_num;
-      insert into employee( property_cust_fk, PO_num, SLC_num, IRR_num, asset_code_fk, invoice_num, receive_date, inspection_date, 
-  							inspection_request_date, delivered_date, quantity)
-      values ( p_property_cust_fk, p_PO_num, v_SLC_num, v_IRR_num, p_asset_code_fk, p_invoice_num, p_receive_date, p_inspection_date, 
-  							p_inspection_request_date, p_delivered_date, p_quantity);
+    if v_inv_station_no isnull then
+      insert into employee( inv_station_no, station_description, cost_center_no_fk)
+      values (p_inv_station_no, p_station_description, p_cost_center_no_fk);
       return 'OK';
     else
       return 'OK';
@@ -73,16 +67,4 @@ $BODY$
   end;
 $BODY$
 language 'plpgsql';
-
-
-create or replace function get_inventstat(in int, out int)
-  returns int as
-
-$$
-    select quantity from inventory_stat
-    where IRR_num = $1;
-$$
-  language 'sql';
-
-create or replace function get_prodprof(in int,  )
 
