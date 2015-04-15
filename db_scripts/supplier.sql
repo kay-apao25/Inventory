@@ -1,4 +1,4 @@
-create table supplier{
+create table supplier(
 	supplier_name text,
-	deliverables text,
-};
+	deliverables text
+);
