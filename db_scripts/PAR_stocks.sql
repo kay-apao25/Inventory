@@ -2,7 +2,10 @@ create table PAR(
   dce_FK char references employee(dce),
   asset_code_FK int primary key references product(asset_code),
   par_date date,
-  par_no char
+  par_no char,
+  amt_cost numeric,
+  description text,
+  remark text
 );
 
 create or replace
