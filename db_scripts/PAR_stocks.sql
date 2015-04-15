@@ -1,30 +1,27 @@
 create table PAR(
   dce_FK char references employee(dce),
-  asset_code_FK int primary key references product(asset_code)
+  asset_code_FK int primary key references product(asset_code),
+  par_date date
 );
 
 create or replace
-	function add_par(in char, in int, out text)
+	function add_par(dce_ char, asset_code_ int, date_ date)
 	returns text as
 $$
 	declare
-		dce_ alias for $1;
-		asset_code_ alias for $2;
-
 		v_asset_code int;
 	begin
 		select into v_asset_code asset_code_FK from PAR where
 			asset_code_ = asset_code_FK; 
 
 		if v_asset_code isnull then
-			insert into PAR(dce_FK, asset_code_FK) values
-				(dce_, asset_code_)
+			insert into PAR(dce_FK, asset_code_FK, par_date) values
+				(dce_, asset_code_, now()::date);
+			return 'OK';
 		else
-			update PAR set
-			dce_FK = dce_ and
-			asset_code_FK = asset_code_
+			return 'Record already exist.';
 		end if;
-		returns 'OK';
+		
 	end;
 
 $$
@@ -32,11 +29,11 @@ language 'plpgsql';
 -- select add_par(dce, asset_code);
 
 create or replace
-	function get_par(in char, out text)
+	function get_par(in char, out char, out int, out date)
 	returns setof record as
 
 $$
-	select * from where name_employee_FK = $1;
+	select * from PAR where dce_FK = $1;
 $$
  language 'sql';
  --select get_par(employee);
@@ -66,31 +63,28 @@ $$
 
 create table stock_items(
   dce_FK char references employee(dce),
-  asset_code_FK int primary key references product(asset_code)
+  asset_code_FK int primary key references product(asset_code),
+  garv_date date
 );
 
 create or replace
-	function add_garv(in char, in int)
+	function add_garv(dce_ char, asset_code_ int, garv_date date)
 	returns text as
 $$
 	declare
-		dce_ alias for $1;
-		asset_code_ alias for $2;
-
 		v_asset_code int;
 	begin
 		select into v_asset_code asset_code_FK from PAR where
 			asset_code_ = asset_code_FK; 
 
 		if v_asset_code isnull then
-			insert into stock_items(dce_FK, asset_code_FK) values
-				(dce_, asset_code_);
+			insert into stock_items(dce_FK, asset_code_FK, garv_date) values
+				(dce_, asset_code_, now()::date);
+				return 'OK';
 		else
-			update stock_items set
-			dce_FK = dce_ and
-			asset_code_FK = asset_code_;
+				return 'Record already exist.';
 		end if;
-		return 'OK';
+		
 	end;
 
 $$
