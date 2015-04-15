@@ -7,8 +7,8 @@ class Product(object):
 
         res = doSql()
 
-        ans = res.execqry(res.buildqry("select * from add_prodprof",\
-         str(feel_id)), True)
+        ans = res.execqry(res.buildqry("select * from add_prodprof", \
+        	str(feel_id)), True)
 
         return json.dumps(res.parse_result(ans))
 

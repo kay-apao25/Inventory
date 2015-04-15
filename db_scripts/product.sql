@@ -10,7 +10,7 @@ create table product(
 );
 
 -- HOW TO USE:
--- SELECT add_prodprof('computer', 'Iligan City', 'Keira Montiel', 'none', 'lala', 3, 1326.88);
+-- SELECT add_prodprof('computer', 'Iligan City', 'Keira Montiel', '38429349394', 'Intel Motherboard Black, DH 61 WWB3', 3, 1326.88);
 create or replace function add_prodprof(p_item_name text, p_supplier_address text, p_supplier_name text, p_serial_number char, 
 																		p_description text,	p_model text, p_amount numeric)
     returns text as
@@ -38,4 +38,3 @@ $$
   end;
 $$
 	language 'plpgsql';
-  
