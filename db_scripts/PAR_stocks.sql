@@ -45,11 +45,23 @@ create or replace
  	function del_par(in char, in int)
  	returns text as
 $$
-	delete * from PAR where
+declare
+	v_dce char;
+
+	begin
+	select into v_dce dce_FK from PAR where
 		dce_FK = $1 and asset_code_FK = $2;
-	returns 'Done';
+
+	if v_dce isnull then
+		return 'Record does not exist.';
+
+	else
+		delete from PAR where dce_FK = $1 and asset_code_FK = $2;
+		return 'Record is deleted.';
+	end if;
+	end;
 $$
- language 'sql';
+ language 'plpgsql';
  --select del_par(dce, asset_code);
 
 create table stock_items(
@@ -58,7 +70,7 @@ create table stock_items(
 );
 
 create or replace
-	function add_garv(in char, in int, out text)
+	function add_garv(in char, in int)
 	returns text as
 $$
 	declare
@@ -72,13 +84,13 @@ $$
 
 		if v_asset_code isnull then
 			insert into stock_items(dce_FK, asset_code_FK) values
-				(dce_, asset_code_)
+				(dce_, asset_code_);
 		else
 			update stock_items set
 			dce_FK = dce_ and
-			asset_code_FK = asset_code_
+			asset_code_FK = asset_code_;
 		end if;
-		returns 'OK';
+		return 'OK';
 	end;
 
 $$
