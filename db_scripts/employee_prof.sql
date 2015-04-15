@@ -1,9 +1,7 @@
-
-
 create table employee(
    dce char primary key,
    name text,
-   cost_center_no char,
+   cost_center_no_fk references cost_cent(cost_center_no),
    charging_cc_no char,
    position text
  );
