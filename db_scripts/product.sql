@@ -1,12 +1,29 @@
 create table product(
 	asset_code serial primary key,
-	item_name text,
-  supplier_name text,
-  supplier_address text,
+	nsn char, *
+  slc_num int, *
+  inv_station_no char,
+  cost_center_no char, *
+  item_name text,
+  generic_name text,
+  brand text,
+  part_num char,
+  manufacture_date date,
+  expiry_date date,
+  class char,
+  stock char,
+  block char,
+  unit_measure char,
+  unit_cost numeric,
+  quantity numeric,
+  average_amt numeric,
+  status char,
+  balance_limit numeric,
   serial_number char,
   model text,
   amount numeric,
-  description text
+  description text,
+  remark text
 );
 
 -- HOW TO USE:

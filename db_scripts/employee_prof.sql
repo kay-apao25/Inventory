@@ -3,13 +3,14 @@
 create table employee(
    dce char primary key,
    name text,
-   department text,
+   cost_center_no char,
+   charging_cc_no char,
    position text
-  );
+ );
 
 
 CREATE OR REPLACE
-  FUNCTION add_employee(p_dce char, p_name text, p_department text, p_position text)
+  FUNCTION add_employee(p_dce char, p_name text, p_cost_center_no char, p_charging_cc_no char, p_position text)
   RETURNS text as
 
 $BODY$
