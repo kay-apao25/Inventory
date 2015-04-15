@@ -1,5 +1,7 @@
 create table cost_cent(
-	dce_fk char references employee (dce),
+	cost_center_no serial,
+  cost_center_name text,
+  functional_group char
 );
 
 --create or replace function 
