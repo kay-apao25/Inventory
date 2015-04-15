@@ -1,12 +1,12 @@
 create table product(
 	asset_code serial primary key,
 	item_name text,
-    supplier_name text,
-    supplier_address text,
-    serial_number char,
-    model text,
-    amount numeric,
-    description text
+  supplier_name text,
+  supplier_address text,
+  serial_number char,
+  model text,
+  amount numeric,
+  description text
 );
 
 -- HOW TO USE:
@@ -38,3 +38,4 @@ $$
   end;
 $$
 	language 'plpgsql';
+  
