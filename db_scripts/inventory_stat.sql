@@ -41,18 +41,21 @@ create table inventory_stat(
  	property_cust_fk char references employee(dce),
 	PO_num bigint,
 	SLC_num int,
+	IV_num serial,
 	IRR_num int primary key,
 	asset_code_fk serial references product(asset_code),
+	invoice_num char,
 	receive_date date,
 	inspection_date date,
 	inspection_request_date date,
+	delivered_date date,
 	quantity int
 );
 
 
 CREATE OR REPLACE
-  FUNCTION add_item( p_property_cust_fk char, p_PO_num bigint, p_asset_code_fk int, p_receive_date date, p_inspection_date date, 
-  							p_inspection_request_date date, p_quantity int)
+  FUNCTION add_item( p_property_cust_fk char, p_PO_num bigint, p_asset_code_fk int, p_invoice_num char, p_receive_date date, p_inspection_date date, 
+  							p_inspection_request_date date, p_delivered_date date, p_quantity int)
   RETURNS text as
 
 $BODY$
@@ -68,10 +71,10 @@ $BODY$
     if v_IIR isnull then
       select make_random_id() into v_IRR_num;
       select make_random_id() into v_SLC_num;
-      insert into employee( property_cust_fk, PO_num, SLC_num, IRR_num, asset_code_fk, receive_date, inspection_date, 
-  							inspection_request_date, quantity)
-      values ( p_property_cust_fk, p_PO_num, v_SLC_num, v_IRR_num, p_asset_code_fk, p_receive_date, p_inspection_date, 
-  							p_inspection_request_date, p_quantity);
+      insert into employee( property_cust_fk, PO_num, SLC_num, IRR_num, asset_code_fk, invoice_num, receive_date, inspection_date, 
+  							inspection_request_date, delivered_date, quantity)
+      values ( p_property_cust_fk, p_PO_num, v_SLC_num, v_IRR_num, p_asset_code_fk, p_invoice_num, p_receive_date, p_inspection_date, 
+  							p_inspection_request_date, p_delivered_date, p_quantity);
       return 'OK';
     else
       return 'OK';
@@ -89,4 +92,6 @@ $$
     where IRR_num = $1;
 $$
   language 'sql';
+
+create or replace function get_prodprof(in int,  )
 

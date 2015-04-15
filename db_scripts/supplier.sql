@@ -1,4 +1,6 @@
-create table supplier(
+
+create table supplier{
+	dce char primary key,
 	supplier_name text,
-	deliverables text
-);
+};
+
