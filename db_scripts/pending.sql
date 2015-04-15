@@ -1,8 +1,7 @@
 create table pending(
 	asset_code serial primary key,
 	item_name text,
-  supplier_name text,
-  supplier_address text,
+  supplier_num_FK text,
   serial_number char,
   model text,
   amount numeric,
