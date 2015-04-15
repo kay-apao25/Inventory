@@ -1,5 +1,5 @@
-create table pending{
-	asset_code serial int primary key,
+create table pending(
+	asset_code serial primary key,
 	item_name text,
   supplier_name text,
   supplier_address text,
@@ -7,7 +7,7 @@ create table pending{
   model text,
   amount numeric,
   description text
-}
+);
 
 -- HOW TO USE:
 -- SELECT add_prodprof('computer', 'Iligan City', 'Keira Montiel', 'none', 'lala', 3, 1326.88);
@@ -40,12 +40,25 @@ $$
 $$
 	language 'plpgsql';
 
-create or replace
-  function del_pending(in text, out text)
-  returns text as
 
+create or replace
+  function del_pending(in int)
+  returns text as
 $$
-  delete * from pending where asset_code = $1;
-  returns 'Done';
+declare
+  v_asset_code int;
+
+  begin
+  select into v_asset_code asset_code from PAR where asset_code = $1;
+
+  if v_asset_code isnull then
+    return 'Record does not exist.';
+
+  else
+    delete from PAR where asset_code = $1;
+    return 'Record is deleted.';
+  end if;
+  end;
 $$
- language 'sql';
+ language 'plpgsql';
+ --select del_par(dce, asset_code);
