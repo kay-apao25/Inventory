@@ -6,8 +6,8 @@ create table irr_header(
 	invoice_num char,
 	po_num char,
 	dr_num char,
-	dce_custodian char,
-	dce_user char,
+	dce_custodian char references employee(dce),
+	dce_user char char references employee(dce),
 	proc_date date,
 	type char,
 	remark text
