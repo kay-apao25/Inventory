@@ -29,4 +29,26 @@ class Irr(Object):
 
         return json.dumps(res.parse_result(ans))
 
+class Irr_req(Object):
+
+    def get_irr_req(req, irr_no_fk):
+
+        """Getting irr  Reports"""
+
+        irr = Irr()
+
+        return irr.get_irr(irr_no_fk)
+
+    def add_irr_req(req, irr_no_fk , asset_code_fk , slc_num , cost_center_no_fk , quantity_actual ,\
+                 quantity_accepted , quantity_rejected , quantity_balance , date_recv ,\
+                wo_no , remark):
+
+        """Getting irr  Reports"""
+
+        irr = Irr()
+
+        return irr.add_irr(irr_no_fk , asset_code_fk , slc_num , cost_center_no_fk , quantity_actual ,\
+                 quantity_accepted , quantity_rejected , quantity_balance , date_recv ,\
+                wo_no , remark)
+
 
