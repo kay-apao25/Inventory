@@ -1,5 +1,5 @@
 """
-Django settings for scrum project.
+Django settings for WOS project.
 
 For more information on this file, see
 https://docs.djangoproject.com/en/1.7/topics/settings/
@@ -17,7 +17,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 # See https://docs.djangoproject.com/en/1.7/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'sb&&*m=&bx@q_pfdc@h0ervqj88ouguf7lh&6^_u7$izk68!z#'
+SECRET_KEY = 'ud+5-ept0ouzu=((*i_+t1s6rsi7h1wb7^bdjr#)5ex6l%m+jl'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -36,6 +36,7 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'WISH',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -48,9 +49,9 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
 
-ROOT_URLCONF = 'scrum.urls'
+ROOT_URLCONF = 'WOS.urls'
 
-WSGI_APPLICATION = 'scrum.wsgi.application'
+WSGI_APPLICATION = 'WOS.wsgi.application'
 
 
 # Database
@@ -59,7 +60,7 @@ WSGI_APPLICATION = 'scrum.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'Inventory',
+        'NAME': 'WOS',
         'PASSWORD': 'postgres',
     }
 }
