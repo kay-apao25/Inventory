@@ -58,7 +58,7 @@ $BODY$
     where inv_station_no = p_inv_station_no;
 
     if v_inv_station_no isnull then
-      insert into employee( inv_station_no, station_description, cost_center_no_fk)
+      insert into inventory_stat( inv_station_no, station_description, cost_center_no_fk)
       values (p_inv_station_no, p_station_description, p_cost_center_no_fk);
       return 'OK';
     else

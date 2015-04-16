@@ -1,14 +1,14 @@
 create table employee(
    dce char primary key,
    name text,
-   cost_center_no_fk references cost_cent(cost_center_no),
+   cost_center_no_fk int references cost_cent(cost_center_no),
    charging_cc_no char,
    position text
  );
 
 
 CREATE OR REPLACE
-  FUNCTION add_employee(p_dce char, p_name text, p_cost_center_no char, p_charging_cc_no char, p_position text)
+  FUNCTION add_employee(p_dce char, p_name text, p_cost_center_no int, p_charging_cc_no char, p_position text)
   RETURNS text as
 
 $BODY$
@@ -36,6 +36,11 @@ $BODY$
   end;
 $BODY$
 language 'plpgsql';
+
+
+
+
+
 
 
 create or replace function get_employ_depart_pos(in text, out text)
