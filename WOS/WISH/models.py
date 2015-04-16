@@ -12,16 +12,16 @@ class Supplier(models.Model):
     credit_amt = models.FloatField(max_value=None, min_value=None)
     balance_amt = models.FloatField(max_value=None, min_value=None)
     contact_person = models.TextField(max_length=50)
-    remarks = models.TextField(max_length=100) 
+    remarks = models.TextField(max_length=100)
 
 	def __str__(self):
         return self.supplier_name + ", " + self.supplier_address + ", " self.supplier_num
 
 class Product(models.Model):
-    nsn = models.CharField(max_length=10) 
-    slc_num = models.IntegerField() 
+    nsn = models.CharField(max_length=10)
+    slc_num = models.IntegerField()
     inv_station_no_fk = models.ForeignKey(Inventory_stat, db_column=inv_station_no)
-    cost_center_no_fk = models.ForeignKey(Cost_center, db_column=cost_center_no) 
+    cost_center_no_fk = models.ForeignKey(Cost_center, db_column=cost_center_no)
     item_name = models.TextField(max_length=80)
     generic_name = models.TextField(max_length=100)
     brand = models.TextField(max_length=50)
@@ -111,7 +111,7 @@ class Employee(models.Model):
    position = models.TextField
 
    def __str__(self):
-        return self.dce 
+        return self.dce
 
 class Inventory_stat(models.Model):
     inv_station_no = models.CharField(max_length = 20, primary_key = True)
@@ -120,3 +120,35 @@ class Inventory_stat(models.Model):
 
     def __str__(self):
         return self.inv_station_no
+
+class PAR(models.Model):
+    dce_FK = models.ForeignKey(Employee, db_column='dce', primary_key=True)
+    asset_code_FK = models.ForeignKey(Product, db_column='asset_code', primary_key=True)
+    par_date = models.DateField(blank=True, null=True)
+    par_no = models.CharField(max_length=50, null=True)
+    amt_cost = models.FloatField(max_value=None, min_value=None)
+    remark = models.TextField()
+    qty = models.IntegerField()
+
+    def __str__(self):
+        return dce_FK + "," + asset_code_FK
+
+class GARV(models.MODEL)
+    dce_FK = models.ForeignKey(Employee, db_column='dce', primary_key=True)
+    asset_code_FK = models.ForeignKey(Product, db_column='asset_code', primary_key=True)
+    garv_date = models.DateField(blank=True, null=True)
+    garv_no = models.CharField(max_length=50, null=True)
+
+    def __str__(self):
+        return dce_FK + "," + asset_code_FK
+
+class Pending(models.MODEL)
+    item_name = models.TextField()
+    supplier_num = models.ForeignKey(Supplier, db_column='serial_number', primary_key=True)
+    serial_number = models.CharField(max_length=50, null=True, primary_key=True)
+    model = models.TextField(primary_key=True)
+    amount = models.FloatField(max_value=None, min_value=None)
+    description = models.TextField()
+
+    def __str__(self):
+        return supplier_num + "," + serial_number + "," + model
