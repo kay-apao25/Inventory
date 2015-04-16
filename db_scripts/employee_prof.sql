@@ -19,14 +19,15 @@ $BODY$
     where dce = p_dce;
 
     if v_dce isnull then
-      insert into employee(dce, name , department , position)
-      values (p_dce, p_name , p_department , p_position);
+      insert into employee(dce, name, cost_center_no, charging_cc_no, position)
+      values (p_dce, p_name, p_cost_center_no, p_charging_cc_no, p_position);
       return 'OK';
     else
               update employee
-              set dce = p_dce,
-                  name = p_name,
-                  department = p_department,
+              set dce = p_dce  ,
+                  name =  p_name ,
+                  cost_center_no_fk = p_cost_center_no_fk ,
+                  charging_cc_no = p_charging_cc_no,
                   position = p_position
 
         where dce = v_dce;
