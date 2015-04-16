@@ -8,7 +8,7 @@ create table PAR(
 );
 
 create or replace
-	function add_par(dce_ char, asset_code_ int, date_ date, par_no_ char, amt_cost_ numeric, remark_ text)
+	function add_par(dce_ char, asset_code_ int, par_no_ char, amt_cost_ numeric, remark_ text)
 	returns text as
 $$
 	declare
@@ -20,9 +20,13 @@ $$
 		if v_asset_code isnull then
 			insert into PAR(dce_FK, asset_code_FK, par_date, par_no, amt_cost, remark) values
 				(dce_, asset_code_, now()::date, par_no_, amt_cost_, remark_);
-			return 'OK';
+			return 'PAR added';
 		else
-			return 'Record already exist.';
+			update PAR
+
+			set dce_FK = dce_, asset_code_FK = asset_code_, par_date = now()::date, par_no = par_no_,
+				amt_cost = amt_cost_, remark = remark_ where asset_code_ = asset_code_FK and dce_FK = dce_; 
+			return 'PAR updated';
 		end if;
 		
 	end;
@@ -31,7 +35,7 @@ $$
 language 'plpgsql';
 -- select add_par(dce_, asset_code_, date_, par_no_, amt_cost_, remark_);
 
-create or replace
+create or replace	
 	function get_par(in char, in int, out char, out int, out date)
 	returns setof record as
 
@@ -84,9 +88,13 @@ $$
 		if v_asset_code isnull then
 			insert into stock_items(dce_FK, asset_code_FK, garv_date) values
 				(dce_, asset_code_, now()::date);
-				return 'OK';
+				return 'GARV is added';
 		else
-				return 'Record already exist.';
+			update stock_items
+
+			set garv_date = now()::date, garv_no = garv_no_
+				where asset_code_ = asset_code_FK and dce_FK = dce_; 
+			return 'GARV is updated';
 		end if;
 		
 	end;
