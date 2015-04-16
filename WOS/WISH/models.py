@@ -131,7 +131,7 @@ class PAR(models.Model):
     qty = models.IntegerField()
 
     def __str__(self):
-        return dce_FK + "," + asset_code_FK
+        return self.dce_FK + "," + self.asset_code_FK
 
 class GARV(models.MODEL)
     dce_FK = models.ForeignKey(Employee, db_column='dce', primary_key=True)
@@ -140,7 +140,7 @@ class GARV(models.MODEL)
     garv_no = models.CharField(max_length=50, null=True)
 
     def __str__(self):
-        return dce_FK + "," + asset_code_FK
+        return self.dce_FK + "," + self.asset_code_FK
 
 class Pending(models.MODEL)
     item_name = models.TextField()
@@ -151,4 +151,4 @@ class Pending(models.MODEL)
     description = models.TextField()
 
     def __str__(self):
-        return supplier_num + "," + serial_number + "," + model
+        return self.supplier_num + "," + self.serial_number + "," + self.model
