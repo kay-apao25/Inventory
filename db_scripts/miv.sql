@@ -15,8 +15,8 @@ create table miv(
 );
 
 CREATE OR REPLACE
-  FUNCTION add_miv(p_irr_no_fk int, p_inv_station_no_fk char, p_asset_code_fk int, p_dce_custodian_fk char, p_dce_user_fk char, p_cost_center_no_fk int, p_wrs_num char,
-					p_quantity numeric, p_amount numeric, p_date_issued date, p_doc_date date, p_remark text)
+  FUNCTION add_miv(p_irr_no_fk int, p_inv_station_no_fk char, p_asset_code_fk int, p_dce_custodian_fk char, p_dce_user_fk char, p_cost_center_no_fk int, 
+  			p_wrs_num char, p_quantity numeric, p_amount numeric, p_date_issued date, p_doc_date date, p_remark text)
   RETURNS int as
 
 $BODY$
@@ -27,7 +27,7 @@ $BODY$
     where miv_no = v_miv_no; 
 
     if v_asset_code isnull then
-      insert into employee(irr_no_fk, inv_station_no_fk, asset_code_fk, dce_custodian_fk , dce_user_fk, cost_center_no_fk, wrs_num,
+      insert into miv(irr_no_fk, inv_station_no_fk, asset_code_fk, dce_custodian_fk , dce_user_fk, cost_center_no_fk, wrs_num,
 					quantity, amount , date_issued , doc_date, remark )
       values (p_irr_no_fk, p_inv_station_no_fk, p_asset_code_fk, p_dce_custodian_fk , p_dce_user_fk, p_cost_center_no_fk, p_wrs_num,
 					p_quantity, p_amount , p_date_issued , p_doc_date, p_remark);
@@ -54,11 +54,10 @@ create or replace function get_miv(in int, out int, out int, out char, out int, 
   returns setof record as
 
 $$
-   select miv.miv_no, miv.irr_no_fk, miv.inv_station_no_fk, miv.asset_code_fk, irr.slc_num, miv.dce_custodian_fk, miv.dce_user_fk,
+   select miv.miv_no, miv.irr_no_fk, miv.inv_station_no_fk, miv.asset_code_fk, product.slc_num, miv.dce_custodian_fk, miv.dce_user_fk,
    			miv.cost_center_no_fk, miv.wrs_num, product.unit_cost, miv.quantity, miv.amount, miv.date_issued, miv.doc_date,
    			product.description, miv.remark from irr
 	inner join product on product.asset_code = miv.asset_code_fk
-	inner join irr on irr.asset_code_fk = miv.asset_code_fk
 	where miv.miv_no = $1
 $$
   language 'sql';
