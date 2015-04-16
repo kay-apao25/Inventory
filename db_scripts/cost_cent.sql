@@ -7,7 +7,7 @@ create table cost_cent(
 -- HOW TO:
 -- select add_cost_cent (12345, 'ISTD', 'sdfisod33r3')
 create or replace function add_cost_cent (p_cost_center_name text, p_functional_group char)
-  return text as
+  returns text as
 $$
   declare
     v_cost_center_no int;

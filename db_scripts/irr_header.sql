@@ -15,7 +15,7 @@ create table irr_header(
 
 create or replace function add_irr_header(p_irr_headkey char, p_inv_station_no char, p_reference char, p_invoice_num char, p_po_num char,
 		p_dr_num char, p_dce_custodian char, p_dce_user char, p_proc_date date, p_type char, p_remark text)
-	return text as
+	returns text as
 $$
 	declare
 		v_irr_no int;
@@ -37,3 +37,13 @@ $$
 	end;
 $$ 
 	language 'plpgsql';
+
+create or replace function get_irr_header(in int, out int, out char, out char, out char, out char, out char, out char, out char, 
+	out char, out date, out char, out text)
+	
+	returns setof record as
+
+$$
+	select * from irr_header where irr_no = $1;
+$$
+	language 'sql';

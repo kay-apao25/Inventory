@@ -15,7 +15,7 @@ create table supplier{
 -- SELECT add_supplier('383nfediof', 'Keira Montiel', 'Iligan City', '225-2748', 10000.00, 1000.00, 2000.00, 1326.88, 'Lily Tiger', 'ok');
 create or replace function add_supplier(p_supplier_num char, p_supplier_name text, p_supplier_address text, p_telephone_number char,
 			p_credit_limit numeric, p_debit_amt numeric, p_credit_amt numeric, p_balance_amt numeric, p_contact_person text, p_remarks text)
-return text as
+returns text as
 $$
     declare
     	v_supplier_num char;

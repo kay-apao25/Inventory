@@ -1,5 +1,5 @@
 create table customer(
-   dce char primary key,
+   dce_fk char references employee(dce) primary key,
    name text,
    cost_center_no char,
    credit_limit numeric,
@@ -10,28 +10,30 @@ create table customer(
 
 
 CREATE OR REPLACE
-  FUNCTION add_customer(p_dce char, p_name text, p_department text, p_position text)
+  FUNCTION add_customer(p_dce_fk char, p_name text, p_cost_center_no char, p_credit_limit numeric, p_debit_amt, p_credit_amt numeric, 
+    p_balance_amt numeric)
   RETURNS text as
 
 $BODY$
   declare
-    v_dce char;
+    v_dce_fk char;
   begin
-    select into v_dce dce from customer
-    where dce = p_dce;
+    select into v_dce_fk dce_fk from customer
+    where dce_fk = p_dce_fk;
 
-    if v_dce isnull then
-      insert into customer(dce, name , department , position)
-      values (p_dce, p_name , p_department , p_position);
+    if v_dce_fk isnull then
+      insert into customer(dce_fk, name, cost_center_no, credit_limit, debit_amt, credit_amt, balance_amt)
+      values (p_dce_fk, p_name, p_cost_center_no, p_credit_limit, p_debit_amt, p_credit_amt, p_balance_amt);
       return 'OK';
     else
               update customer
-              set dce = p_dce,
-                  name = p_name,
-                  department = p_department,
-                  position = p_position
-
-        where dce = v_dce;
+              set name = p_name,
+                  cost_center_no = p_cost_center_no,
+                  credit_limit = p_credit_limit,
+                  debit_amt = debit_amt,
+                  credit_amt = p_credit_amt,
+                  balance_amt = p_balance_amt
+        where dce_fk = v_dce_fk;
       return 'OK';
     end if;
   end;

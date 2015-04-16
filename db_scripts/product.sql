@@ -33,7 +33,7 @@ create or replace function add_prodprof(p_nsn char, p_slc_num int, p_inv_station
   p_brand text, p_part_num char, p_manufacture_date date, p_expiry_date date, p_class char, p_stock char, p_block char, p_unit_measure char,
   p_unit_cost numeric, p_quantity numeric, p_average_amt numeric, p_status char, p_balance_limit numeric, p_item_name text, p_serial_number char,
   p_model text, p_remark text, p_description text,	p_amount numeric)
-    return text as
+    returns text as
 $$
   declare
     v_asset_code int;
