@@ -1,11 +1,12 @@
 create table pending(
-	asset_code serial primary key,
 	item_name text,
-  supplier_num_FK text,
+  supplier_name text,
+  supplier_address text,
   serial_number char,
   model text,
   amount numeric,
-  description text
+  description text,
+  Constraint pending_pk Primary Key (supplier_name, serial_number, model)
 );
 
 -- HOW TO USE:

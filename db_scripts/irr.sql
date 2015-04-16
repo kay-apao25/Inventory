@@ -37,6 +37,14 @@ $BODY$
 				p_wo_no , p_remark );
       return 'OK';
     else
+    	 update irr
+              set quantity_actual = p_quantity_actual,
+			 	  quantity_accepted = p_quantity_accepted,
+ 				  quantity_rejected = p_quantity_rejected,
+				  quantity_balance = p_quantity_balance,
+				  remark = p_remark
+
+        where asset_code = v_asset_code ;
       return 'OK';       
     end if;
   end;
