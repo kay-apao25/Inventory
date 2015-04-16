@@ -4,43 +4,50 @@ create table PAR(
   par_date date,
   par_no char,
   amt_cost numeric,
-  remark text
+  remark text,
+  qty int
 );
 
 create or replace
-	function add_par(dce_ char, asset_code_ int, par_no_ char, amt_cost_ numeric, remark_ text)
+	function add_par(dce_ char, asset_code_ int, par_no_ char, amt_cost numeric, remark_ text, qty_ int)
 	returns text as
 $$
 	declare
 		v_asset_code int;
+    v_dce char;
 	begin
-		select into v_asset_code asset_code_FK from PAR where
-			asset_code_ = asset_code_FK and dce_FK = dce_; 
+    select dce_FK, asset_code_FK from PAR into v_dce, v_asset_code
+			where asset_code_FK = asset_code_ and dce_FK = dce_;
 
-		if v_asset_code isnull then
-			insert into PAR(dce_FK, asset_code_FK, par_date, par_no, amt_cost, remark) values
-				(dce_, asset_code_, now()::date, par_no_, amt_cost_, remark_);
+		if v_asset_code isnull and v_dce isnull then
+			insert into PAR(dce_FK, asset_code_FK, par_date, par_no, remark, qty) values
+				(dce_, asset_code_, now()::date, par_no_, remark_, qty);
 			return 'PAR added';
 		else
 			update PAR
 
 			set dce_FK = dce_, asset_code_FK = asset_code_, par_date = now()::date, par_no = par_no_,
-				amt_cost = amt_cost_, remark = remark_ where asset_code_ = asset_code_FK and dce_FK = dce_; 
+				amt_cost = amt_cost_, remark = remark_, qty = qty_ where asset_code_FK = asset_code_ and dce_FK = dce_;
 			return 'PAR updated';
 		end if;
-		
+
 	end;
 
 $$
 language 'plpgsql';
--- select add_par(dce_, asset_code_, date_, par_no_, amt_cost_, remark_);
+-- select add_par(dce_, asset_code_, date_, par_no_, amt_cost, remark_);
 
-create or replace	
-	function get_par(in char, in int, out char, out int, out date)
+create or replace
+	function get_par(in char, in int, out char, out int, out date, out char, out numeric, out text)
 	returns setof record as
 
 $$
-	select * from PAR where dce_FK = $1 and asset_code_FK = $2;
+  select PAR.par_date, PAR.par_no, PAR.amt_cost, PAR.remark, PAR.qty, employee.name,
+    employee.position, product.asset_code, product.description from PAR
+    inner join employee on employee.dce = PAR.dce_FK
+      where PAR.dce_FK = $1;
+    inner join product on product.asset_code = PAR.asset_code_FK
+      where PAR.asset_code_FK = $2;
 $$
  language 'sql';
  --select get_par(employee, code);
@@ -76,29 +83,39 @@ create table stock_items(
 );
 
 create or replace
-	function add_garv(dce_ char, asset_code_ int, garv_date date)
+	function add_garv(dce_ char, asset_code_ int, garv_date_ date, garv_no_ char)
 	returns text as
 $$
 	declare
 		v_asset_code int;
 	begin
 		select into v_asset_code asset_code_FK from PAR where
-			asset_code_ = asset_code_FK; 
+			asset_code_ = asset_code_FK;
 
 		if v_asset_code isnull then
-			insert into stock_items(dce_FK, asset_code_FK, garv_date) values
-				(dce_, asset_code_, now()::date);
+			insert into stock_items(dce_FK, asset_code_FK, garv_date, garv_no) values
+				(dce_, asset_code_, now()::date, garv_no_);
 				return 'GARV is added';
 		else
 			update stock_items
 
 			set garv_date = now()::date, garv_no = garv_no_
-				where asset_code_ = asset_code_FK and dce_FK = dce_; 
+				where asset_code_ = asset_code_FK and dce_FK = dce_;
 			return 'GARV is updated';
 		end if;
-		
+
 	end;
 
 $$
 language 'plpgsql';
--- select add_garv(dce, asset_code);
+-- select add_garv(dce, asset_code, garv_date, garv_no);
+
+create or replace
+	function get_garv(in char, in int, out char, out int, out date, out char)
+	returns setof record as
+
+$$
+	select * from PAR where dce_FK = $1 and asset_code_FK = $2;
+$$
+ language 'sql';
+ --select get_par(dce, asset_code);
