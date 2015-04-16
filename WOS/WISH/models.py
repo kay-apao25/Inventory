@@ -66,9 +66,57 @@ class Cost_center(models.Model):
     cost_center_name = models.TextField(max_length=50)
     functional_group = models.CharField(max_length=30)
 
+
+
     def __str__(self):
         return self.cost_center_name + ", " + self.functional_group
 
+class IRR(models.Model):
+    irr_no_fk = models.ForeignKey(IRR_header, db_column = irr_no)
+    asset_code_fk = models.ForeignKey(Product, db_column = asset_code , primary_key = True)
+    cost_center_no_fk = models.ForeignKey(Cost_cent, db_column = cost_center_no)
+    quantity_actual = models.FloatField(max_value=None, min_value=None)
+    quantity_accepted = models.FloatField(max_value=None, min_value=None)
+    quantity_rejected = models.FloatField(max_value=None, min_value=None)
+    quantity_balance = models.FloatField(max_value=None, min_value=None)
+    date_recv = models.DateField(blank = True, null = True)
+    wo_no = models.CharField(max_length=7)
+    remark = models.TextField()
 
+    def __str__(self):
+        return self.irr_no_fk
 
-    
+class MIV(models.Model):
+    irr_no_fk = models.ForeignKey(IRR_header, db_column = irr_no)
+    inv_station_no_fk = models.ForeignKey(Inventory_stat, db_column = inv_station_no)
+    asset_code_fk = models.ForeignKey(Product, db_column = asset_code)
+    dce_custodian_fk = models.ForeignKey(Employee, db_column = dce)
+    dce_user_fk = models.ForeignKey(Employee, db_column = dce)
+    cost_center_no_fk = models.ForeignKey(Cost_cent, cost_center_no)
+    wrs_num = models.CharField(max_length = 8)
+    quantity = models.FloatField(max_value=None, min_value=None)
+    amount = models.FloatField(max_value=None, min_value=None)
+    date_issued = models.DateField(blank = True, null = True)
+    doc_date = models.DateField(blank = True, null = True)
+    remark = models.TextField()
+
+    def __str__(self):
+        return self.irr_no_fk + ", " + self.asset_code_fk
+
+class Employee(models.Model):
+    dce = models.CharField(max_length=8, primary_key = True)
+    name = models.TextField()
+   cost_center_no_fk = models.ForeignKey(Cost_cent, db_column = cost_center_no)
+   charging_cc_no = models.CharField(max_length=20)
+   position = models.TextField
+
+   def __str__(self):
+        return self.dce 
+
+class Inventory_stat(models.Model):
+    inv_station_no = models.CharField(max_length = 20, primary_key = True)
+    station_description = models.TextField()
+    cost_center_no_fk = models.ForeignKey(Cost_cent, db_column = cost_center_no)
+
+    def __str__(self):
+        return self.inv_station_no
