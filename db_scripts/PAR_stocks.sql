@@ -1,5 +1,5 @@
 create table PAR(
-  dce_FK char primary key references employee(dce),
+  dce_FK char(8) primary key references employee(dce),
   asset_code_FK int primary key references product(asset_code),
   par_date date,
   par_no char,

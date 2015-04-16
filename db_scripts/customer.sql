@@ -1,7 +1,7 @@
 create table customer(
-   dce_fk char references employee(dce) primary key,
+   dce_fk char(8) references employee(dce) primary key,
    name text,
-   cost_center_no char,
+   cost_center_no char(7),
    credit_limit numeric,
    debit_amt numeric,
    credit_amt numeric,
@@ -10,7 +10,7 @@ create table customer(
 
 
 CREATE OR REPLACE
-  FUNCTION add_customer(p_dce_fk char, p_name text, p_cost_center_no char, p_credit_limit numeric, p_debit_amt, p_credit_amt numeric, 
+  FUNCTION add_customer(p_dce_fk char, p_name text, p_cost_center_no char, p_credit_limit numeric, p_debit_amt, p_credit_amt numeric,
     p_balance_amt numeric)
   RETURNS text as
 

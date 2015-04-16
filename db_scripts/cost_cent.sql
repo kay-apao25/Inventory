@@ -1,5 +1,5 @@
-create table cost_cent(
-	cost_center_no serial primary key,
+﻿create table cost_cent(
+  cost_center_no serial primary key,
   cost_center_name text,
   functional_group char
 );
