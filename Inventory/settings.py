@@ -1,5 +1,5 @@
 """
-Django settings for scrum project.
+Django settings for Inventory project.
 
 For more information on this file, see
 https://docs.djangoproject.com/en/1.7/topics/settings/
@@ -17,7 +17,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 # See https://docs.djangoproject.com/en/1.7/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'sb&&*m=&bx@q_pfdc@h0ervqj88ouguf7lh&6^_u7$izk68!z#'
+SECRET_KEY = '--ab7^)pzh=o@d5!dj6j_5bkyz09v$#7!-4s(5y__!t$*wsgd5'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -48,9 +48,9 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
 
-ROOT_URLCONF = 'scrum.urls'
+ROOT_URLCONF = 'Inventory.urls'
 
-WSGI_APPLICATION = 'scrum.wsgi.application'
+WSGI_APPLICATION = 'Inventory.wsgi.application'
 
 
 # Database
