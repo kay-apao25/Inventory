@@ -11,7 +11,7 @@ create table pending(
 
 create or replace
   function add_pending(p_item_name text, p_supplier_address text, p_supplier_name text, p_serial_number char,
-																		p_description text,	p_model text, p_amount numeric)
+
     returns text as
 $$
   declare
@@ -30,7 +30,8 @@ $$
       update pending
 
       set item_name = p_item_name, supplier_address = p_supplier_address, amount = p_amount
-        where supplier_name = p_supplier_name and serial_number = p_serial_number and model = p_model;
+
+        where supplier_name = v_supplier_name and serial_number = v_serial_number and model = v_model;
 
       return 'Successfully updated';
     end if;
