@@ -33,6 +33,14 @@ $BODY$
 					p_quantity, p_amount , p_date_issued , p_doc_date, p_remark);
       return 'OK';
     else
+
+   			update miv
+              set quantity = p_quantity,
+				  amount = p_amount,
+	              doc_date = p_doc_date,
+	              remark = p_remark
+
+        where miv_no = v_miv_no;
       return 'OK';       
     end if;
   end;
