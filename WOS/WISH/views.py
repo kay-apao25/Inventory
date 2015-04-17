@@ -14,3 +14,6 @@ def irr_forms(request):
 
 def gatepass_form(request):
     return render(request, 'WISH/gatepass_form.html', {})
+
+def miv_form(request):
+    return render(request, 'WISH/miv_form.html', {})
