@@ -1,8 +1,8 @@
 from django.contrib import admin
-from . import models
+from .models import *
 
 # Register your models here.
-admin.site.register(Supplier)
+#admin.site.register(Supplier)
 admin.site.register(Product)
 admin.site.register(PAR)
 admin.site.register(GARV)
