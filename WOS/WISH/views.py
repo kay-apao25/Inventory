@@ -5,6 +5,8 @@ from .models import *
 def wrs_form(request):
     return render(request, 'WISH/wrs_form.html', {})
 
-def get_all_par(request):
-    par_dis = PAR.object.all()
-    return render(request, 'WISH/par_form.html', {'par_dis': par_dis})
+def par_form(request):
+    return render(request, 'WISH/par_form.html', {})
+    
+def cme_form(request):
+    return render(request, 'WISH/cme_form.html', {})
