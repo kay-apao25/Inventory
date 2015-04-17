@@ -27,7 +27,7 @@ class Cost_center(models.Model):
 class Inventory_stat(models.Model):
     inv_station_no = models.CharField(max_length = 20, primary_key = True)
     station_description = models.TextField()
-    cost_center_no_fk = models.ForeignKey(Cost_center, db_column='cost_center_no')
+    cost_center_no_fk = models.ForeignKey(Cost_center)
 
     def __str__(self):
         return self.inv_station_no
@@ -35,8 +35,8 @@ class Inventory_stat(models.Model):
 class Product(models.Model):
     nsn = models.CharField(max_length=10)
     slc_num = models.IntegerField()
-    inv_station_no_fk = models.ForeignKey(Inventory_stat, db_column='inv_station_no')
-    cost_center_no_fk = models.ForeignKey(Cost_center, db_column='cost_center_no')
+    inv_station_no_fk = models.ForeignKey(Inventory_stat)
+    cost_center_no_fk = models.ForeignKey(Cost_center)
     item_name = models.TextField(max_length=80)
     generic_name = models.TextField(max_length=100)
     brand = models.TextField(max_length=50)
@@ -64,7 +64,7 @@ class Product(models.Model):
 class Employee(models.Model):
     dce = models.CharField(max_length=8, primary_key = True)
     name = models.TextField()
-    cost_center_no_fk = models.ForeignKey(Cost_center, db_column='cost_center_no')
+    cost_center_no_fk = models.ForeignKey(Cost_center)
     charging_cc_no = models.CharField(max_length=20)
     position = models.TextField()
 
@@ -88,9 +88,9 @@ class IRR_header(models.Model):
         return self.irr_headkey
 
 class IRR(models.Model):
-    irr_no_fk = models.ForeignKey(IRR_header, db_column='irr_no')
-    asset_code_fk = models.ForeignKey(Product, db_column='asset_code', primary_key = True)
-    cost_center_no_fk = models.ForeignKey(Cost_center, db_column='cost_center_no')
+    irr_no_fk = models.ForeignKey(IRR_header)
+    asset_code_fk = models.ForeignKey(Product, primary_key = True)
+    cost_center_no_fk = models.ForeignKey(Cost_center)
     quantity_actual = models.FloatField()
     quantity_accepted = models.FloatField()
     quantity_rejected = models.FloatField()
@@ -103,12 +103,12 @@ class IRR(models.Model):
         return self.irr_no_fk
 
 class MIV(models.Model):
-    irr_no_fk = models.ForeignKey(IRR_header, db_column='irr_no')
-    inv_station_no_fk = models.ForeignKey(Inventory_stat, db_column='inv_station_no')
-    asset_code_fk = models.ForeignKey(Product, db_column='asset_code')
+    irr_no_fk = models.ForeignKey(IRR_header)
+    inv_station_no_fk = models.ForeignKey(Inventory_stat)
+    asset_code_fk = models.ForeignKey(Product)
     dce_custodian_fk = models.ForeignKey(Employee, related_name='dce3')
     dce_user_fk = models.ForeignKey(Employee, related_name='dce4')
-    cost_center_no_fk = models.ForeignKey(Cost_center, db_column='cost_center_no')
+    cost_center_no_fk = models.ForeignKey(Cost_center)
     wrs_num = models.CharField(max_length = 8)
     quantity = models.FloatField()
     amount = models.FloatField()
@@ -120,8 +120,8 @@ class MIV(models.Model):
         return self.irr_no_fk + ", " + self.asset_code_fk
 
 class PAR(models.Model):
-    dce_FK = models.ForeignKey(Employee, db_column='dce')
-    asset_code_FK = models.ForeignKey(Product, db_column='asset_code')
+    dce_FK = models.ForeignKey(Employee)
+    asset_code_FK = models.ForeignKey(Product)
     par_date = models.DateField(blank=True, null=True)
     par_no = models.CharField(max_length=50, null=True)
     amt_cost = models.FloatField()
@@ -129,14 +129,14 @@ class PAR(models.Model):
     qty = models.IntegerField()
 
     class Meta:
-        unique_together = ('dce_FK', 'asset_code_FK')
+        unique_together = (("dce_FK", "asset_code_FK"))
 
     def __str__(self):
         return self.dce_FK + "," + self.asset_code_FK
 
 class GARV(models.Model):
-    dce_FK = models.ForeignKey(Employee, db_column='dce')
-    asset_code_FK = models.ForeignKey(Product, db_column='asset_code')
+    dce_FK = models.ForeignKey(Employee)
+    asset_code_FK = models.ForeignKey(Product)
     garv_date = models.DateField(blank=True, null=True)
     garv_no = models.CharField(max_length=50, null=True)
 
@@ -148,7 +148,7 @@ class GARV(models.Model):
 
 class Pending(models.Model):
     item_name = models.TextField()
-    supplier_num = models.ForeignKey(Supplier, db_column='supplier_num')
+    supplier_num = models.ForeignKey(Supplier)
     serial_number = models.CharField(max_length=50)
     model = models.TextField()
     amount = models.FloatField()
