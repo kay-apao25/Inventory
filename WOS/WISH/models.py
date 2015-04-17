@@ -120,33 +120,42 @@ class MIV(models.Model):
         return self.irr_no_fk + ", " + self.asset_code_fk
 
 class PAR(models.Model):
-    dce_FK = models.ForeignKey(Employee, db_column='dce', primary_key=True)
-    asset_code_FK = models.ForeignKey(Product, db_column='asset_code', primary_key=True)
+    dce_FK = models.ForeignKey(Employee, db_column='dce')
+    asset_code_FK = models.ForeignKey(Product, db_column='asset_code')
     par_date = models.DateField(blank=True, null=True)
     par_no = models.CharField(max_length=50, null=True)
     amt_cost = models.FloatField()
     remark = models.TextField()
     qty = models.IntegerField()
 
+    class Meta:
+        unique_together = ('dce_FK', 'asset_code_FK')
+
     def __str__(self):
         return self.dce_FK + "," + self.asset_code_FK
 
 class GARV(models.Model):
-    dce_FK = models.ForeignKey(Employee, db_column='dce', primary_key=True)
-    asset_code_FK = models.ForeignKey(Product, db_column='asset_code', primary_key=True)
+    dce_FK = models.ForeignKey(Employee, db_column='dce')
+    asset_code_FK = models.ForeignKey(Product, db_column='asset_code')
     garv_date = models.DateField(blank=True, null=True)
     garv_no = models.CharField(max_length=50, null=True)
+
+    class Meta:
+        unique_together = ('dce_FK', 'asset_code_FK')
 
     def __str__(self):
         return self.dce_FK + "," + self.asset_code_FK
 
 class Pending(models.Model):
     item_name = models.TextField()
-    supplier_num = models.ForeignKey(Supplier, db_column='supplier_num', primary_key=True)
-    serial_number = models.CharField(max_length=50, primary_key=True)
-    model = models.TextField(primary_key=True)
+    supplier_num = models.ForeignKey(Supplier, db_column='supplier_num')
+    serial_number = models.CharField(max_length=50)
+    model = models.TextField()
     amount = models.FloatField()
     description = models.TextField()
+
+    class Meta:
+        unique_together = ('supplier_num', 'serial_number', 'model')
 
     def __str__(self):
         return self.supplier_num + "," + self.serial_number + "," + self.model
