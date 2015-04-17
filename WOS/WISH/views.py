@@ -11,3 +11,6 @@ def get_all_par(request):
 
 def irr_forms(request):
     return render(request, 'WISH/irr_form.html', {})
+
+def gatepass_form(request):
+    return render(request, 'WISH/gatepass_form.html', {})
