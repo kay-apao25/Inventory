@@ -1,5 +1,10 @@
 from django.shortcuts import render
+from .models import *
 
 # Create your views here.
 def wrs_form(request):
     return render(request, 'WISH/wrs_form.html', {})
+
+def get_all_par(request):
+    par_dis = PAR.object.all()
+    return render(request, 'WISH/par_form.html', {'par_dis': par_dis})
