@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from .models import *
 from .forms import *
 
@@ -7,7 +7,13 @@ def index(request):
     return render(request, 'WISH/index.html', {})
 
 def product_new(request):
-    form = ProductForm()
+    if request.method == "POST":
+        form = ProductForm()
+        if form.is_valid():
+            product = form.save()
+            return redirect('blog.views.post_detail', pk=post.pk)
+        else:
+            form = PostForm()
     return render(request, 'WISH/product_add.html', {'form': form})
 
 def wrs_form(request):

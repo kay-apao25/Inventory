@@ -72,6 +72,16 @@ class Employee(models.Model):
     def __str__(self):
         return self.dce
 
+class Customer(models.Model):
+    dce_fk = models.ForeignKey(Employee)
+    credit_limit = models.FloatField()
+    debit_amt = models.FloatField()
+    credit_amt = models.FloatField()
+    balance_amt = models.FloatField()
+
+    def __str__(self):
+        return self.dce
+
 class IRR_header(models.Model):
     irr_headkey = models.CharField(max_length=30)
     inv_station_no = models.CharField(max_length=20)
