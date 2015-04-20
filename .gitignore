@@ -2,5 +2,4 @@
 *.sql~
 *.pyc~
 *.pyc
-WOS/WISH/migrations/*.py
 
