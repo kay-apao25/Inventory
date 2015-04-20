@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from .models import *
 from .forms import *
 
@@ -7,8 +7,15 @@ def index(request):
     return render(request, 'WISH/index.html', {})
 
 def product_new(request):
-    form = ProductForm()
-    return render(request, 'WISH/product_add.html', {'form': form})
+    if request.method == "POST":
+        form = ProductForm(request.POST)
+        if form.is_valid():
+            product = form.save()
+        result = redirect('WISH.views.index')
+    else:
+        form = ProductForm()
+        result = render(request, 'WISH/product_add.html', {'form': form})
+    return result
 
 def wrs_form(request):
     wrss = MIV.objects.filter(wrs_num=1)
@@ -22,21 +29,19 @@ def par_form(request):
     
 def cme_form(request):
     return render(request, 'WISH/cme_form.html', {})
+
 def get_all_par(request):
     par_dis = PAR.object.all()
     return render(request, 'WISH/par_form.html', {'par_dis': par_dis})
-
 def irr_form(request):
     irrs = IRR_header.objects.all()
-    suppliers = Supplier.objects.all()
-    employees = Employee.objects.all()
-    return render(request, 'WISH/irr_form.html', {'irrs':irrs , 'suppliers':suppliers, 'employees':employees})
-def irr_forms(request):
-    return render(request, 'WISH/irr_form.html', {})
-
+    irs = IRR.objects.all()
+    return render(request, 'WISH/irr_form.html', {'irrs':irrs , 'irs':irs})
+    
 def gatepass_form(request):
     return render(request, 'WISH/gatepass_form.html', {})
 
 def miv_form(request):
-    return render(request, 'WISH/miv_form.html', {})
+    mivs = MIV.objects.all()
+    return render(request, 'WISH/miv_form.html', {'mivs':mivs})
 

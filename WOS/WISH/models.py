@@ -73,9 +73,19 @@ class Employee(models.Model):
     def __str__(self):
         return self.dce
 
+class Customer(models.Model):
+    dce_fk = models.ForeignKey(Employee)
+    credit_limit = models.FloatField()
+    debit_amt = models.FloatField()
+    credit_amt = models.FloatField()
+    balance_amt = models.FloatField()
+
+    def __str__(self):
+        return self.dce
+
 class IRR_header(models.Model):
     irr_headkey = models.CharField(max_length=30)
-    inv_station_no = models.CharField(max_length=20)
+    inv_station_no = models.ForeignKey(Inventory_stat)
     reference = models.CharField(max_length=20)
     invoice_num = models.CharField(max_length=20)
     po_num = models.CharField(max_length=20)
@@ -85,6 +95,8 @@ class IRR_header(models.Model):
     proc_date = models.DateField()
     type_n = models.CharField(max_length=20)
     remark = models.TextField(max_length=100)
+    date_dlvrd = models.DateField()
+    supl_fk = models.ForeignKey(Supplier) 
 
     def __str__(self):
         return self.irr_headkey

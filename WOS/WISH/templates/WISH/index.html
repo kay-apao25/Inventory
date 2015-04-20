@@ -3,18 +3,20 @@
         <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
         <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
     </head>
-    <body>
-    	<a href="{% url 'WISH.views.product_new' %}" class="top-menu"><span class="glyphicon glyphicon-plus"></span></a>
+    <body style="background-image:url('http://wallpaper-download.net/wallpapers/abstract-wallpapers-simple-abstract-background-wallpaper-33092.jpg')">
         <div class="page-header">
-        <h1><a href="/">Products</a></h1>
-    </div>
-    <div class="content container">
-        <div class="row">
-            <div class="col-md-8">
-            {% block content %}
-            {% endblock %}
-            </div>
-        </div>
-    </div>
+        	<h1 align="center"><a href="/">Inventory</a></h1>
+	    </div>
+    	<div class="content container">
+    	<a href="{% url 'WISH.views.product_new' %}" class="top-menu"><span class="glyphicon glyphicon-plus"></span></a> Product
+    	<br>
+    	<br>
+    		<div class="row">
+            	<div class="col-md-8">
+            		{% block content %}
+            		{% endblock %}
+            	</div>
+        	</div>
+    	</div>
     </body>
 </html>
