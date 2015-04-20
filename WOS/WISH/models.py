@@ -147,9 +147,6 @@ class PAR(models.Model):
     PO_num = models.ForeignKey(IRR_header)
     date_acquired = models.DateField(blank=True, null=True)
     
-    
-    
-    
     class Meta:
         unique_together = (("dce_FK", "asset_code_FK"))
 

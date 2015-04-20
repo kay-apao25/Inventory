@@ -34,6 +34,7 @@ def cme_form(request):
 def get_all_par(request):
     par_dis = PAR.object.all()
     return render(request, 'WISH/par_form.html', {'par_dis': par_dis})
+
 def irr_form(request):
     irrs = IRR_header.objects.all()
     irs = IRR.objects.all()
