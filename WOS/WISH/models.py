@@ -100,7 +100,7 @@ class IRR(models.Model):
     remark = models.TextField()
 
     def __str__(self):
-        return self.irr_no_fk
+        return str(self.irr_no_fk)
 
 class MIV(models.Model):
     irr_no_fk = models.ForeignKey(IRR_header)
@@ -117,7 +117,7 @@ class MIV(models.Model):
     remark = models.TextField()
 
     def __str__(self):
-        return self.irr_no_fk + ", " + self.asset_code_fk
+        return str(self.irr_no_fk) + ", " + str(self.asset_code_fk)
 
 class PAR(models.Model):
     dce_FK = models.ForeignKey(Employee)
@@ -132,7 +132,7 @@ class PAR(models.Model):
         unique_together = (("dce_FK", "asset_code_FK"))
 
     def __str__(self):
-        return self.dce_FK + "," + self.asset_code_FK
+        return str(self.dce_FK) + "," + str(self.asset_code_FK)
 
 class GARV(models.Model):
     dce_FK = models.ForeignKey(Employee)
