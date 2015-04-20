@@ -58,7 +58,8 @@ class Product(models.Model):
     amount = models.FloatField()
     description = models.TextField()
     remark = models.TextField()
-
+    purchased_from = models.ForeignKey(Supplier)
+   
     def __str__(self):
         return self.id
 
@@ -128,7 +129,15 @@ class PAR(models.Model):
     amt_cost = models.FloatField()
     remark = models.TextField()
     qty = models.IntegerField()
-
+    approved_by = models.ForeignKey(Employee, related_name='dce_FK2')
+    issued_by = models.ForeignKey(Employee, related_name='dce_FK3')
+    inv_stat_no = models.ForeignKey(Inventory_stat)
+    PO_num = models.ForeignKey(IRR_header)
+    date_acquired = models.DateField(blank=True, null=True)
+    
+    
+    
+    
     class Meta:
         unique_together = (("dce_FK", "asset_code_FK"))
 
