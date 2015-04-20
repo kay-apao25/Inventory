@@ -17,6 +17,18 @@ def product_new(request):
         result = render(request, 'WISH/product_add.html', {'form': form})
     return result
 
+def irr_entry():
+    if request.method == "POST":
+        form = ProductForm(request.POST)
+        if form.is_valid():
+            product = form.save()
+        result = redirect('WISH.views.index')
+    else:
+        irr_entries = IRR_entry()
+        result = render(request, 'WISH/irr_entry.html', {'irr_entries': irr_entries})
+    return result
+
+
 def wrs_form(request):
     wrss = MIV.objects.filter(wrs_num=1)
     prods = Product.objects.all()
@@ -37,7 +49,7 @@ def irr_form(request):
     irrs = IRR_header.objects.all()
     irs = IRR.objects.all()
     return render(request, 'WISH/irr_form.html', {'irrs':irrs , 'irs':irs})
-    
+
 def gatepass_form(request):
     return render(request, 'WISH/gatepass_form.html', {})
 
