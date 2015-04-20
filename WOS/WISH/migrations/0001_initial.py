@@ -69,8 +69,8 @@ class Migration(migrations.Migration):
                 ('proc_date', models.DateField()),
                 ('type_n', models.CharField(max_length=20)),
                 ('remark', models.TextField(max_length=100)),
-                ('dce_custodian', models.ForeignKey(related_name='dce1', to='WISH.Employee')),
-                ('dce_user', models.ForeignKey(related_name='dce2', to='WISH.Employee')),
+                ('dce_custodian', models.ForeignKey(related_name=b'dce1', to='WISH.Employee')),
+                ('dce_user', models.ForeignKey(related_name=b'dce2', to='WISH.Employee')),
             ],
             options={
             },
@@ -124,6 +124,7 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
                 ('nsn', models.CharField(max_length=10)),
+                ('pr_num', models.CharField(max_length=10)),
                 ('slc_num', models.IntegerField()),
                 ('item_name', models.TextField(max_length=80)),
                 ('generic_name', models.TextField(max_length=100)),
@@ -240,13 +241,13 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='miv',
             name='dce_custodian_fk',
-            field=models.ForeignKey(related_name='dce3', to='WISH.Employee'),
+            field=models.ForeignKey(related_name=b'dce3', to='WISH.Employee'),
             preserve_default=True,
         ),
         migrations.AddField(
             model_name='miv',
             name='dce_user_fk',
-            field=models.ForeignKey(related_name='dce4', to='WISH.Employee'),
+            field=models.ForeignKey(related_name=b'dce4', to='WISH.Employee'),
             preserve_default=True,
         ),
         migrations.AddField(

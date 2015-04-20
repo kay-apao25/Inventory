@@ -30,18 +30,22 @@
 				{% for irr in irrs %}
 				<span align ="right">Date: {{irr.proc_date}}</span>
 				{% endfor %}
-		</form>
+		</form>																			
 
 		<table style="width:100%;" align="center" >
 			<tr>
-				<td rowspan="2" colspan="2">Supplier Name:</td>
-				<td rowspan="2" colspan="1">Supplier DCE:</td>
+				{% for supplier in suppliers %}
+				<td rowspan="2" colspan="2">Supplier Name: {{supplier.supplier_name}}</td>
+				
+				<td rowspan="2" colspan="1">Supplier DCE: {{supplier.supplier_num}}</td>
+				{% endfor %}
 				<td colspan="5" style="text-align:center;">For materials transferred/transshipped</td>
 			</tr>
 			<tr>
-				<td colspan="3">I/Prop.Cust:</td>
-				<td colspan="2">DCE:</td>
-	
+				{% for employee in employees %}
+				<td colspan="3">I/Prop.Cust: {{employee.name}}</td>
+				<td colspan="2">DCE:{{employee.dce}}</td>
+				{% endfor %}
 			</tr>
 			<tr>
 				<td colspan="2">
