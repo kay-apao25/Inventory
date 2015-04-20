@@ -27,7 +27,9 @@
 				<input type="checkbox" name="type" value="">Materials for Operations<br>
 				<input type="checkbox" name="type" value="">Materials for project
 				<span style="padding-left:1200px;"></span>
-				<span align ="right"> Date Here</span>
+				{% for irr in irrs %}
+				<span align ="right">Date: {{irr.proc_date}}</span>
+				{% endfor %}
 		</form>
 
 		<table style="width:100%;" align="center" >
