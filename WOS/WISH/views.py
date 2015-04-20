@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect
+from django.http import HttpResponseRedirect
 from .models import *
 from .forms import *
 
@@ -10,12 +11,12 @@ def product_new(request):
     if request.method == "POST":
         form = ProductForm(request.POST)
         if form.is_valid():
-            product = form.save()
-        result = redirect('WISH.views.index')
+            product = form.save(commit=False)
+            product.save()
+            return redirect('WISH.views.irr_entries')
     else:
         form = ProductForm()
-        result = render(request, 'WISH/product_add.html', {'form': form})
-    return result
+    return render(request, 'WISH/product_add.html', {'form': form})
 
 def irr_entry():
     if request.method == "POST":
