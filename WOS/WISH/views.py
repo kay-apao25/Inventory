@@ -28,6 +28,18 @@ def irr_entry(request):
         form = IRR_entryForm()
     return render(request, 'WISH/irr_entry.html', {'form': form})
 
+def par_entry(request):
+    if request.method == "POST":
+        form = PAR(request.POST)
+        if form.is_valid():
+            par = form.save()
+        result = redirect('WISH.views.index')
+    else:
+        form = PAR()
+        result = render(request, 'WISH/par_entry.html', {'form': form})
+    return result
+
+
 
 def wrs_form(request):
     wrss = MIV.objects.filter(wrs_num=1)
@@ -38,7 +50,7 @@ def wrs_form(request):
 def par_form(request):
     pars = PAR.objects.all()
     return render(request, 'WISH/par_form.html', {'pars': pars})
-    
+
 def cme_form(request):
     return render(request, 'WISH/cme_form.html', {})
 
@@ -57,4 +69,3 @@ def gatepass_form(request):
 def miv_form(request):
     mivs = MIV.objects.all()
     return render(request, 'WISH/miv_form.html', {'mivs':mivs})
-
