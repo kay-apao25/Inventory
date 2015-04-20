@@ -84,6 +84,7 @@ class IRR_header(models.Model):
     proc_date = models.DateField()
     type_n = models.CharField(max_length=20)
     remark = models.TextField(max_length=100)
+    date_dlvrd = models.DateField()
 
     def __str__(self):
         return self.irr_headkey

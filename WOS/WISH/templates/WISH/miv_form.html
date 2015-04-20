@@ -25,13 +25,16 @@
         <h3 align="center"> MATERIALS ISSUE VOUCHER </h3> 
         
 		<span style="padding-left:1200px;"></span>
-		<span align ="right"> Date Here</span>
-
+		{% for miv in mivs %}
+		<span align ="right"> {{miv.doc_date}}</span>
+		
 		<table style="width:100%;" align="center" >
 			<tr>
-				<td colspan="3">Requisitioning Cost Center: </td>
-				<td colspan="7">Cost Center No.:</td>
-				<td colspan="4">WRS No.:</td>
+				<td colspan="3">Requisitioning Cost Center: {{miv.cost_center_no_fk.cost_center_name}}</td>
+				<td colspan="7">Cost Center No.: {{miv.cost_center_no_fk.id}}</td>
+				<td colspan="4">WRS No.: {{miv.wrs_num}}</td>
+				
+
 			</tr>
 			<tr>
 				<th rowspan="2" style="width:5%;text-align:center" >NPC Supp No.</th>
@@ -54,8 +57,8 @@
 			<td style="width:4%;text-align:center" >JO/WO</td>
 			</tr>	
 			<tr>
-				<td><br><br><br><br><br><br><br><br><br><br></td>
-				<td><br><br><br><br><br><br><br><br><br><br></td>
+				<td><br>{{miv.asset_code_fk.nsn}}<br><br><br><br><br><br><br><br><br></td>
+				<td><br>{{miv.asset_code_fk.item_name}},{{miv.asset_code_fk.description}}<br><br><br><br><br><br><br><br><br></td>
 				<td><br><br><br><br><br><br><br><br><br><br></td>
 				<td><br><br><br><br><br><br><br><br><br><br></td>
 				<td><br><br><br><br><br><br><br><br><br><br></td>
@@ -78,7 +81,8 @@
 				<td style="text-align:center" colspan="2">Approved By:<br><u>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</u><br>IS Cost Center Head<br>DCE:</td>
 				<td style="text-align:center" colspan="3" >Issued By:<br><u>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</u><br>Property Custodian<br>DCE:</td>
 				<td style="text-align:center" colspan="2">Recieved item/s as stated above:<br><u>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</u><br>Requisitioners/Representatives<br>DCE:</td>
-				<td style="text-align:center" colspan="6">MIV<br><br><br><br></td>
+				<td style="text-align:center" colspan="6">MIV<br>IS No. {{miv.inv_station_no_fk}} <br> NO {{miv.id}}<br><br></td>
+				{% endfor %}
 			</tr>
 			
 		</table>
