@@ -22,7 +22,7 @@ class Cost_center(models.Model):
     functional_group = models.CharField(max_length=30)
 
     def __str__(self):
-        return self.cost_center_name + ", " + self.functional_group
+        return self.cost_center_name
 
 class Inventory_stat(models.Model):
     inv_station_no = models.CharField(max_length = 20, primary_key = True)
@@ -34,12 +34,13 @@ class Inventory_stat(models.Model):
 
 class Product(models.Model):
     nsn = models.CharField(max_length=10)
+    pr_num = models.CharField(max_length=10)
     slc_num = models.IntegerField()
     inv_station_no_fk = models.ForeignKey(Inventory_stat)
     cost_center_no_fk = models.ForeignKey(Cost_center)
-    item_name = models.TextField(max_length=80)
-    generic_name = models.TextField(max_length=100)
-    brand = models.TextField(max_length=50)
+    item_name = models.TextField()
+    generic_name = models.TextField()
+    brand = models.TextField()
     part_num = models.CharField(max_length=8)
     manufacture_date = models.DateField()
     expiry_date = models.DateField()
@@ -53,13 +54,13 @@ class Product(models.Model):
     status = models.CharField(max_length=20)
     balance_limit = models.FloatField()
     serial_number = models.CharField(max_length=30)
-    model = models.TextField(max_length=50)
+    model = models.TextField()
     amount = models.FloatField()
-    description = models.TextField(max_length=50)
-    remark = models.TextField(max_length=100)
+    description = models.TextField()
+    remark = models.TextField()
 
     def __str__(self):
-        return self.item_name
+        return self.id
 
 class Employee(models.Model):
     dce = models.CharField(max_length=8, primary_key = True)
@@ -89,7 +90,7 @@ class IRR_header(models.Model):
 
 class IRR(models.Model):
     irr_no_fk = models.ForeignKey(IRR_header)
-    asset_code_fk = models.ForeignKey(Product, primary_key = True)
+    asset_code_fk = models.ForeignKey(Product, primary_key=True)
     cost_center_no_fk = models.ForeignKey(Cost_center)
     quantity_actual = models.FloatField()
     quantity_accepted = models.FloatField()
@@ -100,7 +101,7 @@ class IRR(models.Model):
     remark = models.TextField()
 
     def __str__(self):
-        return self.irr_no_fk
+        return str(self.irr_no_fk)
 
 class MIV(models.Model):
     irr_no_fk = models.ForeignKey(IRR_header)
@@ -117,7 +118,7 @@ class MIV(models.Model):
     remark = models.TextField()
 
     def __str__(self):
-        return self.irr_no_fk + ", " + self.asset_code_fk
+        return str(self.irr_no_fk) + ", " + str(self.asset_code_fk)
 
 class PAR(models.Model):
     dce_FK = models.ForeignKey(Employee)
@@ -132,7 +133,7 @@ class PAR(models.Model):
         unique_together = (("dce_FK", "asset_code_FK"))
 
     def __str__(self):
-        return self.dce_FK + "," + self.asset_code_FK
+        return str(self.dce_FK) + "," + str(self.asset_code_FK)
 
 class GARV(models.Model):
     dce_FK = models.ForeignKey(Employee)

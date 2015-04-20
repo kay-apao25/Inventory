@@ -1,9 +1,20 @@
 from django.shortcuts import render
 from .models import *
+from .forms import *
 
 # Create your views here.
+def index(request):
+    return render(request, 'WISH/index.html', {})
+
+def product_new(request):
+    form = ProductForm()
+    return render(request, 'WISH/product_add.html', {'form': form})
+
 def wrs_form(request):
-    return render(request, 'WISH/wrs_form.html', {})
+    wrss = MIV.objects.filter(wrs_num=1)
+    prods = Product.objects.all()
+    i_heads = IRR_header.objects.all()
+    return render(request, 'WISH/wrs_form.html', {'wrss': wrss})
 
 def par_form(request):
     return render(request, 'WISH/par_form.html', {})
