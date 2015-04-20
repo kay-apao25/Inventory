@@ -28,6 +28,15 @@ def irr_entry(request):
         form = IRR_entryForm()
     return render(request, 'WISH/irr_entry.html', {'form': form})
 
+def irr_entry_cont(request):
+    if request.method == "POST":
+        form = IRR_entry_cont_Form(request.POST)
+        if form.is_valid():
+            irr_entry = form.save()
+            return redirect('WISH.views.index')
+    else:
+        form = IRR_entry_cont_Form()
+    return render(request, 'WISH/irr_entry_cont.html', {'form': form})
 
 def wrs_form(request):
     wrss = MIV.objects.filter(wrs_num=1)
