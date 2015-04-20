@@ -23,7 +23,7 @@ def irr_entry(request):
         form = IRR_entryForm(request.POST)
         if form.is_valid():
             irr_entry = form.save()
-            return redirect('WISH.views.index')
+            return redirect('WISH.views.par_entry')
     else:
         form = IRR_entryForm()
     return render(request, 'WISH/irr_entry.html', {'form': form})

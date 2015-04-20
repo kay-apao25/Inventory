@@ -17,3 +17,4 @@ class IRR_entryForm(forms.ModelForm):
         model = IRR_header
         fields = ('irr_headkey', 'inv_station_no', 'reference', 'invoice_num', 'po_num', 'dr_num', \
         	'dce_custodian', 'dce_user', 'proc_date', 'type_n', 'remark', 'date_dlvrd', 'supl_fk',)
+
