@@ -116,6 +116,7 @@ class Migration(migrations.Migration):
                 ('qty', models.IntegerField()),
                 ('date_acquired', models.DateField(null=True, blank=True)),
                 ('PO_num', models.ForeignKey(to='WISH.IRR_header')),
+                ('approved_by', models.ForeignKey(related_name='dce_FK2', to='WISH.Employee')),
             ],
             options={
             },
@@ -249,6 +250,14 @@ class Migration(migrations.Migration):
             field=models.ForeignKey(to='WISH.Inventory_stat'),
             preserve_default=True,
         ),
+
+        migrations.AddField(
+            model_name='par',
+            name='issued_by',
+            field=models.ForeignKey(related_name='dce_FK3', to='WISH.Employee'),
+            preserve_default=True,
+        ),
+
         migrations.AlterUniqueTogether(
             name='par',
             unique_together=set([('dce_FK', 'asset_code_FK')]),
@@ -268,13 +277,13 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='miv',
             name='dce_custodian_fk',
-            field=models.ForeignKey(related_name=b'dce3', to='WISH.Employee'),
+            field=models.ForeignKey(related_name='dce3', to='WISH.Employee'),
             preserve_default=True,
         ),
         migrations.AddField(
             model_name='miv',
             name='dce_user_fk',
-            field=models.ForeignKey(related_name=b'dce4', to='WISH.Employee'),
+            field=models.ForeignKey(related_name='dce4', to='WISH.Employee'),
             preserve_default=True,
         ),
         migrations.AddField(

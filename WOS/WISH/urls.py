@@ -8,6 +8,7 @@ urlpatterns = [
     url(r'^$', views.index),
     url(r'^product/new/$', views.product_new, name='product_new'),
     #url(r'^$', views.irr_form),
+    url(r'^irr_entry/$', views.irr_entry, name='irr_entry')
     #url(r'^$', views.gatepass_form),
     #url(r'^$', views.miv_form),
 ]

@@ -10,3 +10,10 @@ class ProductForm(forms.ModelForm):
         	'generic_name', 'brand', 'part_num', 'manufacture_date', 'expiry_date', 'class_n', 'stock', \
         	'stock', 'block', 'unit_measure', 'unit_cost', 'quantity', 'average_amt', 'status',\
         	'balance_limit', 'serial_number', 'model', 'amount', 'description', 'remark',)
+
+class IRR_entry(forms.ModelForm):
+
+    class Meta:
+        model = IRR_header
+        fields = ('irr_headkey', 'inv_station_no', 'reference', 'invoice_num', 'po_num', 'dr_num', \
+        	'dce_custodian', 'dce_user', 'proc_date', 'type_n', 'remark')
