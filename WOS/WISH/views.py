@@ -17,14 +17,11 @@ def wrs_form(request):
     return render(request, 'WISH/wrs_form.html', {'wrss': wrss})
 
 def par_form(request):
-    return render(request, 'WISH/par_form.html', {})
+    pars = PAR.objects.all()
+    return render(request, 'WISH/par_form.html', {'pars': pars})
     
 def cme_form(request):
     return render(request, 'WISH/cme_form.html', {})
-
-def get_all_par(request):
-    par_dis = PAR.object.all()
-    return render(request, 'WISH/par_form.html', {'par_dis': par_dis})
 
 def irr_forms(request):
     return render(request, 'WISH/irr_form.html', {})

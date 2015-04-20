@@ -5,6 +5,7 @@ urlpatterns = [
     url(r'^$', views.index),
     url(r'^product/new/$', views.product_new, name='product_new'),
     url(r'^$', views.wrs_form),
+    url(r'^$', views.wrs_form),
     url(r'^$', views.par_form),
     url(r'^$', views.cme_form),
     url(r'^$', views.irr_form),

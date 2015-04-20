@@ -34,8 +34,9 @@
 	<br>
 	<span>Section/Department:&nbsp;&nbsp;&nbsp;<u>Mindanao Generation - OPD - ISTD</u></span>
 	<span style="padding-left:600px"></span>
-	<span align="right">Date: &nbsp;&nbsp; <u>November 9, 2011&nbsp;&nbsp;</u></span>
-	
+	{% for par in pars %}
+	<span align="right">Date: &nbsp;&nbsp; <u>{{ par.par_date }}&nbsp;&nbsp;</u></span>
+	{% endfor %}
 	<br>
 	<br>
 	<br>
