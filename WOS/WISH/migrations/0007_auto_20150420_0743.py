@@ -7,6 +7,7 @@ from django.db import models, migrations
 class Migration(migrations.Migration):
 
     dependencies = [
+        ('WISH', '0006_auto_20150420_0742'),
     ]
 
     operations = [

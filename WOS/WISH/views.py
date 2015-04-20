@@ -13,21 +13,20 @@ def product_new(request):
         if form.is_valid():
             product = form.save(commit=False)
             product.save()
-            return redirect('WISH.views.irr_entries')
+            return redirect('WISH.views.irr_entry')
     else:
         form = ProductForm()
     return render(request, 'WISH/product_add.html', {'form': form})
 
-def irr_entry():
+def irr_entry(request):
     if request.method == "POST":
-        form = ProductForm(request.POST)
+        form = IRR_entryForm(request.POST)
         if form.is_valid():
-            product = form.save()
-        result = redirect('WISH.views.index')
+            irr_entry = form.save()
+            return redirect('WISH.views.index')
     else:
-        irr_entries = IRR_entry()
-        result = render(request, 'WISH/irr_entry.html', {'irr_entries': irr_entries})
-    return result
+        form = IRR_entryForm()
+    return render(request, 'WISH/irr_entry.html', {'form': form})
 
 def par_entry(request):
     if request.method == "POST":
