@@ -53,6 +53,10 @@ class Migration(migrations.Migration):
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
                 ('garv_date', models.DateField(null=True, blank=True)),
                 ('garv_no', models.CharField(max_length=50, null=True)),
+                ('qty', models.CharField(max_length=50, null=True)),
+                ('remarks', models.CharField(max_length=100, null=True)),
+                ('date_inspected', models.DateField(null=True, blank=True)),
+                ('date_confirmed', models.DateField(null=True, blank=True)),
             ],
             options={
             },
@@ -256,6 +260,12 @@ class Migration(migrations.Migration):
             field=models.ForeignKey(related_name=b'dce_FK3', to='WISH.Employee'),
             preserve_default=True,
         ),
+        migrations.AddField(
+            model_name='par',
+            name='wo_num',
+            field=models.ForeignKey(to='WISH.IRR'),
+            preserve_default=True,
+        ),
         migrations.AlterUniqueTogether(
             name='par',
             unique_together=set([('dce_FK', 'asset_code_FK')]),
@@ -270,18 +280,6 @@ class Migration(migrations.Migration):
             model_name='miv',
             name='cost_center_no_fk',
             field=models.ForeignKey(to='WISH.Cost_center'),
-            preserve_default=True,
-        ),
-        migrations.AddField(
-            model_name='miv',
-            name='dce_custodian_fk',
-            field=models.ForeignKey(related_name=b'dce3', to='WISH.Employee'),
-            preserve_default=True,
-        ),
-        migrations.AddField(
-            model_name='miv',
-            name='dce_user_fk',
-            field=models.ForeignKey(related_name=b'dce4', to='WISH.Employee'),
             preserve_default=True,
         ),
         migrations.AddField(
@@ -316,8 +314,44 @@ class Migration(migrations.Migration):
         ),
         migrations.AddField(
             model_name='garv',
+            name='cc_num',
+            field=models.ForeignKey(to='WISH.Cost_center'),
+            preserve_default=True,
+        ),
+        migrations.AddField(
+            model_name='garv',
+            name='confirmed_by',
+            field=models.ForeignKey(related_name=b'dce_FK5', to='WISH.Employee'),
+            preserve_default=True,
+        ),
+        migrations.AddField(
+            model_name='garv',
             name='dce_FK',
             field=models.ForeignKey(to='WISH.Employee'),
+            preserve_default=True,
+        ),
+        migrations.AddField(
+            model_name='garv',
+            name='inspected_by',
+            field=models.ForeignKey(related_name=b'dce_FK4', to='WISH.Employee'),
+            preserve_default=True,
+        ),
+        migrations.AddField(
+            model_name='garv',
+            name='noted_by',
+            field=models.ForeignKey(related_name=b'dce_FK6', to='WISH.Employee'),
+            preserve_default=True,
+        ),
+        migrations.AddField(
+            model_name='garv',
+            name='par_num',
+            field=models.ForeignKey(to='WISH.PAR'),
+            preserve_default=True,
+        ),
+        migrations.AddField(
+            model_name='garv',
+            name='wo_num',
+            field=models.ForeignKey(to='WISH.IRR'),
             preserve_default=True,
         ),
         migrations.AlterUniqueTogether(

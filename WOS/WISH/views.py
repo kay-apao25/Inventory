@@ -18,30 +18,33 @@ def product_new(request):
             product.nsn = randint(500000,999999)
             product.amount = product.unit_cost * product.quantity
             product.save()
-            return redirect('WISH.views.irr_entry')
+            return redirect('WISH.views.irr_entry', pk=product.pk, instat=product.inv_station_no_fk_id, sup=product.purchased_from_id)
     else:
         form = ProductForm()
     return render(request, 'WISH/product_add.html', {'form': form})
 
-def irr_entry(request):
+def irr_entry(request, pk, instat, sup):
     if request.method == "POST":
         form = IRR_entryForm(request.POST)
         if form.is_valid():
             irr_entry = form.save(commit=False)
+            irr_entry.inv_station_no_id = instat
+            irr_entry.supl_fk_id = sup 
             irr_entry.save()
-            return redirect('WISH.views.irr_entry_cont', pk=irr_entry.pk)
+            return redirect('WISH.views.irr_entry_cont', ipk=irr_entry.pk, pk=pk)
     else:
         form = IRR_entryForm()
     return render(request, 'WISH/irr_entry.html', {'form': form})
 
 
-def irr_entry_cont(request, pk):
+def irr_entry_cont(request, ipk, pk):
     if request.method == "POST":
         form = IRR_entry_cont_Form(request.POST)
         iform = IRR_entryForm()
         if form.is_valid():
             irr_entry_cont = form.save(commit=False)
-            irr_entry_cont.irr_no_fk_id = pk
+            irr_entry_cont.asset_code_fk_id = pk 
+            irr_entry_cont.irr_no_fk_id = ipk
             irr_entry_cont.quantity_rejected = irr_entry_cont.quantity_actual - irr_entry_cont.quantity_accepted
             irr_entry_cont.quantity_balance = irr_entry_cont.quantity_rejected
             irr_entry_cont.save()
@@ -59,7 +62,7 @@ def miv_entry(request, pk):
             miv_entry.wrs_num = randint(100000,999999)
             miv_entry.amount = miv_entry.asset_code_fk.unit_cost * miv_entry.quantity
             miv_entry.save()
-            return redirect('WISH.views.irr_miv_form', mpk=miv_entry.pk, ipk=11)
+            return redirect('WISH.views.irr_miv_form', mpk=miv_entry.pk, ipk=pk)
     else:
         form = MIV_entryForm()
     return render(request, 'WISH/miv_entry.html', {'form': form})
@@ -90,7 +93,7 @@ def garv_entry(request):
 
 
 def wrs_form(request):
-    wrss = MIV.objects.all()
+    wrss = MIV.objects.filter(pk=1)
     return render(request, 'WISH/wrs_form.html', {'wrss': wrss})
 
 def par_form(request):
@@ -109,11 +112,8 @@ def irr_form(request):
     return render(request, 'WISH/irr_form.html', {'irs':irs})
 
 def irr_miv_form(request, mpk, ipk):
-    #mivs = get_object_or_404(MIV, pk=mpk)
-    #irs = get_object_or_404(IRR, pk=ipk)
-    mivs = MIV.objects.all()
-    #irs = IRR.objects.filter(irr=ipk)
-    irs = IRR.objects.all()
+    mivs = get_object_or_404(MIV, pk=mpk)
+    irs = get_object_or_404(IRR, pk=ipk)
     return render(request, 'WISH/irr_miv_form.html', {'irs':irs , 'mivs':mivs})
 
 def gatepass_form(request):

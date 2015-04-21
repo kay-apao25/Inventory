@@ -120,15 +120,15 @@ class MIV(models.Model):
     irr_no_fk = models.ForeignKey(IRR_header)
     inv_station_no_fk = models.ForeignKey(Inventory_stat)
     asset_code_fk = models.ForeignKey(Product)
-    dce_custodian_fk = models.ForeignKey(Employee, related_name='dce3')
-    dce_user_fk = models.ForeignKey(Employee, related_name='dce4')
     cost_center_no_fk = models.ForeignKey(Cost_center)
     wrs_num = models.CharField(max_length = 8)
+    cost_center_no_fk = models.ForeignKey(Cost_center)
     quantity = models.FloatField()
     amount = models.FloatField()
     date_issued = models.DateField(blank = True, null = True)
     doc_date = models.DateField(blank = True, null = True)
     remark = models.TextField()
+
 
     def __str__(self):
         return str(self.irr_no_fk) + ", " + str(self.asset_code_fk)
