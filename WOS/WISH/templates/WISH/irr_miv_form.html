@@ -15,20 +15,17 @@
     <body>
     	<div>
         	<span align="left" > Republic of the Philippines</span>
-        	<span style="padding-left:985px;"></span>
+        	<span style="padding-left:950px;"></span>
           	<span align="right"> Mindanao Regional Center</span>
         </div>
         <div><span align ="left">National Power Corporation</span>
-        	<span style="padding-left:880px;"></span>	
+        	<span style="padding-left:850px;"></span>	
         	<span align="right"> Mindanao Generation-Central WareHouse</span>
         </div>
         <h3 align="center"> INSPECTION AND RECEIVING REPORT </h3> 
-        <form action="">
-				<input type="checkbox" name="type" value="">Materials for Operations<br>
-				<input type="checkbox" name="type" value="">Materials for project
-				<span style="padding-left:1200px;"></span>
-				
-				<span align ="right">Date: {{irs.irr_no_fk.proc_date}}</span>
+        <span align="left" >  type: {{irs.irr_no_fk.type_n}}</span>
+		<span style="padding-left:1100px;"></span>
+		<span align ="right">Date: {{irs.irr_no_fk.proc_date}}</span>
 		</form>																			
 
 		<table style="width:100%;" align="center" >
@@ -93,10 +90,10 @@
 				<td colspan="8">Findings/Observations:</td>
 			</tr>
 			<tr>
-				<td style="text-align:center" colspan="2">Inspected & Accepted By:<br><u>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</u><br>QA/Deputized Inspector<br>DCE:<br>Date of inspection:</td>
-				<td style="text-align:center" >Recieved By:<br><u>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</u><br>Property Custodian<br>DCE:<br>Date of inspection:</td>
-				<td style="text-align:center" colspan="3">Approved By:<br><u>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</u><br>IS Cost Center Head<br>DCE:<br>Date of inspection:</td>
-				<td style="text-align:center" colspan="2">IRR<br>IS no. {{irs.irr_no_fk.inv_station_no}} <br> NO. {{irs.irr_no_fk.id}} <br><br></td>
+				<td style="text-align:center" colspan="2">Inspected & Accepted By:<br><u></u><br>QA/Deputized Inspector<br>DCE:<br>Date of inspection:</td>
+				<td style="text-align:center" >Recieved By:<br><u>{{mivs.irr_no_fk.dce_custodian.name}}</u><br>Property Custodian<br>DCE:{{mivs.irr_no_fk.dce_custodian}}<br>Date of inspection:</td>
+				<td style="text-align:center" colspan="3">Approved By:<br><u></u><br>IS Cost Center Head<br>DCE:<br>Date of inspection:</td>
+				<td style="text-align:center" colspan="2">IRR<br>IS no. {{irs.irr_no_fk.inv_station_no.inv_station_no}} <br> NO. {{irs.irr_no_fk.id}} <br><br></td>
 				
 			</tr>
 			
@@ -108,11 +105,11 @@
 		
 		<div>
         	<span align="left" > Republic of the Philippines</span>
-        	<span style="padding-left:985px;"></span>
+        	<span style="padding-left:950px;"></span>
           	<span align="right"> Mindanao Regional Center</span>
         </div>
         <div><span align ="left">National Power Corporation</span>
-        	<span style="padding-left:880px;"></span>
+        	<span style="padding-left:830px;"></span>
         	<span align="right"> Mindanao Generation-Central WareHouse</span>
         </div>
         <h3 align="center"> MATERIALS ISSUE VOUCHER </h3> 
@@ -171,10 +168,10 @@
 
 			</tr>
 			<tr>
-				<td style="text-align:center" colspan="2">Approved By:<br><u>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</u><br>IS Cost Center Head<br>DCE:</td>
-				<td style="text-align:center" colspan="3" >Issued By:	<br><u>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</u><br>Property Custodian<br>DCE:</td>
-				<td style="text-align:center" colspan="2">Recieved item/s as stated above:<br><u>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</u><br>Requisitioners/Representatives<br>DCE:</td>
-				<td style="text-align:center" colspan="6">MIV<br>IS No. {{mivs.inv_station_no_fk}} <br> NO {{mivs.id}}<br><br></td>
+				<td style="text-align:center" colspan="2">Approved By: <br><u></u><br>IS Cost Center Head<br>DCE:</td>
+				<td style="text-align:center" colspan="3" > Issued By:  <br> <u>{{mivs.irr_no_fk.dce_custodian.name}}</u><br>Property Custodian<br>DCE:{{mivs.irr_no_fk.dce_custodian}}</td>
+				<td style="text-align:center" colspan="2">Recieved item/s as stated above:<br><u></u><br>Requisitioners/Representatives<br>DCE:</td>
+				<td style="text-align:center" colspan="6">MIV<br>IS No. {{mivs.inv_station_no_fk.inv_station_no}} <br> NO {{mivs.id}}<br><br></td>
 				
 			</tr>
 			
