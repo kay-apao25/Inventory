@@ -146,36 +146,36 @@ class PAR(models.Model):
     inv_stat_no = models.ForeignKey(Inventory_stat)
     PO_num = models.ForeignKey(IRR_header)
     date_acquired = models.DateField(blank=True, null=True)
-    #wo_num = models.ForeignKey(IRR)
+    wo_num = models.ForeignKey(IRR)
 
 
     class Meta:
         unique_together = (("dce_FK", "asset_code_FK"))
 
     def __str__(self):
-        return par_no
+        return self.par_no
 
 class GARV(models.Model):
     dce_FK = models.ForeignKey(Employee)
     asset_code_FK = models.ForeignKey(Product)
     garv_date = models.DateField(blank=True, null=True)
     garv_no = models.CharField(max_length=50, null=True)
-    #cc_num = models.ForeignKey(Cost_center)
-    #wo_num = models.ForeignKey(IRR)
-    #qty = models.CharField(max_length=50, null=True)
-    #par_num = models.ForeignKey(PAR)
-    #remarks = models.CharField(max_length=100, null=True)
-    #inspected_by = models.ForeignKey(Employee, related_name='dce_FK4')
-    #date_inspected = models.DateField(blank=True, null=True)
-    #confirmed_by = models.ForeignKey(Employee, related_name='dce_FK5')
-    #date_confirmed = models.DateField(blank=True, null=True)
-    #noted_by = models.ForeignKey(Employee, related_name='dce_FK6')
+    cc_num = models.ForeignKey(Cost_center)
+    wo_num = models.ForeignKey(IRR)
+    qty = models.CharField(max_length=50, null=True)
+    par_num = models.ForeignKey(PAR)
+    remarks = models.CharField(max_length=100, null=True)
+    inspected_by = models.ForeignKey(Employee, related_name='dce_FK4')
+    date_inspected = models.DateField(blank=True, null=True)
+    confirmed_by = models.ForeignKey(Employee, related_name='dce_FK5')
+    date_confirmed = models.DateField(blank=True, null=True)
+    noted_by = models.ForeignKey(Employee, related_name='dce_FK6')
 
     class Meta:
         unique_together = ('dce_FK', 'asset_code_FK')
 
     def __str__(self):
-        return self.dce_FK + "," + self.asset_code_FK
+        return str(self.dce_FK) + "," + str(self.asset_code_FK)
 
 class Pending(models.Model):
     item_name = models.TextField()
