@@ -103,7 +103,7 @@ class IRR_header(models.Model):
 
 class IRR(models.Model):
     irr_no_fk = models.ForeignKey(IRR_header)
-    asset_code_fk = models.ForeignKey(Product, primary_key=True)
+    asset_code_fk = models.ForeignKey(Product, primary_key=True)#listfield
     cost_center_no_fk = models.ForeignKey(Cost_center)
     quantity_actual = models.FloatField()
     quantity_accepted = models.FloatField()
