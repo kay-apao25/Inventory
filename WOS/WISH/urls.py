@@ -12,6 +12,8 @@ urlpatterns = [
     url(r'^miv_entry/$', views.miv_entry, name='miv_entry'),
     url(r'^par_entry/$', views.par_entry, name='par_entry'),
     url(r'^par_form/$', views.par_form),
+    url(r'^product/new/(?P<pk>[0-9]+)/$', views.irr_entry_cont),
+    #url(r'^product/new/(?P<pk>[0-9]+)/$', views.miv_entry),
     #url(r'^$', views.gatepass_form),
     #url(r'^$', views.miv_form),
 ]
