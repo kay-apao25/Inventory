@@ -63,15 +63,11 @@ def miv_entry(request, pk, ipk, prk, instat, cpk):
             miv_entry = form.save(commit=False)
             miv_entry.doc_date = time.strftime("%Y-%m-%d")
             miv_entry.wrs_num = randint(100000,999999)
-<<<<<<< HEAD
             miv_entry.asset_code_fk_id = prk
             miv_entry.amount = miv_entry.asset_code_fk.unit_cost * miv_entry.quantity 
             miv_entry.irr_no_fk_id = ipk
             miv_entry.inv_station_no_fk_id = instat
             miv_entry.cost_center_no_fk_id = cpk
-=======
-            miv_entry.amount = miv_entry.asset_code_fk.unit_cost * miv_entry.quantity
->>>>>>> 31ab6d6eb489a0f535ce710ea3201354581b849f
             miv_entry.save()
             return redirect('WISH.views.irr_miv_form', mpk=miv_entry.pk, ipk=pk)
     else:
