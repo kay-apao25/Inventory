@@ -30,7 +30,7 @@ class Inventory_stat(models.Model):
     cost_center_no_fk = models.ForeignKey(Cost_center)
 
     def __str__(self):
-        return self.inv_station_no
+        return self.station_description
 
 class Product(models.Model):
     nsn = models.CharField(max_length=10)
@@ -61,7 +61,7 @@ class Product(models.Model):
     purchased_from = models.ForeignKey(Supplier)
 
     def __str__(self):
-        return str(self.id)
+        return self.item_name + " , " + self.description
 
 class Employee(models.Model):
     dce = models.CharField(max_length=8, primary_key = True)

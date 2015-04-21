@@ -22,11 +22,12 @@
  	   <!-- Custom Fonts -->
  	   <link rel="stylesheet" href="{% static 'fonts/font-awesome/css/font-awesome.css' %}">
  	<!--   <link rel="stylesheet" href="{% static 'gallery/css/blueimp-gallery.min.css' %}">-->
- 	   <link rel="stylesheet" href="{% static 'big/css/bootstrap-image-gallery.min.css' %}">
+ 	<!--   <link rel="stylesheet" href="{% static 'big/css/bootstrap-image-gallery.min.css' %}">-->
     </head>
 
-    <body style="background-image:url('http://wallpaper-download.net/wallpapers/abstract-wallpapers-simple-abstract-background-wallpaper-33092.jpg')">
-
+    <body >
+        
+    <body>
     	<div class="content container">
 
     	<div id="wrapper">
@@ -41,7 +42,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="index.html">myInventory</a>
+                <a class="navbar-brand" a href="/">myInventory</a>
             </div>
 
             <!-- Top Menu Items -->
@@ -155,12 +156,7 @@
         </nav>
 
         <div class="container-fluid">
-        <div class="page-header">
-        	<!--<img src=""></img>-->
-        	<h1 align="center" style="font-family: 'Cinzel', serif;"><a href="/">Inventory</a></h1>
-	    </div>
-    	<div class="content container">
-
+    	
     	<br>
     	<br>
     		<div class="row">
@@ -172,19 +168,10 @@
 
             			<a href="{% url 'WISH.views.wrs_form' %}" class="top-menu"><img src="http://www.iconshock.com/img_jpg/DIAMOND/accounting/jpg/256/warehouse_icon.jpg" style="width:200px;height:200px" align="center"></img></a>
 
-	                  <a href="{% url 'WISH.views.par_entry' %}" class="top-menu"><img src="http://www.iconshock.com/img_jpg/DIAMOND/accounting/jpg/256/warehouse_icon.jpg" style="width:200px;height:200px" align="center"></img></a>
-                    
+  	                    <a href="{% url 'WISH.views.par_entry' %}" class="top-menu"><img src="http://www.iconshock.com/img_jpg/DIAMOND/accounting/jpg/256/warehouse_icon.jpg" style="width:200px;height:200px" align="center"></img></a>
             		</div>
             		{% endblock %}
         </div>
-
-
-
-    	<br>
-    	<br>
-
-
-
 
     	</div>
     </body>
