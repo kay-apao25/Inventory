@@ -62,7 +62,7 @@ def miv_entry(request, pk):
             miv_entry.wrs_num = randint(100000,999999)
             miv_entry.amount = miv_entry.asset_code_fk.unit_cost * miv_entry.quantity 
             miv_entry.save()
-            return redirect('WISH.views.irr_miv_form', mpk=miv_entry.pk, ipk=11)
+            return redirect('WISH.views.irr_miv_form', mpk=miv_entry.pk, ipk=pk)
     else:
         form = MIV_entryForm()
     return render(request, 'WISH/miv_entry.html', {'form': form})

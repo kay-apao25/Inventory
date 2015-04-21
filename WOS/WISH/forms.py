@@ -29,7 +29,7 @@ class MIV_entryForm(forms.ModelForm):
 
     class Meta:
     	model = MIV
-    	fields = ( 'irr_no_fk', 'inv_station_no_fk', 'asset_code_fk' , \
+    	fields = ( 'irr_no_fk', 'inv_station_no_fk', 'asset_code_fk' ,  \
     		'cost_center_no_fk' ,  'quantity', 'date_issued',  'remark' ,)
 
 class PAR_entryForm(forms.ModelForm):
