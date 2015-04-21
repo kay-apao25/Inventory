@@ -10,7 +10,7 @@
         	<h1 align="center" style="font-family: 'Cinzel', serif;"><a href="/">Inventory</a></h1>
 	    </div>
     	<div class="content container">
-    	
+
     	<br>
     	<br>
     		<div class="row">
@@ -19,8 +19,11 @@
             			<h1 style="font-family: 'Cinzel', serif;" align="center">WELCOME!</h1>
             			<br>
             			<a href="{% url 'WISH.views.product_new' %}" class="top-menu"><img src="http://under30ceo.com/wp-content/uploads/2013/05/Product-Value.jpg" style="width:200px;height:200px" align="center"></a>
-            			
+
             			<a href="{% url 'WISH.views.wrs_form' %}" class="top-menu"><img src="http://www.iconshock.com/img_jpg/DIAMOND/accounting/jpg/256/warehouse_icon.jpg" style="width:200px;height:200px" align="center"></img></a>
+
+	                  <a href="{% url 'WISH.views.par_entry' %}" class="top-menu"><img src="http://www.iconshock.com/img_jpg/DIAMOND/accounting/jpg/256/warehouse_icon.jpg" style="width:200px;height:200px" align="center"></img></a>
+
             		</div>
             		{% endblock %}
             </div>
