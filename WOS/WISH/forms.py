@@ -27,11 +27,11 @@ class IRR_entry_cont_Form(forms.ModelForm):
     'quantity_accepted' ,'quantity_rejected' , 'quantity_balance' , 'date_recv' , 'wo_no' , 'remark',)
 
 class MIV_entryForm(forms.ModelForm):
-	
+
     class Meta:
     	model = MIV
     	fields = ( 'irr_no_fk', 'inv_station_no_fk', 'asset_code_fk' , 'dce_custodian_fk', 'dce_user_fk' , \
-    		'cost_center_no_fk' , 'wrs_num' ,  'quantity' , 'amount', 'date_issued',  'doc_date' , 'remark' )
+    		'cost_center_no_fk' ,  'quantity' , 'amount', 'date_issued',  'doc_date' , 'remark' )
 
 class PAR(forms.ModelForm):
 
