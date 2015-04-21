@@ -54,12 +54,11 @@ def par_entry(request):
         form = PAR(request.POST)
         if form.is_valid():
             par = form.save()
-        result = redirect('WISH.views.index')
+            return redirect('WISH.views.index')
     else:
         form = PAR()
-        result = render(request, 'WISH/par_entry.html', {'form': form})
-    return result
-
+    	return render(request, 'WISH/par_entry.html', {'form': form})
+    
 
 def wrs_form(request):
     wrss = MIV.objects.filter(wrs_num=1)

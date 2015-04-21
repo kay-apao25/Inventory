@@ -1,0 +1,103 @@
+html,body {
+  height:100%;
+  width:100%;
+  position:relative;
+}
+
+.modal-header {
+  margin-top: 0px;
+  padding: 0px;
+}
+
+h1, b {
+  margin-top: 1px;
+  margin-bottom: 5px;
+  font-size: 16px;
+}
+
+/*carousel heading*/
+b.b{
+  font-size: 70px;
+  color: white;
+  text-align: left; 
+  text-shadow: 1px 1px 50px #000000;
+}
+
+/*carousel caption*/
+.caption {
+  margin-top: 300px;
+  padding: 10px;
+  text-align: center; 
+  color: black;
+  font-size: 100px;
+  font-family: arial;
+  background: rgba(255, 255, 255, 0.6);
+  border-radius: 5px;
+}
+
+#background-carousel{
+  position:fixed;
+  width:100%;
+  height:100%;
+  z-index:-1;
+}
+
+#form-signup {
+  padding-bottom: 0px;
+} 
+
+.btn-info {
+  width: 150px;
+  margin-left: 20%
+}
+
+.col-md-4 {
+  float: right; 
+}
+
+label.checkbox, .1 {
+  width: 150px;
+  padding: 0px;
+  float: left;
+}
+
+.modal-content {
+  width: 300px;
+}
+
+.content1 {
+  height: 230px;
+}
+
+.content2 {
+  height: 380px;
+}
+
+.controls {
+  padding-bottom: 0px;
+}
+
+.modal-body {
+  margin-bottom: 0px;
+}
+.carousel,
+.carousel-inner {
+  width:100%;
+  height:100%;
+  z-index:0;
+  overflow:hidden;
+}
+.item {
+  width:100%;
+  height:100%;
+  background-position:center center;
+  background-size:cover;
+  z-index:0;
+}
+
+#content-wrapper {
+  position:absolute;
+  z-index:1 !important;
+  min-width:100%;
+  min-height:100%;
+}
