@@ -45,12 +45,12 @@ def irr_entry_cont(request, pk):
             irr_entry_cont.quantity_rejected = irr_entry_cont.quantity_actual - irr_entry_cont.quantity_accepted
             irr_entry_cont.quantity_balance = irr_entry_cont.quantity_rejected
             irr_entry_cont.save()
-            return redirect('WISH.views.miv_entry')
+            return redirect('WISH.views.miv_entry', pk=pk)
     else:
         form = IRR_entry_cont_Form()
     return render(request, 'WISH/irr_entry_cont.html', {'form': form})
 
-def miv_entry(request):
+def miv_entry(request, pk):
     if request.method == "POST":
         form = MIV_entryForm(request.POST)
         if form.is_valid():
@@ -59,7 +59,7 @@ def miv_entry(request):
             miv_entry.wrs_num = randint(100000,999999)
             miv_entry.amount = miv_entry.asset_code_fk.unit_cost * miv_entry.quantity 
             miv_entry.save()
-            return redirect('WISH.views.irr_miv_form')
+            return redirect('WISH.views.irr_miv_form', mpk=miv_entry.pk, ipk=pk)
     else:
         form = MIV_entryForm()
     return render(request, 'WISH/miv_entry.html', {'form': form})
@@ -96,8 +96,9 @@ def irr_form(request):
     irs = IRR.objects.all()
     return render(request, 'WISH/irr_form.html', {'irrs':irrs , 'irs':irs})
 
-def irr_miv_form(request):
+def irr_miv_form(request, mpk, ipk):
     irrs = IRR_header.objects.all()
+    miv = MIV.objects.filter(id=mpk)
     irs = IRR.objects.all()
     return render(request, 'WISH/irr_miv_form.html', {'irrs':irrs , 'irs':irs})
     
