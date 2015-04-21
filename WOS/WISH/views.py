@@ -13,8 +13,8 @@ def product_new(request):
         form = ProductForm(request.POST)
         if form.is_valid():
             product = form.save(commit=False)
-            product.slc_num = randint(1000000,9999999)
-            product.nsn = randint(5000000,9999999)  
+            product.slc_num = randint(100000,999999)
+            product.nsn = randint(500000,999999)  
             product.save()
             return redirect('WISH.views.irr_entry')
     else:
