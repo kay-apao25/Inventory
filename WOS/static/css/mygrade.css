@@ -1,0 +1,45 @@
+
+/* CSS for modal class record button toggle*/
+.clicked {
+ background-color: #f4fcf8; 
+}
+
+/* CSS for csv hover*/
+
+.thumbnail {
+
+   -webkit-transform: translate(-50%,-50%); /* Safari and Chrome */
+   -moz-transform: translate(-50%,-50%); /* Firefox */
+   -ms-transform: translate(-50%,-50%); /* IE 9 */
+   -o-transform: translate(-50%,-50%); /* Opera */
+   transform: translate(-50%,-50%);
+}
+
+
+.image img {
+   -webkit-transition: all 1s ease; /* Safari and Chrome */
+   -moz-transition: all 1s ease; /* Firefox */
+   -o-transition: all 1s ease; /* IE 9 */
+   -ms-transition: all 1s ease; /* Opera */
+   transition: all 1s ease;
+}
+
+.image:hover img {
+   -webkit-transform:scale(1.25); /* Safari and Chrome */
+   -moz-transform:scale(1.25); /* Firefox */
+   -ms-transform:scale(1.25); /* IE 9 */
+   -o-transform:scale(1.25); /* Opera */
+    transform:scale(1.25);
+}
+
+
+ .carousel-inner.item.active {margin-left:150px;}
+.carousel-inner { margin: auto; width: 100%; }
+ .active.left { left: -33.33%; }
+ .active.right { left: 33.33%; }
+ .next { left: 33.33%; }
+ .prev { left: -33.33%; }
+
+/*.carousel-control.left        { background-image: none; }
+.carousel-control.right       { background-image: none; }
+.carousel-inner .item         { background: white;      }

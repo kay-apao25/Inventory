@@ -61,7 +61,7 @@ class Product(models.Model):
     purchased_from = models.ForeignKey(Supplier)
    
     def __str__(self):
-        return self.id
+        return str(self.id)
 
 class Employee(models.Model):
     dce = models.CharField(max_length=8, primary_key = True)
@@ -113,7 +113,7 @@ class IRR(models.Model):
     wo_no = models.CharField(max_length=7)
     remark = models.TextField()
 
-    def __str__(self):
+    def __unicode__(self):
         return str(self.irr_no_fk)
 
 class MIV(models.Model):
@@ -151,7 +151,7 @@ class PAR(models.Model):
         unique_together = (("dce_FK", "asset_code_FK"))
 
     def __str__(self):
-        return str(self.dce_FK) + "," + str(self.asset_code_FK)
+        return par_no
 
 class GARV(models.Model):
     dce_FK = models.ForeignKey(Employee)
