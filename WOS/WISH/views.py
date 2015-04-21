@@ -47,7 +47,7 @@ def miv_entry(request):
         form = MIV_entryForm(request.POST)
         if form.is_valid():
             miv_entry = form.save()
-            return redirect('WISH.views.index')
+            return redirect('WISH.views.miv_form')
     else:
         form = MIV_entryForm()
     return render(request, 'WISH/miv_entry.html', {'form': form})
@@ -84,6 +84,11 @@ def irr_form(request):
     irs = IRR.objects.all()
     return render(request, 'WISH/irr_form.html', {'irrs':irrs , 'irs':irs})
 
+def irr_miv_form(request):
+    irrs = IRR_header.objects.all()
+    irs = IRR.objects.all()
+    return render(request, 'WISH/irr_miv_form.html', {'irrs':irrs , 'irs':irs})
+    
 def gatepass_form(request):
     return render(request, 'WISH/gatepass_form.html', {})
 
