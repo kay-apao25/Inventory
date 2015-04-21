@@ -61,7 +61,7 @@ class Product(models.Model):
     purchased_from = models.ForeignKey(Supplier)
    
     def __str__(self):
-        return self.id
+        return str(self.id)
 
 class Employee(models.Model):
     dce = models.CharField(max_length=8, primary_key = True)
