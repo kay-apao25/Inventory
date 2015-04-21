@@ -59,7 +59,7 @@ class Product(models.Model):
     description = models.TextField()
     remark = models.TextField()
     purchased_from = models.ForeignKey(Supplier)
-   
+
     def __str__(self):
         return str(self.id)
 
@@ -96,7 +96,7 @@ class IRR_header(models.Model):
     type_n = models.CharField(max_length=20)
     remark = models.TextField(max_length=100)
     date_dlvrd = models.DateField()
-    supl_fk = models.ForeignKey(Supplier) 
+    supl_fk = models.ForeignKey(Supplier)
 
     def __str__(self):
         return self.irr_headkey
@@ -146,7 +146,9 @@ class PAR(models.Model):
     inv_stat_no = models.ForeignKey(Inventory_stat)
     PO_num = models.ForeignKey(IRR_header)
     date_acquired = models.DateField(blank=True, null=True)
-    
+    #wo_num = models.ForeignKey(IRR)
+
+
     class Meta:
         unique_together = (("dce_FK", "asset_code_FK"))
 
@@ -158,6 +160,16 @@ class GARV(models.Model):
     asset_code_FK = models.ForeignKey(Product)
     garv_date = models.DateField(blank=True, null=True)
     garv_no = models.CharField(max_length=50, null=True)
+    #cc_num = models.ForeignKey(Cost_center)
+    #wo_num = models.ForeignKey(IRR)
+    #qty = models.CharField(max_length=50, null=True)
+    #par_num = models.ForeignKey(PAR)
+    #remarks = models.CharField(max_length=100, null=True)
+    #inspected_by = models.ForeignKey(Employee, related_name='dce_FK4')
+    #date_inspected = models.DateField(blank=True, null=True)
+    #confirmed_by = models.ForeignKey(Employee, related_name='dce_FK5')
+    #date_confirmed = models.DateField(blank=True, null=True)
+    #noted_by = models.ForeignKey(Employee, related_name='dce_FK6')
 
     class Meta:
         unique_together = ('dce_FK', 'asset_code_FK')
