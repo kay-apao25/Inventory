@@ -3,6 +3,7 @@ from django.http import HttpResponseRedirect
 from random import randint
 from .models import *
 from .forms import *
+import time
 
 # Create your views here.
 def index(request):
@@ -49,6 +50,7 @@ def miv_entry(request):
         form = MIV_entryForm(request.POST)
         if form.is_valid():
             miv_entry = form.save(commit=False)
+            miv_entry.doc_date = time.strftime("%Y-%m-%d")
             miv_entry.wrs_num = randint(100000,999999)
             miv_entry.save()
             return redirect('WISH.views.irr_miv_form')
