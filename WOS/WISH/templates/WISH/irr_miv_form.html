@@ -1,6 +1,6 @@
 <html>
     <head>
-        <title>irr_form</title>
+        <title>irr_miv_form</title>
         <style type="text/css">
         	table, th, td{
         		border: 1px solid black;
@@ -12,6 +12,7 @@
         	}
         </style>
     </head>
+    	{% for ir in irs %}
     <body>
     	<div>
         	<span align="left" > Republic of the Philippines</span>
@@ -27,22 +28,22 @@
 				<input type="checkbox" name="type" value="">Materials for Operations<br>
 				<input type="checkbox" name="type" value="">Materials for project
 				<span style="padding-left:1200px;"></span>
-				{% for irr in irrs %}
-				<span align ="right">Date: {{irr.proc_date}}</span>
+				
+				<span align ="right">Date: {{ir.irr_no_fk.proc_date}}</span>
 		</form>																			
 
 		<table style="width:100%;" align="center" >
 			<tr>
 				
-				<td rowspan="2" colspan="2">Supplier Name: {{irr.supl_fk.supplier_name}}</td>
+				<td rowspan="2" colspan="2">Supplier Name: {{ir.irr_no_fk.supl_fk.supplier_name}}</td>
 				
-				<td rowspan="2" colspan="1">Supplier DCE: {{irr.supl_fk.supplier_num}}</td>
+				<td rowspan="2" colspan="1">Supplier DCE: {{ir.irr_no_fk.supl_fk.supplier_num}}</td>
 				
 				<td colspan="5" style="text-align:center;">For materials transferred/transshipped</td>
 			</tr>
 			<tr>
 				
-				<td colspan="3">I/Prop.Cust: {{irr.dce_custodian.name}}</td>
+				<td colspan="3">I/Prop.Cust: {{ir.irr_no_fk.dce_custodian.name}}</td>
 				<td colspan="2">DCE:{{irr.dce_custodian.dce}}</td>
 				
 			</tr>
@@ -55,15 +56,14 @@
 						<input type="checkbox" name="type" value="">SCL
 						<input type="checkbox" name="type" value="">IO
 						<input type="checkbox" name="type" value="">SCF No. :
-						{{irr.po_num}}
+						{{ir.irr_no_fk.po_num}}
 						
 
 				</td>
-				<td>Invoice No. : <br> &nbsp;&nbsp;&nbsp;&nbsp; {{irr.invoice_num}}</td>
-				<td>Date Dlvrd : <br> &nbsp;&nbsp;&nbsp;&nbsp; {{irr.date_dlvrd}}</td>
+				<td>Invoice No. : <br> &nbsp;&nbsp;&nbsp;&nbsp; {{ir.irr_no_fk.invoice_num}}</td>
+				<td>Date Dlvrd : <br> &nbsp;&nbsp;&nbsp;&nbsp; {{ir.irr_no_fk.date_dlvrd}}</td>
 				
-				<td colspan="2">Issuing Inventory Station <br> &nbsp;&nbsp;&nbsp;&nbsp; {{irr.inv_station_no.station_description}}</td>
-				{% endfor %}
+				<td colspan="2">Issuing Inventory Station <br> &nbsp;&nbsp;&nbsp;&nbsp; {{ir.irr_no_fk.inv_station_no.station_description}}</td>
 				<td>MTI No. <br> </td>
 				<td colspan="3">BL No. <br> </td>
 				
@@ -80,7 +80,6 @@
 				<th style="width:15%;text-align:center">Amount</th>
 			</tr>
 			<tr>
-				{% for ir in irs %}
 				<td style="text-align:center"><br>{{ir.asset_code_fk.id}}<br><br><br><br><br><br><br><br><br></td>
 				<td style="text-align:center"><br>{{ir.asset_code_fk.nsn}} <br><br><br><br><br><br><br><br><br></td>
 				<td style="text-align:center"><br>{{ir.asset_code_fk.item_name}} -{{ir.asset_code_fk.description}}<br><br><br><br><br><br><br><br><br></td>
@@ -89,7 +88,7 @@
 				<td style="text-align:center"><br>{{ir.asset_code_fk.unit_measure }}<br><br><br><br><br><br><br><br><br></td>
 				<td style="text-align:center"><br>{{ir.asset_code_fk.unit_cost }}<br><br><br><br><br><br><br><br><br></td>
 				<td style="text-align:center"><br><br><br><br><br><br><br><br><br><br></td>
-				{% endfor %}
+				
 			</tr>
 			<tr>
 				<td colspan="8">Findings/Observations:</td>
@@ -98,16 +97,17 @@
 				<td style="text-align:center" colspan="2">Inspected & Accepted By:<br><u>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</u><br>QA/Deputized Inspector<br>DCE:<br>Date of inspection:</td>
 				<td style="text-align:center" >Recieved By:<br><u>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</u><br>Property Custodian<br>DCE:<br>Date of inspection:</td>
 				<td style="text-align:center" colspan="3">Approved By:<br><u>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</u><br>IS Cost Center Head<br>DCE:<br>Date of inspection:</td>
-				<td style="text-align:center" colspan="2">IRR<br>IS no. {% for irr in irrs %} {{irr.inv_station_no}} <br> NO. {{irr.id}} {% endfor %}<br><br></td>
+				<td style="text-align:center" colspan="2">IRR<br>IS no. {{ir.irr_no_fk.inv_station_no}} <br> NO. {{ir.irr_no_fk.id}} <br><br></td>
 				
 			</tr>
 			
 
 		</table>
+		<br><br><br><br>
+   		 {% endfor %}
 
 
-		<!-- miv forms -->
-
+		{% for miv in mivs %}
 		<div>
         	<span align="left" > Republic of the Philippines</span>
         	<span style="padding-left:985px;"></span>
@@ -120,7 +120,7 @@
         <h3 align="center"> MATERIALS ISSUE VOUCHER </h3> 
         
 		<span style="padding-left:1200px;"></span>
-		{% for miv in mivs %}
+		
 		<span align ="right"> {{miv.doc_date}}</span>
 		
 		<table style="width:100%;" align="center" >
@@ -177,9 +177,10 @@
 				<td style="text-align:center" colspan="3" >Issued By:	<br><u>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</u><br>Property Custodian<br>DCE:</td>
 				<td style="text-align:center" colspan="2">Recieved item/s as stated above:<br><u>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</u><br>Requisitioners/Representatives<br>DCE:</td>
 				<td style="text-align:center" colspan="6">MIV<br>IS No. {{miv.inv_station_no_fk}} <br> NO {{miv.id}}<br><br></td>
-				{% endfor %}
+				
 			</tr>
 			
 		</table>
+		{% endfor %}
     </body>
 </html>

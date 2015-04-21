@@ -92,15 +92,14 @@ def get_all_par(request):
     return render(request, 'WISH/par_form.html', {'par_dis': par_dis})
 
 def irr_form(request):
-    irrs = IRR_header.objects.all()
     irs = IRR.objects.all()
-    return render(request, 'WISH/irr_form.html', {'irrs':irrs , 'irs':irs})
+    return render(request, 'WISH/irr_form.html', {'irs':irs})
 
 def irr_miv_form(request, mpk, ipk):
     irrs = IRR_header.objects.all()
     miv = MIV.objects.filter(id=mpk)
-    irs = IRR.objects.all()
-    return render(request, 'WISH/irr_miv_form.html', {'irrs':irrs , 'irs':irs})
+    irs = IRR.objects.filter(id=ipk)
+    return render(request, 'WISH/irr_miv_form.html', {'irs':irs , 'mivs':mivs})
     
 def gatepass_form(request):
     return render(request, 'WISH/gatepass_form.html', {})
