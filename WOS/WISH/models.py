@@ -129,7 +129,6 @@ class MIV(models.Model):
     doc_date = models.DateField(blank = True, null = True)
     remark = models.TextField()
 
-
     def __str__(self):
         return str(self.irr_no_fk) + ", " + str(self.asset_code_fk)
 
