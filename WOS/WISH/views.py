@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponseRedirect
 from random import randint
 from .models import *
@@ -45,7 +45,7 @@ def irr_entry_cont(request, pk):
             irr_entry_cont.quantity_rejected = irr_entry_cont.quantity_actual - irr_entry_cont.quantity_accepted
             irr_entry_cont.quantity_balance = irr_entry_cont.quantity_rejected
             irr_entry_cont.save()
-            return redirect('WISH.views.miv_entry', pk=pk)
+            return redirect('WISH.views.miv_entry', pk=irr_entry_cont.pk)
     else:
         form = IRR_entry_cont_Form()
     return render(request, 'WISH/irr_entry_cont.html', {'form': form})
@@ -59,7 +59,7 @@ def miv_entry(request, pk):
             miv_entry.wrs_num = randint(100000,999999)
             miv_entry.amount = miv_entry.asset_code_fk.unit_cost * miv_entry.quantity 
             miv_entry.save()
-            return redirect('WISH.views.irr_miv_form', mpk=miv_entry.pk, ipk=pk)
+            return redirect('WISH.views.irr_miv_form', mpk=miv_entry.pk, ipk=11)
     else:
         form = MIV_entryForm()
     return render(request, 'WISH/miv_entry.html', {'form': form})
@@ -96,9 +96,11 @@ def irr_form(request):
     return render(request, 'WISH/irr_form.html', {'irs':irs})
 
 def irr_miv_form(request, mpk, ipk):
-    irrs = IRR_header.objects.all()
-    miv = MIV.objects.filter(id=mpk)
-    irs = IRR.objects.filter(id=ipk)
+    #mivs = get_object_or_404(MIV, pk=mpk)
+    #irs = get_object_or_404(IRR, pk=ipk)
+    mivs = MIV.objects.all()
+    #irs = IRR.objects.filter(irr=ipk)
+    irs = IRR.objects.all()
     return render(request, 'WISH/irr_miv_form.html', {'irs':irs , 'mivs':mivs})
     
 def gatepass_form(request):
