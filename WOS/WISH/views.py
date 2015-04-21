@@ -84,12 +84,12 @@ def par_form(request):
     pars = PAR.objects.all()
     return render(request, 'WISH/par_form.html', {'pars': pars})
 
+def garv_form(request):
+    garvs = GARV.objects.all()
+    return render(request, 'WISH/garv_form.html', {'garvs': garvs})
+
 def cme_form(request):
     return render(request, 'WISH/cme_form.html', {})
-
-def get_all_par(request):
-    par_dis = PAR.object.all()
-    return render(request, 'WISH/par_form.html', {'par_dis': par_dis})
 
 def irr_form(request):
     irs = IRR.objects.all()

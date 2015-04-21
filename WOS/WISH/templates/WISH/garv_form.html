@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+	<style type="text/css">
+		table, th, td {
+			border: 1px solid black;
+			border-collapse: collapse;
+			text-align: center
+		}
+		th, td {
+			padding: 5px
+		}
+	</style>
+
+</head>
+<body>
+
+	<p align="left">
+	Republic of the Philippines
+	<br>
+	National Power Corporation
+	<br>
+	MINDANAO GENERATION (MINGEN)
+	<br>
+	Maria Cristina, Iligan City
+	</p>
+	<br>
+	{% for garv in garvs %}
+		<h1 align="center">GPE ACCOUNTABILITY RELIEF VOUCHER</h1>
+
+    <span style="padding-left:600px"></span>
+  	<span align="right">Date: &nbsp;&nbsp; <u>{{ garv.garv_date }}&nbsp;&nbsp;</u></span>
+
+	<span>DCE NUMBER:&nbsp;&nbsp;&nbsp;<u>{{ garv.dce_FK.dce }}</u></span>
+  <span style="padding-left:300px"></span>
+	<span align="right">ACCOUNTABLE PERSON: &nbsp;&nbsp; <u>{{ garv.dce_FK.name }}&nbsp;&nbsp;</u></span>
+  <span align="right">DESIGNATION: &nbsp;&nbsp; <u>{{ garv.dce_FK.position }}&nbsp;&nbsp;</u></span>
+	<br>
+	<span>CC NUMBER:&nbsp;&nbsp;&nbsp;<u>{{ garv.cc_num.id }}</u></span>
+  <span style="padding-left:600px"></span>
+	<span align="right">COST CENTER NAME: &nbsp;&nbsp; <u>{{ garv.cc_num.cost_center_name }}&nbsp;&nbsp;</u></span>
+	<br>
+	<span>WO NUMBER:&nbsp;&nbsp;&nbsp;<u>{{ garv.wo_num.wo_no }}</u></span>
+  <span>WORK ORDER NAME:&nbsp;&nbsp;&nbsp;<u></u></span>
+
+	<br>
+	<br>
+	<br>
+
+	<!--Table1-->
+			<table style='width:100%' align='center'>
+		  <tr>
+		    <th style='width:5%'>Property Number</th>
+		    <th style='width:30%'>Description</th>
+		    <th>Unit</th>
+		    <th>Qty</th>
+		    <th style='width:5%'>PAR Number</th>
+		    <th style='width:30%'>NTR.</th>
+		    <th>Remarks (Findings/Observations)</th>
+		  </tr>
+		  <tr>
+		    <td>{{ garv.asset_code_FK }}
+		    </td>
+		    <td>{{ garv.asset_code_FK.description }}-{{  }}
+		    </td>
+		    <td>{{ garv.asset_code_FK.unit_measure }}</td>
+		    <td>{{  }}</td>
+		    <td>{{ garv.qty }}</td>
+		    <td></td>
+		    <td>{{ garv.par_num.par_no }}</td>
+		    <td></td>
+        <td>{{ garv.remarks }}</td>
+		  </tr>
+		</table>
+
+    <!--table2-->
+    <table style='width:100%' align='center'>
+      <tr>
+        <th>Nature:
+        </th>
+      </tr>
+
+      <tr>
+        <td>1-RETURN
+            2-CONDONATION
+            3-REFUND
+        </td>
+      </tr>
+
+    </table>
+
+
+	<!--Table3-->
+		<table style='width:100%' align='center'>
+		  <tr>
+			  <td style='text-align:left'>
+			  	Returned/Reported by:
+			  </td>
+
+			  <td style='text-align:left'>
+			  	Inspected/Confirmed by:
+			  </td>
+
+			  <td style='text-align:left'>
+			  	Received/Confirmed by:
+			  </td>
+
+			  <td>
+			  	Noted by:
+			  </td>
+
+        <td>
+			  	GARV NO:
+			  </td>
+		  </tr>
+
+
+		  <tr>
+		    <td>
+				<br>
+				<u>{{ garv.dce_FK.name }}</u>
+				<br>
+        ACCOUNTABLE PERSON
+				<br>
+        {{ garv.garv_date }}
+		    </td>
+		    <td>
+				<br>
+				<u>{{ garv.inspected_by.name }}</u>
+				<br>
+				TECH. PROP. INSP. COA
+				<br>
+        {{ garv.date_inspected }}
+		    </td>
+		    <td>
+				<br>
+				<u>{{ garv.confirmed_by.name }}</u>
+				<br>
+        PROP. OFF/CUSTODIAN
+				<br>
+				DATE: {{ garv.confirmed_date }}
+        <br>
+        DCE: {{ garv.confirmed_by.id }}
+			</td>
+		    <td>
+		    	{{ garv.par_num.par_no }}
+		    	<br>
+		    	(IS No. {{ garv.par_num.inv_stat_no.id }})
+		    </td>
+		  </tr>
+		</table>
+
+		<br>
+
+	<p>"The accountable employee is responsible for the issued property items,
+		subject to the provisions of the National Accounting and Auditing Laws."
+	</p>
+
+	<span align="left">
+	Purchased from: {{ garv.dce_FK.purchased_from }}
+	</span>
+	<br>
+	<span align="left">
+	P.O.No.: {{ garv.wo_num.po_num }}
+	</span>
+	<br>
+	<span align="left">
+	CSI No.:
+	</span>
+	<br>
+
+	{% endfor %}
+
+
+</body>
+</html>
