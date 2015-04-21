@@ -14,8 +14,8 @@ def product_new(request):
         form = ProductForm(request.POST)
         if form.is_valid():
             product = form.save(commit=False)
-            product.slc_num = randint(1000000,9999999)
-            product.nsn = randint(5000000,9999999)  
+            product.slc_num = randint(100000,999999)
+            product.nsn = randint(500000,999999)  
             product.save()
             return redirect('WISH.views.irr_entry')
     else:
@@ -26,7 +26,8 @@ def irr_entry(request):
     if request.method == "POST":
         form = IRR_entryForm(request.POST)
         if form.is_valid():
-            irr_entry = form.save()
+            irr_entry = form.save(commit=False)
+            irr_entry.save()
             return redirect('WISH.views.irr_entry_cont')
     else:
         form = IRR_entryForm()
@@ -37,7 +38,8 @@ def irr_entry_cont(request):
     if request.method == "POST":
         form = IRR_entry_cont_Form(request.POST)
         if form.is_valid():
-            irr_entry_cont = form.save()
+            irr_entry_cont = form.save(commit=False)
+            irr_entry_cont.save()
             return redirect('WISH.views.miv_entry')
     else:
         form = IRR_entry_cont_Form()
@@ -49,6 +51,8 @@ def miv_entry(request):
         if form.is_valid():
             miv_entry = form.save(commit=False)
             miv_entry.doc_date = time.strftime("%Y-%m-%d")
+            miv_entry.wrs_num = randint(100000,999999)
+            miv_entry.save()
             return redirect('WISH.views.miv_form')
     else:
         form = MIV_entryForm()
