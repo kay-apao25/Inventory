@@ -12,7 +12,6 @@
         	}
         </style>
     </head>
-    {% for irr in irrs %}
     <body>
     	<div>
         	<span align="left" > Republic of the Philippines</span>
@@ -28,7 +27,7 @@
 				<input type="checkbox" name="type" value="">Materials for Operations<br>
 				<input type="checkbox" name="type" value="">Materials for project
 				<span style="padding-left:1200px;"></span>
-				
+				{% for irr in irrs %}
 				<span align ="right">Date: {{irr.proc_date}}</span>
 		</form>																			
 
@@ -90,7 +89,7 @@
 				<td style="text-align:center"><br>{{ir.asset_code_fk.unit_measure }}<br><br><br><br><br><br><br><br><br></td>
 				<td style="text-align:center"><br>{{ir.asset_code_fk.unit_cost }}<br><br><br><br><br><br><br><br><br></td>
 				<td style="text-align:center"><br><br><br><br><br><br><br><br><br><br></td>
-				
+				{% endfor %}
 			</tr>
 			<tr>
 				<td colspan="8">Findings/Observations:</td>
@@ -105,6 +104,82 @@
 			
 
 		</table>
+
+
+		<!-- miv forms -->
+
+		<div>
+        	<span align="left" > Republic of the Philippines</span>
+        	<span style="padding-left:985px;"></span>
+          	<span align="right"> Mindanao Regional Center</span>
+        </div>
+        <div><span align ="left">National Power Corporation</span>
+        	<span style="padding-left:880px;"></span>
+        	<span align="right"> Mindanao Generation-Central WareHouse</span>
+        </div>
+        <h3 align="center"> MATERIALS ISSUE VOUCHER </h3> 
+        
+		<span style="padding-left:1200px;"></span>
+		{% for miv in mivs %}
+		<span align ="right"> {{miv.doc_date}}</span>
+		
+		<table style="width:100%;" align="center" >
+			<tr>
+				<td colspan="3">Requisitioning Cost Center: {{miv.cost_center_no_fk.cost_center_name}}</td>
+				<td colspan="7">Cost Center No.: {{miv.cost_center_no_fk.id}}</td>
+				<td colspan="4">WRS No.: {{miv.wrs_num}}</td>
+				
+
+			</tr>
+			<tr>
+				<th rowspan="2" style="width:5%;text-align:center" >NPC Supp No.</th>
+				<th rowspan="2" style="text-align:center">Particulars</th>
+				<th rowspan="2" style="width:12%;text-align:center">Quantity/Unit of Measure</th>
+				<th rowspan="2" style="width:12%;text-align:center">MWA Unit Price Amount</th>
+				<th colspan="6" style="width:30%;text-align:center">Subsidiary Ledger</th>
+				<th rowspan="2" style="width:5%;text-align:center">Plant Code</th>
+				<th rowspan="2" style="width:5%;text-align:center" >Act</th>
+				<th rowspan="2" style="width:5%;text-align:center" >USA</th>
+
+			</tr>
+
+			<tr>
+			<td style="width:4%;text-align:center" >A&G</td>
+			<td style="width:4%;text-align:center">O&M</td>
+			<td style="width:4%;text-align:center" >OTH</td>
+			<td style="width:4%;text-align:center" >MV</td>
+			<td style="width:4%;text-align:center" >T</td>
+			<td style="width:4%;text-align:center" >JO/WO</td>
+			</tr>	
+			<tr>
+				<td style="text-align:center"><br>{{miv.asset_code_fk.nsn}}<br><br><br><br><br><br><br><br><br></td>
+				<td style="text-align:center"><br>{{miv.asset_code_fk.item_name}},{{miv.asset_code_fk.description}}<br><br><br><br><br><br><br><br><br></td>
+				<td style="text-align:center"><br> {{miv.asset_code_fk.unit_measure}} / {{miv.asset_code_fk.quantity}}<br><br><br><br><br><br><br><br><br></td>
+				<td style="text-align:center"><br>{{miv.asset_code_fk.unit_cost}}<br><br><br><br><br><br><br><br><br></td>
+				<td style="text-align:center"><br><br><br><br><br><br><br><br><br><br></td>
+				<td style="text-align:center"><br><br><br><br><br><br><br><br><br><br></td>
+				<td style="text-align:center"><br><br><br><br><br><br><br><br><br><br></td>
+				<td style="text-align:center"><br><br><br><br><br><br><br><br><br><br></td>
+				<td style="text-align:center"><br><br><br><br><br><br><br><br><br><br></td>
+				<td style="text-align:center"><br><br><br><br><br><br><br><br><br><br></td>
+				<td style="text-align:center"><br><br><br><br><br><br><br><br><br><br></td>
+				<td style="text-align:center"><br><br><br><br><br><br><br><br><br><br></td>
+				<td style="text-align:center"><br><br><br><br><br><br><br><br><br><br></td>
+			</tr>
+			<tr>
+				<td colspan="2">JO/WO <br>   J - Job Order <br>   W - Job Order</td>
+				<td colspan="2">Activity: <br>1. Operations <br> 2. Maintenance <br> 3. Fuel & Additives  </td>
+				<td colspan="9">Remarks:</td>
+
+			</tr>
+			<tr>
+				<td style="text-align:center" colspan="2">Approved By:<br><u>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</u><br>IS Cost Center Head<br>DCE:</td>
+				<td style="text-align:center" colspan="3" >Issued By:	<br><u>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</u><br>Property Custodian<br>DCE:</td>
+				<td style="text-align:center" colspan="2">Recieved item/s as stated above:<br><u>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</u><br>Requisitioners/Representatives<br>DCE:</td>
+				<td style="text-align:center" colspan="6">MIV<br>IS No. {{miv.inv_station_no_fk}} <br> NO {{miv.id}}<br><br></td>
+				{% endfor %}
+			</tr>
+			
+		</table>
     </body>
-    {% endfor %}
 </html>

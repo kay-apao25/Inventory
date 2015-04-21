@@ -12,6 +12,7 @@ urlpatterns = [
     url(r'^miv_entry/$', views.miv_entry, name='miv_entry'),
     url(r'^par_entry/$', views.par_entry, name='par_entry'),
     url(r'^par_form/$', views.par_form),
+    url(r'^irr_form/$', views.irr_form),
     #url(r'^$', views.gatepass_form),
-    #url(r'^$', views.miv_form),
+    url(r'^$', views.miv_form),
 ]

@@ -51,7 +51,7 @@ def miv_entry(request):
             miv_entry = form.save(commit=False)
             miv_entry.wrs_num = randint(100000,999999)
             miv_entry.save()
-            return redirect('WISH.views.miv_form')
+            return redirect('WISH.views.irr_miv_form')
     else:
         form = MIV_entryForm()
     return render(request, 'WISH/miv_entry.html', {'form': form})
