@@ -15,14 +15,14 @@ class IRR_entryForm(forms.ModelForm):
 
     class Meta:
         model = IRR_header
-        fields = ('irr_headkey', 'inv_station_no', 'reference', 'invoice_num', 'po_num', 'dr_num', \
-        	'dce_custodian', 'dce_user', 'proc_date', 'type_n', 'remark', 'date_dlvrd', 'supl_fk',)
+        fields = ('irr_headkey', 'reference', 'invoice_num', 'po_num', 'dr_num', \
+        	'dce_custodian', 'dce_user', 'proc_date', 'type_n', 'remark', 'date_dlvrd',)
 
 class IRR_entry_cont_Form(forms.ModelForm):
 
     class Meta:
         model = IRR
-        fields = ('asset_code_fk', 'cost_center_no_fk' ,'quantity_actual', \
+        fields = ('cost_center_no_fk' ,'quantity_actual', \
     'quantity_accepted', 'date_recv' , 'wo_no' , 'remark',)
 
 class MIV_entryForm(forms.ModelForm):

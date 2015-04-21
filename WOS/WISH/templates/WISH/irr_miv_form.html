@@ -12,7 +12,6 @@
         	}
         </style>
     </head>
-    	{% for ir in irs %}
     <body>
     	<div>
         	<span align="left" > Republic of the Philippines</span>
@@ -29,22 +28,22 @@
 				<input type="checkbox" name="type" value="">Materials for project
 				<span style="padding-left:1200px;"></span>
 				
-				<span align ="right">Date: {{ir.irr_no_fk.proc_date}}</span>
+				<span align ="right">Date: {{irs.irr_no_fk.proc_date}}</span>
 		</form>																			
 
 		<table style="width:100%;" align="center" >
 			<tr>
 				
-				<td rowspan="2" colspan="2">Supplier Name: {{ir.irr_no_fk.supl_fk.supplier_name}}</td>
+				<td rowspan="2" colspan="2">Supplier Name: {{irs.irr_no_fk.supl_fk.supplier_name}}</td>
 				
-				<td rowspan="2" colspan="1">Supplier DCE: {{ir.irr_no_fk.supl_fk.supplier_num}}</td>
+				<td rowspan="2" colspan="1">Supplier DCE: {{irs.irr_no_fk.supl_fk.supplier_num}}</td>
 				
 				<td colspan="5" style="text-align:center;">For materials transferred/transshipped</td>
 			</tr>
 			<tr>
 				
-				<td colspan="3">I/Prop.Cust: {{ir.irr_no_fk.dce_custodian.name}}</td>
-				<td colspan="2">DCE:{{irr.dce_custodian.dce}}</td>
+				<td colspan="3">I/Prop.Cust: {{irs.irr_no_fk.dce_custodian.name}}</td>
+				<td colspan="2">DCE:{{irs.dce_custodian.dce}}</td>
 				
 			</tr>
 			<tr>
@@ -56,14 +55,14 @@
 						<input type="checkbox" name="type" value="">SCL
 						<input type="checkbox" name="type" value="">IO
 						<input type="checkbox" name="type" value="">SCF No. :
-						{{ir.irr_no_fk.po_num}}
+						{{irs.irr_no_fk.po_num}}
 						
 
 				</td>
-				<td>Invoice No. : <br> &nbsp;&nbsp;&nbsp;&nbsp; {{ir.irr_no_fk.invoice_num}}</td>
-				<td>Date Dlvrd : <br> &nbsp;&nbsp;&nbsp;&nbsp; {{ir.irr_no_fk.date_dlvrd}}</td>
+				<td>Invoice No. : <br> &nbsp;&nbsp;&nbsp;&nbsp; {{irs.irr_no_fk.invoice_num}}</td>
+				<td>Date Dlvrd : <br> &nbsp;&nbsp;&nbsp;&nbsp; {{irs.irr_no_fk.date_dlvrd}}</td>
 				
-				<td colspan="2">Issuing Inventory Station <br> &nbsp;&nbsp;&nbsp;&nbsp; {{ir.irr_no_fk.inv_station_no.station_description}}</td>
+				<td colspan="2">Issuing Inventory Station <br> &nbsp;&nbsp;&nbsp;&nbsp; {{irs.irr_no_fk.inv_station_no.station_description}}</td>
 				<td>MTI No. <br> </td>
 				<td colspan="3">BL No. <br> </td>
 				
@@ -80,13 +79,13 @@
 				<th style="width:15%;text-align:center">Amount</th>
 			</tr>
 			<tr>
-				<td style="text-align:center"><br>{{ir.asset_code_fk.id}}<br><br><br><br><br><br><br><br><br></td>
-				<td style="text-align:center"><br>{{ir.asset_code_fk.nsn}} <br><br><br><br><br><br><br><br><br></td>
-				<td style="text-align:center"><br>{{ir.asset_code_fk.item_name}} -{{ir.asset_code_fk.description}}<br><br><br><br><br><br><br><br><br></td>
-				<td style="text-align:center"><br> {{ir.quantity_accepted}}<br><br><br><br><br><br><br><br><br></td>
-				<td style="text-align:center"><br> {{ir.quantity_rejected}}<br><br><br><br><br><br><br><br><br></td>
-				<td style="text-align:center"><br>{{ir.asset_code_fk.unit_measure }}<br><br><br><br><br><br><br><br><br></td>
-				<td style="text-align:center"><br>{{ir.asset_code_fk.unit_cost }}<br><br><br><br><br><br><br><br><br></td>
+				<td style="text-align:center"><br>{{irs.asset_code_fk.id}}<br><br><br><br><br><br><br><br><br></td>
+				<td style="text-align:center"><br>{{irs.asset_code_fk.nsn}} <br><br><br><br><br><br><br><br><br></td>
+				<td style="text-align:center"><br>{{irs.asset_code_fk.item_name}} -{{ir.asset_code_fk.description}}<br><br><br><br><br><br><br><br><br></td>
+				<td style="text-align:center"><br> {{irs.quantity_accepted}}<br><br><br><br><br><br><br><br><br></td>
+				<td style="text-align:center"><br> {{irs.quantity_rejected}}<br><br><br><br><br><br><br><br><br></td>
+				<td style="text-align:center"><br>{{irs.asset_code_fk.unit_measure }}<br><br><br><br><br><br><br><br><br></td>
+				<td style="text-align:center"><br>{{irs.asset_code_fk.unit_cost }}<br><br><br><br><br><br><br><br><br></td>
 				<td style="text-align:center"><br><br><br><br><br><br><br><br><br><br></td>
 				
 			</tr>
@@ -97,17 +96,17 @@
 				<td style="text-align:center" colspan="2">Inspected & Accepted By:<br><u>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</u><br>QA/Deputized Inspector<br>DCE:<br>Date of inspection:</td>
 				<td style="text-align:center" >Recieved By:<br><u>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</u><br>Property Custodian<br>DCE:<br>Date of inspection:</td>
 				<td style="text-align:center" colspan="3">Approved By:<br><u>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</u><br>IS Cost Center Head<br>DCE:<br>Date of inspection:</td>
-				<td style="text-align:center" colspan="2">IRR<br>IS no. {{ir.irr_no_fk.inv_station_no}} <br> NO. {{ir.irr_no_fk.id}} <br><br></td>
+				<td style="text-align:center" colspan="2">IRR<br>IS no. {{irs.irr_no_fk.inv_station_no}} <br> NO. {{irs.irr_no_fk.id}} <br><br></td>
 				
 			</tr>
 			
 
 		</table>
 		<br><br><br><br>
-   		 {% endfor %}
+   		
+s
 
-
-		{% for miv in mivs %}
+		
 		<div>
         	<span align="left" > Republic of the Philippines</span>
         	<span style="padding-left:985px;"></span>
@@ -121,13 +120,13 @@
         
 		<span style="padding-left:1200px;"></span>
 		
-		<span align ="right"> {{miv.doc_date}}</span>
+		<span align ="right"> {{mivs.doc_date}}</span>
 		
 		<table style="width:100%;" align="center" >
 			<tr>
-				<td colspan="3">Requisitioning Cost Center: {{miv.cost_center_no_fk.cost_center_name}}</td>
-				<td colspan="7">Cost Center No.: {{miv.cost_center_no_fk.id}}</td>
-				<td colspan="4">WRS No.: {{miv.wrs_num}}</td>
+				<td colspan="3">Requisitioning Cost Center: {{mivs.cost_center_no_fk.cost_center_name}}</td>
+				<td colspan="7">Cost Center No.: {{mivs.cost_center_no_fk.id}}</td>
+				<td colspan="4">WRS No.: {{mivs.wrs_num}}</td>
 				
 
 			</tr>
@@ -152,10 +151,10 @@
 			<td style="width:4%;text-align:center" >JO/WO</td>
 			</tr>	
 			<tr>
-				<td style="text-align:center"><br>{{miv.asset_code_fk.nsn}}<br><br><br><br><br><br><br><br><br></td>
-				<td style="text-align:center"><br>{{miv.asset_code_fk.item_name}},{{miv.asset_code_fk.description}}<br><br><br><br><br><br><br><br><br></td>
-				<td style="text-align:center"><br> {{miv.asset_code_fk.unit_measure}} / {{miv.asset_code_fk.quantity}}<br><br><br><br><br><br><br><br><br></td>
-				<td style="text-align:center"><br>{{miv.asset_code_fk.unit_cost}}<br><br><br><br><br><br><br><br><br></td>
+				<td style="text-align:center"><br>{{mivs.asset_code_fk.nsn}}<br><br><br><br><br><br><br><br><br></td>
+				<td style="text-align:center"><br>{{mivs.asset_code_fk.item_name}},{{mivs.asset_code_fk.description}}<br><br><br><br><br><br><br><br><br></td>
+				<td style="text-align:center"><br> {{mivs.asset_code_fk.unit_measure}} / {{mivs.asset_code_fk.quantity}}<br><br><br><br><br><br><br><br><br></td>
+				<td style="text-align:center"><br>{{mivs.asset_code_fk.unit_cost}}<br><br><br><br><br><br><br><br><br></td>
 				<td style="text-align:center"><br><br><br><br><br><br><br><br><br><br></td>
 				<td style="text-align:center"><br><br><br><br><br><br><br><br><br><br></td>
 				<td style="text-align:center"><br><br><br><br><br><br><br><br><br><br></td>
@@ -176,11 +175,10 @@
 				<td style="text-align:center" colspan="2">Approved By:<br><u>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</u><br>IS Cost Center Head<br>DCE:</td>
 				<td style="text-align:center" colspan="3" >Issued By:	<br><u>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</u><br>Property Custodian<br>DCE:</td>
 				<td style="text-align:center" colspan="2">Recieved item/s as stated above:<br><u>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</u><br>Requisitioners/Representatives<br>DCE:</td>
-				<td style="text-align:center" colspan="6">MIV<br>IS No. {{miv.inv_station_no_fk}} <br> NO {{miv.id}}<br><br></td>
+				<td style="text-align:center" colspan="6">MIV<br>IS No. {{mivs.inv_station_no_fk}} <br> NO {{mivs.id}}<br><br></td>
 				
 			</tr>
 			
 		</table>
-		{% endfor %}
-    </body>
+	</body>
 </html>
