@@ -51,7 +51,7 @@ def miv_entry(request):
             miv_entry = form.save(commit=False)
             miv_entry.wrs_num = randint(100000,999999)
             miv_entry.save()
-            return redirect('WISH.views.index')
+            return redirect('WISH.views.miv_form')
     else:
         form = MIV_entryForm()
     return render(request, 'WISH/miv_entry.html', {'form': form})
@@ -88,6 +88,11 @@ def irr_form(request):
     irs = IRR.objects.all()
     return render(request, 'WISH/irr_form.html', {'irrs':irrs , 'irs':irs})
 
+def irr_miv_form(request):
+    irrs = IRR_header.objects.all()
+    irs = IRR.objects.all()
+    return render(request, 'WISH/irr_miv_form.html', {'irrs':irrs , 'irs':irs})
+    
 def gatepass_form(request):
     return render(request, 'WISH/gatepass_form.html', {})
 
