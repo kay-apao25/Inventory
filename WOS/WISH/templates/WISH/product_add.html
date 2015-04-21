@@ -1,8 +1,6 @@
 {% extends 'WISH/index.html' %}
 
 {% block content %}
-    <h1 style="font-family: 'Cinzel', serif;">New product</h1>
-    <form method="POST" class="product-form">{% csrf_token %}
     {% if form.non_field_errors %}
     <ul>
       {% for error in form.non_field_errors %}
@@ -10,6 +8,9 @@
       {% endfor %}
     </ul>
   {% endif %}
+    <h1 style="font-family: 'Cinzel', serif;">New product</h1>
+    <form method="POST" class="product-form">{% csrf_token %}
+    
         {% for field in form %}
         <div id="errors" style="font-family: 'Cinzel', serif;">
         <strong>  {{ field.errors }}	</strong>
