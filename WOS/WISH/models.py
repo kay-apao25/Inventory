@@ -121,6 +121,7 @@ class MIV(models.Model):
     inv_station_no_fk = models.ForeignKey(Inventory_stat)
     asset_code_fk = models.ForeignKey(Product)
     wrs_num = models.CharField(max_length = 8)
+    cost_center_no_fk = models.ForeignKey(Cost_center)
     quantity = models.FloatField()
     amount = models.FloatField()
     date_issued = models.DateField(blank = True, null = True)

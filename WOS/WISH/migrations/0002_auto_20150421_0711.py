@@ -7,20 +7,27 @@ from django.db import models, migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('WISH', '0002_auto_20150421_0622'),
+        ('WISH', '0001_initial'),
     ]
 
     operations = [
+        migrations.RemoveField(
+            model_name='miv',
+            name='asset_code_fk',
+        ),
         migrations.RemoveField(
             model_name='miv',
             name='cost_center_no_fk',
         ),
         migrations.RemoveField(
             model_name='miv',
-            name='dce_custodian_fk',
+            name='inv_station_no_fk',
         ),
         migrations.RemoveField(
             model_name='miv',
-            name='dce_user_fk',
+            name='irr_no_fk',
+        ),
+        migrations.DeleteModel(
+            name='MIV',
         ),
     ]
