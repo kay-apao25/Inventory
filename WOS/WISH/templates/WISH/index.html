@@ -8,27 +8,32 @@
     	<meta name="viewport" content="width=device-width, initial-scale=1">
     	<meta name="description" content="">
     	<meta name="author" content="">
-        
+
         <!--<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
         <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">-->
         <link href='http://fonts.googleapis.com/css?family=Cinzel:700' rel='stylesheet' type='text/css'>
-        
+
          <!-- Bootstrap Core CSS -->
     	<link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
 
 	    <!-- Custom CSS -->
 	    <link rel="stylesheet" href="{% static 'css/sb-admin.css' %}">
-    	
+
  	   <!-- Custom Fonts -->
  	   <link rel="stylesheet" href="{% static 'fonts/font-awesome/css/font-awesome.css' %}">
  	<!--   <link rel="stylesheet" href="{% static 'gallery/css/blueimp-gallery.min.css' %}">-->
  	   <link rel="stylesheet" href="{% static 'big/css/bootstrap-image-gallery.min.css' %}">
     </head>
 
-    <body style="background-image:url('http://wallpaper-download.net/wallpapers/abstract-wallpapers-simple-abstract-background-wallpaper-33092.jpg')">
+<<<<<<< HEAD
+    <body >
         
+=======
+    <body style="background-image:url('http://wallpaper-download.net/wallpapers/abstract-wallpapers-simple-abstract-background-wallpaper-33092.jpg')">
+
+>>>>>>> 7da934bfee52de49d645a04deb643ad57d5acc32
     	<div class="content container">
-    	
+
     	<div id="wrapper">
 
         <!-- Navigation -->
@@ -41,7 +46,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="index.html">myInventory</a>
+                <a class="navbar-brand" a href="/">myInventory</a>
             </div>
 
             <!-- Top Menu Items -->
@@ -151,36 +156,44 @@
                 </ul>
             </div>
             <!-- /.navbar-collapse -->
-            
+
         </nav>
 
         <div class="container-fluid">
+<<<<<<< HEAD
+        
+        {% block content %}
+=======
         <div class="page-header">
         	<!--<img src=""></img>-->
         	<h1 align="center" style="font-family: 'Cinzel', serif;"><a href="/">Inventory</a></h1>
 	    </div>
+    	<div class="content container">
 
-        {% block content %}
+    	<br>
+    	<br>
+    		<div class="row">
+            		{% block content %}
             		<div align="center">
             			<h1 style="font-family: 'Cinzel', serif;" align="center">WELCOME!</h1>
             			<br>
             			<a href="{% url 'WISH.views.product_new' %}" class="top-menu"><img src="http://under30ceo.com/wp-content/uploads/2013/05/Product-Value.jpg" style="width:200px;height:200px" align="center"></a>
-            			
+
             			<a href="{% url 'WISH.views.wrs_form' %}" class="top-menu"><img src="http://www.iconshock.com/img_jpg/DIAMOND/accounting/jpg/256/warehouse_icon.jpg" style="width:200px;height:200px" align="center"></img></a>
 
-            			<a href="{% url 'WISH.views.par_entry' %}" class="top-menu">hi</a>
+  	                    <a href="{% url 'WISH.views.par_entry' %}" class="top-menu"><img src="http://www.iconshock.com/img_jpg/DIAMOND/accounting/jpg/256/warehouse_icon.jpg" style="width:200px;height:200px" align="center"></img></a>
             		</div>
             		{% endblock %}
         </div>
-        
-       
+
+
 
     	<br>
     	<br>
 
-    		
-            		
-           
+
+
+
     	</div>
     </body>
 </html>
@@ -190,4 +203,3 @@
 	</body>
 
 </html>
-

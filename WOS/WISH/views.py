@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponseRedirect
+from random import randint
 from .models import *
 from .forms import *
 
@@ -12,6 +13,8 @@ def product_new(request):
         form = ProductForm(request.POST)
         if form.is_valid():
             product = form.save(commit=False)
+            product.slc_num = randint(1000000,9999999)
+            product.nsn = randint(5000000,9999999)  
             product.save()
             return redirect('WISH.views.irr_entry')
     else:
@@ -55,14 +58,13 @@ def miv_entry(request):
 
 def par_entry(request):
     if request.method == "POST":
-        form = PAR(request.POST)
+        form = PAR_entryForm(request.POST)
         if form.is_valid():
-            par = form.save()
-            return redirect('WISH.views.index')
+            par_entry = form.save()
+            return redirect('WISH.views.par_form')
     else:
-        form = PAR()
-    	return render(request, 'WISH/par_entry.html', {'form': form})
-    
+        form = PAR_entryForm()
+    return render(request, 'WISH/par_entry.html', {'form': form})
 
 def wrs_form(request):
     wrss = MIV.objects.filter(wrs_num=1)
