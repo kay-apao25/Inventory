@@ -1,0 +1,113 @@
+/* Custom CSS for myRamdam here */
+
+/*div#mygradestab div.handsontable td {
+  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+}*/
+
+.error {
+  color: #a94442;
+}
+
+#feel-rate-popover,
+#feel-rate-loading,
+#warning-feeling,
+#warning-user-cannot {
+  display: none;
+}
+
+.feel-logo {
+  height: 85%;
+  width: 85%;
+}
+
+.express-button {
+  height: 75%;
+  width: 75%;
+}
+
+.popover {
+  width: 350px !important;
+  max-width: 350px !important;
+  height: 140px !important;
+}
+
+.col-xs-3 {
+  text-align: center;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#express-feel-row .col-lg-3 {
+  text-align: center;
+  padding-left: 0px;
+  padding-right: 0px;
+}
+
+.col-lg-4 {
+  text-align: center;
+  padding-left: 0px;
+  padding-right: 0px;
+}
+
+#feel-rate-heading {
+  padding: 5px 5px;
+  margin-right: 5px;
+  margin-left: 5px;
+}
+
+#feel-rate-footer {
+  border-top: 1px solid #d7d7d7;
+  background-color: #ffffff;
+  padding: 5px 5px;
+  height: 20px;
+}
+
+#warning-feeling .modal-dialog {
+  margin-left: 50px;
+  align: center;
+}
+
+#warning-feeling .modal-dialog .alert {
+  width: 400px;
+  text-align: center;
+}
+
+#express-feeling-modal .modal-dialog {
+  width: 500px;
+}
+
+#express-feeling-modal .modal-body {
+  margin: 30px;
+  padding: 0px;
+}
+
+textarea {
+  resize: none;
+}
+
+label > .express-button{ /* HIDE RADIO */
+  visibility: hidden; /* Makes input not-clickable */
+  position: absolute; /* Remove input from document flow */
+}
+
+label > .express-button + img{ /* IMAGE STYLES */
+  cursor: pointer;
+}
+
+label > .express-button + img:hover{ /* IMAGE STYLES */
+  cursor: pointer;
+  background-color: #e0e0e0;
+}
+
+label > .express-button:checked + img{ /* (RADIO CHECKED) IMAGE STYLES */
+  background-color: #d0d0d0;
+  border: 0 none;
+  outline: 0;
+}
+
+@media (min-width: 992px){
+.col-md-1 {
+  width: 16% !important;
+}
+}
