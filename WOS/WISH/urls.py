@@ -12,10 +12,11 @@ urlpatterns = [
     url(r'^miv_entry/(?P<pk>[0-9]+)/(?P<ipk>[0-9]+)/(?P<prk>[0-9]+)/(?P<instat>[0-9]+)/(?P<cpk>[0-9]+)/$', views.miv_entry, name='miv_entry'),
     url(r'^par_entry/$', views.par_entry, name='par_entry'),
     url(r'^par_form/$', views.par_form),
+    url(r'^garv_entry/$', views.garv_entry),
     url(r'^garv_form/$', views.garv_form),
     url(r'^product/new/(?P<pk>[0-9]+)/(?P<instat>[0-9]+)/(?P<sup>[0-9]+)/$', views.irr_entry),
     url(r'^product/new/(?P<ipk>[0-9]+)/(?P<pk>[0-9]+)/(?P<instat>[0-9]+)/k$', views.irr_entry_cont),
     #url(r'^irr_form/$', views.irr_form),
     #url(r'^$', views.gatepass_form),
-    #url(r'^$', views.miv_form),
+    url(r'^$', views.miv_form),
 ]

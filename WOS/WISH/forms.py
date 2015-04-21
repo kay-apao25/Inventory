@@ -36,4 +36,12 @@ class PAR_entryForm(forms.ModelForm):
     class Meta:
         model = PAR
         fields = ('dce_FK', 'asset_code_FK', 'par_no', 'amt_cost', 'remark', 'qty', 'approved_by', \
-        'issued_by', 'inv_stat_no', 'PO_num', 'date_acquired',)
+        'issued_by', 'inv_stat_no', 'PO_num', 'date_acquired', 'wo_num', )
+
+class GARV_entryForm(forms.ModelForm):
+
+    class Meta:
+        model = GARV
+        fields = ('dce_FK', 'asset_code_FK', 'garv_no', 'cc_num', 'wo_num', 'qty',\
+                    'par_num', 'remarks', 'inspected_by', 'date_inspected', 'confirmed_by', \
+                    'date_confirmed', 'noted_by', )

@@ -18,7 +18,7 @@ def product_new(request):
         if form.is_valid():
             product = form.save(commit=False)
             product.slc_num = randint(100000,999999)
-            product.nsn = randint(500000,999999)  
+            product.nsn = randint(500000,999999)
             product.amount = product.unit_cost * product.quantity
             product.save()
             return redirect('WISH.views.irr_entry', pk=product.pk, instat=product.inv_station_no_fk_id, sup=product.purchased_from_id)
@@ -63,11 +63,15 @@ def miv_entry(request, pk, ipk, prk, instat, cpk):
             miv_entry = form.save(commit=False)
             miv_entry.doc_date = time.strftime("%Y-%m-%d")
             miv_entry.wrs_num = randint(100000,999999)
+<<<<<<< HEAD
             miv_entry.asset_code_fk_id = prk
             miv_entry.amount = miv_entry.asset_code_fk.unit_cost * miv_entry.quantity 
             miv_entry.irr_no_fk_id = ipk
             miv_entry.inv_station_no_fk_id = instat
             miv_entry.cost_center_no_fk_id = cpk
+=======
+            miv_entry.amount = miv_entry.asset_code_fk.unit_cost * miv_entry.quantity
+>>>>>>> 31ab6d6eb489a0f535ce710ea3201354581b849f
             miv_entry.save()
             return redirect('WISH.views.irr_miv_form', mpk=miv_entry.pk, ipk=pk)
     else:
@@ -85,6 +89,19 @@ def par_entry(request):
     else:
         form = PAR_entryForm()
     return render(request, 'WISH/par_entry.html', {'form': form})
+
+def garv_entry(request):
+    if request.method == "POST":
+        form = GARV_entryForm(request.POST)
+        if form.is_valid():
+            garv_entry = form.save(commit=False)
+            garv_entry.garv_date = time.strftime("%Y-%m-%d")
+            garv_entry.save()
+            return redirect('WISH.views.garv_form')
+    else:
+        form = GARV_entryForm()
+    return render(request, 'WISH/garv_entry.html', {'form': form})
+
 
 def wrs_form(request):
     wrss = MIV.objects.filter(pk=1)
@@ -111,7 +128,7 @@ def irr_miv_form(request, mpk, ipk):
     amount = irs.quantity_accepted * irs.asset_code_fk.unit_cost
     total = amount
     return render(request, 'WISH/irr_miv_form.html', {'irs':irs , 'mivs':mivs, 'amount':amount, 'total':total})
-    
+
 def gatepass_form(request):
     return render(request, 'WISH/gatepass_form.html', {})
 

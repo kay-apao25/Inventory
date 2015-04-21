@@ -120,6 +120,7 @@ class MIV(models.Model):
     irr_no_fk = models.ForeignKey(IRR_header)
     inv_station_no_fk = models.ForeignKey(Inventory_stat)
     asset_code_fk = models.ForeignKey(Product)
+    cost_center_no_fk = models.ForeignKey(Cost_center)
     wrs_num = models.CharField(max_length = 8)
     cost_center_no_fk = models.ForeignKey(Cost_center)
     quantity = models.FloatField()
@@ -127,6 +128,7 @@ class MIV(models.Model):
     date_issued = models.DateField(blank = True, null = True)
     doc_date = models.DateField(blank = True, null = True)
     remark = models.TextField()
+
 
     def __str__(self):
         return str(self.irr_no_fk) + ", " + str(self.asset_code_fk)
@@ -151,7 +153,7 @@ class PAR(models.Model):
         unique_together = (("dce_FK", "asset_code_FK"))
 
     def __str__(self):
-        return par_no
+        return self.par_no
 
 class GARV(models.Model):
     dce_FK = models.ForeignKey(Employee)
@@ -173,7 +175,7 @@ class GARV(models.Model):
         unique_together = ('dce_FK', 'asset_code_FK')
 
     def __str__(self):
-        return self.dce_FK + "," + self.asset_code_FK
+        return str(self.dce_FK) + "," + str(self.asset_code_FK)
 
 class Pending(models.Model):
     item_name = models.TextField()
