@@ -30,14 +30,13 @@ def irr_entry(request):
 
 def par_entry(request):
     if request.method == "POST":
-        form = PAR(request.POST)
+        form = PAR_entryForm(request.POST)
         if form.is_valid():
-            par = form.save()
-        result = redirect('WISH.views.index')
+            par_entry = form.save()
+            return redirect('WISH.views.par_form')
     else:
-        form = PAR()
-        result = render(request, 'WISH/par_entry.html', {'form': form})
-    return result
+        form = PAR_entryForm()
+    return render(request, 'WISH/par_entry.html', {'form': form})
 
 
 
