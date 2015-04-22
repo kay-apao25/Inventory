@@ -31,6 +31,12 @@ class MIV_entryForm(forms.ModelForm):
     	model = MIV
     	fields = ( 'quantity', 'date_issued',  'remark' ,)
 
+class WRSForm(forms.Form):
+    wrs_num = forms.CharField(
+        label="Enter WRS number",
+        required=True,
+    )
+
 class PAR_entryForm(forms.ModelForm):
 
     class Meta:

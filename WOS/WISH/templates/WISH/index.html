@@ -24,7 +24,7 @@
  	   <link rel="stylesheet" href="{% static 'fonts/font-awesome/css/font-awesome.css' %}">
  	<!--   <link rel="stylesheet" href="{% static 'gallery/css/blueimp-gallery.min.css' %}">-->
  	<!--   <link rel="stylesheet" href="{% static 'big/css/bootstrap-image-gallery.min.css' %}">-->
-    </head>
+ 	</head>
 
     <body >
         
@@ -43,7 +43,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" a href="/">myInventory</a>
+                <a class="navbar-brand" href="/">myInventory</a>
             </div>
 
             <!-- Top Menu Items -->
@@ -129,27 +129,29 @@
                 <ul class="nav navbar-nav side-nav">
                 	<li class="user-info"> <br>
                       <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTime3hMHXg8Od--slVjWLMcR5JodAgkyOCYilkYaeD9zfwX7BY9g"> <br>
-                      <h4 id="name" class="user-name user-detail">  </h4>
-                      <h5 id="id-num">  </h5> <br>
+                      <br>
+                      <br>
+                    <!--  <h4 id="name" class="user-name user-detail">  </h4>
+                      <h5 id="id-num">  </h5> <br>-->
                     </li>
-                    <li>
-                        <a href="index.html"><i class="fa fa-fw fa-dashboard"></i> Dashboard</a>
+                    <li class="menu">
+                        <a href="/"><i class="glyphicon glyphicon-home"></i> Dashboard</a>
                     </li>
-                    <li>
-                        <a href="charts.html"><i class="fa fa-fw fa-bar-chart-o"></i> Charts</a>
+                    <li class="menu">
+                        <a href="{% url 'WISH.views.product_new' %}"><i class="glyphicon glyphicon-th-list"></i> Add Product</a>
                     </li>
-                    <li>
-                        <a href="tables.html"><i class="fa fa-fw fa-table"></i> Tables</a>
+                    <li class="menu">
+                        <a href="{% url 'WISH.views.par_entry' %}"><i class="fa fa-fw fa-table"></i> Add PAR</a>
                     </li>
-                    <li class="active">
-                        <a href="forms.html"><i class="fa fa-fw fa-edit"></i> Forms</a>
+                    <li class="menu">
+                        <a href="{% url 'WISH.views.garv_entry' %}"><i class="fa fa-fw fa-edit"></i> Add GARV</a>
                     </li>
-                    <li>
-                        <a href="bootstrap-elements.html"><i class="fa fa-fw fa-desktop"></i> Bootstrap Elements</a>
-                    </li>
-                    <li>
+                    <!--<li>
+                        <a href="{% url 'WISH.views.wrs_entry' %}"><i class="fa fa-fw fa-desktop"></i> Add WRS</a>
+                    </li>-->
+                    <!--<li>
                         <a href="bootstrap-grid.html"><i class="fa fa-fw fa-wrench"></i> Bootstrap Grid</a>
-                    </li>
+                    </li>-->
                 </ul>
             </div>
             <!-- /.navbar-collapse -->
@@ -165,11 +167,11 @@
             		<div align="center">
             			<h1 style="font-family: 'Cinzel', serif;" align="center">WELCOME!</h1>
             			<br>
-            			<a href="{% url 'WISH.views.product_new' %}" class="top-menu"><img src="http://under30ceo.com/wp-content/uploads/2013/05/Product-Value.jpg" style="width:200px;height:200px" align="center"></a>
+            			<!--<a href="{% url 'WISH.views.product_new' %}" class="top-menu"><img src="http://under30ceo.com/wp-content/uploads/2013/05/Product-Value.jpg" style="width:200px;height:200px" align="center"></a>
 
             			<a href="{% url 'WISH.views.wrs_form' %}" class="top-menu"><img src="http://www.iconshock.com/img_jpg/DIAMOND/accounting/jpg/256/warehouse_icon.jpg" style="width:200px;height:200px" align="center"></img></a>
 
-  	                    <a href="{% url 'WISH.views.par_entry' %}" class="top-menu"><img src="http://www.iconshock.com/img_jpg/DIAMOND/accounting/jpg/256/warehouse_icon.jpg" style="width:200px;height:200px" align="center"></img></a>
+  	                    <a href="{% url 'WISH.views.par_entry' %}" class="top-menu"><img src="http://www.iconshock.com/img_jpg/DIAMOND/accounting/jpg/256/warehouse_icon.jpg" style="width:200px;height:200px" align="center"></img></a>-->
             		</div>
             		{% endblock %}
         </div>

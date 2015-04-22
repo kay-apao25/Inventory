@@ -71,7 +71,7 @@ class Employee(models.Model):
     position = models.TextField()
 
     def __str__(self):
-        return self.dce
+        return self.name
 
 class Customer(models.Model):
     dce_fk = models.ForeignKey(Employee)

@@ -13,6 +13,7 @@ urlpatterns = [
     url(r'^par_entry/$', views.par_entry, name='par_entry'),
     url(r'^par_form/$', views.par_form),
     url(r'^garv_entry/$', views.garv_entry),
+    url(r'^wrs_entry/$', views.wrs_entry),
     url(r'^garv_form/$', views.garv_form),
     url(r'^product/new/(?P<pk>[0-9]+)/(?P<instat>[0-9]+)/(?P<sup>[0-9]+)/$', views.irr_entry),
     url(r'^product/new/(?P<ipk>[0-9]+)/(?P<pk>[0-9]+)/(?P<instat>[0-9]+)/k$', views.irr_entry_cont),
