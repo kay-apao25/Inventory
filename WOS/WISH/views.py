@@ -21,55 +21,49 @@ def product_new(request):
             product.nsn = randint(500000,999999)
             product.amount = product.unit_cost * product.quantity
             product.save()
-            return redirect('WISH.views.irr_entry', pk=product.pk, instat=product.inv_station_no_id, sup=product.purchased_from_id)
+            return redirect('WISH.views.index')
+            #return redirect('WISH.views.irr_entry', pk=product.pk, instat=product.inv_station_no_fk_id, sup=product.purchased_from_id)
     else:
         form = ProductForm()
     return render(request, 'WISH/product_add.html', {'form': form})
 
-def irr_entry(request, pk, instat, sup):
+def irr_entry(request):
     if request.method == "POST":
         form = IRR_entryForm(request.POST)
         if form.is_valid():
             irr_entry = form.save(commit=False)
-            irr_entry.inv_station_no_id = instat
-            irr_entry.supplier_id = sup
             irr_entry.save()
-            return redirect('WISH.views.irr_entry_cont', ipk=irr_entry.pk, pk=pk, instat=instat)
+            return redirect('WISH.views.irr_entry_cont', pk=irr_entry.pk)
     else:
         form = IRR_entryForm()
     return render(request, 'WISH/irr_entry.html', {'form': form})
 
 
-def irr_entry_cont(request, ipk, pk, instat):
+def irr_entry_cont(request, pk):
     if request.method == "POST":
         form = IRR_entry_cont_Form(request.POST)
         iform = IRR_entryForm()
         if form.is_valid():
             irr_entry_cont = form.save(commit=False)
-            irr_entry_cont.asset_code_id = pk
-            irr_entry_cont.irr_no_id = ipk
+            irr_entry_cont.irr_no_id = pk
             irr_entry_cont.quantity_rejected = irr_entry_cont.quantity_actual - irr_entry_cont.quantity_accepted
             irr_entry_cont.quantity_balance = irr_entry_cont.quantity_rejected
             irr_entry_cont.save()
-            return redirect('WISH.views.miv_entry', pk=irr_entry_cont.pk, ipk=ipk, prk=pk, instat=instat, cpk=irr_entry_cont.cost_center_no_id)
+            return redirect('WISH.views.index')
     else:
         form = IRR_entry_cont_Form()
     return render(request, 'WISH/irr_entry_cont.html', {'form': form})
 
-def miv_entry(request, pk, ipk, prk, instat, cpk):
+def miv_entry(request):
     if request.method == "POST":
         form = MIV_entryForm(request.POST)
         if form.is_valid():
             miv_entry = form.save(commit=False)
             miv_entry.doc_date = time.strftime("%Y-%m-%d")
             miv_entry.wrs_number = randint(100000,999999)
-            miv_entry.asset_code_id = prk
-            miv_entry.amount = miv_entry.asset_code_fk.unit_cost * miv_entry.quantity 
-            miv_entry.irr_no_id = ipk
-            miv_entry.inv_station_no_id = instat
-            miv_entry.cost_center_no_id = cpk
+            miv_entry.amount = miv_entry.asset_code.unit_cost * miv_entry.quantity
             miv_entry.save()
-            return redirect('WISH.views.irr_miv_form', mpk=miv_entry.pk, ipk=pk)
+            return redirect('WISH.views.index')
     else:
         form = MIV_entryForm()
     return render(request, 'WISH/miv_entry.html', {'form': form})
