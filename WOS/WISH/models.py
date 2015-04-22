@@ -71,7 +71,7 @@ class Employee(models.Model):
     position = models.TextField()
 
     def __str__(self):
-        return self.dce
+        return self.name
 
 class Customer(models.Model):
     dce_fk = models.ForeignKey(Employee)
@@ -103,7 +103,7 @@ class IRR_header(models.Model):
 
 class IRR(models.Model):
     irr_no_fk = models.ForeignKey(IRR_header)
-    asset_code_fk = models.ForeignKey(Product, primary_key=True)
+    asset_code_fk = models.ForeignKey(Product, primary_key=True)#listfield
     cost_center_no_fk = models.ForeignKey(Cost_center)
     quantity_actual = models.FloatField()
     quantity_accepted = models.FloatField()
@@ -128,7 +128,6 @@ class MIV(models.Model):
     date_issued = models.DateField(blank = True, null = True)
     doc_date = models.DateField(blank = True, null = True)
     remark = models.TextField()
-
 
     def __str__(self):
         return str(self.irr_no_fk) + ", " + str(self.asset_code_fk)
