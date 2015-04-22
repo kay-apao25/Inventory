@@ -106,7 +106,7 @@ def garv_entry(request):
     return render(request, 'WISH/garv_entry.html', {'form': form})
 
 def wrs_form(request, pk):
-    wrss = get_object_or_404(MIV, wrs_num=pk)
+    wrss = get_object_or_404(MIV, wrs_number=pk)
     return render(request, 'WISH/wrs_form.html', {'wrss': wrss})
 
 def par_form(request, pk):
