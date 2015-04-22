@@ -3,23 +3,23 @@ from django.db.models.fields import CharField
 
 # Create your models here.
 class Supplier(models.Model):
-    supplier_num = models.CharField(max_length=8)
-    supplier_name = models.TextField(max_length=50)
-    supplier_address = models.TextField(max_length=50)
+    supplier_number = models.CharField(max_length=8)
+    supplier_name = models.TextField(max_length=20)
+    supplier_address = models.TextField(max_length=20)
     telephone_number = models.CharField(max_length=20)
     credit_limit = models.FloatField()
-    debit_amt = models.FloatField()
-    credit_amt = models.FloatField()
-    balance_amt = models.FloatField()
-    contact_person = models.TextField(max_length=50)
-    remarks = models.TextField(max_length=100)
+    debit_amount = models.FloatField()
+    credit_amount = models.FloatField()
+    balance_amount = models.FloatField()
+    contact_person = models.TextField(max_length=20)
+    remarks = models.TextField(max_length=20)
 
     def __str__(self):
         return self.supplier_name + ", " + self.supplier_address + ", " + self.supplier_num
 
 class Cost_center(models.Model):
-    cost_center_name = models.TextField(max_length=50)
-    functional_group = models.CharField(max_length=30)
+    cost_center_name = models.TextField(max_length=20)
+    functional_group = models.CharField(max_length=20)
 
     def __str__(self):
         return self.cost_center_name
@@ -27,33 +27,33 @@ class Cost_center(models.Model):
 class Inventory_stat(models.Model):
     inv_station_no = models.CharField(max_length = 20, primary_key = True)
     station_description = models.TextField()
-    cost_center_no_fk = models.ForeignKey(Cost_center)
+    cost_center_no = models.ForeignKey(Cost_center)
 
     def __str__(self):
         return self.station_description
 
 class Product(models.Model):
     nsn = models.CharField(max_length=10)
-    pr_num = models.CharField(max_length=10)
-    slc_num = models.IntegerField()
-    inv_station_no_fk = models.ForeignKey(Inventory_stat)
-    cost_center_no_fk = models.ForeignKey(Cost_center)
+    product_number = models.CharField(max_length=10)
+    slc_number = models.IntegerField()
+    inv_station_no = models.ForeignKey(Inventory_stat)
+    cost_center_no = models.ForeignKey(Cost_center)
     item_name = models.TextField()
     generic_name = models.TextField()
     brand = models.TextField()
-    part_num = models.CharField(max_length=8)
+    part_number = models.CharField(max_length=8)
     manufacture_date = models.DateField()
     expiry_date = models.DateField()
-    class_n = models.CharField(max_length=30)
-    stock = models.CharField(max_length=20)
-    block = models.CharField(max_length=20)
-    unit_measure = models.CharField(max_length=20)
+    classification = models.CharField(max_length=30)
+    stock = models.CharField(max_length=10)
+    block = models.CharField(max_length=10)
+    unit_measure = models.CharField(max_length=10)
     unit_cost = models.FloatField()
-    quantity = models.FloatField()
-    average_amt = models.FloatField()
-    status = models.CharField(max_length=20)
+    quantity = models.FloatField(default = '1')
+    average_amount = models.FloatField()
+    status = models.CharField(max_length=10)
     balance_limit = models.FloatField()
-    serial_number = models.CharField(max_length=30)
+    serial_number = models.CharField(max_length=15)
     model = models.TextField()
     amount = models.FloatField()
     description = models.TextField()
@@ -66,7 +66,7 @@ class Product(models.Model):
 class Employee(models.Model):
     dce = models.CharField(max_length=8, primary_key = True)
     name = models.TextField()
-    cost_center_no_fk = models.ForeignKey(Cost_center)
+    cost_center_no = models.ForeignKey(Cost_center)
     charging_cc_no = models.CharField(max_length=20)
     position = models.TextField()
 
@@ -74,37 +74,36 @@ class Employee(models.Model):
         return self.name
 
 class Customer(models.Model):
-    dce_fk = models.ForeignKey(Employee)
+    dce = models.ForeignKey(Employee)
     credit_limit = models.FloatField()
-    debit_amt = models.FloatField()
-    credit_amt = models.FloatField()
-    balance_amt = models.FloatField()
+    debit_amount = models.FloatField()
+    credit_amount = models.FloatField()
+    balance_amount = models.FloatField()
 
     def __str__(self):
         return self.dce
 
 class IRR_header(models.Model):
-    irr_headkey = models.CharField(max_length=30)
     inv_station_no = models.ForeignKey(Inventory_stat)
     reference = models.CharField(max_length=20)
-    invoice_num = models.CharField(max_length=20)
-    po_num = models.CharField(max_length=20)
-    dr_num = models.CharField(max_length=20)
+    invoice_number = models.CharField(max_length=20)
+    po_number = models.CharField(max_length=20)
+    dr_number = models.CharField(max_length=20)
     dce_custodian = models.ForeignKey(Employee, related_name='dce1')
     dce_user = models.ForeignKey(Employee, related_name='dce2')
     proc_date = models.DateField()
     type_n = models.CharField(max_length=20)
-    remark = models.TextField(max_length=100)
+    remark = models.TextField(max_length=20)
     date_dlvrd = models.DateField()
-    supl_fk = models.ForeignKey(Supplier)
+    supplier = models.ForeignKey(Supplier)
 
     def __str__(self):
-        return self.irr_headkey
+        return str(self.id)
 
 class IRR(models.Model):
-    irr_no_fk = models.ForeignKey(IRR_header)
-    asset_code_fk = models.ForeignKey(Product, primary_key=True)#listfield
-    cost_center_no_fk = models.ForeignKey(Cost_center)
+    irr_no = models.ForeignKey(IRR_header)
+    asset_code = models.ForeignKey(Product, primary_key=True)#listfield
+    cost_center_no = models.ForeignKey(Cost_center)
     quantity_actual = models.FloatField()
     quantity_accepted = models.FloatField()
     quantity_rejected = models.FloatField()
@@ -114,15 +113,15 @@ class IRR(models.Model):
     remark = models.TextField()
 
     def __unicode__(self):
-        return str(self.irr_no_fk)
+        return str(self.irr_no)
 
 class MIV(models.Model):
-    irr_no_fk = models.ForeignKey(IRR_header)
-    inv_station_no_fk = models.ForeignKey(Inventory_stat)
-    asset_code_fk = models.ForeignKey(Product)
-    cost_center_no_fk = models.ForeignKey(Cost_center)
-    wrs_num = models.CharField(max_length = 8)
-    cost_center_no_fk = models.ForeignKey(Cost_center)
+    irr_no = models.ForeignKey(IRR_header)
+    inv_station_no = models.ForeignKey(Inventory_stat)
+    asset_code = models.ForeignKey(Product)
+    cost_center_no = models.ForeignKey(Cost_center)
+    wrs_number = models.CharField(max_length = 8)
+    cost_center_no = models.ForeignKey(Cost_center)
     quantity = models.FloatField()
     amount = models.FloatField()
     date_issued = models.DateField(blank = True, null = True)
@@ -130,40 +129,40 @@ class MIV(models.Model):
     remark = models.TextField()
 
     def __str__(self):
-        return str(self.irr_no_fk) + ", " + str(self.asset_code_fk)
+        return str(self.irr_no) + ", " + str(self.asset_code)
 
 class PAR(models.Model):
-    dce_FK = models.ForeignKey(Employee)
-    asset_code_FK = models.ForeignKey(Product)
+    dce = models.ForeignKey(Employee)
+    asset_code = models.ForeignKey(Product)
     par_date = models.DateField(blank=True, null=True)
-    par_no = models.CharField(max_length=50, null=True)
+    par_no = models.CharField(max_length=10, null=True)
     amt_cost = models.FloatField()
     remark = models.TextField()
     qty = models.IntegerField()
     approved_by = models.ForeignKey(Employee, related_name='dce_FK2')
     issued_by = models.ForeignKey(Employee, related_name='dce_FK3')
     inv_stat_no = models.ForeignKey(Inventory_stat)
-    PO_num = models.ForeignKey(IRR_header)
+    PO_number = models.ForeignKey(IRR_header)
     date_acquired = models.DateField(blank=True, null=True)
-    wo_num = models.ForeignKey(IRR)
+    wo_number = models.ForeignKey(IRR)
 
 
     class Meta:
-        unique_together = (("dce_FK", "asset_code_FK"))
+        unique_together = (("dce", "asset_code"))
 
     def __str__(self):
         return self.par_no
 
 class GARV(models.Model):
-    dce_FK = models.ForeignKey(Employee)
-    asset_code_FK = models.ForeignKey(Product)
+    dce = models.ForeignKey(Employee)
+    asset_code = models.ForeignKey(Product)
     garv_date = models.DateField(blank=True, null=True)
-    garv_no = models.CharField(max_length=50, null=True)
-    cc_num = models.ForeignKey(Cost_center)
-    wo_num = models.ForeignKey(IRR_header)
-    qty = models.CharField(max_length=50, null=True)
-    par_num = models.ForeignKey(PAR)
-    remarks = models.CharField(max_length=100, null=True)
+    garv_no = models.CharField(max_length=10, null=True)
+    cc_number = models.ForeignKey(Cost_center)
+    wo_number = models.ForeignKey(IRR_header)
+    qty = models.CharField(max_length=20, null=True)
+    par_number = models.ForeignKey(PAR)
+    remarks = models.CharField(max_length=20, null=True)
     inspected_by = models.ForeignKey(Employee, related_name='dce_FK4')
     date_inspected = models.DateField(blank=True, null=True)
     confirmed_by = models.ForeignKey(Employee, related_name='dce_FK5')
@@ -171,21 +170,21 @@ class GARV(models.Model):
     noted_by = models.ForeignKey(Employee, related_name='dce_FK6')
 
     class Meta:
-        unique_together = ('dce_FK', 'asset_code_FK')
+        unique_together = ('dce', 'asset_code')
 
     def __str__(self):
-        return str(self.dce_FK) + "," + str(self.asset_code_FK)
+        return str(self.dce) + "," + str(self.asset_code)
 
 class Pending(models.Model):
     item_name = models.TextField()
-    supplier_num = models.ForeignKey(Supplier)
-    serial_number = models.CharField(max_length=50)
+    supplier_number = models.ForeignKey(Supplier)
+    serial_number = models.CharField(max_length=10)
     model = models.TextField()
     amount = models.FloatField()
     description = models.TextField()
 
     class Meta:
-        unique_together = ('supplier_num', 'serial_number', 'model')
+        unique_together = ('supplier_number', 'serial_number', 'model')
 
     def __str__(self):
-        return self.supplier_num + "," + self.serial_number + "," + self.model
+        return self.supplier_number + "," + self.serial_number + "," + self.model
