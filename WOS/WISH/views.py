@@ -17,7 +17,7 @@ def product_new(request):
         form = ProductForm(request.POST)
         if form.is_valid():
             product = form.save(commit=False)
-            product.slc_num = randint(100000,999999)
+            product.slc_number = randint(100000,999999)
             product.nsn = randint(500000,999999)
             product.amount = product.unit_cost * product.quantity
             product.save()
@@ -45,7 +45,7 @@ def irr_entry_cont(request, pk):
         iform = IRR_entryForm()
         if form.is_valid():
             irr_entry_cont = form.save(commit=False)
-            irr_entry_cont.irr_no_fk_id = pk
+            irr_entry_cont.irr_no_id = pk
             irr_entry_cont.quantity_rejected = irr_entry_cont.quantity_actual - irr_entry_cont.quantity_accepted
             irr_entry_cont.quantity_balance = irr_entry_cont.quantity_rejected
             irr_entry_cont.save()
@@ -60,8 +60,8 @@ def miv_entry(request):
         if form.is_valid():
             miv_entry = form.save(commit=False)
             miv_entry.doc_date = time.strftime("%Y-%m-%d")
-            miv_entry.wrs_num = randint(100000,999999)
-            miv_entry.amount = miv_entry.asset_code_fk.unit_cost * miv_entry.quantity 
+            miv_entry.wrs_number = randint(100000,999999)
+            miv_entry.amount = miv_entry.asset_code.unit_cost * miv_entry.quantity
             miv_entry.save()
             return redirect('WISH.views.index')
     else:
@@ -127,7 +127,7 @@ def irr_form(request):
 def irr_miv_form(request, mpk, ipk):
     mivs = get_object_or_404(MIV, pk=mpk)
     irs = get_object_or_404(IRR, pk=ipk)
-    amount = irs.quantity_accepted * irs.asset_code_fk.unit_cost
+    amount = irs.quantity_accepted * irs.asset_code.unit_cost
     total = amount
     return render(request, 'WISH/irr_miv_form.html', {'irs':irs , 'mivs':mivs, 'amount':amount, 'total':total})
 
