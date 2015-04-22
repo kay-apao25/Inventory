@@ -6,7 +6,7 @@ urlpatterns = [
     #url(r'^$', views.cme_form),
     url(r'^$', views.index),
     url(r'^product/new/$', views.product_new, name='product_new'),
-    url(r'^irr_miv_form/(?P<mpk>[0-9]+)/(?P<ipk>[0-9]+)$', views.irr_miv_form, name='irr_miv_form'),
+    #url(r'^irr_miv_form/(?P<mpk>[0-9]+)/(?P<ipk>[0-9]+)$', views.irr_miv_form, name='irr_miv_form'),
     url(r'^irr_entry/$', views.irr_entry, name='irr_entry'),
     #url(r'^irr_entry_cont/$', views.irr_entry_cont, name='irr_entry_cont'),
     url(r'^miv_entry/$', views.miv_entry, name='miv_entry'),
@@ -17,7 +17,7 @@ urlpatterns = [
     url(r'^wrs_entry/$', views.wrs_entry),
     url(r'^product/new/(?P<pk>[0-9]+)/(?P<instat>[0-9]+)/(?P<sup>[0-9]+)/$', views.irr_entry),
     url(r'^product/new/(?P<ipk>[0-9]+)/(?P<pk>[0-9]+)/(?P<instat>[0-9]+)/k$', views.irr_entry_cont),
-    #url(r'^irr_form/$', views.irr_form),
+    url(r'^irr_form/(?P<pk>[0-9]+)/$', views.irr_form),
     #url(r'^$', views.gatepass_form),
-    #url(r'^$', views.miv_form),
+    url(r'^miv_form/(?P<pk>[0-9]+)/$', views.miv_form),
 ]

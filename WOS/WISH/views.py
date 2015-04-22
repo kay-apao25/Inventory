@@ -75,7 +75,8 @@ def par_entry(request):
             par_entry = form.save(commit=False)
             par_entry.par_date = time.strftime("%Y-%m-%d")
             par_entry.save()
-            return redirect('WISH.views.par_form', pk=par_entry.pk)
+            return redirect ('WISH.views.index')
+            #return redirect('WISH.views.par_form', pk=par_entry.pk)
     else:
         form = PAR_entryForm()
     return render(request, 'WISH/par_entry.html', {'form': form})
@@ -84,11 +85,6 @@ def wrs_entry(request):
     if 'q' in request.GET and request.GET['q']:
         q = request.GET['q']
         return redirect('WISH.views.wrs_form', pk=q)
-    #if request.method == "POST":
-    #    form = WRSForm(request.POST)
-    #    if form.is_valid():
-    #        wrs_entry = form.save(commit=False)
-            #form.save()
     else:
         form = WRSForm()
     return render(request, 'WISH/wrs_entry.html', {'form': form})
@@ -100,7 +96,8 @@ def garv_entry(request):
             garv_entry = form.save(commit=False)
             garv_entry.garv_date = time.strftime("%Y-%m-%d")
             garv_entry.save()
-            return redirect('WISH.views.garv_form', pk = garv_entry.pk)
+            return redirect ('WISH.views.index')
+            #return redirect('WISH.views.garv_form', pk = garv_entry.pk)
     else:
         form = GARV_entryForm()
     return render(request, 'WISH/garv_entry.html', {'form': form})
@@ -120,20 +117,53 @@ def garv_form(request, pk):
 def cme_form(request):
     return render(request, 'WISH/cme_form.html', {})
 
-def irr_form(request):
-    irs = IRR.objects.all()
+def irr_form(request, pk):
+    irs = get_object_or_404(IRR, pk=pk)
     return render(request, 'WISH/irr_form.html', {'irs':irs})
 
-def irr_miv_form(request, mpk, ipk):
-    mivs = get_object_or_404(MIV, pk=mpk)
-    irs = get_object_or_404(IRR, pk=ipk)
-    amount = irs.quantity_accepted * irs.asset_code.unit_cost
-    total = amount
-    return render(request, 'WISH/irr_miv_form.html', {'irs':irs , 'mivs':mivs, 'amount':amount, 'total':total})
+#def irr_miv_form(request, mpk, ipk):
+#    mivs = get_object_or_404(MIV, pk=mpk)
+#    irs = get_object_or_404(IRR, pk=ipk)
+#    amount = irs.quantity_accepted * irs.asset_code.unit_cost
+#    total = amount
+#    return render(request, 'WISH/irr_miv_form.html', {'irs':irs , 'mivs':mivs, 'amount':amount, 'total':total})
 
 def gatepass_form(request):
     return render(request, 'WISH/gatepass_form.html', {})
 
 def miv_form(request):
-    mivs = MIV.objects.all()
+    mivs = get_object_or_404(MIV, pk=pk)
     return render(request, 'WISH/miv_form.html', {'mivs':mivs})
+
+def irr_report(request):
+    if 'q' in request.GET and request.GET['q']:
+        q = request.GET['q']
+        return redirect('WISH.views.irr_form', pk=q)
+    else:
+        form = WRSForm()
+    return render(request, 'WISH/irr_report.html', {'form': form})
+
+def miv_report(request):
+    if 'q' in request.GET and request.GET['q']:
+        q = request.GET['q']
+        return redirect('WISH.views.miv_form', pk=q)
+    else:
+        form = WRSForm()
+    return render(request, 'WISH/miv_report.html', {'form': form})
+
+def par_report(request):
+    if 'q' in request.GET and request.GET['q']:
+        q = request.GET['q']
+        return redirect('WISH.views.par_form', pk=q)
+    else:
+        form = WRSForm()
+    return render(request, 'WISH/par_report.html', {'form': form})
+
+def garv_report(request):
+    if 'q' in request.GET and request.GET['q']:
+        q = request.GET['q']
+        return redirect('WISH.views.garv_form', pk=q)
+    else:
+        form = WRSForm()
+    return render(request, 'WISH/garv_report.html', {'form': form})
+
