@@ -14,7 +14,6 @@
 	</style>
 
 </head>
-{% for garv in garvs %}
 <body>
 
 	<p align="left">
@@ -30,22 +29,22 @@
 
 		<h1 align="center">GPE ACCOUNTABILITY RELIEF VOUCHER</h1>
 
-  	<span style="padding-left:1000px" align="right">Date: &nbsp;&nbsp; <u>{{ garv.garv_date }}&nbsp;&nbsp;</u></span>
+  	<span style="padding-left:1000px" align="right">Date: &nbsp;&nbsp; <u>{{ garvs.garv_date }}&nbsp;&nbsp;</u></span>
 		<br>
 
-		<span>DCE NUMBER:&nbsp;&nbsp;&nbsp;<u>{{ garv.dce_FK.dce }}</u></span>
+		<span>DCE NUMBER:&nbsp;&nbsp;&nbsp;<u>{{ garvs.dce_FK.dce }}</u></span>
 	  <span style="padding-left:300px"></span>
-		<span>ACCOUNTABLE PERSON: &nbsp;&nbsp; <u>{{ garv.dce_FK.name }}&nbsp;&nbsp;</u></span>
+		<span>ACCOUNTABLE PERSON: &nbsp;&nbsp; <u>{{ garvs.dce_FK.name }}&nbsp;&nbsp;</u></span>
 		<span style="padding-left:320px"></span>
-		<span>DESIGNATION: &nbsp;&nbsp; <u>{{ garv.dce_FK.position }}&nbsp;&nbsp;</u></span>
+		<span>DESIGNATION: &nbsp;&nbsp; <u>{{ garvs.dce_FK.position }}&nbsp;&nbsp;</u></span>
 
 
 	<br>
-	<span>CC NUMBER:&nbsp;&nbsp;&nbsp;<u>{{ garv.cc_num.id }}</u></span>
+	<span>CC NUMBER:&nbsp;&nbsp;&nbsp;<u>{{ garvs.cc_num.id }}</u></span>
   <span style="padding-left:310px"></span>
-	<span>COST CENTER NAME: &nbsp;&nbsp; <u>{{ garv.cc_num.cost_center_name }}&nbsp;&nbsp;</u></span>
+	<span>COST CENTER NAME: &nbsp;&nbsp; <u>{{ garvs.cc_num.cost_center_name }}&nbsp;&nbsp;</u></span>
 	<br>
-	<span>WO NUMBER:&nbsp;&nbsp;&nbsp;<u>{{ garv.wo_num.wo_no }}</u></span>
+	<span>WO NUMBER:&nbsp;&nbsp;&nbsp;<u>{{ garvs.wo_num.wo_no }}</u></span>
 	<span style="padding-left:280px"></span>
   <span>WORK ORDER NAME:&nbsp;&nbsp;&nbsp;<u></u></span>
 
@@ -65,15 +64,15 @@
 		    <th> Remarks (Findings/Observations)</th>
 		  </tr>
 		  <tr>
-		    <td>{{ garv.asset_code_FK.id }}
+		    <td>{{ garvs.asset_code_FK.id }}
 		    </td>
-		    <td>{{ garv.asset_code_FK.item_name }}-{{ garv.asset_code_FK.description }}
+		    <td>{{ garvs.asset_code_FK.item_name }}-{{ garvs.asset_code_FK.description }}
 		    </td>
-		    <td>{{ garv.asset_code_FK.unit_measure }}</td>
-		    <td>{{ garv.qty }}</td>
-		    <td>{{ garv.par_num.par_no }}</td>
+		    <td>{{ garvs.asset_code_FK.unit_measure }}</td>
+		    <td>{{ garvs.qty }}</td>
+		    <td>{{ garvs.par_num.par_no }}</td>
 				<td></td>
-        <td>{{ garv.remarks }}</td>
+        <td>{{ garvs.remarks }}</td>
 		  </tr>
 		</table>
 
@@ -124,43 +123,43 @@
 		  <tr>
 		    <td>
 				<br>
-				<u>{{ garv.dce_FK.name }}</u>
+				<u>{{ garvs.dce_FK.name }}</u>
 				<br>
         ACCOUNTABLE PERSON
 				<br>
-        DATE: {{ garv.garv_date }}
+        DATE: {{ garvs.garv_date }}
 		    </td>
 		    <td>
 				<br>
-				<u>{{ garv.inspected_by.name }}</u>
+				<u>{{ garvs.inspected_by.name }}</u>
 				<br>
 				TECH. PROP. INSP. COA
 				<br>
-				DATE: {{ garv.date_inspected }}
+				DATE: {{ garvs.date_inspected }}
 		    </td>
 		    <td>
 				<br>
-				<u>{{ garv.confirmed_by.name }}</u>
+				<u>{{ garvs.confirmed_by.name }}</u>
 				<br>
         PROP. OFF/CUSTODIAN
 				<br>
-				DATE: {{ garv.date_confirmed }}
+				DATE: {{ garvs.date_confirmed }}
 				<span style="padding-left:30px"></span>
         DCE: {{ garv.confirmed_by.dce }}
 			</td>
 
 			<td>
 			<br>
-			<u>{{ garv.noted_by.name }}</u>
+			<u>{{ garvs.noted_by.name }}</u>
 			<br>
 			WMICD/MMO/COST CENTER
 
 		</td>
 
 		    <td>
-		    	{{ garv.par_num.par_no }}
+		    	{{ garvs.par_num.par_no }}
 		    	<br>
-		    	(IS No. {{ garv.par_num.inv_stat_no }})
+		    	(IS No. {{ garvs.par_num.inv_stat_no }})
 		    </td>
 
 
@@ -174,19 +173,17 @@
 	</p>
 
 	<span align="left">
-	Purchased from: {{ garv.asset_code_FK.purchased_from }}
+	Purchased from: {{ garvs.asset_code_FK.purchased_from }}
 	</span>
 	<br>
 	<span align="left">
-	P.O.No.: {{ garv.wo_num.po_num }}
+	P.O.No.: {{ garvs.wo_num.po_num }}
 	</span>
 	<br>
 	<span align="left">
 	CSI No.:
 	</span>
 	<br>
-
-	{% endfor %}
 
 
 </body>

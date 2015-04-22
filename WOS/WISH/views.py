@@ -29,7 +29,7 @@ def irr_entry(request, pk, instat, sup):
         if form.is_valid():
             irr_entry = form.save(commit=False)
             irr_entry.inv_station_no_id = instat
-            irr_entry.supl_fk_id = sup 
+            irr_entry.supl_fk_id = sup
             irr_entry.save()
             return redirect('WISH.views.irr_entry_cont', ipk=irr_entry.pk, pk=pk)
     else:
@@ -43,7 +43,7 @@ def irr_entry_cont(request, ipk, pk):
         iform = IRR_entryForm()
         if form.is_valid():
             irr_entry_cont = form.save(commit=False)
-            irr_entry_cont.asset_code_fk_id = pk 
+            irr_entry_cont.asset_code_fk_id = pk
             irr_entry_cont.irr_no_fk_id = ipk
             irr_entry_cont.quantity_rejected = irr_entry_cont.quantity_actual - irr_entry_cont.quantity_accepted
             irr_entry_cont.quantity_balance = irr_entry_cont.quantity_rejected
@@ -74,7 +74,7 @@ def par_entry(request):
             par_entry = form.save(commit=False)
             par_entry.par_date = time.strftime("%Y-%m-%d")
             par_entry.save()
-            return redirect('WISH.views.par_form')
+            return redirect('WISH.views.par_form', pk = par_entry.pk)
     else:
         form = PAR_entryForm()
     return render(request, 'WISH/par_entry.html', {'form': form})
@@ -86,7 +86,7 @@ def garv_entry(request):
             garv_entry = form.save(commit=False)
             garv_entry.garv_date = time.strftime("%Y-%m-%d")
             garv_entry.save()
-            return redirect('WISH.views.garv_form')
+            return redirect('WISH.views.garv_form', pk = garv_entry.pk)
     else:
         form = GARV_entryForm()
     return render(request, 'WISH/garv_entry.html', {'form': form})
@@ -96,12 +96,12 @@ def wrs_form(request):
     wrss = MIV.objects.filter(pk=1)
     return render(request, 'WISH/wrs_form.html', {'wrss': wrss})
 
-def par_form(request):
-    pars = PAR.objects.all()
+def par_form(request, pk):
+    pars = PAR.objects.filter(pk = pk)
     return render(request, 'WISH/par_form.html', {'pars': pars})
 
-def garv_form(request):
-    garvs = GARV.objects.all()
+def garv_form(request, pk):
+    garvs = GARV.objects.filter(pk = pk)
     return render(request, 'WISH/garv_form.html', {'garvs': garvs})
 
 def cme_form(request):

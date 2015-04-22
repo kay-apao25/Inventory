@@ -12,7 +12,7 @@
 			padding: 5px
 		}
 	</style>
-	
+
 </head>
 <body>
 
@@ -26,26 +26,26 @@
 	Maria Cristina, Iligan City
 	</p>
 	<br>
-	{% for par in pars %}
-	
-	{% if par.amt_cost >= 10000 %}
+
+
+	{% if .amt_cost >= 10000 %}
 		<h1 align="center">PROPERTY ACCOUNTABILITY RECEIPT</h1>
 	{% else %}
 		<h1 align="center">INDIVIDUAL SHEET</h1>
 		<h1 align="center">CONTROLLED MATERIALS AND EQUIPMENT</h1>
 	{% endif %}
 
-	<span>Accountable Employee:&nbsp;&nbsp;&nbsp;<u>{{par.dce_FK.name}}</u></span>
+	<span>Accountable Employee:&nbsp;&nbsp;&nbsp;<u>{{pars.dce_FK.name}}</u></span>
 	<br>
-	<span>Designation:&nbsp;&nbsp;&nbsp;<u>{{par.dce_FK.position}}</u></span>
+	<span>Designation:&nbsp;&nbsp;&nbsp;<u>{{pars.dce_FK.position}}</u></span>
 	<br>
-	<span>Section/Department:&nbsp;&nbsp;&nbsp;<u>{{par.dce_FK.cost_center_no_fk}}</u></span>
+	<span>Section/Department:&nbsp;&nbsp;&nbsp;<u>{{pars.dce_FK.cost_center_no_fk}}</u></span>
 	<span style="padding-left:600px"></span>
-	<span align="right">Date Prepared: &nbsp;&nbsp; <u>{{ par.par_date }}&nbsp;&nbsp;</u></span>
+	<span align="right">Date Prepared: &nbsp;&nbsp; <u>{{ pars.par_date }}&nbsp;&nbsp;</u></span>
 	<br>
 	<br>
 	<br>
-	
+
 	<!--Table1-->
 			<table style='width:100%' align='center'>
 		  <tr>
@@ -59,7 +59,7 @@
 		    <th>Work Order No.</th>
 		  </tr>
 		  <tr>
-		    <td>{{ par.asset_code_FK.id }}
+		    <td>{{ pars.asset_code_FK.id }}
 		    	<br>
 				<br>
 				<br>
@@ -67,91 +67,91 @@
 				<br>
 				<br>
 		    </td>
-		    <td>{{ par.asset_code_FK.item_name }}-{{ par.asset_code_FK.description }}
+		    <td>{{ pars.asset_code_FK.item_name }}-{{ pars.asset_code_FK.description }}
 		    </td>
-		    <td>{{ par.asset_code_FK.unit_measure }}</td>
-		    <td>{{ par.qty}}</td>
-		    <td>{{par.amt_cost}}</td>
+		    <td>{{ pars.asset_code_FK.unit_measure }}</td>
+		    <td>{{ pars.qty}}</td>
+		    <td>{{pars.amt_cost}}</td>
 		    <td></td>
-		    <td>{{par.asset_code_FK.remark}}</td>
+		    <td>{{pars.asset_code_FK.remark}}</td>
 		    <td>NA</td>
 		  </tr>
 		</table>
-		
-	
+
+
 	<!--Table3-->
 		<table style='width:100%' align='center'>
 		  <tr>
 			  <td style='text-align:left'>
 			  	Approved:
 			  </td>
-			  
+
 			  <td style='text-align:left'>
 			  	Issued by:
 			  </td>
-			  
+
 			  <td style='text-align:left'>
 			  	Received:
 			  </td>
-			  
+
 			  <td>
 			  	PAR/CME
 			  </td>
 		  </tr>
-		  
-		
+
+
 		  <tr>
 		    <td>
 				<br>
-				<u>{{par.approved_by.name}}</u>
+				<u>{{pars.approved_by.name}}</u>
 				<br>
-				{{par.issued_by.position}}
+				{{pars.issued_by.position}}
 				<br>
-		    	Cost Center Head		    			    
+		    	Cost Center Head
 		    </td>
 		    <td>
 				<br>
-				<u>{{par.approved_by.name}}</u>
+				<u>{{pars.approved_by.name}}</u>
 				<br>
-				{{par.issued_by.position}}
+				{{pars.issued_by.position}}
 				<br>
 		    	Supvg. Property Officer
 		    </td>
 		    <td>
 				<br>
-				<u>{{par.dce_FK.name}}</u>
+				<u>{{pars.dce_FK.name}}</u>
 				<br>
 				<br>
 				Accountable Employee
 			</td>
 		    <td>
-		    	{{par.par_no}}
+		    	{{pars.par_no}}
 		    	<br>
-		    	(IS No. {{par.inv_stat_no.inv_station_no}})
+		    	(IS No. {{pars.inv_stat_no.inv_station_no}})
 		    </td>
 		  </tr>
 		</table>
-		
+
 		<br>
-		
-	<p>"The accountable employee is responsible for the issued property items, 
+
+	<p>"The accountable employee is responsible for the issued property items,
 		subject to the provisions of the National Accounting and Auditing Laws."
 	</p>
-	
+
 	<span align="left">
-	Purchased from: {{par.asset_code_FK.purchased_from.supplier_name}}
+	Purchased from: {{pars.asset_code_FK.purchased_from.supplier_name}}
 	</span>
 	<br>
 	<span align="left">
-	P.O.No.: {{par.PO_num.po_num}}
+	P.O.No.: {{pars.PO_num.po_num}}
 	</span>
 	<br>
 	<span align="left">
 	CSI No.:
 	</span>
 	<br>
-	
-	{% endfor %}
+
+
 
 
 </body>
