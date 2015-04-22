@@ -22,14 +22,14 @@ class IRR_entry_cont_Form(forms.ModelForm):
 
     class Meta:
         model = IRR
-        fields = ('cost_center_no_fk' ,'quantity_actual', \
+        fields = ('cost_center_no_fk' ,'quantity_actual', 'asset_code_fk',\
     'quantity_accepted', 'date_recv' , 'wo_no' , 'remark',)
 
 class MIV_entryForm(forms.ModelForm):
 
     class Meta:
     	model = MIV
-    	fields = ( 'quantity', 'date_issued',  'remark' ,)
+    	fields = ( 'quantity', 'date_issued',  'remark' , 'asset_code_fk', 'irr_no_fk', 'inv_station_no_fk', 'cost_center_no_fk',)
 
 class WRSForm(forms.Form):
     wrs_num = forms.IntegerField(
