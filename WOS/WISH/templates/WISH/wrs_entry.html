@@ -1,8 +1,11 @@
 {% extends 'WISH/index.html' %}
 
 {% block content %}
-    <h1> New PAR </h1>
-    <form method="POST" class="post-form">{% csrf_token %}
+    <div class="page-header">
+          <!--<img src=""></img>-->
+        <h1 align="center">Fill for WRS record</h1>
+     </div>
+    <form method="GET" class="get-form">{% csrf_token %}
       {% if form.non_field_errors %}
       <ul>
         {% for error in form.non_field_errors %}
@@ -10,15 +13,12 @@
         {% endfor %}
       </ul>
     {% endif %}
-          {% for field in form %}
-          <div id="{{ field.auto_id }}_errors">
-            {{ field.errors }}
-          </div>
-          <div id="my_form">
-           {{ field.label_tag }}<br>{{ field }}
-      </div>
-      <br>
-      {% endfor %}
-          <button type="submit" class="save btn btn-default">Enter</button>
+       <label>Enter WRS number:</label>
+       <br>
+       <br>
+       <input type="text" name="q">
+       <br>
+       <br>
+       <button type="submit" class="save btn btn-default">Enter</button>
       </form>
 {% endblock %}

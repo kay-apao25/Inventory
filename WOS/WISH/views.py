@@ -81,11 +81,14 @@ def par_entry(request):
     return render(request, 'WISH/par_entry.html', {'form': form})
 
 def wrs_entry(request):
-    if request.method == "POST":
-        form = WRSForm(request.POST)
-        if form.is_valid():
+    if 'q' in request.GET and request.GET['q']:
+        q = request.GET['q']
+        return redirect('WISH.views.wrs_form', pk=q)
+    #if request.method == "POST":
+    #    form = WRSForm(request.POST)
+    #    if form.is_valid():
+    #        wrs_entry = form.save(commit=False)
             #form.save()
-            return redirect('WISH.views.wrs_form', pk=form)
     else:
         form = WRSForm()
     return render(request, 'WISH/wrs_entry.html', {'form': form})
@@ -103,7 +106,7 @@ def garv_entry(request):
     return render(request, 'WISH/garv_entry.html', {'form': form})
 
 def wrs_form(request, pk):
-    wrss = get_object_or_404(GARV, pk=pk)
+    wrss = get_object_or_404(MIV, wrs_number=pk)
     return render(request, 'WISH/wrs_form.html', {'wrss': wrss})
 
 def par_form(request, pk):

@@ -2,7 +2,7 @@ from django.conf.urls import include, url
 from . import views
 
 urlpatterns = [
-    url(r'^wrs_form/$', views.wrs_form),
+    url(r'^wrs_form/(?P<pk>[0-9]+)/$', views.wrs_form),
     #url(r'^$', views.cme_form),
     url(r'^$', views.index),
     url(r'^product/new/$', views.product_new, name='product_new'),
@@ -13,7 +13,7 @@ urlpatterns = [
     url(r'^par_entry/$', views.par_entry, name='par_entry'),
     url(r'^par_form/(?P<pk>[0-9]+)/$', views.par_form),
     url(r'^garv_entry/$', views.garv_entry),
-    url(r'^garv_form/(?P<pk>[0-9]+)/$', views.garv_form),
+    url(r'^garv_form/(?P<pk>[0-9]+)/g$', views.garv_form),
     url(r'^wrs_entry/$', views.wrs_entry),
     url(r'^product/new/(?P<pk>[0-9]+)/(?P<instat>[0-9]+)/(?P<sup>[0-9]+)/$', views.irr_entry),
     url(r'^product/new/(?P<ipk>[0-9]+)/(?P<pk>[0-9]+)/(?P<instat>[0-9]+)/k$', views.irr_entry_cont),
