@@ -14,6 +14,10 @@
         <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">-->
         <link href='http://fonts.googleapis.com/css?family=Cinzel:700' rel='stylesheet' type='text/css'>
 
+        <!-- Bootstrap Core JavaScript -->
+        <script src="{% static 'js/jquery.js' %}"></script>
+	    <script src="{% static 'js/bootstrap.min.js' %}"></script>
+	    
          <!-- Bootstrap Core CSS -->
     	<link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
 
@@ -22,8 +26,8 @@
 
  	   <!-- Custom Fonts -->
  	   <link rel="stylesheet" href="{% static 'fonts/font-awesome/css/font-awesome.css' %}">
- 	<!--   <link rel="stylesheet" href="{% static 'gallery/css/blueimp-gallery.min.css' %}">-->
- 	<!--   <link rel="stylesheet" href="{% static 'big/css/bootstrap-image-gallery.min.css' %}">-->
+ 	   <link rel="stylesheet" href="{% static 'gallery/css/blueimp-gallery.min.css' %}">
+ 	   <link rel="stylesheet" href="{% static 'big/css/bootstrap-image-gallery.min.css' %}">
  	</head>
 
     <body >
@@ -141,10 +145,22 @@
                         <a href="{% url 'WISH.views.product_new' %}"><i class="glyphicon glyphicon-th-list"></i> Add Product</a>
                     </li>
                     <li class="menu">
-                        <a href="{% url 'WISH.views.par_entry' %}"><i class="fa fa-fw fa-table"></i> Add PAR</a>
+                        <a href="javascript:;" data-toggle="collapse" data-target=".collapse"><i class="fa fa-fw fa-arrows-v"></i> Add Records<i class="fa fa-fw fa-caret-down"></i></a>
+                        <ul id="demo" class="collapse">
+                            <li>
+                                <a href="{% url 'WISH.views.irr_entry' %}">Add IRR Record</a>
+                            </li>
+                            <li>
+                                <a href="{% url 'WISH.views.par_entry' %}">Add PAR Record</a>
+                            </li>
+                            <li>
+                                <a href="{% url 'WISH.views.garv_entry' %}">Add GARV Record</a>
+                            </li>
+                        </ul>
                     </li>
                     <li class="menu">
-                        <a href="{% url 'WISH.views.garv_entry' %}"><i class="fa fa-fw fa-edit"></i> Add GARV</a>
+                    <li class="menu">
+                        <a href="#"><i class="glyphicon glyphicon-file"></i> Reports</a>
                     </li>
                     <!--<li>
                         <a href="{% url 'WISH.views.wrs_entry' %}"><i class="fa fa-fw fa-desktop"></i> Add WRS</a>

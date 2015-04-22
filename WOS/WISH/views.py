@@ -21,18 +21,19 @@ def product_new(request):
             product.nsn = randint(500000,999999)
             product.amount = product.unit_cost * product.quantity
             product.save()
-            return redirect('WISH.views.irr_entry', pk=product.pk, instat=product.inv_station_no_fk_id, sup=product.purchased_from_id)
+            return redirect('WISH.views.index')
+            #return redirect('WISH.views.irr_entry', pk=product.pk, instat=product.inv_station_no_fk_id, sup=product.purchased_from_id)
     else:
         form = ProductForm()
     return render(request, 'WISH/product_add.html', {'form': form})
 
-def irr_entry(request, pk, instat, sup):
+def irr_entry(request):
     if request.method == "POST":
         form = IRR_entryForm(request.POST)
         if form.is_valid():
             irr_entry = form.save(commit=False)
-            irr_entry.inv_station_no_id = instat
-            irr_entry.supl_fk_id = sup
+            #irr_entry.inv_station_no_id = instat
+            #irr_entry.supl_fk_id = sup
             irr_entry.save()
             return redirect('WISH.views.irr_entry_cont', ipk=irr_entry.pk, pk=pk, instat=instat)
     else:
