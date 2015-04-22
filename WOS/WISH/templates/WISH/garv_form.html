@@ -32,19 +32,19 @@
   	<span style="padding-left:1000px" align="right">Date: &nbsp;&nbsp; <u>{{ garvs.garv_date }}&nbsp;&nbsp;</u></span>
 		<br>
 
-		<span>DCE NUMBER:&nbsp;&nbsp;&nbsp;<u>{{ garvs.dce_FK.dce }}</u></span>
+		<span>DCE NUMBER:&nbsp;&nbsp;&nbsp;<u>{{ garvs.dce.dce }}</u></span>
 	  <span style="padding-left:300px"></span>
-		<span>ACCOUNTABLE PERSON: &nbsp;&nbsp; <u>{{ garvs.dce_FK.name }}&nbsp;&nbsp;</u></span>
+		<span>ACCOUNTABLE PERSON: &nbsp;&nbsp; <u>{{ garvs.dce.name }}&nbsp;&nbsp;</u></span>
 		<span style="padding-left:320px"></span>
-		<span>DESIGNATION: &nbsp;&nbsp; <u>{{ garvs.dce_FK.position }}&nbsp;&nbsp;</u></span>
+		<span>DESIGNATION: &nbsp;&nbsp; <u>{{ garvs.dce.position }}&nbsp;&nbsp;</u></span>
 
 
 	<br>
 	<span>CC NUMBER:&nbsp;&nbsp;&nbsp;<u>{{ garvs.cc_num.id }}</u></span>
   <span style="padding-left:310px"></span>
-	<span>COST CENTER NAME: &nbsp;&nbsp; <u>{{ garvs.cc_num.cost_center_name }}&nbsp;&nbsp;</u></span>
+	<span>COST CENTER NAME: &nbsp;&nbsp; <u>{{ garvs.cc_number.cost_center_name }}&nbsp;&nbsp;</u></span>
 	<br>
-	<span>WO NUMBER:&nbsp;&nbsp;&nbsp;<u>{{ garvs.wo_num.wo_no }}</u></span>
+	<span>WO NUMBER:&nbsp;&nbsp;&nbsp;<u>{{ garvs.wo_number.wo_no }}</u></span>
 	<span style="padding-left:280px"></span>
   <span>WORK ORDER NAME:&nbsp;&nbsp;&nbsp;<u></u></span>
 
@@ -64,13 +64,13 @@
 		    <th> Remarks (Findings/Observations)</th>
 		  </tr>
 		  <tr>
-		    <td>{{ garvs.asset_code_FK.id }}
+		    <td>{{ garvs.asset_code.id }}
 		    </td>
-		    <td>{{ garvs.asset_code_FK.item_name }}-{{ garvs.asset_code_FK.description }}
+		    <td>{{ garvs.asset_code.item_name }}-{{ garvs.asset_code.description }}
 		    </td>
 		    <td>{{ garvs.asset_code_FK.unit_measure }}</td>
 		    <td>{{ garvs.qty }}</td>
-		    <td>{{ garvs.par_num.par_no }}</td>
+		    <td>{{ garvs.par_number.par_no }}</td>
 				<td></td>
         <td>{{ garvs.remarks }}</td>
 		  </tr>
@@ -123,7 +123,7 @@
 		  <tr>
 		    <td>
 				<br>
-				<u>{{ garvs.dce_FK.name }}</u>
+				<u>{{ garvs.dce.name }}</u>
 				<br>
         ACCOUNTABLE PERSON
 				<br>
@@ -157,9 +157,9 @@
 		</td>
 
 		    <td>
-		    	{{ garvs.par_num.par_no }}
+		    	{{ garvs.par_number.par_no }}
 		    	<br>
-		    	(IS No. {{ garvs.par_num.inv_stat_no }})
+		    	(IS No. {{ garvs.par_number.inv_stat_no }})
 		    </td>
 
 
@@ -173,15 +173,15 @@
 	</p>
 
 	<span align="left">
-	Purchased from: {{ garvs.asset_code_FK.purchased_from }}
+	Purchased from: {{ garvs.asset_code.purchased_from }}
 	</span>
 	<br>
 	<span align="left">
-	P.O.No.: {{ garvs.wo_num.po_num }}
+	P.O.No.: {{ garvs.wo_number.po_number }}
 	</span>
 	<br>
 	<span align="left">
-	CSI No.: {{ garvs.wo_num.invoice_num}}
+	CSI No.: {{ garvs.wo_number.invoice_number}}
 	</span>
 	<br>
 

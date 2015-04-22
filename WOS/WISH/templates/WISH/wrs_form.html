@@ -32,7 +32,7 @@
 
 		{% for wrs in wrss %}
     <p align="right">Date:<u>&nbsp;&nbsp;{{ wrs.date_issued }}&nbsp;&nbsp;</u></p>
-		<p style="padding-left:30px">Cost Center:&nbsp;<u>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ wrs.cost_center_no_fk }}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</u></p>
+		<p style="padding-left:30px">Cost Center:&nbsp;<u>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ wrs.cost_center_no }}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</u></p>
 		<br>
     <table style="width:100%;border-style:solid;border-width:2px;" align="center">
   		<tr>
@@ -42,9 +42,9 @@
     		<th style="width:15%">UNIT OF MEASURE</th>
   		</tr>
   		<tr>
-    		<td>{{ wrs.asset_code_fk.slc_num }}</td>
-    		<td style="text-align:left;font-style:italic"><b><u>&nbsp;&nbsp;&nbsp;&nbsp;PR # {{ wrs.asset_code_fk.pr_num }}, PO # 
-        {{ wrs.irr_no_fk.po_num }}&nbsp;&nbsp;&nbsp;&nbsp;</u></b>
+    		<td>{{ wrs.asset_code.slc_number }}</td>
+    		<td style="text-align:left;font-style:italic"><b><u>&nbsp;&nbsp;&nbsp;&nbsp;PR # {{ wrs.asset_code.product_number }}, PO # 
+        {{ wrs.irr_no.po_number }}&nbsp;&nbsp;&nbsp;&nbsp;</u></b>
     			<br>
     			<br>
     				
@@ -55,13 +55,13 @@
     			<br>
     			<br>
     		</td>
-    		<td>	{{ wrs.asset_code_fk.quantity }}
+    		<td>	{{ wrs.asset_code.quantity }}
     			<br>
     			<br>
     			<br>
     				
     		</td>
-    		<td>	{{ wrs.asset_code_fk.unit_measure }}
+    		<td>	{{ wrs.asset_code.unit_measure }}
     			<br>
     			<br>
     			<br>
@@ -95,11 +95,11 @@
   				
   				<span style="padding-left:15px"></span>
   				<span style="font-size:95%;"><u>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-  														{{ wrs.dce_custodian_fk.name }}
+  														{{ wrs.dce_custodian.name }}
   												&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</u></span>
   					<span style="padding-left:350px"></span>
   				<span style="font-size:95%;"><u>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-  														{{ wrs.dce_user_fk.name}}
+  														{{ wrs.dce_user.name}}
   												&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</u></span>
   				<br>
   				
@@ -110,9 +110,9 @@
   				<br>
 
   				<span style="padding-left:22px"></span>
-  				<span style="font-size:95%;font-style:italic">DCE No.: </span>{{ wrs.dce_custodian_fk }}
+  				<span style="font-size:95%;font-style:italic">DCE No.: </span>{{ wrs.dce_custodian }}
   					<span style="padding-left:490px"></span>
-  				<span style="font-size:95%;font-style:italic">DCE No.: </span>{{ wrs.dce_user_fk }}
+  				<span style="font-size:95%;font-style:italic">DCE No.: </span>{{ wrs.dce_user }}
   			</td>
   			<td>
         {% endfor %}

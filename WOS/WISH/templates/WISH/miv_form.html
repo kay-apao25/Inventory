@@ -30,9 +30,9 @@
 		
 		<table style="width:100%;" align="center" >
 			<tr>
-				<td colspan="3">Requisitioning Cost Center: {{mivs.cost_center_no_fk.cost_center_name}}</td>
-				<td colspan="7">Cost Center No.: {{mivs.cost_center_no_fk.id}}</td>
-				<td colspan="4">WRS No.: {{mivs.wrs_num}}</td>
+				<td colspan="3">Requisitioning Cost Center: {{mivs.cost_center_no.cost_center_name}}</td>
+				<td colspan="7">Cost Center No.: {{mivs.cost_center_no.id}}</td>
+				<td colspan="4">WRS No.: {{mivs.wrs_number}}</td>
 				
 
 			</tr>
@@ -57,10 +57,10 @@
 			<td style="width:4%;text-align:center" >JO/WO</td>
 			</tr>	
 			<tr>
-				<td style="text-align:center"><br>{{mivs.asset_code_fk.nsn}}<br><br><br><br><br><br><br><br><br></td>
-				<td style="text-align:center"><br>{{mivs.asset_code_fk.item_name}},{{mivs.asset_code_fk.description}}<br><br><br><br><br><br><br><br><br></td>
-				<td style="text-align:center"><br> {{mivs.asset_code_fk.unit_measure}} / {{mivs.asset_code_fk.quantity}}<br><br><br><br><br><br><br><br><br></td>
-				<td style="text-align:center"><br>{{mivs.asset_code_fk.unit_cost}}<br><br><br><br><br><br><br><br><br></td>
+				<td style="text-align:center"><br>{{mivs.asset_code.nsn}}<br><br><br><br><br><br><br><br><br></td>
+				<td style="text-align:center"><br>{{mivs.asset_code.item_name}},{{mivs.asset_code_fk.description}}<br><br><br><br><br><br><br><br><br></td>
+				<td style="text-align:center"><br> {{mivs.asset_code.unit_measure}} / {{mivs.asset_code.quantity}}<br><br><br><br><br><br><br><br><br></td>
+				<td style="text-align:center"><br>{{mivs.asset_code.unit_cost}}<br><br><br><br><br><br><br><br><br></td>
 				<td style="text-align:center"><br><br><br><br><br><br><br><br><br><br></td>
 				<td style="text-align:center"><br><br><br><br><br><br><br><br><br><br></td>
 				<td style="text-align:center"><br><br><br><br><br><br><br><br><br><br></td>
@@ -81,7 +81,7 @@
 				<td style="text-align:center" colspan="2">Approved By:<br><u>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</u><br>IS Cost Center Head<br>DCE:</td>
 				<td style="text-align:center" colspan="3" >Issued By:	<br><u>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</u><br>Property Custodian<br>DCE:</td>
 				<td style="text-align:center" colspan="2">Recieved item/s as stated above:<br><u>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</u><br>Requisitioners/Representatives<br>DCE:</td>
-				<td style="text-align:center" colspan="6">MIV<br>IS No. {{mivs.inv_station_no_fk}} <br> NO {{mivs.id}}<br><br></td>
+				<td style="text-align:center" colspan="6">MIV<br>IS No. {{mivs.inv_station_no}} <br> NO {{mivs.id}}<br><br></td>
 				
 			</tr>
 			

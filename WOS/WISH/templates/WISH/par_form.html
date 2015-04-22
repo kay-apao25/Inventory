@@ -35,11 +35,11 @@
 		<h1 align="center">CONTROLLED MATERIALS AND EQUIPMENT</h1>
 	{% endif %}
 
-	<span>Accountable Employee:&nbsp;&nbsp;&nbsp;<u>{{irs.dce_FK.name}}</u></span>
+	<span>Accountable Employee:&nbsp;&nbsp;&nbsp;<u>{{irs.dce.name}}</u></span>
 	<br>
-	<span>Designation:&nbsp;&nbsp;&nbsp;<u>{{pars.dce_FK.position}}</u></span>
+	<span>Designation:&nbsp;&nbsp;&nbsp;<u>{{pars.dce.position}}</u></span>
 	<br>
-	<span>Section/Department:&nbsp;&nbsp;&nbsp;<u>{{pars.dce_FK.cost_center_no_fk}}</u></span>
+	<span>Section/Department:&nbsp;&nbsp;&nbsp;<u>{{pars.dce.cost_center_no}}</u></span>
 	<span style="padding-left:600px"></span>
 	<span align="right">Date Prepared: &nbsp;&nbsp; <u>{{ pars.par_date }}&nbsp;&nbsp;</u></span>
 	<br>
@@ -59,7 +59,7 @@
 		    <th>Work Order No.</th>
 		  </tr>
 		  <tr>
-		    <td>{{ pars.asset_code_FK.id }}
+		    <td>{{ pars.asset_code.id }}
 		    	<br>
 				<br>
 				<br>
@@ -67,13 +67,13 @@
 				<br>
 				<br>
 		    </td>
-		    <td>{{ pars.asset_code_FK.item_name }}-{{ pars.asset_code_FK.description }}
+		    <td>{{ pars.asset_code.item_name }}-{{ pars.asset_code.description }}
 		    </td>
-		    <td>{{ pars.asset_code_FK.unit_measure }}</td>
+		    <td>{{ pars.asset_code.unit_measure }}</td>
 		    <td>{{ pars.qty}}</td>
 		    <td>{{pars.amt_cost}}</td>
 		    <td></td>
-		    <td>{{pars.asset_code_FK.remark}}</td>
+		    <td>{{pars.asset_code.remark}}</td>
 		    <td>NA</td>
 		  </tr>
 		</table>
@@ -119,7 +119,7 @@
 		    </td>
 		    <td>
 				<br>
-				<u>{{pars.dce_FK.name}}</u>
+				<u>{{pars.dce.name}}</u>
 				<br>
 				<br>
 				Accountable Employee
@@ -139,15 +139,15 @@
 	</p>
 
 	<span align="left">
-	Purchased from: {{pars.asset_code_FK.purchased_from.supplier_name}}
+	Purchased from: {{pars.asset_code.purchased_from.supplier_name}}
 	</span>
 	<br>
 	<span align="left">
-	P.O.No.: {{pars.PO_num.po_num}}
+	P.O.No.: {{pars.PO_number.po_number}}
 	</span>
 	<br>
 	<span align="left">
-	CSI No.: {{pars.PO_num.invoice_num}}
+	CSI No.: {{pars.PO_number.invoice_number}}
 	</span>
 	<br>
 
