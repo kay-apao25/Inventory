@@ -30,9 +30,8 @@
 	
 		<p align="center" style="font-size:90%;font-style:italic">(Materials, Supplies and Equipments)</p>
 
-		{% for wrs in wrss %}
-    <p align="right">Date:<u>&nbsp;&nbsp;{{ wrs.date_issued }}&nbsp;&nbsp;</u></p>
-		<p style="padding-left:30px">Cost Center:&nbsp;<u>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ wrs.cost_center_no_fk }}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</u></p>
+		<p align="right">Date:<u>&nbsp;&nbsp;{{ wrss.date_issued }}&nbsp;&nbsp;</u></p>
+		<p style="padding-left:30px">Cost Center:&nbsp;<u>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ wrss.cost_center_no_fk }}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</u></p>
 		<br>
     <table style="width:100%;border-style:solid;border-width:2px;" align="center">
   		<tr>
@@ -42,9 +41,9 @@
     		<th style="width:15%">UNIT OF MEASURE</th>
   		</tr>
   		<tr>
-    		<td>{{ wrs.asset_code_fk.slc_num }}</td>
-    		<td style="text-align:left;font-style:italic"><b><u>&nbsp;&nbsp;&nbsp;&nbsp;PR # {{ wrs.asset_code_fk.pr_num }}, PO # 
-        {{ wrs.irr_no_fk.po_num }}&nbsp;&nbsp;&nbsp;&nbsp;</u></b>
+    		<td>{{ wrss.asset_code_fk.slc_num }}</td>
+    		<td style="text-align:left;font-style:italic"><b><u>&nbsp;&nbsp;&nbsp;&nbsp;PR # {{ wrss.asset_code_fk.pr_num }}, PO # 
+        {{ wrss.irr_no_fk.po_num }}&nbsp;&nbsp;&nbsp;&nbsp;</u></b>
     			<br>
     			<br>
     				
@@ -55,13 +54,13 @@
     			<br>
     			<br>
     		</td>
-    		<td>	{{ wrs.asset_code_fk.quantity }}
+    		<td>	{{ wrss.asset_code_fk.quantity }}
     			<br>
     			<br>
     			<br>
     				
     		</td>
-    		<td>	{{ wrs.asset_code_fk.unit_measure }}
+    		<td>	{{ wrss.asset_code_fk.unit_measure }}
     			<br>
     			<br>
     			<br>
@@ -74,7 +73,7 @@
   					<span>
   						<input type="checkbox" name="inspected" value="0"> Inspected, accepted and received above item/s as issued.
 						<span style="padding-left:490px"></span>
-						WRS NO. <u>&nbsp;&nbsp;{{ wrs.wrs_num }}&nbsp;&nbsp;</u>
+						WRS NO. <u>&nbsp;&nbsp;{{ wrss.wrss_num }}&nbsp;&nbsp;</u>
   					</span>
   					<br>
 					<span style="padding-left:82px"></span>
@@ -95,11 +94,11 @@
   				
   				<span style="padding-left:15px"></span>
   				<span style="font-size:95%;"><u>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-  														{{ wrs.dce_custodian_fk.name }}
+  														{{ wrss.dce_custodian_fk.name }}
   												&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</u></span>
   					<span style="padding-left:350px"></span>
   				<span style="font-size:95%;"><u>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-  														{{ wrs.dce_user_fk.name}}
+  														{{ wrss.dce_user_fk.name}}
   												&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</u></span>
   				<br>
   				
@@ -110,13 +109,12 @@
   				<br>
 
   				<span style="padding-left:22px"></span>
-  				<span style="font-size:95%;font-style:italic">DCE No.: </span>{{ wrs.dce_custodian_fk }}
+  				<span style="font-size:95%;font-style:italic">DCE No.: </span>{{ wrss.dce_custodian_fk }}
   					<span style="padding-left:490px"></span>
-  				<span style="font-size:95%;font-style:italic">DCE No.: </span>{{ wrs.dce_user_fk }}
+  				<span style="font-size:95%;font-style:italic">DCE No.: </span>{{ wrss.dce_user_fk }}
   			</td>
   			<td>
-        {% endfor %}
-  				<p style="font-size:92%;text-align:left;">WRS forwarded to MRC-Central Warehouse on:</p>
+        	<p style="font-size:92%;text-align:left;">wrss forwarded to MRC-Central Warehouse on:</p>
   				<p style="font-size:92%;font-style:italic">Date:<u>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
   																   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
   																   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
