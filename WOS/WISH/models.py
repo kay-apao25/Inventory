@@ -15,7 +15,7 @@ class Supplier(models.Model):
     remarks = models.TextField(max_length=20)
 
     def __str__(self):
-        return self.supplier_name + ", " + self.supplier_address + ", " + self.supplier_num
+        return self.supplier_name + ", " + self.supplier_address + ", " + self.supplier_number
 
 class Cost_center(models.Model):
     cost_center_name = models.TextField(max_length=20)
@@ -110,7 +110,7 @@ class IRR(models.Model):
     quantity_balance = models.FloatField()
     date_recv = models.DateField(blank = True, null = True)
     wo_no = models.CharField(max_length=7)
-    remark = models.TextField()
+    remark = models.TextField(max_length = 30)
 
     def __unicode__(self):
         return str(self.irr_no)
