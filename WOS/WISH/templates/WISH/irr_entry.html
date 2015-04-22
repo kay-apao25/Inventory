@@ -1,7 +1,10 @@
 {% extends 'WISH/index.html' %}
 
 {% block content %}
-    <h1>fill for IRR record</h1>
+    <div class="page-header">
+          <!--<img src=""></img>-->
+          <h1 align="center">Fill for IRR Record</h1>
+      </div>
     <form method="POST" class="irr_entry">{% csrf_token %}
     {% if form.non_field_errors %}
     <ul>
