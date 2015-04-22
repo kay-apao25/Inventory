@@ -81,7 +81,7 @@ def par_entry(request):
             par_entry = form.save(commit=False)
             par_entry.par_date = time.strftime("%Y-%m-%d")
             par_entry.save()
-            return redirect('WISH.views.par_form', pk = par_entry.pk)
+            return redirect('WISH.views.par_form', pk=par_entry.pk)
     else:
         form = PAR_entryForm()
     return render(request, 'WISH/par_entry.html', {'form': form})
@@ -109,15 +109,15 @@ def garv_entry(request):
     return render(request, 'WISH/garv_entry.html', {'form': form})
 
 def wrs_form(request, pk):
-    wrss = MIV.objects.filter(pk=pk)
+    wrss = get_object_or_404(GARV, pk=pk)
     return render(request, 'WISH/wrs_form.html', {'wrss': wrss})
 
 def par_form(request, pk):
-    pars = PAR.objects.filter(pk = pk)
+    pars = get_object_or_404(PAR, pk=pk)
     return render(request, 'WISH/par_form.html', {'pars': pars})
 
 def garv_form(request, pk):
-    garvs = GARV.objects.filter(pk = pk)
+    garvs = get_object_or_404(GARV, pk=pk)
     return render(request, 'WISH/garv_form.html', {'garvs': garvs})
 
 def cme_form(request):

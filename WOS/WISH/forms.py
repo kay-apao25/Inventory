@@ -32,7 +32,7 @@ class MIV_entryForm(forms.ModelForm):
     	fields = ( 'quantity', 'date_issued',  'remark' ,)
 
 class WRSForm(forms.Form):
-    wrs_num = forms.CharField(
+    wrs_num = forms.IntegerField(
         label="Enter WRS number",
         required=True,
     )

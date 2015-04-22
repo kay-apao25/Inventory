@@ -14,10 +14,10 @@ urlpatterns = [
     url(r'^par_form/(?P<pk>[0-9]+)/$', views.par_form),
     url(r'^garv_entry/$', views.garv_entry),
     url(r'^garv_form/(?P<pk>[0-9]+)/$', views.garv_form),
-    url(r'^wrs_entry/$', views.wrs_entry)
+    url(r'^wrs_entry/$', views.wrs_entry),
     url(r'^product/new/(?P<pk>[0-9]+)/(?P<instat>[0-9]+)/(?P<sup>[0-9]+)/$', views.irr_entry),
     url(r'^product/new/(?P<ipk>[0-9]+)/(?P<pk>[0-9]+)/(?P<instat>[0-9]+)/k$', views.irr_entry_cont),
     #url(r'^irr_form/$', views.irr_form),
     #url(r'^$', views.gatepass_form),
-    url(r'^$', views.miv_form),
+    #url(r'^$', views.miv_form),
 ]

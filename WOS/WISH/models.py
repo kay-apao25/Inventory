@@ -160,7 +160,7 @@ class GARV(models.Model):
     garv_date = models.DateField(blank=True, null=True)
     garv_no = models.CharField(max_length=50, null=True)
     cc_num = models.ForeignKey(Cost_center)
-    wo_num = models.ForeignKey(IRR)
+    wo_num = models.ForeignKey(IRR_header)
     qty = models.CharField(max_length=50, null=True)
     par_num = models.ForeignKey(PAR)
     remarks = models.CharField(max_length=100, null=True)
