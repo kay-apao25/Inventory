@@ -20,4 +20,8 @@ urlpatterns = [
     url(r'^irr_form/(?P<pk>[0-9]+)/$', views.irr_form),
     #url(r'^$', views.gatepass_form),
     url(r'^miv_form/(?P<pk>[0-9]+)/$', views.miv_form),
+    url(r'^irr_report/$', views.irr_report, name='miv_entry'),
+    url(r'^miv_report/$', views.miv_report, name='miv_entry'),
+    url(r'^par_report/$', views.par_report, name='miv_entry'),
+    url(r'^garv_report/$', views.garv_report, name='miv_entry'),
 ]

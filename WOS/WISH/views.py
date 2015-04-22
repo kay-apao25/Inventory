@@ -85,9 +85,7 @@ def wrs_entry(request):
     if 'q' in request.GET and request.GET['q']:
         q = request.GET['q']
         return redirect('WISH.views.wrs_form', pk=q)
-    else:
-        form = WRSForm()
-    return render(request, 'WISH/wrs_entry.html', {'form': form})
+    return render(request, 'WISH/wrs_entry.html', {})
 
 def garv_entry(request):
     if request.method == "POST":
@@ -139,31 +137,23 @@ def irr_report(request):
     if 'q' in request.GET and request.GET['q']:
         q = request.GET['q']
         return redirect('WISH.views.irr_form', pk=q)
-    else:
-        form = WRSForm()
-    return render(request, 'WISH/irr_report.html', {'form': form})
+    return render(request, 'WISH/irr_report.html', {})
 
 def miv_report(request):
     if 'q' in request.GET and request.GET['q']:
         q = request.GET['q']
         return redirect('WISH.views.miv_form', pk=q)
-    else:
-        form = WRSForm()
-    return render(request, 'WISH/miv_report.html', {'form': form})
+    return render(request, 'WISH/miv_report.html', {})
 
 def par_report(request):
     if 'q' in request.GET and request.GET['q']:
         q = request.GET['q']
         return redirect('WISH.views.par_form', pk=q)
-    else:
-        form = WRSForm()
-    return render(request, 'WISH/par_report.html', {'form': form})
+    return render(request, 'WISH/par_report.html', {})
 
 def garv_report(request):
     if 'q' in request.GET and request.GET['q']:
         q = request.GET['q']
         return redirect('WISH.views.garv_form', pk=q)
-    else:
-        form = WRSForm()
-    return render(request, 'WISH/garv_report.html', {'form': form})
+    return render(request, 'WISH/garv_report.html', {})
 
