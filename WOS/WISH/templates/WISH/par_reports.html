@@ -2,11 +2,32 @@
    <table style="width:100%;" align="center" class="table">
       <thead>
       	<th>PAR No.</th>
+        <th>ACCOUNTABLE EMPLOYEE</th>
+        <th>PAR DATE</th>
+        <th>DATE ACQUIRED</th>
       </thead>
-      	{% for par in pars %}	
+      	{% for par in pars %}
       		<tr>
-      			<td>{{par.par_no}}</td>
+      			<td>
+              <a href="{% url 'WISH.views.par_form' pk=par.pk %}">
+                {{par.par_no}}
+              </a>
+            </td>
+
+            <td>
+                {{par.dce.name}}
+            </td>
+
+            <td>
+                {{par.par_date}}
+            </td>
+
+            <td>
+                {{par.date_acquired}}
+            </td>
+
       		</tr>
+
       	{% endfor %}
    </table>
 {% endblock %}

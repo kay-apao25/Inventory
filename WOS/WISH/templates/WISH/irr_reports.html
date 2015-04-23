@@ -3,9 +3,13 @@
     <thead>
      	<th>IRR No.</th>
     </thead>
-     	{% for irr in irrs %}	
+     	{% for irr in irrs %}
       	<tr>
-          <td>{{ irr.id }}</td>
+          <td>
+            <a href="{% url 'WISH.views.irr_form' pk=irr.pk %}">
+              {{ irr.id }}
+            </a>
+          </td>
       	</tr>
       {% endfor %}
   </table>
