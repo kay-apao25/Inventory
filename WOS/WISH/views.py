@@ -16,7 +16,7 @@ def file_report(request):
     return render(request, 'WISH/file_report.html', {})
 
 def irr_reports(request):
-    irrs = IRR_header.objects.all()
+    irrs = IRR.objects.all()
     return render(request, 'WISH/irr_reports.html', {'irrs': irrs})
 
 def miv_reports(request):
