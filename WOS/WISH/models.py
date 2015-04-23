@@ -32,6 +32,7 @@ class Inventory_stat(models.Model):
     def __str__(self):
         return self.station_description
 
+
 class Product(models.Model):
     nsn = models.CharField(max_length=10)
     product_number = models.CharField(max_length=10)
@@ -102,7 +103,7 @@ class IRR_header(models.Model):
 
 class IRR(models.Model):
     irr_no = models.ForeignKey(IRR_header)
-    asset_code = models.ForeignKey(Product, primary_key=True)#listfield
+    asset_code = models.ManyToManyField(Product)#listfield
     cost_center_no = models.ForeignKey(Cost_center)
     quantity_actual = models.FloatField()
     quantity_accepted = models.FloatField()
@@ -188,3 +189,6 @@ class Pending(models.Model):
 
     def __str__(self):
         return self.supplier_number + "," + self.serial_number + "," + self.model
+
+
+
