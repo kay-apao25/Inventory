@@ -94,7 +94,6 @@ class IRR_header(models.Model):
     dce_user = models.ForeignKey(Employee, related_name='dce2')
     proc_date = models.DateField()
     type_n = models.CharField(max_length=20)
-    remark = models.TextField(max_length=20)
     date_dlvrd = models.DateField()
     supplier = models.ForeignKey(Supplier)
 
