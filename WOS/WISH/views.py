@@ -92,6 +92,7 @@ def miv_entry(request):
             miv_entry = form.save(commit=False)
             miv_entry.doc_date = time.strftime("%Y-%m-%d")
             miv_entry.wrs_number = randint(100000,999999)
+            miv_entry.cost_center_no_id = miv_entry.inv_station_no.cost_center_no_id
             miv_entry.amount = miv_entry.asset_code.unit_cost * miv_entry.quantity
             miv_entry.save()
             return redirect('WISH.views.index')
