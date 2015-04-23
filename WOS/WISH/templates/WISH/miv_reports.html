@@ -3,9 +3,13 @@
     <thead>
     	<th>MIV No.</th>
     </thead>
-    	{% for miv in mivs %}	
+    	{% for miv in mivs %}
      	<tr>
-        <td>{{miv.id}}</td>
+        <td>
+          <a href="{% url 'WISH.views.miv_form' pk=miv.pk %}">
+            {{miv.id}}
+          </a>
+          </td>
       </tr>
       {% endfor %}
   </table>
