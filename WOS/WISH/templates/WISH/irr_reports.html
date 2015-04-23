@@ -1,0 +1,12 @@
+{% block content %}
+  <table style="width:100%;" align="center" class="table">
+    <thead>
+     	<th>IRR No.</th>
+    </thead>
+     	{% for irr in irrs %}	
+      	<tr>
+          <td>{{ irr.id }}</td>
+      	</tr>
+      {% endfor %}
+  </table>
+{% endblock %}

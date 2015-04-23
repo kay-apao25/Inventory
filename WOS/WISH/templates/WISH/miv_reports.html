@@ -1,0 +1,12 @@
+{% block content %}
+  <table style="width:100%;" align="center" class="table">
+    <thead>
+    	<th>MIV No.</th>
+    </thead>
+    	{% for miv in mivs %}	
+     	<tr>
+        <td>{{miv.id}}</td>
+      </tr>
+      {% endfor %}
+  </table>
+{% endblock %}

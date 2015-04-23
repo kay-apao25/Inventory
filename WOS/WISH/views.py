@@ -12,6 +12,29 @@ def index(request):
 def wrs_num(request):
     return render(request, 'WISH/wrs_num.html', {})
 
+def file_report(request):
+    return render(request, 'WISH/file_report.html', {})
+
+def irr_reports(request):
+    irrs = IRR_header.objects.all()
+    return render(request, 'WISH/irr_reports.html', {'irrs': irrs})
+
+def miv_reports(request):
+    mivs = MIV.objects.all()
+    return render(request, 'WISH/miv_reports.html', {'mivs': mivs})
+
+def par_reports(request):
+    pars = PAR.objects.all()
+    return render(request, 'WISH/par_reports.html', {'pars': pars})
+
+def garv_reports(request):
+    garvs = GARV.objects.all()
+    return render(request, 'WISH/garv_reports.html', {'garvs': garvs})
+
+def product_reports(request):
+    prods = Product.objects.all()
+    return render(request, 'WISH/product_reports.html', {'prods': prods})
+
 def product_new(request):
     if request.method == "POST":
         form = ProductForm(request.POST)

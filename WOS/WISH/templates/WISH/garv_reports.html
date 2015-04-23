@@ -1,0 +1,12 @@
+{% block content %}
+  <table style="width:100%;" align="center" class="table">
+    <thead>
+    	<th>GARV No.</th>
+    </thead>
+   	{% for garv in garvs %}	
+     	<tr>
+        <td> {{garv.id}} </td>
+      </tr>
+    {% endfor %}
+  </table>
+{% endblock %}

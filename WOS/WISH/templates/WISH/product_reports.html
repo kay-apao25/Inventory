@@ -1,0 +1,17 @@
+{% extends 'WISH/index.html' %}
+
+{% block content %}
+   <div class="page-header">
+      <h1 align="center">Product Reports</h1>
+   </div>
+   <table style="width:100%;" align="center" class="table">
+      <thead>
+      	<th>Product No.</th>
+      </thead>
+      	{% for prod in prods %}	
+      		<tr>
+      			<td>{{ prod.product_number }}</td>
+      		</tr>
+      	{% endfor %}
+   </table>
+{% endblock %}
