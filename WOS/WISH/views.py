@@ -49,6 +49,7 @@ def product_new(request):
             product = form.save(commit=False)
             product.slc_number = randint(100000,999999)
             product.nsn = randint(500000,999999)
+            product.cost_center_no_id = product.inv_station_no.cost_center_no_id
             product.amount = product.unit_cost * product.quantity
             product.save()
             return redirect('WISH.views.index')
