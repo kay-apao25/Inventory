@@ -146,8 +146,22 @@
                             <li>
                                 <a href="{% url 'WISH.views.product_new' %}">Add Product Record</a>
                             </li>
-                            <li>
-                                <a href="{% url 'WISH.views.file_entry' %}">Add File Record</a>
+                            <li class="menu">
+                                <a href="javascript:;" data-toggle="collapse" data-target="#demo1">Add File Record<i class="fa fa-fw fa-caret-down"></i></a>
+                                <ul id="demo1" class="collapse">
+                                	<li>
+                                		<a href="{% url 'WISH.views.irr_entry' %}">Add IRR Record</a>
+                            		</li>
+                            		<li>
+                                		<a href="{% url 'WISH.views.miv_entry' %}">Add MIV Record</a>
+                            		</li>
+                            		<li>
+                                		<a href="{% url 'WISH.views.par_entry' %}">Add PAR Record</a>
+                            		</li>
+                            		<li>
+                                		<a href="{% url 'WISH.views.garv_entry' %}">Add GARV Record</a>
+                            		</li>
+                            	</ul>
                             </li>
                             <!--<li>
                                 <a href="{% url 'WISH.views.irr_entry' %}">Add IRR Record</a>

@@ -1,4 +1,9 @@
+{% extends 'WISH/index.html' %}
+
 {% block content %}
+    <div class="page-header">
+      <h1 align="center">Fill for PAR Record</h1>
+    </div>
     <br>
     <form method="POST" class="post-form">{% csrf_token %}
       {% if form.non_field_errors %}
@@ -14,7 +19,7 @@
           </div>
           <div id="my_form">
            {{ field.label_tag }}<br>{{ field }}
-      </div>
+          </div>
       <br>
       {% endfor %}
           <button type="submit" class="save btn btn-default">Save</button>

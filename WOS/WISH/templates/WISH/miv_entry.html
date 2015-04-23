@@ -1,4 +1,9 @@
+{% extends 'WISH/index.html' %}
+
 {% block content %}
+    <div class="page-header">
+      <h1 align="center">Fill for MIV Record</h1>
+    </div>
     <br>
     <form method="POST" class="miv_entry">{% csrf_token %}
     {% if form.non_field_errors %}
@@ -8,13 +13,14 @@
       {% endfor %}
     </ul>
   {% endif %}
-        {% for field in form %}
+        {% for widget in form %}
         <div id="{{ field.auto_id }}_errors">
-          {{ field.errors }}
+          {{ widget.errors }}
         </div>
-        <div id="my_form">
-    		 {{ field.label_tag }}<br>{{ field }}
-		</div>
+        <div class="input-group">
+          <span class="input-group-addon" style="width:10px"><i class="glyphicon glyphicon-asterisk"></i></span>
+            {{ widget }}
+        </div>
 		<br>
 		{% endfor %}
         <button type="submit" class="save btn btn-default">Save</button>

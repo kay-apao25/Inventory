@@ -31,5 +31,5 @@ urlpatterns = [
     url(r'^par_reports/$', views.par_reports),
     url(r'^garv_reports/$', views.garv_reports),
     url(r'^product_reports/$', views.product_reports),
-    url(r'^file_entry/$', views.file_entry),
+    #url(r'^file_entry/$', views.file_entry),
 ]

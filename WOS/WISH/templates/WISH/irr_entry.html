@@ -1,4 +1,9 @@
+{% extends 'WISH/index.html' %}
+
 {% block content %}
+    <div class="page-header">
+      <h1 align="center">Fill for IRR Record</h1>
+    </div>
     <br>
     <form method="POST" class="irr_entry">{% csrf_token %}
     {% if form.non_field_errors %}
@@ -17,6 +22,6 @@
 		    </div>
 		<br>
 		{% endfor %}
-        <button type="submit" class="save btn btn-default">Save</button>
+        <button type="submit" class="save btn btn-default" id="save">Save</button>
     </form>
 {% endblock %}
