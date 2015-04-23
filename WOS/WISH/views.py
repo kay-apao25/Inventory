@@ -35,6 +35,9 @@ def product_reports(request):
     prods = Product.objects.all()
     return render(request, 'WISH/product_reports.html', {'prods': prods})
 
+def file_entry(request):
+    return render(request, 'WISH/file_entry.html', {})
+
 def product_new(request):
     if request.method == "POST":
         form = ProductForm(request.POST)

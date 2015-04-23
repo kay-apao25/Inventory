@@ -1,10 +1,5 @@
-{% extends 'WISH/index.html' %}
-
 {% block content %}
-    <div class="page-header">
-          <!--<img src=""></img>-->
-          <h1 align="center">Fill for IRR Record</h1>
-      </div>
+    <br>
     <form method="POST" class="irr_entry">{% csrf_token %}
     {% if form.non_field_errors %}
     <ul>
@@ -17,12 +12,11 @@
         <div id="{{ field.auto_id }}_errors">
           {{ field.errors }}
         </div>
-        {% endfor %}
         <div id="my_form">
-    		 {{form.as_p}}
+    		 {{ field.label_tag }}<br>{{ field }}
 		    </div>
 		<br>
-		
+		{% endfor %}
         <button type="submit" class="save btn btn-default">Save</button>
     </form>
 {% endblock %}

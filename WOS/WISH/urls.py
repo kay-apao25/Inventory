@@ -15,8 +15,8 @@ urlpatterns = [
     url(r'^garv_entry/$', views.garv_entry),
     url(r'^garv_form/(?P<pk>[0-9]+)/g$', views.garv_form),
     url(r'^wrs_entry/$', views.wrs_entry),
-    url(r'^product/new/(?P<pk>[0-9]+)/(?P<instat>[0-9]+)/(?P<sup>[0-9]+)/$', views.irr_entry),
-    url(r'^product/new/(?P<ipk>[0-9]+)/(?P<pk>[0-9]+)/(?P<instat>[0-9]+)/k$', views.irr_entry_cont),
+    #url(r'^product/new/(?P<pk>[0-9]+)/(?P<instat>[0-9]+)/(?P<sup>[0-9]+)/$', views.irr_entry),
+    #url(r'^product/new/(?P<ipk>[0-9]+)/(?P<pk>[0-9]+)/(?P<instat>[0-9]+)/k$', views.irr_entry_cont),
     url(r'^irr_form/(?P<pk>[0-9]+)/$', views.irr_form),
     #url(r'^$', views.gatepass_form),
     url(r'^miv_form/(?P<pk>[0-9]+)/$', views.miv_form),
@@ -30,4 +30,5 @@ urlpatterns = [
     url(r'^par_reports/$', views.par_reports),
     url(r'^garv_reports/$', views.garv_reports),
     url(r'^product_reports/$', views.product_reports),
+    url(r'^file_entry/$', views.file_entry),
 ]

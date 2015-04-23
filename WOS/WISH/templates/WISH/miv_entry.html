@@ -1,7 +1,5 @@
-{% extends 'WISH/index.html' %}
-
 {% block content %}
-    <h1>fill for MIV record</h1>
+    <br>
     <form method="POST" class="miv_entry">{% csrf_token %}
     {% if form.non_field_errors %}
     <ul>
