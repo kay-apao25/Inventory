@@ -103,7 +103,8 @@ class IRR_header(models.Model):
 
 class IRR(models.Model):
     irr_no = models.ForeignKey(IRR_header)
-    asset_code = models.ManyToManyField(Product)#listfield
+    asset_code = models.ForeignKey(Product, related_name='product1')
+    item = models.ManyToManyField(Product, related_name='product2')#listfield
     cost_center_no = models.ForeignKey(Cost_center)
     quantity_actual = models.FloatField()
     quantity_accepted = models.FloatField()

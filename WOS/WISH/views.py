@@ -79,6 +79,8 @@ def irr_entry_cont(request, pk):
             irr_entry_cont.irr_no_id = pk
             irr_entry_cont.quantity_rejected = irr_entry_cont.quantity_actual - irr_entry_cont.quantity_accepted
             irr_entry_cont.quantity_balance = irr_entry_cont.quantity_rejected
+            #for product in irr.asset_code():
+                
             irr_entry_cont.save()
             return redirect('WISH.views.index')
     else:

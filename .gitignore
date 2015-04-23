@@ -1,5 +1,7 @@
-.gitignore~
+su.gitignore~
 *.sql~
 *.pyc~
 *.pyc
+WOS/WISH/migrations/*.py
+WOS/WISH/migrations/*.pyc
 

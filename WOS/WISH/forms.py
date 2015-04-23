@@ -22,8 +22,7 @@ class IRR_entry_cont_Form(forms.ModelForm):
 
     class Meta:
         model = IRR
-        fields = ('cost_center_no' ,'quantity_actual', 'asset_code',\
-    'quantity_accepted', 'date_recv' , 'wo_no' , 'remark',)
+        fields = ('cost_center_no' ,'quantity_accepted',  'date_recv' , 'wo_no' , 'remark',)
 
 class MIV_entryForm(forms.ModelForm):
 
