@@ -117,7 +117,9 @@ def cme_form(request):
 
 def irr_form(request, pk):
     irs = get_object_or_404(IRR, pk=pk)
-    return render(request, 'WISH/irr_form.html', {'irs':irs})
+    amount = irs.quantity_accepted * irs.asset_code.unit_cost
+    total = amount
+    return render(request, 'WISH/irr_form.html', {'irs':irs, 'amount':amount, 'total':total})
 
 #def irr_miv_form(request, mpk, ipk):
 #    mivs = get_object_or_404(MIV, pk=mpk)
@@ -129,7 +131,7 @@ def irr_form(request, pk):
 def gatepass_form(request):
     return render(request, 'WISH/gatepass_form.html', {})
 
-def miv_form(request):
+def miv_form(request, pk):
     mivs = get_object_or_404(MIV, pk=pk)
     return render(request, 'WISH/miv_form.html', {'mivs':mivs})
 
