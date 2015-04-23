@@ -27,6 +27,7 @@ urlpatterns = [
     url(r'^file_reports/$', views.file_report),
     url(r'^irr_reports/$', views.irr_reports),
     url(r'^miv_reports/$', views.miv_reports),
+    url(r'^wrs_reports/$', views.wrs_reports),
     url(r'^par_reports/$', views.par_reports),
     url(r'^garv_reports/$', views.garv_reports),
     url(r'^product_reports/$', views.product_reports),

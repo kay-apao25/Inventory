@@ -50,6 +50,11 @@
               MIV Reports
           </a>
       </li>
+       <li>
+          <a href="#wrs" role="tab" data-toggle="tab">
+              WRS Reports
+          </a>
+      </li>
       <li>
           <a href="#par" role="tab" data-toggle="tab">
               PAR Reports
@@ -75,6 +80,13 @@
           <script> 
           $(function(){
             $("#miv").load("{% url 'WISH.views.miv_reports' %}"); 
+          });
+          </script> 
+      </div>
+      <div class="tab-pane fade" id="wrs">
+          <script> 
+          $(function(){
+            $("#wrs").load("{% url 'WISH.views.wrs_reports' %}"); 
           });
           </script> 
       </div>

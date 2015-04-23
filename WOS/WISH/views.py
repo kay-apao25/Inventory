@@ -23,6 +23,10 @@ def miv_reports(request):
     mivs = MIV.objects.all()
     return render(request, 'WISH/miv_reports.html', {'mivs': mivs})
 
+def wrs_reports(request):
+    wrss = MIV.objects.all()
+    return render(request, 'WISH/wrs_reports.html', {'wrss': wrss})
+
 def par_reports(request):
     pars = PAR.objects.all()
     return render(request, 'WISH/par_reports.html', {'pars': pars})

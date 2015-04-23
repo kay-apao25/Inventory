@@ -1,0 +1,12 @@
+{% block content %}
+  <table style="width:100%;" align="center" class="table">
+    <thead>
+    	<th>WRS No.</th>
+    </thead>
+   	{% for wrs in wrss %}	
+     	<tr>
+        <td> {{wrs.wrs_number}} </td>
+      </tr>
+    {% endfor %}
+  </table>
+{% endblock %}
