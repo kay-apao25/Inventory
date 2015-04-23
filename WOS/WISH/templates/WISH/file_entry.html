@@ -35,7 +35,7 @@
 {% block content %}
     <div class="page-header">
           <!--<img src=""></img>-->
-        <h1 align="center">File Reports</h1>
+        <h1 align="center">Add File Records</h1>
      </div>
     <!-- Nav tabs -->
 <div class="container" style="width:920px;">
@@ -43,26 +43,21 @@
     <ul class="nav nav-tabs" role="tablist">
       <li class="active">
           <a href="#irr" role="tab" data-toggle="tab">
-              IRR Reports
+              IRR Record
           </a>
       </li>
       <li><a href="#miv" role="tab" data-toggle="tab">
-              MIV Reports
-          </a>
-      </li>
-       <li>
-          <a href="#wrs" role="tab" data-toggle="tab">
-              WRS Reports
+              MIV Record
           </a>
       </li>
       <li>
-          <a href="#par" role="tab" data-toggle="tab">
-              PAR Reports
+          <a href="#mpard" role="tab" data-toggle="tab">
+              PAR Record
           </a>
       </li>
       <li>
           <a href="#garv" role="tab" data-toggle="tab">
-              GARV Reports
+              GARV Record
           </a>
       </li>
     </ul>
@@ -72,35 +67,28 @@
       <div class="tab-pane fade active in" id="irr">
           <script> 
           $(function(){
-            $("#irr").load("{% url 'WISH.views.irr_reports' %}"); 
+            $("#irr").load("{% url 'WISH.views.irr_entry' %}"); 
           });
           </script> 
       </div>
       <div class="tab-pane fade" id="miv">
           <script> 
           $(function(){
-            $("#miv").load("{% url 'WISH.views.miv_reports' %}"); 
+            $("#miv").load("{% url 'WISH.views.miv_entry' %}"); 
           });
           </script> 
       </div>
-      <div class="tab-pane fade" id="wrs">
+      <div class="tab-pane fade" id="mpard">
           <script> 
           $(function(){
-            $("#wrs").load("{% url 'WISH.views.wrs_reports' %}"); 
-          });
-          </script> 
-      </div>
-      <div class="tab-pane fade" id="par">
-          <script> 
-          $(function(){
-            $("#par").load("{% url 'WISH.views.par_reports' %}"); 
+            $("#mpard").load("{% url 'WISH.views.par_entry' %}"); 
           });
           </script> 
       </div>
       <div class="tab-pane fade" id="garv">
           <script> 
           $(function(){
-            $("#garv").load("{% url 'WISH.views.garv_reports' %}"); 
+            $("#garv").load("{% url 'WISH.views.garv_entry' %}"); 
           });
           </script> 
       </div>

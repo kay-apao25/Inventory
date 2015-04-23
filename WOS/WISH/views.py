@@ -23,6 +23,10 @@ def miv_reports(request):
     mivs = MIV.objects.all()
     return render(request, 'WISH/miv_reports.html', {'mivs': mivs})
 
+def wrs_reports(request):
+    wrss = MIV.objects.all()
+    return render(request, 'WISH/wrs_reports.html', {'wrss': wrss})
+
 def par_reports(request):
     pars = PAR.objects.all()
     return render(request, 'WISH/par_reports.html', {'pars': pars})
@@ -35,6 +39,9 @@ def product_reports(request):
     prods = Product.objects.all()
     return render(request, 'WISH/product_reports.html', {'prods': prods})
 
+def file_entry(request):
+    return render(request, 'WISH/file_entry.html', {})
+
 def product_new(request):
     if request.method == "POST":
         form = ProductForm(request.POST)
@@ -42,6 +49,7 @@ def product_new(request):
             product = form.save(commit=False)
             product.slc_number = randint(100000,999999)
             product.nsn = randint(500000,999999)
+            product.cost_center_no_id = product.inv_station_no.cost_center_no_id
             product.amount = product.unit_cost * product.quantity
             product.save()
             return redirect('WISH.views.index')
@@ -86,6 +94,7 @@ def miv_entry(request):
             miv_entry = form.save(commit=False)
             miv_entry.doc_date = time.strftime("%Y-%m-%d")
             miv_entry.wrs_number = randint(100000,999999)
+            miv_entry.cost_center_no_id = miv_entry.inv_station_no.cost_center_no_id
             miv_entry.amount = miv_entry.asset_code.unit_cost * miv_entry.quantity
             miv_entry.save()
             return redirect('WISH.views.index')

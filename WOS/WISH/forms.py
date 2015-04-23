@@ -6,7 +6,7 @@ class ProductForm(forms.ModelForm):
 
     class Meta:
         model = Product
-        fields = ('product_number', 'inv_station_no', 'cost_center_no', 'item_name', \
+        fields = ('product_number', 'inv_station_no', 'item_name', \
         	'generic_name', 'brand', 'part_number', 'manufacture_date', 'expiry_date', 'classification', 'stock', \
         	'stock', 'block', 'unit_measure', 'unit_cost', 'quantity', 'average_amount', 'status',\
         	'balance_limit', 'serial_number', 'model', 'description', 'remark', 'purchased_from',)
@@ -28,7 +28,7 @@ class MIV_entryForm(forms.ModelForm):
 
     class Meta:
         model = MIV
-        fields = ( 'quantity', 'date_issued',  'remark' , 'asset_code', 'irr_no', 'inv_station_no', 'cost_center_no',)
+        fields = ( 'quantity', 'date_issued',  'remark' , 'asset_code', 'irr_no', 'inv_station_no',)
 
 class PAR_entryForm(forms.ModelForm):
 

@@ -141,12 +141,15 @@
                         <a href="/"><i class="glyphicon glyphicon-home"></i> Dashboard</a>
                     </li>
                     <li class="menu">
-                        <a href="{% url 'WISH.views.product_new' %}"><i class="glyphicon glyphicon-th-list"></i> Add Product</a>
-                    </li>
-                    <li class="menu">
                         <a href="javascript:;" data-toggle="collapse" data-target="#demo"><i class="glyphicon glyphicon-book"></i> Add Records<i class="fa fa-fw fa-caret-down"></i></a>
                         <ul id="demo" class="collapse">
                             <li>
+                                <a href="{% url 'WISH.views.product_new' %}">Add Product Record</a>
+                            </li>
+                            <li>
+                                <a href="{% url 'WISH.views.file_entry' %}">Add File Record</a>
+                            </li>
+                            <!--<li>
                                 <a href="{% url 'WISH.views.irr_entry' %}">Add IRR Record</a>
                             </li>
                             <li>
@@ -157,7 +160,7 @@
                             </li>
                             <li>
                                 <a href="{% url 'WISH.views.garv_entry' %}">Add GARV Record</a>
-                            </li>
+                            </li>-->
                         </ul>
                     </li>
                     <li class="menu">
@@ -171,9 +174,9 @@
                             </li>
                         </ul>
                     </li>
-                    <li>
+                    <!--<li>
                         <a href="{% url 'WISH.views.wrs_entry' %}"><i class="fa fa-fw fa-desktop"></i> Add WRS</a>
-                    </li>
+                    </li>-->
                     <!--<li>
                         <a href="bootstrap-grid.html"><i class="fa fa-fw fa-wrench"></i> Bootstrap Grid</a>
                     </li>-->
