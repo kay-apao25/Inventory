@@ -2,10 +2,30 @@
   <table style="width:100%;" align="center" class="table">
     <thead>
     	<th>WRS No.</th>
+      <th>REQUISITIONED BY:</th>
+      <th>APPROVED BY:</th>
+      <th>DATE:</th>
     </thead>
-   	{% for wrs in wrss %}	
+   	{% for wrs in wrss %}
      	<tr>
-        <td> {{wrs.wrs_number}} </td>
+        <td>
+          <a href="{% url 'WISH.views.wrs_form' pk=wrs.wrs_number %}">
+            {{wrs.wrs_number}}
+          </a>
+        </td>
+
+        <td>
+          {{ wrs.irr_no.dce_custodian.name }}
+        </td>
+
+        <td>
+          {{ wrs.irr_no.dce_user.name}}
+        </td>
+
+        <td>
+          {{wrs.date_issued}}
+        </td>
+
       </tr>
     {% endfor %}
   </table>
