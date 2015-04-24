@@ -55,8 +55,10 @@ class Customer(models.Model):
 
 class Product(models.Model):
     nsn = models.CharField(max_length=10)
+    slc_number = models.IntegerField()
     product_number = models.CharField(max_length=10)
     generic_name = models.TextField()
+    item_name = models.CharField(max_length=10)
     brand = models.TextField()
     part_number = models.CharField(max_length=8)
     manufacture_date = models.DateField()
@@ -104,7 +106,7 @@ class IRR(models.Model):
     irr_headkey = models.ForeignKey(IRR_header)
     irr_no = models.IntegerField(primary_key = True)
     cost_center_no = models.ForeignKey(Cost_center)
-    date_recv = models.DateField(blank = True, null = True)
+    date_recv = models.DateField()
     wo_no = models.CharField(max_length=7)
     remark = models.TextField(max_length = 30)
 
@@ -115,7 +117,6 @@ class IRR(models.Model):
 
 class Product_to_IRR(models.Model):
     product = models.ForeignKey(Product)
-    slc_number = models.IntegerField()
     irr_no = models.ForeignKey(IRR)
     quantity_accepted = models.FloatField()
     quantity_rejected = models.FloatField()
@@ -131,8 +132,8 @@ class MIV(models.Model):
     wrs_number = models.CharField(max_length = 8)
     quantity = models.FloatField()
     amount = models.FloatField()
-    date_issued = models.DateField(blank = True, null = True)
-    doc_date = models.DateField(blank = True, null = True)
+    date_issued = models.DateField()
+    doc_date = models.DateField()
     remark = models.TextField()
 
     def __str__(self):
@@ -141,8 +142,8 @@ class MIV(models.Model):
 class PAR(models.Model):
     dce = models.ForeignKey(Employee)
     product = models.ForeignKey(Product_to_IRR)
-    par_date = models.DateField(blank=True, null=True)
-    par_no = models.CharField(max_length=10, null=True)
+    par_date = models.DateField()
+    par_no = models.CharField(max_length=10)
     amt_cost = models.FloatField()
     remark = models.TextField()
     qty = models.IntegerField()
@@ -150,7 +151,7 @@ class PAR(models.Model):
     issued_by = models.ForeignKey(Employee, related_name='dce_FK3')
     inv_stat_no = models.ForeignKey(Inventory_stat)
     PO_number = models.ForeignKey(IRR_header)
-    date_acquired = models.DateField(blank=True, null=True)
+    date_acquired = models.DateField()
     wo_number = models.ForeignKey(IRR)
 
 
@@ -163,17 +164,17 @@ class PAR(models.Model):
 class GARV(models.Model):
     dce = models.ForeignKey(Employee)
     product = models.ForeignKey(Product_to_IRR)
-    garv_date = models.DateField(blank=True, null=True)
-    garv_no = models.CharField(max_length=10, null=True)
+    garv_date = models.DateField()
+    garv_no = models.CharField(max_length=10)
     cc_number = models.ForeignKey(Cost_center)
     wo_number = models.ForeignKey(IRR_header)
-    qty = models.CharField(max_length=20, null=True)
+    qty = models.CharField(max_length=20)
     par_number = models.ForeignKey(PAR)
     remarks = models.CharField(max_length=20, null=True)
     inspected_by = models.ForeignKey(Employee, related_name='dce_FK4')
-    date_inspected = models.DateField(blank=True, null=True)
+    date_inspected = models.DateField()
     confirmed_by = models.ForeignKey(Employee, related_name='dce_FK5')
-    date_confirmed = models.DateField(blank=True, null=True)
+    date_confirmed = models.DateField()
     noted_by = models.ForeignKey(Employee, related_name='dce_FK6')
 
     class Meta:
