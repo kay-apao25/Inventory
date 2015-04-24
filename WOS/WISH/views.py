@@ -49,7 +49,7 @@ def product_new(request):
             product = form.save(commit=False)
             product.slc_number = randint(100000,999999)
             product.nsn = randint(500000,999999)
-            product.cost_center_no_id = product.inv_station_no.cost_center_no_id
+            #product.cost_center_no_id = product.inv_station_no.cost_center_no_id
             product.amount = product.unit_cost * product.quantity
             product.save()
             return redirect('WISH.views.index')
@@ -57,6 +57,7 @@ def product_new(request):
     else:
         form = ProductForm()
     return render(request, 'WISH/product_add.html', {'form': form})
+
 
 def irr_entry(request):
     if request.method == "POST":
@@ -69,11 +70,12 @@ def irr_entry(request):
         form = IRR_entryForm()
     return render(request, 'WISH/irr_entry.html', {'form': form})
 
-
+irr_no = randint(100000,999999)
 def irr_entry_cont(request, pk):
     if request.method == "POST":
         form = IRR_entry_cont_Form(request.POST)
         iform = IRR_entryForm()
+
         if form.is_valid():
             irr_entry_cont = form.save(commit=False)
             irr_entry_cont.irr_no_id = pk

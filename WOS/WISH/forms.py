@@ -7,7 +7,7 @@ class ProductForm(forms.ModelForm):
     class Meta:
         model = Product
         fields = ('product_number', 'item_name', \
-        	'generic_name', 'brand', 'part_number', 'manufacture_date', 'expiry_date', 'classification', 'stock', \
+        	'generic_name', 'brand', 'part_number', 'manufacture_date', 'expiry_date', 'classification', \
         	'stock', 'block', 'unit_measure', 'unit_cost', 'quantity', 'average_amount', 'status',\
         	'balance_limit', 'serial_number', 'model', 'description', 'remark', 'purchased_from',)
 
@@ -16,7 +16,7 @@ class IRR_entryForm(forms.ModelForm):
     class Meta:
         model = IRR_header
         fields = ( 'inv_station_no', 'supplier', 'reference', 'invoice_number', 'po_number', 'dr_number', \
-            'dce_custodian', 'dce_user', 'proc_date', 'type_n', 'date_dlvrd',)
+            'dce_custodian', 'dce_user', 'dce_approved','proc_date', 'approved_date','type_n', 'date_dlvrd',)
 
 class IRR_entry_cont_Form(forms.ModelForm):
 
