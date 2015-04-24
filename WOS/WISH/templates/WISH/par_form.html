@@ -35,7 +35,7 @@
 		<h1 align="center">CONTROLLED MATERIALS AND EQUIPMENT</h1>
 	{% endif %}
 
-	<span>Accountable Employee:&nbsp;&nbsp;&nbsp;<u>{{irs.dce.name}}</u></span>
+	<span>Accountable Employee:&nbsp;&nbsp;&nbsp;<u>{{pars.dce.name}}</u></span>
 	<br>
 	<span>Designation:&nbsp;&nbsp;&nbsp;<u>{{pars.dce.position}}</u></span>
 	<br>
@@ -59,13 +59,13 @@
 		    <th>Work Order No.</th>
 		  </tr>
 		  <tr>
-		    <td><br>{{ pars.asset_code.id }}<br><br><br><br></td>
-		    <td>{{ pars.asset_code.item_name }}-{{ pars.asset_code.description }}<br><br><br><br></td>
-		    <td>{{ pars.asset_code.unit_measure }}<br><br><br><br></td>
+		    <td><br>{{ pars.product.product.id }}<br><br><br><br></td>
+		    <td>{{ pars.product.product.item_name }}-{{ pars.product.product.description }}<br><br><br><br></td>
+		    <td>{{ pars.product.product.unit_measure }}<br><br><br><br></td>
 		    <td>{{ pars.qty }}<br><br><br><br></td>
 		    <td>{{ pars.amt_cost }}<br><br><br><br></td>
 		    <td>{{ pars.date_acquired }}<br><br><br><br></td>
-		    <td>{{ pars.asset_code.remark }}<br><br><br><br></td>
+		    <td>{{ pars.product.product.remark }}<br><br><br><br></td>
 		    <td>{{ pars.wo_number }}<br><br><br><br></td>
 		  </tr>
 		</table>
@@ -131,7 +131,7 @@
 	</p>
 
 	<span align="left">
-	Purchased from: {{pars.asset_code.purchased_from.supplier_name}}
+	Purchased from: {{pars.product.product.purchased_from.supplier_name}}
 	</span>
 	<br>
 	<span align="left">

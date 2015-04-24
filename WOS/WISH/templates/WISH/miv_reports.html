@@ -2,6 +2,9 @@
   <table style="width:100%;" align="center" class="table">
     <thead>
     	<th>MIV No.</th>
+      <th>ISSUED BY:</th>
+      <th>DATE ISSUED:</th>
+
     </thead>
     	{% for miv in mivs %}
      	<tr>
@@ -9,7 +12,16 @@
           <a href="{% url 'WISH.views.miv_form' pk=miv.pk %}">
             {{miv.id}}
           </a>
-          </td>
+        </td>
+
+        <td>
+          {{miv.irr_no.dce_custodian.name}}
+        </td>
+
+        <td>
+          {{miv.date_issued}}
+        </td>
+
       </tr>
       {% endfor %}
   </table>

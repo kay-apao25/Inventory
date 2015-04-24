@@ -5,6 +5,7 @@
         <th>ACCOUNTABLE EMPLOYEE</th>
         <th>PAR DATE</th>
         <th>DATE ACQUIRED</th>
+        <th>APPROVED BY:</th>
       </thead>
       	{% for par in pars %}
       		<tr>
@@ -24,6 +25,10 @@
 
             <td>
                 {{par.date_acquired}}
+            </td>
+
+            <td>
+                {{par.approved_by}}
             </td>
 
       		</tr>

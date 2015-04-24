@@ -1,11 +1,31 @@
 {% block content %}
   <table style="width:100%;" align="center" class="table">
     <thead>
-    	<th>GARV No.</th>
+    	<th>GARV NO.</th>
+      <th>RETURNED BY:</th>
+      <th>GARV DATE:</th>
+      <th>NOTED BY:</th>
     </thead>
-   	{% for garv in garvs %}	
+   	{% for garv in garvs %}
      	<tr>
-        <td> {{garv.id}} </td>
+        <td>
+          <a href="{% url 'WISH.views.garv_form' pk=garv.id %}">
+            {{garv.garv_no}}
+          </a>
+        </td>
+
+        <td>
+            {{garv.dce.name}}
+        </td>
+
+        <td>
+            {{garv.garv_date}}
+        </td>
+
+        <td>
+            {{garv.noted_by}}
+        </td>
+
       </tr>
     {% endfor %}
   </table>
