@@ -139,14 +139,14 @@ def garv_entry(request):
 
 def product_to_irr(request,pk):
     if request.method == "POST":
-        form = Product_to_IRR(request.POST)
+        form = Product_to_IRRForm(request.POST)
         if form.is_valid():
             product_to_irr = form.save(commit=False)
             product_to_irr.irr_no_id= pk
             product_to_irr.save()
             return redirect('WISH.views.product_to_irr', pk=pk)
     else:
-        form = Product_to_IRR()
+        form = Product_to_IRRForm()
     return render(request, 'WISH/product_to_irr.html', {'form': form})
 
 def wrs_form(request, pk):
@@ -166,9 +166,15 @@ def cme_form(request):
 
 def irr_form(request, pk):
     irs = get_object_or_404(IRR, pk=pk)
-    #amount = irs.quantity_accepted * irs.asset_code.unit_cost
-    #total = amount
-    return render(request, 'WISH/irr_form.html', {'irs':irs})
+    pros = Product_to_IRR.filter(irr_no=pk)
+    amt_list = []
+    total = 0
+    for pro in pros:
+        amount = pro.quantity_accepted * pro.product.unit_cost
+        amt_list.append(amount)
+        total = total + amount
+    return render(request, 'WISH/irr_form.html', {'irs':irs, 'pros': pros, \
+                    'amt_list': amt_list, 'total': total})
 
 #def irr_miv_form(request, mpk, ipk):
 #    mivs = get_object_or_404(MIV, pk=mpk)
