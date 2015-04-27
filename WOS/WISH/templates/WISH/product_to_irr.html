@@ -1,0 +1,23 @@
+
+
+{% block content %}
+    <form method="POST" class="post-form">{% csrf_token %}
+      {% if form.non_field_errors %}
+      <ul>
+        {% for error in form.non_field_errors %}
+          <li>{{ error }}</li>
+        {% endfor %}
+      </ul>
+    {% endif %}
+          {% for field in form %}
+          <div id="{{ field.auto_id }}_errors">
+            {{ field.errors }}
+          </div>
+          <div id="my_form">
+           {{ field.label_tag }}<br>{{ field }}
+      </div>
+      <br>
+      {% endfor %}
+          <button type="submit" class="save btn btn-default" id="modal">Add Another Item</button>
+      </form>
+{% endblock %}

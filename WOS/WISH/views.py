@@ -82,7 +82,7 @@ def irr_entry_cont(request, pk):
             #irr_entry_cont.quantity_rejected = irr_entry_cont.quantity_actual - irr_entry_cont.quantity_accepted
             #irr_entry_cont.quantity_balance = irr_entry_cont.quantity_rejected
             #for product in irr.asset_code():
-                
+
             irr_entry_cont.save()
             return redirect('WISH.views.index')
     else:
@@ -135,6 +135,16 @@ def garv_entry(request):
     else:
         form = GARV_entryForm()
     return render(request, 'WISH/garv_entry.html', {'form': form})
+
+def product_to_irr(request):
+    if request.method == "POST":
+        form = Product_to_IRR(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('WISH.views.index')
+    else:
+        form = Product_to_IRR()
+    return render(request, 'WISH/product_to_irr.html', {'form': form})
 
 def wrs_form(request, pk):
     wrss = get_object_or_404(MIV, wrs_number=pk)
@@ -194,4 +204,3 @@ def garv_report(request):
         q = request.GET['q']
         return redirect('WISH.views.garv_form', pk=q)
     return render(request, 'WISH/garv_report.html', {})
-

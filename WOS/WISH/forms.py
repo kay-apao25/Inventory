@@ -24,6 +24,12 @@ class IRR_entry_cont_Form(forms.ModelForm):
         model = IRR
         fields = ('cost_center_no', 'date_recv' , 'wo_no' , 'remark',)
 
+class Product_to_IRR(forms.ModelForm):
+
+    class Meta:
+        model = Product_to_IRR
+        fields = ('product', 'irr_no', 'quantity_accepted', 'quantity_rejected', 'quantity_balance')
+
 class MIV_entryForm(forms.ModelForm):
 
     class Meta:
