@@ -28,7 +28,7 @@ class Product_to_IRR(forms.ModelForm):
 
     class Meta:
         model = Product_to_IRR
-        fields = ('product', 'irr_no', 'quantity_accepted', 'quantity_rejected', 'quantity_balance')
+        fields = ('product', 'quantity_accepted', 'quantity_rejected', 'quantity_balance')
 
 class MIV_entryForm(forms.ModelForm):
 

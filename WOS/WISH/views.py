@@ -70,7 +70,7 @@ def irr_entry(request):
         form = IRR_entryForm()
     return render(request, 'WISH/irr_entry.html', {'form': form})
 
-irr_no = randint(100000,999999)
+#irr_no = randint(100000,999999)
 def irr_entry_cont(request, pk):
     if request.method == "POST":
         form = IRR_entry_cont_Form(request.POST)
@@ -78,13 +78,14 @@ def irr_entry_cont(request, pk):
 
         if form.is_valid():
             irr_entry_cont = form.save(commit=False)
-            irr_entry_cont.irr_no_id = pk
+            irr_entry_cont.irr_no = randint(100000,999999)
+            irr_entry_cont.irr_headkey_id = pk
             #irr_entry_cont.quantity_rejected = irr_entry_cont.quantity_actual - irr_entry_cont.quantity_accepted
             #irr_entry_cont.quantity_balance = irr_entry_cont.quantity_rejected
             #for product in irr.asset_code():
 
             irr_entry_cont.save()
-            return redirect('WISH.views.index')
+            return redirect('WISH.views.product_to_irr', pk=irr_entry_cont.pk)
     else:
         form = IRR_entry_cont_Form()
     return render(request, 'WISH/irr_entry_cont.html', {'form': form})
@@ -136,12 +137,14 @@ def garv_entry(request):
         form = GARV_entryForm()
     return render(request, 'WISH/garv_entry.html', {'form': form})
 
-def product_to_irr(request):
+def product_to_irr(request,pk):
     if request.method == "POST":
         form = Product_to_IRR(request.POST)
         if form.is_valid():
-            form.save()
-            return redirect('WISH.views.index')
+            product_to_irr = form.save(commit=False)
+            product_to_irr.irr_no_id= pk
+            product_to_irr.save()
+            return redirect('WISH.views.product_to_irr', pk=pk)
     else:
         form = Product_to_IRR()
     return render(request, 'WISH/product_to_irr.html', {'form': form})
@@ -163,9 +166,9 @@ def cme_form(request):
 
 def irr_form(request, pk):
     irs = get_object_or_404(IRR, pk=pk)
-    amount = irs.quantity_accepted * irs.asset_code.unit_cost
-    total = amount
-    return render(request, 'WISH/irr_form.html', {'irs':irs, 'amount':amount, 'total':total})
+    #amount = irs.quantity_accepted * irs.asset_code.unit_cost
+    #total = amount
+    return render(request, 'WISH/irr_form.html', {'irs':irs})
 
 #def irr_miv_form(request, mpk, ipk):
 #    mivs = get_object_or_404(MIV, pk=mpk)
