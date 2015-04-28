@@ -84,7 +84,7 @@ def product_to_irr(request,pk, irn):
             product_to_irr.irr_no_id= irn
             irr.save()
             product_to_irr.save()
-            return redirect('WISH.views.product_to_irr', pk=pk)
+            return redirect('WISH.views.product_to_irr', pk=pk, irn=irn)
     else:
         form = Product_to_IRRForm()
         iform = IRR_entry_cont_Form()
