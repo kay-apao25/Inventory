@@ -64,17 +64,36 @@ def irr_entry(request):
         form = IRR_entryForm(request.POST)
         if form.is_valid():
             irr_entry = form.save(commit=False)
+            irr_no = randint(100000,999999)
             irr_entry.save()
-            return redirect('WISH.views.irr_entry_cont', pk=irr_entry.pk)
+            return redirect('WISH.views.product_to_irr', pk=irr_entry.pk, irn=irr_no)
+            #return redirect('WISH.views.irr_entry_cont', pk=irr_entry.pk)
     else:
         form = IRR_entryForm()
     return render(request, 'WISH/irr_entry.html', {'form': form})
 
-#irr_no = randint(100000,999999)
+def product_to_irr(request,pk, irn):
+    if request.method == "POST":
+        form = Product_to_IRRForm(request.POST)
+        iform = IRR_entry_cont_Form(request.POST)
+        if form.is_valid() and iform.is_valid():
+            product_to_irr = form.save(commit=False)
+            irr = iform.save(commit=False)
+            irr.irr_no = irn
+            irr.irr_headkey_id = pk
+            product_to_irr.irr_no_id= irn
+            irr.save()
+            product_to_irr.save()
+            return redirect('WISH.views.product_to_irr', pk=pk)
+    else:
+        form = Product_to_IRRForm()
+        iform = IRR_entry_cont_Form()
+    return render(request, 'WISH/product_to_irr.html', {'form': form, 'iform': iform, 'pk': pk})
+
 def irr_entry_cont(request, pk):
     if request.method == "POST":
         form = IRR_entry_cont_Form(request.POST)
-        iform = IRR_entryForm()
+        #iform = IRR_entryForm()
 
         if form.is_valid():
             irr_entry_cont = form.save(commit=False)
@@ -90,22 +109,23 @@ def irr_entry_cont(request, pk):
         form = IRR_entry_cont_Form()
     return render(request, 'WISH/irr_entry_cont.html', {'form': form})
 
-'''def miv_entry(request):
+def miv_entry_S(request, pk):
     if request.method == "POST":
         form = MIV_entryForm(request.POST)
         if form.is_valid():
-            product_miv = {}
-            for product in product_miv:
-                miv_entry = form.save(commit=False)
-                miv_entry.doc_date = time.strftime("%Y-%m-%d")
-                miv_entry.wrs_number = randint(100000,999999)
-                miv_entry.cost_center_no_id = miv_entry.inv_station_no.cost_center_no_id
-                #miv_entry.amount = miv_entry.asset_code.unit_cost * miv_entry.quantity
-                miv_entry.save()
+            miv_entry = form.save(commit=False)
+            miv_entry.doc_date = time.strftime("%Y-%m-%d")
+            miv_entry.wrs_number = randint(100000,999999)
+            miv_entry.product_id = pk
+            miv_entry.amount = miv_entry.quantity * miv_entry.product.product.unit_cost
+            miv_entry.irr_headkey = miv_entry.product.irr_no.irr_headkey
+            miv_entry.cost_center_no_id = miv_entry.inv_station_no.cost_center_no_id
+            #miv_entry.amount = miv_entry.asset_code.unit_cost * miv_entry.quantity
+            miv_entry.save()
             return redirect('WISH.views.index')
     else:
         form = MIV_entryForm()
-    return render(request, 'WISH/miv_entry.html', {'form': form })'''
+    return render(request, 'WISH/miv_entry.html', {'form': form })
 
 def miv_entry(request):
     if request.method == "POST":
@@ -116,9 +136,8 @@ def miv_entry(request):
             return redirect('WISH.views.index')
     else:
         irrs = IRR.objects.all()
-        form = MIV_entryForm()
         pros = Product_to_IRR.objects.all()
-    return render(request, 'WISH/miv_entry_f.html', {'form': form , 'irrs':irrs, 'pros':pros})
+    return render(request, 'WISH/miv_entry_f.html', {'irrs':irrs, 'pros':pros})
 
 def par_entry(request):
     if request.method == "POST":
@@ -151,18 +170,6 @@ def garv_entry(request):
     else:
         form = GARV_entryForm()
     return render(request, 'WISH/garv_entry.html', {'form': form})
-
-def product_to_irr(request,pk):
-    if request.method == "POST":
-        form = Product_to_IRRForm(request.POST)
-        if form.is_valid():
-            product_to_irr = form.save(commit=False)
-            product_to_irr.irr_no_id= pk
-            product_to_irr.save()
-            return redirect('WISH.views.product_to_irr', pk=pk)
-    else:
-        form = Product_to_IRRForm()
-    return render(request, 'WISH/product_to_irr.html', {'form': form})
 
 def wrs_form(request, pk):
     wrss = get_object_or_404(MIV, wrs_number=pk)

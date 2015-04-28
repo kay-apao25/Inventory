@@ -62,12 +62,12 @@ class Product(models.Model):
     brand = models.TextField()
     part_number = models.CharField(max_length=8)
     manufacture_date = models.DateField()
-    expiry_date = models.DateField()
+    expiry_date = models.DateField(null=True, blank=True)
     unit_cost = models.FloatField()     
     quantity = models.FloatField(default = '1')
-    classification = models.CharField(max_length=30) 
+    classification = models.CharField(max_length=30)
     stock = models.CharField(max_length=10)
-    block = models.CharField(max_length=10) 
+    block = models.CharField(max_length=10)
     unit_measure = models.CharField(max_length=10)
     status = models.CharField(max_length=10)
     purchased_from = models.ForeignKey(Supplier)
@@ -78,7 +78,7 @@ class Product(models.Model):
     amount = models.FloatField()
     description = models.TextField()
     remark = models.TextField()
-    
+
 
     def __str__(self):
         return self.item_name + " , " + self.description
@@ -105,11 +105,10 @@ class IRR_header(models.Model):
 class IRR(models.Model):
     irr_headkey = models.ForeignKey(IRR_header)
     irr_no = models.IntegerField(primary_key = True)
-    cost_center_no = models.ForeignKey(Cost_center)
-    date_recv = models.DateField()
-    wo_no = models.CharField(max_length=7)
-    remark = models.TextField(max_length = 30)
-
+    cost_center_no = models.ForeignKey(Cost_center, null=True, blank=True)
+    date_recv = models.DateField(null=True, blank=True)
+    wo_no = models.CharField(max_length=7, null=True, blank=True)
+    remark = models.TextField(max_length = 30, null=True, blank=True)
 
     def __unicode__(self):
         return str(self.irr_no)
@@ -137,7 +136,7 @@ class MIV(models.Model):
     remark = models.TextField()
 
     def __str__(self):
-        return str(self.irr_no) + ", " + str(self.asset_code)
+        return str(self.irr_no)
 
 class PAR(models.Model):
     dce = models.ForeignKey(Employee)
@@ -196,6 +195,3 @@ class Pending(models.Model):
 
     def __str__(self):
         return self.supplier_number + "," + self.serial_number + "," + self.model
-
-
-

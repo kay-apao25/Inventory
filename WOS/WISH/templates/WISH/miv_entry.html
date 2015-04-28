@@ -1,28 +1,17 @@
 {% extends 'WISH/index.html' %}
+{% load bootstrap %}
 
 {% block content %}
     <div class="page-header">
       <h1 align="center">Fill for MIV Record</h1>
     </div>
-    <br>
-    <form method="POST" class="miv_entry">{% csrf_token %}
-    {% if form.non_field_errors %}
-    <ul>
-      {% for error in form.non_field_errors %}
-        <li>{{ error }}</li>
+    <form method="POST" class="product-form">{% csrf_token %}
+      {% for field in form %}
+        <div id="my_form" align="left">
+          {{ field | bootstrap_horizontal:'col-lg-3 col-lg-6'}} <br><br><br>
+        </div>
       {% endfor %}
-    </ul>
-  {% endif %}
-        {% for widget in form %}
-        <div id="{{ field.auto_id }}_errors">
-          {{ widget.errors }}
-        </div>
-        <div class="input-group">
-          <span class="input-group-addon" style="width:10px"><i class="glyphicon glyphicon-asterisk"></i></span>
-            {{ widget }}
-        </div>
-		<br>
-		{% endfor %}
-        <button type="submit" class="save btn btn-default">Save</button>
-    </form>
+      <br>
+         <div align="center"><button type="submit" class="save btn btn-default">Save</button></div> 
+      </form>
 {% endblock %}

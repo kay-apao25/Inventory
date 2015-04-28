@@ -1,4 +1,5 @@
 {% extends 'WISH/index.html' %}
+{% load bootstrap %}
 
 {% block content %}
     <div class="page-header">
@@ -13,15 +14,18 @@
       {% endfor %}
     </ul>
   {% endif %}
-        {% for field in form %}
-        <div id="{{ field.auto_id }}_errors">
-          {{ field.errors }}
-        </div>
-        <div id="my_form">
-    		 {{ field.label_tag }}<br>{{ field }}
-		    </div>
-		<br>
-		{% endfor %}
-        <button type="submit" class="save btn btn-default" id="save">Save</button>
+  {% for field in form %}
+
+    {%if forloop.counter|divisibleby:"3" %}
+    <div></div><br><br>
+        
+    {%endif%}
+
+     {{field.label_tag}}&nbsp;&nbsp;{{field}}&nbsp;&nbsp;&nbsp;
+{%endfor%}
+<br>
+<br>
+<br>
+    <div align="center"><button type="submit" class="save btn btn-default" id="save">Save</button></div>
     </form>
 {% endblock %}
