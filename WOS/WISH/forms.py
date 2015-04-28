@@ -46,10 +46,11 @@ class MIV_entryForm(forms.ModelForm):
         fields = ( 'quantity', 'date_issued',  'remark' , 'product', 'inv_station_no',)'''
 
 class PAR_entryForm(forms.ModelForm):
+    product = forms.ModelChoiceField(queryset = Product_to_IRR.objects.all() )
 
     class Meta:
         model = PAR
-        fields = ('dce','product', 'par_no', 'amt_cost', 'remark', 'qty', 'approved_by', \
+        fields = ('dce', 'par_no', 'amt_cost', 'remark', 'qty', 'approved_by', \
         'issued_by', 'inv_stat_no', 'PO_number', 'date_acquired', 'wo_number', )
 
 class GARV_entryForm(forms.ModelForm):

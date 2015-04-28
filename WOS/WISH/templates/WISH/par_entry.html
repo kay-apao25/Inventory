@@ -12,7 +12,25 @@
           {{ field | bootstrap }}
         </div>
       {% endfor %}
-      <br>
-         <div align="center"><button type="submit" class="save btn btn-default">Save</button></div> 
+          <button type="submit" class="save btn btn-default">Save</button>
+          <span>
+            <a id="additembutton" type="submit" data-toggle="modal" data-target="#additem">Add Item</a>
+          </span>
       </form>
+
+    <!-- start of modal for add item -->
+    <div id="additem" class="modal fade" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="modal-title" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 align= "center" class="modal-title">Add Item</h4> <br>
+          </div>
+          <div class="modal-body">
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- end of modal for add item -->
 {% endblock %}
