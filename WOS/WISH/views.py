@@ -117,7 +117,8 @@ def miv_entry(request):
     else:
         irrs = IRR.objects.all()
         form = MIV_entryForm()
-    return render(request, 'WISH/miv_entry_f.html', {'form': form , 'irrs':irrs})
+        pros = Product_to_IRR.objects.all()
+    return render(request, 'WISH/miv_entry_f.html', {'form': form , 'irrs':irrs, 'pros':pros})
 
 def par_entry(request):
     if request.method == "POST":
