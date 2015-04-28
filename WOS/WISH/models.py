@@ -62,7 +62,7 @@ class Product(models.Model):
     brand = models.TextField()
     part_number = models.CharField(max_length=8)
     manufacture_date = models.DateField()
-    expiry_date = models.DateField()
+    expiry_date = models.DateField(null=True, blank=True)
     unit_cost = models.FloatField()     
     quantity = models.FloatField(default = '1')
     classification = models.CharField(max_length=30) 
@@ -105,11 +105,10 @@ class IRR_header(models.Model):
 class IRR(models.Model):
     irr_headkey = models.ForeignKey(IRR_header)
     irr_no = models.IntegerField(primary_key = True)
-    cost_center_no = models.ForeignKey(Cost_center)
-    date_recv = models.DateField()
-    wo_no = models.CharField(max_length=7)
-    remark = models.TextField(max_length = 30)
-
+    cost_center_no = models.ForeignKey(Cost_center, null=True, blank=True)
+    date_recv = models.DateField(null=True, blank=True)
+    wo_no = models.CharField(max_length=7, null=True, blank=True)
+    remark = models.TextField(max_length = 30, null=True, blank=True)
 
     def __unicode__(self):
         return str(self.irr_no)
