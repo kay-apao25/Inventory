@@ -22,18 +22,18 @@
         	<span style="padding-left:830px;"></span>
         	<span align="right"> Mindanao Generation-Central WareHouse</span>
         </div>
-        <h3 align="center"> MATERIALS ISSUE VOUCHER </h3> 
-        
+        <h3 align="center"> MATERIALS ISSUE VOUCHER </h3>
+
 		<span style="padding-left:1200px;"></span>
-		
+
 		<span align ="right"> {{mivs.doc_date}}</span>
-		
+
 		<table style="width:100%;" align="center" >
 			<tr>
-				<td colspan="3">Requisitioning Cost Center: {{mivs.cost_center_no.cost_center_name}}</td>
-				<td colspan="7">Cost Center No.: {{mivs.cost_center_no.id}}</td>
+				<td colspan="3">Requisitioning Cost Center: {{mivs.inv_station_no.cost_center_no.cost_center_name}}</td>
+				<td colspan="7">Cost Center No.: {{mivs.inv_station_no.cost_center_no.id}}</td>
 				<td colspan="4">WRS No.: {{mivs.wrs_number}}</td>
-				
+
 
 			</tr>
 			<tr>
@@ -55,21 +55,21 @@
 			<td style="width:4%;text-align:center" >MV</td>
 			<td style="width:4%;text-align:center" >T</td>
 			<td style="width:4%;text-align:center" >JO/WO</td>
-			</tr>	
+			</tr>
 			<tr>
-				<td style="text-align:center"><br>{{mivs.asset_code.nsn}}<br><br><br><br><br><br><br><br><br></td>
-				<td style="text-align:center"><br>{{mivs.asset_code.item_name}}, {{mivs.asset_code.description}}<br><br><br><br><br><br><br><br><br></td>
-				<td style="text-align:center"><br> {{mivs.asset_code.unit_measure}} / {{mivs.asset_code.quantity}}<br><br><br><br><br><br><br><br><br></td>
-				<td style="text-align:center"><br>{{mivs.asset_code_fk.unit_cost}}<br><br><br><br><br><br><br><br><br></td>
-				<td style="text-align:center"><br><br><br><br><br><br><br><br><br><br></td>
-				<td style="text-align:center"><br><br><br><br><br><br><br><br><br><br></td>
-				<td style="text-align:center"><br><br><br><br><br><br><br><br><br><br></td>
-				<td style="text-align:center"><br><br><br><br><br><br><br><br><br><br></td>
-				<td style="text-align:center"><br><br><br><br><br><br><br><br><br><br></td>
-				<td style="text-align:center"><br><br><br><br><br><br><br><br><br><br></td>
-				<td style="text-align:center"><br><br><br><br><br><br><br><br><br><br></td>
-				<td style="text-align:center"><br><br><br><br><br><br><br><br><br><br></td>
-				<td style="text-align:center"><br><br><br><br><br><br><br><br><br><br></td>
+				<td style="text-align:center"><br>{{mivs.product.product.nsn}}<br></td>
+				<td style="text-align:center"><br>{{mivs.product.product.item_name}}, {{mivs.product.product.description}}<br></td>
+				<td style="text-align:center"><br> {{mivs.product.product.unit_measure}} / {{mivs.product.product.quantity}}<br></td>
+				<td style="text-align:center"><br>{{mivs.product.product.unit_cost}}<br></td>
+				<td style="text-align:center"><br></td>
+				<td style="text-align:center"><br></td>
+				<td style="text-align:center"><br></td>
+				<td style="text-align:center"><br></td>
+				<td style="text-align:center"><br></td>
+				<td style="text-align:center"><br></td>
+				<td style="text-align:center"><br></td>
+				<td style="text-align:center"><br></td>
+				<td style="text-align:center"><br><br></td>
 			</tr>
 			<tr>
 				<td colspan="2">JO/WO <br>   J - Job Order <br>   W - Job Order</td>
@@ -78,13 +78,16 @@
 
 			</tr>
 			<tr>
-				<td style="text-align:center" colspan="2">Approved By: <br><u></u><br>IS Cost Center Head<br>DCE:</td>
-				<td style="text-align:center" colspan="3" > Issued By:  <br> <u>{{mivs.irr_no.dce_custodian.name}}</u><br>Property Custodian<br>DCE:{{mivs.irr_no.dce_custodian}}</td>
-				<td style="text-align:center" colspan="2">Recieved item/s as stated above:<br><u></u><br>Requisitioners/Representatives<br>DCE:</td>
+				<td style="text-align:center" colspan="2">Approved By: <br><u>{{mivs.product.irr_no.irr_headkey.dce_approved}}</u><br>IS Cost Center Head<br>
+          DCE:{{mivs.product.irr_no.irr_headkey.dce_approved.dce}}<br>date:{{mivs.product.irr_no.irr_headkey.approved_date}}</td>
+				<td style="text-align:center" colspan="3" > Issued By:  <br> <u>{{mivs.product.irr_no.irr_headkey.dce_custodian}}</u><br>Property Custodian
+          <br>DCE:{{mivs.product.irr_no.irr_headkey.dce_custodian.dce}}<br>date:{{mivs.product.irr_no.irr_headkey.proc_date}}</td>
+				<td style="text-align:center" colspan="2">Recieved item/s as stated above:<br><u>{{mivs.product.irr_no.irr_headkey.dce_user}}</u>
+          <br>Requisitioners/Representatives<br>DCE:{{mivs.product.irr_no.irr_headkey.dce_user.dce}}<br>date:{{mivs.product.irr_no.irr_headkey.date_dlvrd}}</td>
 				<td style="text-align:center" colspan="6">MIV<br>IS No. {{mivs.inv_station_no.inv_station_no}} <br> NO {{mivs.id}}<br><br></td>
-				
+
 			</tr>
-			
+
 		</table>
     </body>
 </html>

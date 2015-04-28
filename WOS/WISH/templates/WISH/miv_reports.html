@@ -2,20 +2,20 @@
   <table style="width:100%;" align="center" class="table">
     <thead>
     	<th>MIV No.</th>
-      <th>ISSUED BY:</th>
+      <th>IRR No:</th>
       <th>DATE ISSUED:</th>
 
     </thead>
     	{% for miv in mivs %}
      	<tr>
         <td>
-          <a href="{% url 'WISH.views.miv_form' pk=miv.pk %}">
+          <a href="{% url 'WISH.views.miv_form' pk=miv.pk, ipk=irr_no.pk %}">
             {{miv.id}}
           </a>
         </td>
 
         <td>
-          {{miv.irr_no.dce_custodian.name}}
+          {{miv.irr_no}}
         </td>
 
         <td>
