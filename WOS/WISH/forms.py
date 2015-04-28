@@ -50,8 +50,8 @@ class PAR_entryForm(forms.ModelForm):
 
     class Meta:
         model = PAR
-        fields = ('dce', 'par_no', 'amt_cost', 'remark', 'qty', 'approved_by', \
-        'issued_by', 'inv_stat_no', 'PO_number', 'date_acquired', 'wo_number', )
+        fields = ('dce', 'par_no', 'amt_cost', 'remark', 'approved_by', \
+        'issued_by', 'inv_stat_no', 'PO_number', 'date_acquired', 'wo_number', 'product', 'qty', )
 
 class GARV_entryForm(forms.ModelForm):
 
