@@ -10,6 +10,7 @@ urlpatterns = [
     url(r'^irr_entry/$', views.irr_entry, name='irr_entry'),
     url(r'^irr_entry_cont/(?P<pk>[0-9]+)/$', views.irr_entry_cont, name='irr_entry_cont'),
     url(r'^miv_entry/$', views.miv_entry, name='miv_entry'),
+    url(r'^miv_entry_S/(?P<pk>[0-9]+)/$', views.miv_entry_S),
     url(r'^par_entry/$', views.par_entry, name='par_entry'),
     url(r'^par_form/(?P<pk>[0-9]+)/$', views.par_form),
     url(r'^garv_entry/$', views.garv_entry),

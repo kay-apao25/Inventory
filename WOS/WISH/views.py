@@ -109,22 +109,23 @@ def irr_entry_cont(request, pk):
         form = IRR_entry_cont_Form()
     return render(request, 'WISH/irr_entry_cont.html', {'form': form})
 
-'''def miv_entry(request):
+def miv_entry_S(request, pk):
     if request.method == "POST":
         form = MIV_entryForm(request.POST)
         if form.is_valid():
-            product_miv = {}
-            for product in product_miv:
-                miv_entry = form.save(commit=False)
-                miv_entry.doc_date = time.strftime("%Y-%m-%d")
-                miv_entry.wrs_number = randint(100000,999999)
-                miv_entry.cost_center_no_id = miv_entry.inv_station_no.cost_center_no_id
-                #miv_entry.amount = miv_entry.asset_code.unit_cost * miv_entry.quantity
-                miv_entry.save()
+            miv_entry = form.save(commit=False)
+            miv_entry.doc_date = time.strftime("%Y-%m-%d")
+            miv_entry.wrs_number = randint(100000,999999)
+            miv_entry.product_id = pk
+            miv_entry.amount = miv_entry.quantity * miv_entry.product.product.unit_cost
+            miv_entry.irr_headkey = miv_entry.product.irr_no.irr_headkey
+            miv_entry.cost_center_no_id = miv_entry.inv_station_no.cost_center_no_id
+            #miv_entry.amount = miv_entry.asset_code.unit_cost * miv_entry.quantity
+            miv_entry.save()
             return redirect('WISH.views.index')
     else:
         form = MIV_entryForm()
-    return render(request, 'WISH/miv_entry.html', {'form': form })'''
+    return render(request, 'WISH/miv_entry.html', {'form': form })
 
 def miv_entry(request):
     if request.method == "POST":
@@ -135,9 +136,8 @@ def miv_entry(request):
             return redirect('WISH.views.index')
     else:
         irrs = IRR.objects.all()
-        form = MIV_entryForm()
         pros = Product_to_IRR.objects.all()
-    return render(request, 'WISH/miv_entry_f.html', {'form': form , 'irrs':irrs, 'pros':pros})
+    return render(request, 'WISH/miv_entry_f.html', {'irrs':irrs, 'pros':pros})
 
 def par_entry(request):
     if request.method == "POST":
