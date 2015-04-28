@@ -34,7 +34,8 @@ class MIV_entryForm(forms.ModelForm):
 
     class Meta:
         model = MIV
-        widgets = {
+        fields = ('quantity', 'date_issued', 'inv_station_no', 'remark')
+        '''widgets = {
             'quantity': forms.TextInput(attrs={'placeholder': 'Quantity'}),
             'date_issued': forms.TextInput(attrs={'placeholder': 'Date Issued'}),
             'remark': forms.TextInput(attrs={'placeholder': 'Remark'}),
@@ -42,7 +43,7 @@ class MIV_entryForm(forms.ModelForm):
             'irr_no': forms.TextInput(attrs={'placeholder': 'IRR No.'}),
             'inv_station_no': forms.TextInput(attrs={'placeholder': 'Inventory Station No.'}),
         }
-        fields = ( 'quantity', 'date_issued',  'remark' , 'product', 'inv_station_no',)
+        fields = ( 'quantity', 'date_issued',  'remark' , 'product', 'inv_station_no',)'''
 
 class PAR_entryForm(forms.ModelForm):
 
