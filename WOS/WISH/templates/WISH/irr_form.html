@@ -12,7 +12,7 @@
         	}
         </style>
     </head>
- 
+
     <body>
     	<div>
         	<span align="left" > Republic of the Philippines</span>
@@ -20,50 +20,50 @@
           	<span align="right"> Mindanao Regional Center</span>
         </div>
         <div><span align ="left">National Power Corporation</span>
-        	<span style="padding-left:850px;"></span>	
+        	<span style="padding-left:850px;"></span>
         	<span align="right"> Mindanao Generation-Central WareHouse</span>
         </div>
-        <h3 align="center"> INSPECTION AND RECEIVING REPORT </h3> 
-        <span align="left" >  type: {{irs.irr_no.type_n}}</span>
+        <h3 align="center"> INSPECTION AND RECEIVING REPORT </h3>
+        <span align="left" >  type: {{irs.irr_headkey.type_n}}</span>
 		<span style="padding-left:1100px;"></span>
-		<span align ="right">Date: {{irs.irr_no.proc_date}}</span>
-		</form>																			
+		<span align ="right">Date: {{irs.irr_headkey.proc_date}}</span>
+		</form>
 
 		<table style="width:100%;" align="center" >
 			<tr>
-				
-				<td rowspan="2" colspan="2">Supplier Name: {{irs.irr_no.supplier.supplier_name}}</td>
-				
-				<td rowspan="2" colspan="1">Supplier DCE: {{irs.irr_no_fk.supplier.supplier_number}}</td>
-				
+
+				<td rowspan="2" colspan="2">Supplier Name: {{irs.irr_headkey.supplier.supplier_name}}</td>
+
+				<td rowspan="2" colspan="1">Supplier DCE: {{irs.irr_headkey.supplier.supplier_number}}</td>
+
 				<td colspan="5" style="text-align:center;">For materials transferred/transshipped</td>
 			</tr>
 			<tr>
-				
-				<td colspan="3">I/Prop.Cust: {{irs.irr_no.dce_custodian.name}}</td>
-				<td colspan="2">DCE:{{irs.irr_no.dce_custodian.dce}}</td>
-				
+
+				<td colspan="3">I/Prop.Cust: {{irs.irr_headkey.dce_custodian.name}}</td>
+				<td colspan="2">DCE:{{irs.irr_headkey.dce_custodian.dce}}</td>
+
 			</tr>
 			<tr>
 				<td colspan="2">
-						
+
 						<input type="checkbox" name="type" value="">PO
 						<input type="checkbox" name="type" value="">RPO
 						<input type="checkbox" name="type" value="">LPO
 						<input type="checkbox" name="type" value="">SCL
 						<input type="checkbox" name="type" value="">IO
 						<input type="checkbox" name="type" value="">SCF No. :
-						{{irs.irr_no.po_number}}
-						
+						{{irs.irr_headkey.po_number}}
+
 
 				</td>
-				<td>Invoice No. : <br> &nbsp;&nbsp;&nbsp;&nbsp; {{irs.irr_no.invoice_number}}</td>
-				<td>Date Dlvrd : <br> &nbsp;&nbsp;&nbsp;&nbsp; {{irs.irr_no.date_dlvrd}}</td>
-				
-				<td colspan="2">Issuing Inventory Station <br> &nbsp;&nbsp;&nbsp;&nbsp; {{irs.irr_no.inv_station_no.station_description}}</td>
+				<td>Invoice No. : <br> &nbsp;&nbsp;&nbsp;&nbsp; {{irs.irr_headkey.invoice_number}}</td>
+				<td>Date Dlvrd : <br> &nbsp;&nbsp;&nbsp;&nbsp; {{irs.irr_headkey.date_dlvrd}}</td>
+
+				<td colspan="2">Issuing Inventory Station <br> &nbsp;&nbsp;&nbsp;&nbsp; {{irs.irr_headkey.inv_station_no.station_description}}</td>
 				<td>MTI No. <br> </td>
 				<td colspan="3">BL No. <br> </td>
-				
+
 			</tr>
 			<tr>
 
@@ -76,28 +76,36 @@
 				<th style="width:12%;text-align:center">Unit Price</th>
 				<th style="width:15%;text-align:center">Amount</th>
 			</tr>
+      {% for pro in pros%}
 			<tr>
-				<td style="text-align:center"><br>{{irs.asset_code.id}}<br><br><br><br><br><br><br><br><br></td>
-				<td style="text-align:center"><br>{{irs.asset_code.nsn}} <br><br><br><br><br><br><br><br><br></td>
-				<td style="text-align:center"><br>{{irs.asset_code.item_name}} - {{irs.asset_code.description}}<br><br><br><br><br><br><br><br><br></td>
-				<td style="text-align:center"><br> {{irs.quantity_accepted}}<br><br><br><br><br><br><br><br><br></td>
-				<td style="text-align:center"><br> {{irs.quantity_rejected}}<br><br><br><br><br><br><br><br><br></td>
-				<td style="text-align:center"><br>{{irs.asset_code.unit_measure }}<br><br><br><br><br><br><br><br><br></td>
-				<td style="text-align:center"><br>{{irs.asset_code.unit_cost }}<br><br><br><br>TOTAL<br><br><br><br><br></td>
-				<td style="text-align:center"><br>{{ amount }}<br><br><br><br>{{ total }}<br><br><br><br><br></td>
-				
+
+				<td style="text-align:center"><br>{{pro.product.id}}<br><br></td>
+				<td style="text-align:center"><br>{{pro.product.nsn}}<br><br></td>
+				<td style="text-align:center"><br>{{pro.product.item_name}} - {{pro.product.description}}<br><br></td>
+				<td style="text-align:center"><br> {{pro.quantity_accepted}}<br><br></td>
+				<td style="text-align:center"><br> {{pro.quantity_rejected}}<br><br></td>
+				<td style="text-align:center"><br>{{pro.product.unit_measure }}<br><br></td>
+				<td style="text-align:center"><br>{{pro.product.unit_cost }}<br><br></td>
+        <td style="text-align:center"><br>{{ pro.amt }}<br><br></td>
+
 			</tr>
+      {% endfor %}
+
+
+      <tr>
+        <td colspan=8 style="text-align:right"><br>Total: {{ total }}<br><br></td>
+      </tr>
 			<tr>
 				<td colspan="8">Findings/Observations:</td>
 			</tr>
 			<tr>
 				<td style="text-align:center" colspan="2">Inspected & Accepted By:<br><u></u><br>QA/Deputized Inspector<br>DCE:<br>Date of inspection:</td>
-				<td style="text-align:center" >Recieved By:<br><u>{{mivs.irr_no.dce_custodian.name}}</u><br>Property Custodian<br>DCE:{{mivs.irr_no.dce_custodian}}<br>Date of inspection:</td>
+				<td style="text-align:center" >Received By:<br><u>{{mivs.irr_headkey.dce_custodian.name}}</u><br>Property Custodian<br>DCE:{{mivs.irr_headkey.dce_custodian}}<br>Date of inspection:</td>
 				<td style="text-align:center" colspan="3">Approved By:<br><u></u><br>IS Cost Center Head<br>DCE:<br>Date of inspection:</td>
-				<td style="text-align:center" colspan="2">IRR<br>IS no. {{irs.irr_no.inv_station_no.inv_station_no}} <br> NO. {{irs.irr_no.id}} <br><br></td>
-				
+				<td style="text-align:center" colspan="2">IRR<br>IS no. {{irs.irr_headkey.inv_station_no.inv_station_no}} <br> NO. {{irs.pk}}<br><br></td>
+
 			</tr>
-			
+
 
 		</table>
     </body>
