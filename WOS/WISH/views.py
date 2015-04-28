@@ -209,7 +209,8 @@ def gatepass_form(request):
 
 def miv_form(request, pk):
     mivs = get_object_or_404(MIV, pk=pk)
-    return render(request, 'WISH/miv_form.html', {'mivs':mivs})
+    pros = Product_to_IRR.objects.filter(irr_no=mivs.irr_no)
+    return render(request, 'WISH/miv_form.html', {'mivs':mivs, 'pros':pros})
 
 def irr_report(request):
     if 'q' in request.GET and request.GET['q']:
