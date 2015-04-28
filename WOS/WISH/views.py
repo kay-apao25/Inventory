@@ -90,7 +90,7 @@ def irr_entry_cont(request, pk):
         form = IRR_entry_cont_Form()
     return render(request, 'WISH/irr_entry_cont.html', {'form': form})
 
-def miv_entry(request):
+'''def miv_entry(request):
     if request.method == "POST":
         form = MIV_entryForm(request.POST)
         if form.is_valid():
@@ -103,7 +103,19 @@ def miv_entry(request):
             return redirect('WISH.views.index')
     else:
         form = MIV_entryForm()
-    return render(request, 'WISH/miv_entry.html', {'form': form})
+    return render(request, 'WISH/miv_entry.html', {'form': form })'''
+
+def miv_entry(request):
+    if request.method == "POST":
+        form = MIV_entryForm(request.POST)
+        if form.is_valid():
+            miv_entry = form.save(commit=False)
+            miv_entry.save()
+            return redirect('WISH.views.index')
+    else:
+        irrs = IRR.objects.all()
+        form = MIV_entryForm()
+    return render(request, 'WISH/miv_entry_f.html', {'form': form , 'irrs':irrs})
 
 def par_entry(request):
     if request.method == "POST":
