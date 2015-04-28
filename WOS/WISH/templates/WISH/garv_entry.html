@@ -1,26 +1,30 @@
 {% extends 'WISH/index.html' %}
+{% load bootstrap %}
 
 {% block content %}
     <div class="page-header">
       <h1 align="center">Fill for GARV Record</h1>
-    </div>    <br>
-    <form method="POST" class="post-form">{% csrf_token %}
-      {% if form.non_field_errors %}
-      <ul>
-        {% for error in form.non_field_errors %}
-          <li>{{ error }}</li>
-        {% endfor %}
-      </ul>
-    {% endif %}
-          {% for field in form %}
-          <div id="{{ field.auto_id }}_errors">
-            {{ field.errors }}
-          </div>
-          <div id="my_form">
-           {{ field.label_tag }}<br>{{ field }}
-      </div>
-      <br>
+    </div>
+    <br>
+    <form method="POST" class="irr_entry">{% csrf_token %}
+    {% if form.non_field_errors %}
+    <ul>
+      {% for error in form.non_field_errors %}
+        <li>{{ error }}</li>
       {% endfor %}
-          <button type="submit" class="save btn btn-default">Save</button>
-      </form>
+    </ul>
+    {% endif %}
+    
+    {% for field in form %}
+    {%if forloop.counter|divisibleby:"4" %}
+      <div></div><br><br>
+    {%endif%}
+
+    <b>{{field.label}}:</b>&nbsp;&nbsp;{{field}}&nbsp;&nbsp;&nbsp;
+    {%endfor%}
+<br>
+<br>
+<br>
+    <div align="center"><button type="submit" class="save btn btn-default" id="save">Save</button></div>
+    </form>
 {% endblock %}

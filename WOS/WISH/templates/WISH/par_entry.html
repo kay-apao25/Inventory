@@ -7,11 +7,27 @@
       <h1 align="center">Fill for PAR Record</h1>
     </div>
     <form method="POST" class="product-form">{% csrf_token %}
-      {% for field in form %}
-        <div id="my_form" align="left">
-          {{ field | bootstrap }}
-        </div>
+      {% if form.non_field_errors %}
+    <ul>
+      {% for error in form.non_field_errors %}
+        <li>{{ error }}</li>
       {% endfor %}
+    </ul>
+    {% endif %}
+    
+    {% for field in form %}
+    {%if forloop.counter|divisibleby:"4" %}
+      <div></div><br><br>
+    {%endif%}
+    {%if field.label ==  'Remark' %}
+      <b>{{field.label}}:</b><br>{{field}}
+    {% else %}
+      <b>{{field.label}}:</b>&nbsp;&nbsp;{{field}}&nbsp;&nbsp;&nbsp;
+    {%endif%}
+
+    {%endfor%}
+    <br>
+    <br>
           <button type="submit" class="save btn btn-default">Save</button>
           <span>
             <a id="additembutton" type="submit" data-toggle="modal" data-target="#additem">Add Item</a>

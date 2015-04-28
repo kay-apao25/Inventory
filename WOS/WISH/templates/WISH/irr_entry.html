@@ -13,16 +13,15 @@
         <li>{{ error }}</li>
       {% endfor %}
     </ul>
-  {% endif %}
-  {% for field in form %}
-
+    {% endif %}
+    
+    {% for field in form %}
     {%if forloop.counter|divisibleby:"3" %}
-    <div></div><br><br>
-        
+      <div></div><br><br>
     {%endif%}
 
-     {{field.label_tag}}&nbsp;&nbsp;{{field}}&nbsp;&nbsp;&nbsp;
-{%endfor%}
+    {{field.label_tag}}&nbsp;&nbsp;{{field}}&nbsp;&nbsp;&nbsp;
+    {%endfor%}
 <br>
 <br>
 <br>
