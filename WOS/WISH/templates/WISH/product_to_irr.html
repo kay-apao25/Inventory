@@ -2,6 +2,10 @@
 
 
 {% block content %}
+    <div class="page-header">
+      <h1 align="center">IRR Entry Continuation</h1>
+    </div>
+    <div align="right"><a href= "{% url 'WISH.views.index' %}"><i class="fa fa-arrow-right"></i> Exit</a></div>
     <form method="POST" class="post-form">{% csrf_token %}
       {% if form.non_field_errors %}
       <ul>
@@ -19,7 +23,28 @@
       </div>
       <br>
       {% endfor %}
-      <a href= "{% url 'WISH.views.index' %}" >exit</a>
-          <button type="submit" class="save btn btn-default" id="modal">Add Another Item</button>
-      </form>
+      <!--<div align="right"><a href= "{% url 'WISH.views.index' %}"><i class="fa fa-arrow-right"></i> Exit</a></div>-->
+          <!--a id="modal" href="{% url 'WISH.views.product_to_irr' pk=pk %}">Add Another Item</a-->
+          <button type="submit" class="save btn btn-default">Add Another Item</button>
+      
+      <br>
+      <br>
+      {% if iform.non_field_errors %}
+      <ul>
+        {% for error in iform.non_field_errors %}
+          <li>{{ error }}</li>
+        {% endfor %}
+      </ul>
+    {% endif %}
+          {% for field in iform %}
+          <div id="{{ field.auto_id }}_errors">
+            {{ field.errors }}
+          </div>
+          <div id="my_form">
+           {{ field.label_tag }}<br>{{ field }}
+      </div>
+      <br>
+      {% endfor %}
+        <button type="submit" class="save btn btn-default">Save</button>
+      
 {% endblock %}

@@ -11,7 +11,7 @@
     {% for pro in pros %}
       	<tr>
           <td>
-            <a href="{% url 'WISH.views.miv_entry_S' pk=pro.irr_no %}">
+            <a href="{% url 'WISH.views.miv_entry_S' pk=pro.pk %}">
               {{ pro.irr_no }}
             </a>
           </td>

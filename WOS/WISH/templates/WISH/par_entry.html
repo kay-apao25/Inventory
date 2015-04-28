@@ -1,27 +1,18 @@
 {% extends 'WISH/index.html' %}
+{% load bootstrap %}
+
 
 {% block content %}
     <div class="page-header">
       <h1 align="center">Fill for PAR Record</h1>
     </div>
-    <br>
-    <form method="POST" class="post-form">{% csrf_token %}
-      {% if form.non_field_errors %}
-      <ul>
-        {% for error in form.non_field_errors %}
-          <li>{{ error }}</li>
-        {% endfor %}
-      </ul>
-    {% endif %}
-          {% for field in form %}
-          <div id="{{ field.auto_id }}_errors">
-            {{ field.errors }}
-          </div>
-          <div id="my_form">
-           {{ field.label_tag }}<br>{{ field }}
-          </div>
-      <br>
+    <form method="POST" class="product-form">{% csrf_token %}
+      {% for field in form %}
+        <div id="my_form" align="left">
+          {{ field | bootstrap }}
+        </div>
       {% endfor %}
-          <button type="submit" class="save btn btn-default">Save</button>
+      <br>
+         <div align="center"><button type="submit" class="save btn btn-default">Save</button></div> 
       </form>
 {% endblock %}
