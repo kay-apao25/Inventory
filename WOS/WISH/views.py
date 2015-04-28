@@ -91,20 +91,35 @@ def irr_entry_cont(request, pk):
         form = IRR_entry_cont_Form()
     return render(request, 'WISH/irr_entry_cont.html', {'form': form})
 
+'''def miv_entry(request):
+    if request.method == "POST":
+        form = MIV_entryForm(request.POST)
+        if form.is_valid():
+            product_miv = {}
+            for product in product_miv:
+                miv_entry = form.save(commit=False)
+                miv_entry.doc_date = time.strftime("%Y-%m-%d")
+                miv_entry.wrs_number = randint(100000,999999)
+                miv_entry.cost_center_no_id = miv_entry.inv_station_no.cost_center_no_id
+                #miv_entry.amount = miv_entry.asset_code.unit_cost * miv_entry.quantity
+                miv_entry.save()
+            return redirect('WISH.views.index')
+    else:
+        form = MIV_entryForm()
+    return render(request, 'WISH/miv_entry.html', {'form': form })'''
+
 def miv_entry(request):
     if request.method == "POST":
         form = MIV_entryForm(request.POST)
         if form.is_valid():
             miv_entry = form.save(commit=False)
-            miv_entry.doc_date = time.strftime("%Y-%m-%d")
-            miv_entry.wrs_number = randint(100000,999999)
-            miv_entry.cost_center_no_id = miv_entry.inv_station_no.cost_center_no_id
-            #miv_entry.amount = miv_entry.asset_code.unit_cost * miv_entry.quantity
             miv_entry.save()
             return redirect('WISH.views.index')
     else:
+        irrs = IRR.objects.all()
         form = MIV_entryForm()
-    return render(request, 'WISH/miv_entry.html', {'form': form})
+        pros = Product_to_IRR.objects.all()
+    return render(request, 'WISH/miv_entry_f.html', {'form': form , 'irrs':irrs, 'pros':pros})
 
 def par_entry(request):
     if request.method == "POST":
@@ -173,12 +188,12 @@ def cme_form(request):
 
 def irr_form(request, pk):
     irs = get_object_or_404(IRR, pk=pk)
-    pros = Product_to_IRR.filter(irr_no=pk)
-    amt_list = []
+    pros = Product_to_IRR.objects.filter(irr_no=pk)
+    amt_list = {}
     total = 0
     for pro in pros:
         amount = pro.quantity_accepted * pro.product.unit_cost
-        amt_list.append(amount)
+        pro.amt = amount
         total = total + amount
     return render(request, 'WISH/irr_form.html', {'irs':irs, 'pros': pros, \
                     'amt_list': amt_list, 'total': total})

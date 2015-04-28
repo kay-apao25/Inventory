@@ -1,0 +1,26 @@
+{% extends 'WISH/index.html' %}
+
+{% block content %}
+<h1 align="center">Choose the item to be include in MIV</h1>
+  <table style="width:100%;" align="center" class="table">
+    <thead>
+     	<th>IRR No.</th>
+       <th>Item name</th>
+
+    </thead>
+     	{% for irr in irrs %}
+      	<tr>
+          <td>
+            <a href="{% url 'WISH.views.irr_form' pk=irr.pk %}">
+              {{ irr.pk }}
+            </a>
+          </td>
+          <td>
+            {% for pro in pros %}
+            {{pro.product.item_name}}
+            {% endfor %}
+          </td>
+      	</tr>
+      {% endfor %}
+  </table>
+{% endblock %}
