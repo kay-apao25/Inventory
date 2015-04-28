@@ -6,12 +6,26 @@
       <h1 align="center">Fill for MIV Record</h1>
     </div>
     <form method="POST" class="product-form">{% csrf_token %}
-      {% for field in form %}
-        <div id="my_form" align="left">
-          {{ field | bootstrap_horizontal:'col-lg-3 col-lg-6'}} <br><br><br>
-        </div>
+      {% if form.non_field_errors %}
+    <ul>
+      {% for error in form.non_field_errors %}
+        <li>{{ error }}</li>
       {% endfor %}
-      <br>
+    </ul>
+    {% endif %}
+    
+    {% for field in form %}
+    {%if forloop.counter|divisibleby:"4" %}
+      <div></div><br><br>
+    {%endif%}
+    {%if field.label ==  'Remark' %}
+      <b>{{field.label}}:</b><br>{{field}}
+    {% else %}
+      <b>{{field.label}}:</b>&nbsp;&nbsp;{{field}}&nbsp;&nbsp;&nbsp;
+    {%endif%}
+
+    {%endfor%}
+      <br><br><br><br><br><br><br><br><br><br>
          <div align="center"><button type="submit" class="save btn btn-default">Save</button></div> 
       </form>
 {% endblock %}

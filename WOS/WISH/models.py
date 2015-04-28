@@ -63,7 +63,7 @@ class Product(models.Model):
     part_number = models.CharField(max_length=8)
     manufacture_date = models.DateField()
     expiry_date = models.DateField(null=True, blank=True)
-    unit_cost = models.FloatField()     
+    unit_cost = models.FloatField()
     quantity = models.FloatField(default = '1')
     classification = models.CharField(max_length=30)
     stock = models.CharField(max_length=10)
@@ -125,18 +125,16 @@ class Product_to_IRR(models.Model):
         return str(self.irr_no)
 
 class MIV(models.Model):
-    irr_headkey = models.ForeignKey(IRR_header)
+    #irr_headkey = models.ForeignKey(IRR_header)
     inv_station_no = models.ForeignKey(Inventory_stat)
-    product = models.ForeignKey(Product_to_IRR)
+    irr_no = models.ForeignKey(IRR)
     wrs_number = models.CharField(max_length = 8)
-    quantity = models.FloatField()
-    amount = models.FloatField()
     date_issued = models.DateField()
     doc_date = models.DateField()
     remark = models.TextField()
 
     def __str__(self):
-        return str(self.irr_no)
+        return str(self.id)
 
 class PAR(models.Model):
     dce = models.ForeignKey(Employee)

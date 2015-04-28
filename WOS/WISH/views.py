@@ -116,9 +116,8 @@ def miv_entry_S(request, pk):
             miv_entry = form.save(commit=False)
             miv_entry.doc_date = time.strftime("%Y-%m-%d")
             miv_entry.wrs_number = randint(100000,999999)
-            miv_entry.product_id = pk
-            miv_entry.amount = miv_entry.quantity * miv_entry.product.product.unit_cost
-            miv_entry.irr_headkey = miv_entry.product.irr_no.irr_headkey
+            miv_entry.irr_no_id = pk
+            #miv_entry.irr_headkey = miv_entry.product.irr_headkey
             miv_entry.cost_center_no_id = miv_entry.inv_station_no.cost_center_no_id
             #miv_entry.amount = miv_entry.asset_code.unit_cost * miv_entry.quantity
             miv_entry.save()

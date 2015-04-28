@@ -1,26 +1,19 @@
 {% extends 'WISH/index.html' %}
 
 {% block content %}
-<h1 align="center">Select an item to be include in MIV</h1>
+<h1 align="center">Select irr number to MIV report</h1>
   <table style="width:100%;" align="center" class="table">
     <thead>
      	<th>IRR No.</th>
-       <th>Item name</th>
-
     </thead>
-    {% for pro in pros %}
+     	{% for irr in irrs %}
       	<tr>
           <td>
-            <a href="{% url 'WISH.views.miv_entry_S' pk=pro.pk %}">
-              {{ pro.irr_no }}
+            <a href="{% url 'WISH.views.miv_entry_S' pk=irr.pk %}">
+              {{ irr.pk}}
             </a>
           </td>
-          <td>
-            {{pro.product.item_name}}
-
-          </td>
       	</tr>
-
       {% endfor %}
   </table>
 {% endblock %}

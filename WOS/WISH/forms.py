@@ -34,7 +34,7 @@ class MIV_entryForm(forms.ModelForm):
 
     class Meta:
         model = MIV
-        fields = ('quantity', 'date_issued', 'inv_station_no', 'remark')
+        fields = ( 'date_issued', 'inv_station_no', 'remark')
         '''widgets = {
             'quantity': forms.TextInput(attrs={'placeholder': 'Quantity'}),
             'date_issued': forms.TextInput(attrs={'placeholder': 'Date Issued'}),
