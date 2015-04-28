@@ -207,9 +207,8 @@ def irr_form(request, pk):
 def gatepass_form(request):
     return render(request, 'WISH/gatepass_form.html', {})
 
-def miv_form(request, pk, ipk):
+def miv_form(request, pk):
     mivs = get_object_or_404(MIV, pk=pk)
-    pros = get_object_or_404(Product_to_IRR, ipk = ipk)
     return render(request, 'WISH/miv_form.html', {'mivs':mivs})
 
 def irr_report(request):

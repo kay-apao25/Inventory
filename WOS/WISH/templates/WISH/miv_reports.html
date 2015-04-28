@@ -9,7 +9,7 @@
     	{% for miv in mivs %}
      	<tr>
         <td>
-          <a href="{% url 'WISH.views.miv_form' pk=miv.pk, ipk=irr_no.pk %}">
+          <a href="{% url 'WISH.views.miv_form' pk=miv.pk %}">
             {{miv.id}}
           </a>
         </td>
