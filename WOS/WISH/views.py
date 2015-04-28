@@ -210,7 +210,14 @@ def gatepass_form(request):
 def miv_form(request, pk):
     mivs = get_object_or_404(MIV, pk=pk)
     pros = Product_to_IRR.objects.filter(irr_no=mivs.irr_no)
-    return render(request, 'WISH/miv_form.html', {'mivs':mivs, 'pros':pros})
+    amt_list = {}
+    total = 0
+    for pro in pros:
+        amount = pro.quantity_accepted * pro.product.unit_cost
+        pro.amt = amount
+        total = total + amount
+    return render(request, 'WISH/miv_form.html', {'mivs':mivs, 'pros': pros, \
+                    'amt_list': amt_list, 'total': total})
 
 def irr_report(request):
     if 'q' in request.GET and request.GET['q']:
