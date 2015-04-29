@@ -99,10 +99,14 @@
 				<td colspan="8">Findings/Observations:</td>
 			</tr>
 			<tr>
-				<td style="text-align:center" colspan="2">Inspected & Accepted By:<br><u></u><br>QA/Deputized Inspector<br>DCE:<br>Date of inspection:</td>
-				<td style="text-align:center" >Received By:<br><u>{{mivs.irr_headkey.dce_custodian.name}}</u><br>Property Custodian<br>DCE:{{mivs.irr_headkey.dce_custodian}}<br>Date of inspection:</td>
-				<td style="text-align:center" colspan="3">Approved By:<br><u></u><br>IS Cost Center Head<br>DCE:<br>Date of inspection:</td>
-				<td style="text-align:center" colspan="2">IRR<br>IS no. {{irs.irr_headkey.inv_station_no.inv_station_no}} <br> NO. {{irs.pk}}<br><br></td>
+				<td style="text-align:center" colspan="2">Inspected & Accepted By:<br><u>{{irs.irr_headkey.dce_user.name}}dce_user</u><br>
+          QA/Deputized Inspector<br>DCE:{{irs.irr_headkey.dce_user.dce}}<br>Date of inspection:{{irs.irr_headkey.proc_date}}</td>
+				<td style="text-align:center" >Received By:<br><u>{{irs.irr_headkey.dce_custodian.name}}</u><br>
+          Property Custodian<br>DCE:{{irs.irr_headkey.dce_custodian.dce}}<br>Date of inspection:{{irs.date_recv}}</td>
+				<td style="text-align:center" colspan="3">Approved By:<br><u>{{irs.irr_headkey.dce_approved.name}}</u><br>
+          IS Cost Center Head<br>DCE:{{irs.irr_headkey.dce_approved.dce}}<br>Date of inspection:{{irs.irr_headkey.approved_date}}</td>
+				<td style="text-align:center" colspan="2">IRR<br>IS no. {{irs.irr_headkey.inv_station_no.inv_station_no}}
+          <br> NO. {{irs.pk}}<br><br></td>
 
 			</tr>
 

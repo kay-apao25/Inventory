@@ -125,9 +125,8 @@ class Product_to_IRR(models.Model):
         return str(self.irr_no)
 
 class MIV(models.Model):
-    irr_headkey = models.ForeignKey(IRR_header)
     inv_station_no = models.ForeignKey(Inventory_stat)
-    product = models.ForeignKey(Product_to_IRR)
+    irr_no = models.ForeignKey(IRR)
     wrs_number = models.CharField(max_length = 8)
     quantity = models.FloatField()
     amount = models.FloatField()
