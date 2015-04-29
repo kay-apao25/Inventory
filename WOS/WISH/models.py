@@ -141,7 +141,7 @@ class MIV(models.Model):
 class PAR(models.Model):
     dce = models.ForeignKey(Employee, null=True, blank=True)
     par_date = models.DateField()
-    par_no = models.CharField(max_length=10, null=True, blank=True)
+    par_no = models.CharField(max_length=10)
     amt_cost = models.FloatField(null=True, blank=True)
     remark = models.TextField(null=True, blank=True)
     approved_by = models.ForeignKey(Employee, related_name='dce_FK2', null=True, blank=True)

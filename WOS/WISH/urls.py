@@ -6,6 +6,7 @@ urlpatterns = [
     #url(r'^$', views.cme_form),
     url(r'^$', views.index),
     url(r'^product/new/$', views.product_new, name='product_new'),
+    url(r'^par/$', views.par),
     #url(r'^irr_miv_form/(?P<mpk>[0-9]+)/(?P<ipk>[0-9]+)$', views.irr_miv_form, name='irr_miv_form'),
     url(r'^irr_entry/$', views.irr_entry, name='irr_entry'),
     url(r'^irr_entry_cont/(?P<pk>[0-9]+)/$', views.irr_entry_cont, name='irr_entry_cont'),
