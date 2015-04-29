@@ -82,12 +82,14 @@ def product_to_irr(request,pk, irn):
             irr.irr_no = irn
             irr.irr_headkey_id = pk
             product_to_irr.irr_no_id= irn
+            #product_to_irr.product = product_to_irr.
+            form = Product_to_IRRForm(request.POST)
             irr.save()
             product_to_irr.save()
             return redirect('WISH.views.product_to_irr', pk=pk, irn=irn)
     else:
-        form = Product_to_IRRForm()
-        iform = IRR_entry_cont_Form()
+        form = Product_to_IRRForm(request.POST.copy)
+        iform = IRR_entry_cont_Form(request.POST.copy)
     return render(request, 'WISH/product_to_irr.html', {'form': form, 'iform': iform, 'pk': pk})
 
 def irr_entry_cont(request, pk):
@@ -169,8 +171,8 @@ def par_entry(request, pk):
             #return redirect ('WISH.views.index')
             return redirect('WISH.views.par_entry', pk=pk)
     else:
-        form = PAR_Form()
-        iform = Product_to_PARForm()
+        form = PAR_Form(request.POST.copy)
+        iform = Product_to_PARForm(request.POST.copy)
     return render(request, 'WISH/par_entry.html', {'form': form, 'iform': iform})
 
 def wrs_entry(request):

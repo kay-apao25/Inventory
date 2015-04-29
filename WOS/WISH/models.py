@@ -1,6 +1,7 @@
 from django.db import models
 from django.db.models.fields import CharField
 
+
 # Create your models here.
 class Supplier(models.Model):
     supplier_number = models.CharField(max_length=8)
@@ -128,8 +129,6 @@ class MIV(models.Model):
     inv_station_no = models.ForeignKey(Inventory_stat)
     irr_no = models.ForeignKey(IRR)
     wrs_number = models.CharField(max_length = 8)
-    quantity = models.FloatField()
-    amount = models.FloatField()
     date_issued = models.DateField()
     doc_date = models.DateField()
     remark = models.TextField()
