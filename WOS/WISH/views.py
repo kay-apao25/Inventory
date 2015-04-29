@@ -138,11 +138,11 @@ def miv_entry(request):
         pros = Product_to_IRR.objects.all()
     return render(request, 'WISH/miv_entry_f.html', {'irrs':irrs, 'pros':pros})
 
-def par_entry(request, pk):
+def par(request):
     if request.method == "POST":
         form = PAR_entryForm(request.POST)
         iform = Product_to_PARForm(request.POST)
-        if form.is_valid():
+        if form.is_valid() and iform.is_valid():
             par_entry = form.save(commit=False)
             par_pro = form.save(commit=False)
             par_entry.par_date = time.strftime("%Y-%m-%d")
@@ -152,6 +152,24 @@ def par_entry(request, pk):
             return redirect('WISH.views.par_entry', pk=par_entry.par_no)
     else:
         form = PAR_entryForm()
+        iform = Product_to_PARForm()
+    return render(request, 'WISH/par_entry.html', {'form': form, 'iform': iform})
+
+def par_entry(request, pk):
+    if request.method == "POST":
+        form = PAR_Form(request.POST)
+        iform = Product_to_PARForm(request.POST)
+        if form.is_valid() and iform.is_valid():
+            par_entry = form.save(commit=False)
+            par_pro = form.save(commit=False)
+            par_entry.par_date = time.strftime("%Y-%m-%d")
+            par_entry.par_no = pk
+            par_entry.save()
+            par_pro.save()
+            #return redirect ('WISH.views.index')
+            return redirect('WISH.views.par_entry', pk=pk)
+    else:
+        form = PAR_Form()
         iform = Product_to_PARForm()
     return render(request, 'WISH/par_entry.html', {'form': form, 'iform': iform})
 
