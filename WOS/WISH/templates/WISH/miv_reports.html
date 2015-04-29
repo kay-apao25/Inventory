@@ -4,6 +4,7 @@
     	<th>MIV No.</th>
       <th>IRR No:</th>
       <th>DATE ISSUED:</th>
+      <th>WRS No.</th>
 
     </thead>
     	{% for miv in mivs %}
@@ -20,6 +21,9 @@
 
         <td>
           {{miv.date_issued}}
+        </td>
+        <td>
+          {{miv.wrs_number}}
         </td>
 
       </tr>
