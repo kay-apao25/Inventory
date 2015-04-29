@@ -156,7 +156,7 @@
                                 		<a href="{% url 'WISH.views.miv_entry' %}">Add MIV Record</a>
                             		</li>
                             		<li>
-                                		<a href="{% url 'WISH.views.par_entry' %}">Add PAR Record</a>
+                                		<a href="{% url 'WISH.views.par_entry' pk=3%}">Add PAR Record</a>
                             		</li>
                             		<li>
                                 		<a href="{% url 'WISH.views.garv_entry' %}">Add GARV Record</a>
@@ -170,7 +170,7 @@
                                 <a href="{% url 'WISH.views.miv_entry' %}">Add MIV Record</a>
                             </li>
                             <li>
-                                <a href="{% url 'WISH.views.par_entry' %}">Add PAR Record</a>
+                                <a href="{% url 'WISH.views.par_entry' pk=3 %}">Add PAR Record</a>
                             </li>
                             <li>
                                 <a href="{% url 'WISH.views.garv_entry' %}">Add GARV Record</a>
@@ -212,12 +212,7 @@
             			<!--<a href="{% url 'WISH.views.product_new' %}" class="top-menu"><img src="http://under30ceo.com/wp-content/uploads/2013/05/Product-Value.jpg" style="width:200px;height:200px" align="center"></a>
 
             			<a href="{% url 'WISH.views.wrs_entry' %}" class="top-menu"><img src="http://www.iconshock.com/img_jpg/DIAMOND/accounting/jpg/256/warehouse_icon.jpg" style="width:200px;height:200px" align="center"></img></a>
-
-<<<<<<< HEAD
-  	                    <a href="{% url 'WISH.views.par_entry' %}" class="top-menu"><img src="http://www.metrokids.com/MomSpeak/April-2015/3-Tips-for-Mom-Accountability/Accountable.jpg" style="width:200px;height:200px" align="center"></img></a>
-                        <a href="{% url 'WISH.views.garv_entry' %}" class="top-menu"><img src="http://www.irisclasson.com/wp-content/uploads/2012/09/reurn.jpg" style="width:200px;height:200px" align="center"></img></a>
-=======
-  	                    <a href="{% url 'WISH.views.par_entry' %}" class="top-menu"><img src="http://www.iconshock.com/img_jpg/DIAMOND/accounting/jpg/256/warehouse_icon.jpg" style="width:200px;height:200px" align="center"></img></a>-->
+                  
 
             		</div>
             		{% endblock %}

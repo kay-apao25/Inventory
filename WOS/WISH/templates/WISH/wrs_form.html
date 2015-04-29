@@ -14,24 +14,27 @@
   </style>
 </head>
 <body>
-	<div class="container" style="padding:30px">
-    <!--To add NAPOCOR logo-->
-    <span> <img src="http://upload.wikimedia.org/wikipedia/en/0/0f/Napocor_logo.JPG" style="width:100px;height:100px;margin-top:100px"></img></span>
-		<span>
-    <h4 align="center"> National Power Corporation
-		<br>
-							  Mindanao Generation
-		<br>
-					Maria Cristina, Iligan City, Philippines
-		</h4>
-		<br>
+	
+    <span style="margin-left:350px">
+    <img src="http://upload.wikimedia.org/wikipedia/en/0/0f/Napocor_logo.JPG" style="width:100px;height:100px;">
+      <h4 align="center"> National Power Corporation
+      <br>
+                Mindanao Generation
+      <br>
+          Maria Cristina, Iligan City, Philippines
+      </h4>
+    </img>
+		
+    
+    <br>
 		</span>
+    
 		<h1 align="center">WAREHOUSE REQUISITION SLIP</h1>
 	
 		<p align="center" style="font-size:90%;font-style:italic">(Materials, Supplies and Equipments)</p>
 
     <p align="right">Date:<u>&nbsp;&nbsp;{{ wrss.date_issued }}&nbsp;&nbsp;</u></p>
-		<p style="padding-left:30px">Cost Center:&nbsp;<u>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ wrss.cost_center_no }}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</u></p>
+		<p style="padding-left:30px">Cost Center:&nbsp;<u>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ wrss.irr_no.cost_center_no }}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</u></p>
 		<br>
     <table style="width:100%;border-style:solid;border-width:2px;" align="center">
   		<tr>
@@ -40,13 +43,14 @@
     		<th style="">QUANTITY</th>
     		<th style="width:15%">UNIT OF MEASURE</th>
   		</tr>
+      {% for pro in pros %}
   		<tr>
-    		<td>{{ wrss.asset_code.slc_number }}</td>
-    		<td style="text-align:left;font-style:italic"><b><u>&nbsp;&nbsp;&nbsp;&nbsp;PR # {{ wrss.asset_code.product_number }}, PO # 
-        {{ wrss.irr_no.po_number }}&nbsp;&nbsp;&nbsp;&nbsp;</u></b>
+    		<td>{{ pro }}</td>
+    		<td style="text-align:left;font-style:italic"><b><u>&nbsp;&nbsp;&nbsp;&nbsp;PR # {{ pro.product.product_number }}, PO # 
+        {{ wrss.irr_no.irr_headkey.po_number }}&nbsp;&nbsp;&nbsp;&nbsp;</u></b>
     			<br>
     			<br>
-    				{{ wrss.asset_code.item_name }}, {{ wrss.asset_code.description }}
+    				{{ pro.product.item_name }}, {{ pro.product.description }}
 				<br>
 				<br>
     				
@@ -54,18 +58,19 @@
     			<br>
     			<br>
     		</td>
-    		<td>	{{ wrss.asset_code.quantity }}
+    		<td>	{{ pro.quantity_accepted }}
     			<br>
     			<br>
     			<br>
     		</td>
-    		<td>	{{ wrss.asset_code.unit_measure }}
+    		<td>	{{ pro.product.unit_measure }}
     			<br>
     			<br>
     			<br>
     			
     		</td>
   		</tr>
+      {% endfor %}
   		<tr>
   			<span>
         <td colspan="4" style="text-align:left">Remarks:
@@ -94,11 +99,11 @@
   				
   				<span style="padding-left:20px"></span>
           <span style="font-size:95%;"><u>&nbsp;&nbsp;&nbsp;&nbsp;
-  														{{ wrss.irr_no.dce_custodian.name }}
+  														{{ wrss.irr_no.irr_headkey.dce_custodian.name }}
   												&nbsp;&nbsp;&nbsp;&nbsp;</u></span>
-  					<span style="padding-left:300px"></span>
+  					<span style="padding-left:240px"></span>
   				<span style="font-size:95%;"><u>&nbsp;&nbsp;&nbsp;&nbsp;
-  														{{ wrss.irr_no.dce_user.name}}
+  														{{ wrss.irr_no.irr_headkey.dce_user.name}}
   												&nbsp;&nbsp;&nbsp;&nbsp;</u></span>
   				<br>
   				
@@ -109,9 +114,9 @@
   				<br>
 
   				<span style="padding-left:18px"></span>
-  				<span style="font-size:95%;font-style:italic">DCE No.: </span>{{ wrss.irr_no.dce_custodian.dce }}
+  				<span style="font-size:95%;font-style:italic">DCE No.: </span>{{ wrss.irr_no.irr_headkey.dce_custodian.dce }}
   					<span style="padding-left:370px"></span>
-  				<span style="font-size:95%;font-style:italic">DCE No.: </span>{{ wrss.irr_no.dce_user.dce }}
+  				<span style="font-size:95%;font-style:italic">DCE No.: </span>{{ wrss.irr_no.irr_headkey.dce_user.dce }}
   			</td>
   			<td>
         	<p style="font-size:92%;text-align:left;">WRS forwarded to MRC-Central Warehouse on:</p>

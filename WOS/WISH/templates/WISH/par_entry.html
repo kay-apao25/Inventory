@@ -1,52 +1,50 @@
 {% extends 'WISH/index.html' %}
-{% load bootstrap %}
 
 
 {% block content %}
     <div class="page-header">
-      <h1 align="center">Fill for PAR Record</h1>
+      <h1 align="center">PAR Entry </h1>
     </div>
-    <form method="POST" class="product-form">{% csrf_token %}
-      {% if form.non_field_errors %}
-    <ul>
-      {% for error in form.non_field_errors %}
-        <li>{{ error }}</li>
-      {% endfor %}
-    </ul>
+    <div align="right"><a href= "{% url 'WISH.views.index' %}"><i class="fa fa-arrow-right"></i> Exit</a></div>
+    <form method="POST" class="post-form">{% csrf_token %}
+      {% if iform.non_field_errors %}
+      <ul>
+        {% for error in iform.non_field_errors %}
+          <li>{{ error }}</li>
+        {% endfor %}
+      </ul>
     {% endif %}
-    
-    {% for field in form %}
-    {%if forloop.counter|divisibleby:"4" %}
-      <div></div><br><br>
-    {%endif%}
-    {%if field.label ==  'Remark' %}
-      <b>{{field.label}}:</b><br>{{field}}
-    {% else %}
-      <b>{{field.label}}:</b>&nbsp;&nbsp;{{field}}&nbsp;&nbsp;&nbsp;
-    {%endif%}
-
-    {%endfor%}
-    <br>
-    <br>
-          <button type="submit" class="save btn btn-default">Save</button>
-          <span>
-            <a id="additembutton" type="submit" data-toggle="modal" data-target="#additem">Add Item</a>
-          </span>
-      </form>
-
-    <!-- start of modal for add item -->
-    <div id="additem" class="modal fade" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="modal-title" aria-hidden="true">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h4 align= "center" class="modal-title">Add Item</h4> <br>
+          {% for field in iform %}
+          <div id="{{ field.auto_id }}_errors">
+            {{ field.errors }}
           </div>
-          <div class="modal-body">
-
-          </div>
-        </div>
+          <div id="my_form">
+           {{ field.label_tag }}<br>{{ field }}
       </div>
-    </div>
+      <br>
+      {% endfor %}
+      <!--<div align="right"><a href= "{% url 'WISH.views.index' %}"><i class="fa fa-arrow-right"></i> Exit</a></div>-->
 
-    <!-- end of modal for add item -->
+          <button type="submit" class="save btn btn-default">Add Another Item</button>
+
+      <br>
+      <br>
+      {% if form.non_field_errors %}
+      <ul>
+        {% for error in form.non_field_errors %}
+          <li>{{ error }}</li>
+        {% endfor %}
+      </ul>
+    {% endif %}
+          {% for field in form %}
+          <div id="{{ field.auto_id }}_errors">
+            {{ field.errors }}
+          </div>
+          <div id="my_form">
+           {{ field.label_tag }}<br>{{ field }}
+      </div>
+      <br>
+      {% endfor %}
+        <button type="submit" class="save btn btn-default">Save</button>
+
 {% endblock %}
