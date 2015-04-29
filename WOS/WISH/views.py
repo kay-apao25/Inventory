@@ -176,7 +176,8 @@ def garv_entry(request):
 
 def wrs_form(request, pk):
     wrss = get_object_or_404(MIV, wrs_number=pk)
-    return render(request, 'WISH/wrs_form.html', {'wrss': wrss})
+    pros = Product_to_IRR.objects.filter(irr_no=wrss.irr_no)
+    return render(request, 'WISH/wrs_form.html', {'wrss': wrss, 'pros': pros})
 
 def par_form(request, pk):
     pars = get_object_or_404(PAR, pk=pk)
@@ -213,7 +214,15 @@ def gatepass_form(request):
 
 def miv_form(request, pk):
     mivs = get_object_or_404(MIV, pk=pk)
-    return render(request, 'WISH/miv_form.html', {'mivs':mivs})
+    pros = Product_to_IRR.objects.filter(irr_no=mivs.irr_no)
+    amt_list = {}
+    total = 0
+    for pro in pros:
+        amount = pro.quantity_accepted * pro.product.unit_cost
+        pro.amt = amount
+        total = total + amount
+    return render(request, 'WISH/miv_form.html', {'mivs':mivs, 'pros': pros, \
+                    'amt_list': amt_list, 'total': total})
 
 def irr_report(request):
     if 'q' in request.GET and request.GET['q']:

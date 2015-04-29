@@ -2,6 +2,10 @@
   <table style="width:100%;" align="center" class="table">
     <thead>
      	<th>IRR No.</th>
+       <th>Cost Center Name</th>
+       <th>Date Recieve</th>
+       <th>Work Order No.</th>
+
     </thead>
      	{% for irr in irrs %}
       	<tr>
@@ -9,6 +13,15 @@
             <a href="{% url 'WISH.views.irr_form' pk=irr.pk %}">
               {{ irr.pk }}
             </a>
+          </td>
+          <td>
+            {{irr.cost_center_no}}
+          </td>
+          <td>
+            {{irr.date_recv}}
+          </td>
+          <td>
+            {{irr.wo_no}}
           </td>
       	</tr>
       {% endfor %}
