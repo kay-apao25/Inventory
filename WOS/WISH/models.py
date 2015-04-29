@@ -125,35 +125,39 @@ class Product_to_IRR(models.Model):
         return str(self.irr_no)
 
 class MIV(models.Model):
-    #irr_headkey = models.ForeignKey(IRR_header)
+    irr_headkey = models.ForeignKey(IRR_header)
     inv_station_no = models.ForeignKey(Inventory_stat)
-    irr_no = models.ForeignKey(IRR)
+    product = models.ForeignKey(Product_to_IRR)
     wrs_number = models.CharField(max_length = 8)
+    quantity = models.FloatField()
+    amount = models.FloatField()
     date_issued = models.DateField()
     doc_date = models.DateField()
     remark = models.TextField()
 
     def __str__(self):
-        return str(self.id)
+        return str(self.irr_no)
 
 class PAR(models.Model):
-    dce = models.ForeignKey(Employee)
-    product = models.ForeignKey(Product_to_IRR)
+    dce = models.ForeignKey(Employee, null=True, blank=True)
     par_date = models.DateField()
-    par_no = models.CharField(max_length=10)
-    amt_cost = models.FloatField()
-    remark = models.TextField()
+    par_no = models.CharField(max_length=10, null=True, blank=True)
+    amt_cost = models.FloatField(null=True, blank=True)
+    remark = models.TextField(null=True, blank=True)
+    approved_by = models.ForeignKey(Employee, related_name='dce_FK2', null=True, blank=True)
+    issued_by = models.ForeignKey(Employee, related_name='dce_FK3', null=True, blank=True)
+    inv_stat_no = models.ForeignKey(Inventory_stat, null=True, blank=True)
+    PO_number = models.ForeignKey(IRR_header, null=True, blank=True)
+    date_acquired = models.DateField(null=True, blank=True)
+    wo_number = models.ForeignKey(IRR, null=True, blank=True)
+
+    def __str__(self):
+        return self.par_no
+
+class Product_to_PAR(models.Model):
+    par_no = models.ForeignKey(PAR)
+    product = models.ForeignKey(Product_to_IRR)
     qty = models.IntegerField()
-    approved_by = models.ForeignKey(Employee, related_name='dce_FK2')
-    issued_by = models.ForeignKey(Employee, related_name='dce_FK3')
-    inv_stat_no = models.ForeignKey(Inventory_stat)
-    PO_number = models.ForeignKey(IRR_header)
-    date_acquired = models.DateField()
-    wo_number = models.ForeignKey(IRR)
-
-
-    class Meta:
-        unique_together = (("dce", "product"))
 
     def __str__(self):
         return self.par_no

@@ -138,18 +138,22 @@ def miv_entry(request):
         pros = Product_to_IRR.objects.all()
     return render(request, 'WISH/miv_entry_f.html', {'irrs':irrs, 'pros':pros})
 
-def par_entry(request):
+def par_entry(request, pk):
     if request.method == "POST":
         form = PAR_entryForm(request.POST)
+        iform = Product_to_PARForm(request.POST)
         if form.is_valid():
             par_entry = form.save(commit=False)
+            par_pro = form.save(commit=False)
             par_entry.par_date = time.strftime("%Y-%m-%d")
             par_entry.save()
-            return redirect ('WISH.views.index')
-            #return redirect('WISH.views.par_form', pk=par_entry.pk)
+            par_pro.save()
+            #return redirect ('WISH.views.index')
+            return redirect('WISH.views.par_entry', pk=par_entry.par_no)
     else:
         form = PAR_entryForm()
-    return render(request, 'WISH/par_entry.html', {'form': form})
+        iform = Product_to_PARForm()
+    return render(request, 'WISH/par_entry.html', {'form': form, 'iform': iform})
 
 def wrs_entry(request):
     if 'q' in request.GET and request.GET['q']:
