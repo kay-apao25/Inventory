@@ -128,8 +128,6 @@ class MIV(models.Model):
     inv_station_no = models.ForeignKey(Inventory_stat)
     irr_no = models.ForeignKey(IRR)
     wrs_number = models.CharField(max_length = 8)
-    quantity = models.FloatField()
-    amount = models.FloatField()
     date_issued = models.DateField()
     doc_date = models.DateField()
     remark = models.TextField()
