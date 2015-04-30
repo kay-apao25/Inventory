@@ -1,0 +1,43 @@
+{% extends 'WISH/index.html' %}
+
+{% block content %}
+<h1> Select PAR NUMBER to Choose Product to GARV </h1>
+<br>
+<br>
+   <table style="width:100%;" align="center" class="table">
+      <thead>
+      	<th>PAR No.</th>
+        <th>ACCOUNTABLE EMPLOYEE</th>
+        <th>PAR DATE</th>
+        <th>DATE ACQUIRED</th>
+        <th>APPROVED BY:</th>
+      </thead>
+      	{% for par in pars %}
+      		<tr>
+      			<td>
+              <a href="{% url 'WISH.views.product_to_garv' pk=par.dce.dce%}">
+                {{par.par_no}}
+              </a>
+            </td>
+
+            <td>
+                {{par.dce.name}}
+            </td>
+
+            <td>
+                {{par.par_date}}
+            </td>
+
+            <td>
+                {{par.date_acquired}}
+            </td>
+
+            <td>
+                {{par.approved_by}}
+            </td>
+
+      		</tr>
+
+      	{% endfor %}
+   </table>
+{% endblock %}

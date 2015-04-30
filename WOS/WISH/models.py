@@ -123,7 +123,7 @@ class Product_to_IRR(models.Model):
     quantity_balance = models.FloatField()
 
     def __str__(self):
-        return str(self.irr_no)
+        return str(self.product.product_number)
 
 class MIV(models.Model):
     inv_station_no = models.ForeignKey(Inventory_stat)
@@ -158,29 +158,32 @@ class Product_to_PAR(models.Model):
     qty = models.IntegerField()
 
     def __str__(self):
-        return self.par_no
+        return str(self.par_no)
 
 class GARV(models.Model):
-    dce = models.ForeignKey(Employee)
-    product = models.ForeignKey(Product_to_IRR)
-    garv_date = models.DateField()
+    dce = models.ForeignKey(Employee, null=True, blank=True)
+    garv_date = models.DateField(null=True, blank=True)
     garv_no = models.CharField(max_length=10)
-    cc_number = models.ForeignKey(Cost_center)
-    wo_number = models.ForeignKey(IRR_header)
-    qty = models.CharField(max_length=20)
-    par_number = models.ForeignKey(PAR)
-    remarks = models.CharField(max_length=20, null=True)
+    cc_number = models.ForeignKey(Cost_center, null=True, blank=True)
+    wo_number = models.ForeignKey(IRR_header, null=True, blank=True)
     inspected_by = models.ForeignKey(Employee, related_name='dce_FK4')
     date_inspected = models.DateField()
     confirmed_by = models.ForeignKey(Employee, related_name='dce_FK5')
     date_confirmed = models.DateField()
     noted_by = models.ForeignKey(Employee, related_name='dce_FK6')
 
-    class Meta:
-        unique_together = ('dce', 'product')
+    def __str__(self):
+        return str(self.dce)
+
+class Product_to_GARV(models.Model):
+    garv = models.ForeignKey(GARV)
+    product = models.ForeignKey(Product_to_IRR)
+    qty = models.CharField(max_length=20)
+    par_number = models.ForeignKey(PAR)
+    remarks = models.CharField(max_length=20, null=True)
 
     def __str__(self):
-        return str(self.dce) + "," + str(self.product)
+        return str(self.par_number)
 
 class Pending(models.Model):
     item_name = models.TextField()

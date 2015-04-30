@@ -88,8 +88,8 @@ def product_to_irr(request,pk, irn):
             product_to_irr.save()
             return redirect('WISH.views.product_to_irr', pk=pk, irn=irn)
     else:
-        form = Product_to_IRRForm(request.POST.copy)
-        iform = IRR_entry_cont_Form(request.POST.copy)
+        form = Product_to_IRRForm()
+        iform = IRR_entry_cont_Form()
     return render(request, 'WISH/product_to_irr.html', {'form': form, 'iform': iform, 'pk': pk})
 
 def irr_entry_cont(request, pk):
@@ -140,6 +140,52 @@ def miv_entry(request):
         pros = Product_to_IRR.objects.all()
     return render(request, 'WISH/miv_entry_f.html', {'irrs':irrs, 'pros':pros})
 
+def garv_entry_f(request):
+    if request.method == "POST":
+        form = GARV_entryForm(request.POST)
+        if form.is_valid():
+            garv_entry = form.save(commit=False)
+            garv_entry.save()
+            return redirect('WISH.views.index')
+    else:
+        pars = PAR.objects.all()
+        garvs = GARV.objects.all()
+    return render(request, 'WISH/garv_entry_f.html', {'pars':pars, 'garvs':garvs})
+
+def garv_entry(request, pk):
+    if request.method == "POST":
+        form = GARV_entryForm(request.POST)
+        if form.is_valid():
+            garv_entry = form.save(commit=False)
+            garv_entry.garv_date = time.strftime("%Y-%m-%d")
+            garv_entry.save()
+            return redirect ('WISH.views.index')
+            #return redirect('WISH.views.garv_form', pk = garv_entry.pk)
+    else:
+        form = GARV_entryForm()
+        form.fields['product'] = forms.ModelChoiceField(Product_to_PAR.objects.filter(par_no=pk))
+    return render(request, 'WISH/garv_entry.html', {'form': form})
+
+def product_to_garv(request,pk):
+    if request.method == "POST":
+        form = GARV_entryForm(request.POST)
+        iform = Product_to_GARVform(request.POST)
+        if form.is_valid() and iform.is_valid():
+            product_to_garv = form.save(commit=False)
+            garv = iform.save(commit=False)
+            garv.id = pk
+            form = Product_to_GARVform(request.POST)
+            garv.save()
+            product_to_garv.save()
+            return redirect('WISH.views.product_to_garv', pk=pk)
+    else:
+        form = GARV_entryForm()
+        iform = Product_to_GARVform()
+        par = PAR.objects.filter(dce=pk)
+        iform.fields['product'] = forms.ModelChoiceField(Product_to_PAR.objects.filter(par_no=par))
+        #iform.fields['par_number'] = forms.ModelChoiceField(Product_to_PAR.objects.filter(par_no=par))
+    return render(request, 'WISH/garv_entry.html', {'form': form, 'iform': iform, 'pk': pk})
+
 def par(request):
     if request.method == "POST":
         form = PAR_entryForm(request.POST)
@@ -165,14 +211,14 @@ def par_entry(request, pk):
             par_entry = form.save(commit=False)
             par_pro = form.save(commit=False)
             par_entry.par_date = time.strftime("%Y-%m-%d")
-            par_entry.par_no = pk
+            #par_entry.par_no = pk
             par_entry.save()
             par_pro.save()
             #return redirect ('WISH.views.index')
             return redirect('WISH.views.par_entry', pk=pk)
     else:
-        form = PAR_Form(request.POST.copy)
-        iform = Product_to_PARForm(request.POST.copy)
+        form = PAR_entryForm()
+        iform = Product_to_PARForm()
     return render(request, 'WISH/par_entry.html', {'form': form, 'iform': iform})
 
 def wrs_entry(request):
@@ -180,19 +226,6 @@ def wrs_entry(request):
         q = request.GET['q']
         return redirect('WISH.views.wrs_form', pk=q)
     return render(request, 'WISH/wrs_entry.html', {})
-
-def garv_entry(request):
-    if request.method == "POST":
-        form = GARV_entryForm(request.POST)
-        if form.is_valid():
-            garv_entry = form.save(commit=False)
-            garv_entry.garv_date = time.strftime("%Y-%m-%d")
-            garv_entry.save()
-            return redirect ('WISH.views.index')
-            #return redirect('WISH.views.garv_form', pk = garv_entry.pk)
-    else:
-        form = GARV_entryForm()
-    return render(request, 'WISH/garv_entry.html', {'form': form})
 
 def wrs_form(request, pk):
     wrss = get_object_or_404(MIV, wrs_number=pk)
