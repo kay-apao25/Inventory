@@ -72,6 +72,19 @@ def irr_entry(request):
         form = IRR_entryForm()
     return render(request, 'WISH/irr_entry.html', {'form': form})
 
+def try_entry(request):
+    if request.method == "POST":
+        form = TryForm(request.POST)
+        if form.is_valid():
+            irr_entry = form.save(commit=False)
+            #irr_no = randint(100000,999999)
+            irr_entry.save()
+            #return redirect('WISH.views.product_to_irr', pk=irr_entry.pk, irn=irr_no)
+            return redirect('WISH.views.index')
+    else:
+        form = TryForm()
+    return render(request, 'WISH/irr_entry.html', {'form': form})
+
 def product_to_irr(request,pk, irn):
     if request.method == "POST":
         form = Product_to_IRRForm(request.POST)
@@ -179,7 +192,7 @@ def product_to_garv(request,pk):
             garv.save()
             product_to_garv.garv_id = garv.pk
             product_to_garv.save()
-            return redirect('WISH.views.product_to_garv', pk=garv.garv_no)
+            return redirect('WISH.views.product_to_garv', pk=pk)
     else:
         form = GARV_entryForm()
         iform = Product_to_GARVform()
