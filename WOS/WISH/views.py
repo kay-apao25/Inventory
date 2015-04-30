@@ -206,7 +206,7 @@ def par(request):
 
 def par_entry(request, pk):
     if request.method == "POST":
-        form = PAR_entryForm(request.POST)
+        form = PAR_Form(request.POST)
         iform = Product_to_PARForm(request.POST)
         if form.is_valid() and iform.is_valid():
             par_entry = form.save(commit=False)

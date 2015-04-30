@@ -139,7 +139,7 @@ class MIV(models.Model):
 class PAR(models.Model):
     dce = models.ForeignKey(Employee, null=True, blank=True)
     par_date = models.DateField()
-    par_no = models.CharField(max_length=10)
+    par_no = models.CharField(max_length=10, primary_key=True)
     amt_cost = models.FloatField(null=True, blank=True)
     remark = models.TextField(null=True, blank=True)
     approved_by = models.ForeignKey(Employee, related_name='dce_FK2', null=True, blank=True)
@@ -163,7 +163,7 @@ class Product_to_PAR(models.Model):
 class GARV(models.Model):
     dce = models.ForeignKey(Employee, null=True, blank=True)
     garv_date = models.DateField(null=True, blank=True)
-    garv_no = models.CharField(max_length=10)
+    garv_no = models.CharField(max_length=10, primary_key=True)
     cc_number = models.ForeignKey(Cost_center, null=True, blank=True)
     wo_number = models.ForeignKey(IRR_header, null=True, blank=True)
     inspected_by = models.ForeignKey(Employee, related_name='dce_FK4', null=True, blank=True)
