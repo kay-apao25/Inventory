@@ -171,13 +171,14 @@ def product_to_garv(request,pk):
         form = GARV_entryForm(request.POST)
         iform = Product_to_GARVform(request.POST)
         if form.is_valid() and iform.is_valid():
-            product_to_garv = form.save(commit=False)
-            garv = iform.save(commit=False)
-            garv.id = pk
+            product_to_garv = iform.save(commit=False)
+            garv = form.save(commit=False)
+            garv.garv_date = time.strftime("%Y-%m-%d")
             form = Product_to_GARVform(request.POST)
             garv.save()
+            product_to_garv.garv_id = garv.pk
             product_to_garv.save()
-            return redirect('WISH.views.product_to_garv', pk=pk)
+            return redirect('WISH.views.product_to_garv', pk=garv.garv_no)
     else:
         form = GARV_entryForm()
         iform = Product_to_GARVform()

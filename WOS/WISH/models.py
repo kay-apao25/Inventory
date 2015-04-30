@@ -166,11 +166,11 @@ class GARV(models.Model):
     garv_no = models.CharField(max_length=10)
     cc_number = models.ForeignKey(Cost_center, null=True, blank=True)
     wo_number = models.ForeignKey(IRR_header, null=True, blank=True)
-    inspected_by = models.ForeignKey(Employee, related_name='dce_FK4')
-    date_inspected = models.DateField()
-    confirmed_by = models.ForeignKey(Employee, related_name='dce_FK5')
-    date_confirmed = models.DateField()
-    noted_by = models.ForeignKey(Employee, related_name='dce_FK6')
+    inspected_by = models.ForeignKey(Employee, related_name='dce_FK4', null=True, blank=True)
+    date_inspected = models.DateField(null=True, blank=True)
+    confirmed_by = models.ForeignKey(Employee, related_name='dce_FK5', null=True, blank=True)
+    date_confirmed = models.DateField(null=True, blank=True)
+    noted_by = models.ForeignKey(Employee, related_name='dce_FK6', null=True, blank=True)
 
     def __str__(self):
         return str(self.dce)
