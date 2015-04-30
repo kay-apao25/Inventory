@@ -1,5 +1,10 @@
 from django.db import models
+from djorm_pgarray.fields import ArrayField
+#from django.dbarray import ArrayField
+#from django.contrib.postgres.fields import ArrayField
 from django.db.models.fields import CharField
+#from django_pg import models
+#import dbarray
 
 
 # Create your models here.
@@ -198,3 +203,5 @@ class Pending(models.Model):
 
     def __str__(self):
         return self.supplier_number + "," + self.serial_number + "," + self.model
+
+

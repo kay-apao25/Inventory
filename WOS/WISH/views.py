@@ -194,8 +194,9 @@ def par(request):
         iform = Product_to_PARForm(request.POST)
         if form.is_valid() and iform.is_valid():
             par_entry = form.save(commit=False)
-            par_pro = form.save(commit=False)
+            par_pro = iform.save(commit=False)
             par_entry.par_date = time.strftime("%Y-%m-%d")
+            par_pro.par_no_id = par_entry.par_no
             par_entry.save()
             par_pro.save()
             return redirect('WISH.views.par_entry', pk=par_entry.par_no)
@@ -210,8 +211,9 @@ def par_entry(request, pk):
         iform = Product_to_PARForm(request.POST)
         if form.is_valid() and iform.is_valid():
             par_entry = form.save(commit=False)
-            par_pro = form.save(commit=False)
+            par_pro = iform.save(commit=False)
             par_entry.par_date = time.strftime("%Y-%m-%d")
+            par_pro.par_no_id = pk
             par_entry.par_no = pk
             par_entry.save()
             par_pro.save()
