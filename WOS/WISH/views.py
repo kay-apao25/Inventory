@@ -83,13 +83,18 @@ def product_to_irr(request,pk, irn):
             irr.irr_headkey_id = pk
             product_to_irr.irr_no_id= irn
             #product_to_irr.product = product_to_irr.
-            form = Product_to_IRRForm(request.POST)
+            #iform.fields['cost_center_no'].initial = iform.cleaned_data['cost_center_no']
             irr.save()
             product_to_irr.save()
+            #form = Product_to_IRRForm(request.POST) 
             return redirect('WISH.views.product_to_irr', pk=pk, irn=irn)
     else:
-        form = Product_to_IRRForm(request.POST.copy)
-        iform = IRR_entry_cont_Form(request.POST.copy)
+        form = Product_to_IRRForm() 
+        iform = IRR_entry_cont_Form()
+        #iform.fields['cost_center_no'].value = iform.data['cost_center_no']
+        #iform.fields['date_recv'].value = iform.data['date_recv']
+        #iform.fields['wo_no'].value = iform.cleaned_data['wo_no']
+        #iform.fields['remark'].value = iform.cleaned_data['remark']
     return render(request, 'WISH/product_to_irr.html', {'form': form, 'iform': iform, 'pk': pk})
 
 def irr_entry_cont(request, pk):
@@ -150,7 +155,6 @@ def par(request):
             par_entry.par_date = time.strftime("%Y-%m-%d")
             par_entry.save()
             par_pro.save()
-            #return redirect ('WISH.views.index')
             return redirect('WISH.views.par_entry', pk=par_entry.par_no)
     else:
         form = PAR_entryForm()
@@ -159,7 +163,7 @@ def par(request):
 
 def par_entry(request, pk):
     if request.method == "POST":
-        form = PAR_Form(request.POST)
+        form = PAR_entryForm(request.POST)
         iform = Product_to_PARForm(request.POST)
         if form.is_valid() and iform.is_valid():
             par_entry = form.save(commit=False)
@@ -168,11 +172,11 @@ def par_entry(request, pk):
             par_entry.par_no = pk
             par_entry.save()
             par_pro.save()
-            #return redirect ('WISH.views.index')
             return redirect('WISH.views.par_entry', pk=pk)
     else:
-        form = PAR_Form(request.POST.copy)
-        iform = Product_to_PARForm(request.POST.copy)
+        form = PAR_entryForm()
+        form.fields['par_no'].value = pk
+        iform = Product_to_PARForm()
     return render(request, 'WISH/par_entry.html', {'form': form, 'iform': iform})
 
 def wrs_entry(request):
