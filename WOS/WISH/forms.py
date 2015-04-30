@@ -70,6 +70,12 @@ class GARV_entryForm(forms.ModelForm):
 
     class Meta:
         model = GARV
-        fields = ('dce', 'product', 'garv_no', 'cc_number', 'wo_number', 'qty',\
-                    'par_number', 'remarks', 'inspected_by', 'date_inspected', 'confirmed_by', \
+        fields = ('dce', 'garv_no', 'cc_number', 'wo_number',\
+                    'inspected_by', 'date_inspected', 'confirmed_by', \
                     'date_confirmed', 'noted_by', )
+
+class Product_to_GARVform(forms.ModelForm):
+
+    class Meta:
+        model = Product_to_GARV
+        fields = ('product', 'qty', 'par_number', 'remarks',)
