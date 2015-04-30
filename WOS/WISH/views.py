@@ -86,7 +86,7 @@ def product_to_irr(request,pk, irn):
             #iform.fields['cost_center_no'].initial = iform.cleaned_data['cost_center_no']
             irr.save()
             product_to_irr.save()
-            #form = Product_to_IRRForm(request.POST) 
+            #form = Product_to_IRRForm(request.POST)
             return redirect('WISH.views.product_to_irr', pk=pk, irn=irn)
     else:
         form = Product_to_IRRForm()
@@ -235,8 +235,9 @@ def wrs_form(request, pk):
     return render(request, 'WISH/wrs_form.html', {'wrss': wrss, 'pros': pros})
 
 def par_form(request, pk):
-    pars = get_object_or_404(PAR, pk=pk)
-    return render(request, 'WISH/par_form.html', {'pars': pars})
+    parss = get_object_or_404(PAR, pk=pk)
+    pros = Product_to_PAR.objects.filter(par_no=pk)
+    return render(request, 'WISH/par_form.html', {'pros': pros , 'parss':parss})
 
 def garv_form(request, pk):
     garvs = get_object_or_404(GARV, pk=pk)
