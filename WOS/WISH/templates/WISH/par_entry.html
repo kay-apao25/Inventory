@@ -14,18 +14,17 @@
         {% endfor %}
       </ul>
     {% endif %}
-          {% for field in iform %}
-          <div id="{{ field.auto_id }}_errors">
-            {{ field.errors }}
-          </div>
-          <div id="my_form">
-           {{ field.label_tag }}<br>{{ field }}
-      </div>
-      <br>
-      {% endfor %}
+    {% for field in iform %}
+    {%if forloop.counter|divisibleby:"3" %}
+      <div></div><br><br>
+    {%endif%}
+
+    {{field.label_tag}}&nbsp;&nbsp;{{field}}&nbsp;&nbsp;&nbsp;
+    {%endfor%}
+    <br><br><br><br>
       <!--<div align="right"><a href= "{% url 'WISH.views.index' %}"><i class="fa fa-arrow-right"></i> Exit</a></div>-->
 
-          <button type="submit" class="save btn btn-default">Add Another Item</button>
+          <button type="submit" class="save btn btn-default">Add Another Item</button><br><br>
 
       <br>
       <br>
@@ -36,17 +35,14 @@
         {% endfor %}
       </ul>
     {% endif %}
-          {% for field in form %}
-          <div id="{{ field.auto_id }}_errors">
-            {{ field.errors }}
-          </div>
-          <br>
-          <div id="my_form">
-           {{ field.label_tag }}<br>{{ field }}
-          
-      </div>
-      <br>
-      {% endfor %}
+        {% for field in form %}
+        {%if forloop.counter|divisibleby:"2" %}
+          <div></div><br><br>
+        {%endif%}
+
+        {{field.label_tag}}&nbsp;&nbsp;{{field}}&nbsp;&nbsp;&nbsp;
+        {%endfor%}
+    <br><br><br><br>
         <button type="submit" class="save btn btn-default">Save</button>
 
 {% endblock %}
