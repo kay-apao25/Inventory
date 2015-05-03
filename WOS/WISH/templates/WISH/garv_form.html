@@ -26,13 +26,13 @@
 	Maria Cristina, Iligan City
 	</p>
 	<br>
-
+		{% for pro in pros%}
 		<h1 align="center">GPE ACCOUNTABILITY RELIEF VOUCHER</h1>
 
   	<span style="padding-left:1000px" align="right">Date: &nbsp;&nbsp; <u>{{ garvs.garv_date }}&nbsp;&nbsp;</u></span>
 		<br>
 
-		<span>DCE NUMBER:&nbsp;&nbsp;&nbsp;<u>{{ garvs.dce.dce }}</u></span>
+		<span>DCE NUMBER:&nbsp;&nbsp;&nbsp;<u>{{ garvs.dce.name }}</u></span>
 	  <span style="padding-left:300px"></span>
 		<span>ACCOUNTABLE PERSON: &nbsp;&nbsp; <u>{{ garvs.dce.name }}&nbsp;&nbsp;</u></span>
 		<span style="padding-left:320px"></span>
@@ -40,11 +40,11 @@
 
 
 	<br>
-	<span>CC NUMBER:&nbsp;&nbsp;&nbsp;<u>{{ garvs.cc_num.id }}</u></span>
+	<span>CC NUMBER:&nbsp;&nbsp;&nbsp;<u>{{ garvs.dce.charging_cc_no }}</u></span>
   <span style="padding-left:310px"></span>
-	<span>COST CENTER NAME: &nbsp;&nbsp; <u>{{ garvs.cc_number.cost_center_name }}&nbsp;&nbsp;</u></span>
+	<span>COST CENTER NAME: &nbsp;&nbsp; <u>{{ garvs.dce.cost_center_no.cost_center_name }}&nbsp;&nbsp;</u></span>
 	<br>
-	<span>WO NUMBER:&nbsp;&nbsp;&nbsp;<u>{{ garvs.wo_number.wo_no }}</u></span>
+	<span>WO NUMBER:&nbsp;&nbsp;&nbsp;<u>{{ pro.par_number.wo_number.wo_no }}</u></span>
 	<span style="padding-left:280px"></span>
   <span>WORK ORDER NAME:&nbsp;&nbsp;&nbsp;<u></u></span>
 
@@ -64,15 +64,15 @@
 		    <th> Remarks (Findings/Observations)</th>
 		  </tr>
 		  <tr>
-		    <td>{{ garvs.asset_code.id }}
+		    <td>{{ pro.product.product.id }}
 		    </td>
-		    <td>{{ garvs.asset_code.item_name }}-{{ garvs.asset_code.description }}
+		    <td>{{ pro.product.product.item_name }}-{{ pro.product.product.description }}
 		    </td>
-		    <td>{{ garvs.asset_code_FK.unit_measure }}</td>
-		    <td>{{ garvs.qty }}</td>
-		    <td>{{ garvs.par_number.par_no }}</td>
+		    <td>{{ pro.product.product.unit_measure }}</td>
+		    <td>{{ pro.qty }}</td>
+		    <td>{{ pro.par_number.par_no }}</td>
 				<td></td>
-        <td>{{ garvs.remarks }}</td>
+        <td>{{ pro.remarks }}</td>
 		  </tr>
 		</table>
 
@@ -145,7 +145,7 @@
 				<br>
 				DATE: {{ garvs.date_confirmed }}
 				<span style="padding-left:30px"></span>
-        DCE: {{ garv.confirmed_by.dce }}
+        DCE: {{ garvs.confirmed_by.dce }}
 			</td>
 
 			<td>
@@ -157,9 +157,9 @@
 		</td>
 
 		    <td>
-		    	{{ garvs.par_number.par_no }}
+		    	{{ pro.garv.garv_no }}
 		    	<br>
-		    	(IS No. {{ garvs.par_number.inv_stat_no }})
+		    	(IS No. {{ garvs.wo_number.inv_station_no.inv_station_no }})
 		    </td>
 
 
@@ -173,7 +173,7 @@
 	</p>
 
 	<span align="left">
-	Purchased from: {{ garvs.asset_code.purchased_from }}
+	Purchased from: {{ pro.product.product.purchased_from.supplier_name }}
 	</span>
 	<br>
 	<span align="left">
@@ -184,6 +184,7 @@
 	CSI No.: {{ garvs.wo_number.invoice_number}}
 	</span>
 	<br>
+	{% endfor %}
 
 
 </body>

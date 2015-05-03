@@ -254,7 +254,8 @@ def par_form(request, pk):
 
 def garv_form(request, pk):
     garvs = get_object_or_404(GARV, pk=pk)
-    return render(request, 'WISH/garv_form.html', {'garvs': garvs})
+    pros = Product_to_GARV.objects.filter(garv=pk)
+    return render(request, 'WISH/garv_form.html', {'garvs': garvs, 'pros': pros})
 
 def cme_form(request):
     return render(request, 'WISH/cme_form.html', {})
