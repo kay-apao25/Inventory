@@ -40,8 +40,14 @@
           <div></div><br><br>
         {%endif%}
 
-        {{field.label_tag}}&nbsp;&nbsp;{{field}}&nbsp;&nbsp;&nbsp;
+
+        {%if field.label ==  'Remark' %}
+          <b>{{field.label}}:</b><br>{{field}}
+        {% else %}
+          <b>{{field.label}}:</b>&nbsp;&nbsp;{{field}}&nbsp;&nbsp;&nbsp;
+        {%endif%}
         {%endfor%}
+
     <br><br><br><br>
         <button type="submit" class="save btn btn-default">Save</button>
 
