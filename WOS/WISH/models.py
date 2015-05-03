@@ -114,6 +114,7 @@ class IRR(models.Model):
     cost_center_no = models.ForeignKey(Cost_center, null=True, blank=True)
     date_recv = models.DateField(null=True, blank=True)
     wo_no = models.CharField(max_length=7, null=True, blank=True)
+    wrs_number = models.CharField(max_length = 8)
     remark = models.TextField(max_length = 30, null=True, blank=True)
 
     def __unicode__(self):
@@ -133,7 +134,6 @@ class Product_to_IRR(models.Model):
 class MIV(models.Model):
     inv_station_no = models.ForeignKey(Inventory_stat)
     irr_no = models.ForeignKey(IRR)
-    wrs_number = models.CharField(max_length = 8)
     date_issued = models.DateField()
     doc_date = models.DateField()
     remark = models.TextField()
