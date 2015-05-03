@@ -28,20 +28,20 @@
 	<br>
 
 
-	{% if pars.amt_cost >= 10000 %}
+	{% if parss.amt_cost >= 10000 %}
 		<h1 align="center">PROPERTY ACCOUNTABILITY RECEIPT</h1>
 	{% else %}
 		<h1 align="center">INDIVIDUAL SHEET</h1>
 		<h1 align="center">CONTROLLED MATERIALS AND EQUIPMENT</h1>
 	{% endif %}
 
-	<span>Accountable Employee:&nbsp;&nbsp;&nbsp;<u>{{pars.dce.name}}</u></span>
+	<span>Accountable Employee:&nbsp;&nbsp;&nbsp;<u>{{parss.dce.name}}</u></span>
 	<br>
-	<span>Designation:&nbsp;&nbsp;&nbsp;<u>{{pars.dce.position}}</u></span>
+	<span>Designation:&nbsp;&nbsp;&nbsp;<u>{{parss.dce.position}}</u></span>
 	<br>
-	<span>Section/Department:&nbsp;&nbsp;&nbsp;<u>{{pars.dce.cost_center_no}}</u></span>
+	<span>Section/Department:&nbsp;&nbsp;&nbsp;<u>{{parss.dce.cost_center_no}}</u></span>
 	<span style="padding-left:600px"></span>
-	<span align="right">Date Prepared: &nbsp;&nbsp; <u>{{ pars.par_date }}&nbsp;&nbsp;</u></span>
+	<span align="right">Date Prepared: &nbsp;&nbsp; <u>{{ parss.par_date }}&nbsp;&nbsp;</u></span>
 	<br>
 	<br>
 	<br>
@@ -58,16 +58,19 @@
 		    <th style='width:30%'>Remarks</th>
 		    <th>Work Order No.</th>
 		  </tr>
+			{% for pro in pros %}
 		  <tr>
-		    <td><br>{{ pars.product.product.id }}<br><br><br><br></td>
-		    <td>{{ pars.product.product.item_name }}-{{ pars.product.product.description }}<br><br><br><br></td>
-		    <td>{{ pars.product.product.unit_measure }}<br><br><br><br></td>
-		    <td>{{ pars.qty }}<br><br><br><br></td>
-		    <td>{{ pars.amt_cost }}<br><br><br><br></td>
-		    <td>{{ pars.date_acquired }}<br><br><br><br></td>
-		    <td>{{ pars.product.product.remark }}<br><br><br><br></td>
-		    <td>{{ pars.wo_number }}<br><br><br><br></td>
+		    <td><br>{{ pro.product.product.id }}<br><br><br><br></td>
+		    <td>{{ pro.product.product.item_name }}-{{ pro.product.product.description }}<br><br><br><br></td>
+		    <td>{{ pro.product.product.unit_measure }}<br><br><br><br></td>
+		    <td>{{ pro.qty }}<br><br><br><br></td>
+		    <td>{{ pro.product.product.unit_cost }}<br><br><br><br></td>
+		    <td>{{ parss.date_acquired }}<br><br><br><br></td>
+		    <td>{{ parss.remark }}<br><br><br><br></td>
+		    <td>{{ parss.wo_number }}<br><br><br><br></td>
 		  </tr>
+			{% endfor %}
+
 		</table>
 
 
@@ -95,31 +98,31 @@
 		  <tr>
 		    <td>
 				<br>
-				<u>{{pars.approved_by.name}}</u>
+				<u>{{parss.approved_by.name}}</u>
 				<br>
-				{{pars.issued_by.position}}
+				{{parss.issued_by.position}}
 				<br>
 		    	Cost Center Head
 		    </td>
 		    <td>
 				<br>
-				<u>{{pars.approved_by.name}}</u>
+				<u>{{parss.approved_by.name}}</u>
 				<br>
-				{{pars.issued_by.position}}
+				{{parss.issued_by.position}}
 				<br>
 		    	Supvg. Property Officer
 		    </td>
 		    <td>
 				<br>
-				<u>{{pars.dce.name}}</u>
+				<u>{{parss.dce.name}}</u>
 				<br>
 				<br>
 				Accountable Employee
 			</td>
 		    <td>
-		    	{{pars.par_no}}
+		    	{{parss.par_no}}
 		    	<br>
-		    	(IS No. {{pars.inv_stat_no.inv_station_no}})
+		    	(IS No. {{parss.inv_stat_no.inv_station_no}})
 		    </td>
 		  </tr>
 		</table>
@@ -129,17 +132,18 @@
 	<p>"The accountable employee is responsible for the issued property items,
 		subject to the provisions of the National Accounting and Auditing Laws."
 	</p>
-
+	{% for proos in pros %}
 	<span align="left">
-	Purchased from: {{pars.product.product.purchased_from.supplier_name}}
+	Purchased from: {{proos.product.purchased_from.supplier_name}}
+	</span>
+	<br>
+	{% endfor %}
+	<span align="left">
+	P.O.No.: {{parss.PO_number.po_number}}
 	</span>
 	<br>
 	<span align="left">
-	P.O.No.: {{pars.PO_number.po_number}}
-	</span>
-	<br>
-	<span align="left">
-	CSI No.: {{pars.PO_number.invoice_number}}
+	CSI No.: {{parss.PO_number.invoice_number}}
 	</span>
 	<br>
 
