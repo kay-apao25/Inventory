@@ -134,7 +134,7 @@
 	</p>
 	{% for proos in pros %}
 	<span align="left">
-	Purchased from: {{proos.product.purchased_from.supplier_name}}
+	Purchased from: {{proos.product.product.purchased_from.supplier_name}}
 	</span>
 	<br>
 	{% endfor %}

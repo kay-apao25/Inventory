@@ -115,6 +115,7 @@ def irr_entry_cont(request, pk):
             irr_entry_cont = form.save(commit=False)
             irr_entry_cont.irr_no = randint(100000,999999)
             irr_entry_cont.irr_headkey_id = pk
+            irr_entry.wrs_number = randint(100000,999999)
             #irr_entry_cont.quantity_rejected = irr_entry_cont.quantity_actual - irr_entry_cont.quantity_accepted
             #irr_entry_cont.quantity_balance = irr_entry_cont.quantity_rejected
             #for product in irr.asset_code():
@@ -131,7 +132,6 @@ def miv_entry_S(request, pk):
         if form.is_valid():
             miv_entry = form.save(commit=False)
             miv_entry.doc_date = time.strftime("%Y-%m-%d")
-            miv_entry.wrs_number = randint(100000,999999)
             miv_entry.irr_no_id = pk
             #miv_entry.irr_headkey = miv_entry.product.irr_headkey
             miv_entry.cost_center_no_id = miv_entry.inv_station_no.cost_center_no_id
