@@ -173,6 +173,7 @@ class Product_to_PAR(models.Model):
         return str(self.par_no)
 
 class GARV(models.Model):
+    product_to_GARV = JSONField()
     dce = models.ForeignKey(Employee, null=True, blank=True, related_name="d_gFK")
     garv_date = models.DateField(null=True, blank=True)
     garv_no = models.CharField(max_length=10, primary_key=True)
@@ -188,7 +189,7 @@ class GARV(models.Model):
     def __str__(self):
         return str(self.dce)
 
-class Product_to_GARV(models.Model):
+'''class Product_to_GARV(models.Model):
     garv = models.ForeignKey(GARV, related_name="g_pgFK")
     #product = models.ForeignKey(Product_to_IRR, related_name="p_pgFK")
     qty = models.CharField(max_length=20)
@@ -197,7 +198,7 @@ class Product_to_GARV(models.Model):
     history = HistoricalRecords()
 
     def __str__(self):
-        return str(self.par_number)
+        return str(self.par_number)'''
 
 class Pending(models.Model):
     item_name = models.TextField()
