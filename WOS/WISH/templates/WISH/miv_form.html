@@ -32,7 +32,7 @@
 			<tr>
 				<td colspan="3">Requisitioning Cost Center: {{mivs.inv_station_no.cost_center_no.cost_center_name}}</td>
 				<td colspan="7">Cost Center No.: {{mivs.inv_station_no.cost_center_no.id}}</td>
-				<td colspan="4">WRS No.: {{mivs.wrs_number}}</td>
+				<td colspan="4">WRS No.: {{mivs.irr_no.wrs_number}}</td>
 
 
 			</tr>
@@ -56,12 +56,12 @@
 			<td style="width:4%;text-align:center" >T</td>
 			<td style="width:4%;text-align:center" >JO/WO</td>
 			</tr>
-      {% for pro in pros %}
+      {% for product in products %}
 			<tr>
-				<td style="text-align:center"><br>{{pro.product.nsn}}<br></td>
-				<td style="text-align:center"><br>{{pro.product.item_name}}, {{pro.product.description}}<br></td>
-				<td style="text-align:center"><br> {{pro.product.unit_measure}} | {{pro.product.quantity}}<br></td>
-				<td style="text-align:center"><br>{{pro.product.unit_cost}}<br></td>
+				<td style="text-align:center"><br>{{product.pros.nsn}}<br></td>
+				<td style="text-align:center"><br>{{product.pros.item_name}}, {{product.pros.description}}<br></td>
+				<td style="text-align:center"><br> {{product.pros.unit_measure}} | {{product.pros.quantity}}<br></td>
+				<td style="text-align:center"><br>{{product.pros.unit_cost}}<br></td>
 				<td style="text-align:center"><br></td>
 				<td style="text-align:center"><br></td>
 				<td style="text-align:center"><br></td>
@@ -81,11 +81,11 @@
 			</tr>
 			<tr>
 				<td style="text-align:center" colspan="2">Approved By: <br><u>{{mivs.irr_no.irr_headkey.dce_approved}}</u><br>IS Cost Center Head<br>
-          DCE:{{mivs.irr_no.irr_headkey.dce_approved.dce}}<br>date:{{mivs.irr_no.irr_headkey.approved_date}}</td>
+          DCE:{{mivs.irr_no.irr_headkey.dce_approved.dce}}<br>date: {{mivs.irr_no.irr_headkey.approved_date}}</td>
 				<td style="text-align:center" colspan="3" > Issued By:  <br> <u>{{mivs.irr_no.irr_headkey.dce_custodian}}</u><br>Property Custodian
-          <br>DCE:{{mivs.irr_no.irr_headkey.dce_custodian.dce}}<br>date:{{mivs.irr_no.date_recv}}</td>
+          <br>DCE:{{mivs.irr_no.irr_headkey.dce_custodian.dce}}<br>date: {{mivs.irr_no.date_recv}}</td>
 				<td style="text-align:center" colspan="2">Recieved item/s as stated above:<br><u>{{mivs.irr_no.irr_headkey.dce_user}}</u>
-          <br>Requisitioners/Representatives<br>DCE:{{mivs.irr_no.irr_headkey.dce_user.dce}}<br>date:{{mivs.irr_no.irr_headkey.proc_date}}</td>
+          <br>Requisitioners/Representatives<br>DCE:{{mivs.irr_no.irr_headkey.dce_user.dce}}<br>date: {{mivs.irr_no.irr_headkey.proc_date}}</td>
 				<td style="text-align:center" colspan="6">MIV<br>IS No. {{mivs.inv_station_no.inv_station_no}} <br> NO {{mivs.id}}<br><br></td>
 
 			</tr>
