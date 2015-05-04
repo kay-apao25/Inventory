@@ -145,14 +145,9 @@ class Product_to_IRR(models.Model):
         return str(self.product.product_number)
 
 class MIV(models.Model):
-<<<<<<< HEAD
     inv_station_no = models.ForeignKey(Inventory_stat, related_name="is_mFK")
     irr_no = models.ForeignKey(IRR, related_name="i_mFK")
     wrs_number = models.CharField(max_length = 8)
-=======
-    inv_station_no = models.ForeignKey(Inventory_stat)
-    irr_no = models.ForeignKey(IRR)
->>>>>>> 3803ccc68383cf971cfee511ccbb10b4ebb417b1
     date_issued = models.DateField()
     doc_date = models.DateField()
     remark = models.TextField()
@@ -228,13 +223,7 @@ class Pending(models.Model):
 
     def __str__(self):
         return self.supplier_number + "," + self.serial_number + "," + self.model
-<<<<<<< HEAD
 
 class Try(models.Model):
     text = models.ManyToManyField(PAR)
     history = HistoricalRecords()
-
-
-
-=======
->>>>>>> 3803ccc68383cf971cfee511ccbb10b4ebb417b1
