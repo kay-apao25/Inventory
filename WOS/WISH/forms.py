@@ -60,7 +60,6 @@ class PAR_Form(forms.ModelForm):
 
 class Product_to_PARForm(forms.Form):
     product = forms.ModelChoiceField(queryset=Product.objects.all())
-    par_no = forms.FloatField()
     qty = forms.IntegerField()
 
 class GARV_entryForm(forms.ModelForm):

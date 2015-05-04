@@ -92,15 +92,6 @@ def product_to_irr(request,pk, irn):
     if request.method == "POST":
         form = Product_to_IRRForm(request.POST)
         iform = IRR_entry_cont_Form(request.POST)
-<<<<<<< HEAD
-        irr = iform.save(commit=False)
-        irr.irr_no = irn
-        irr.irr_headkey_id = pk
-        prod_to_irr.append({'IRR_no': irn, 'Product': form.data['product'], 'Quantity A.': \
-        form.data['quantity_accepted'], 'Quantity R.':form.data['quantity_rejected'], 'Quantity B.': \
-        form.data['quantity_balance']})
-        if form.is_valid() and iform.is_valid():
-=======
         if form.is_valid() and iform.is_valid():
             prod_to_irr.append({'IRR_no': irn, 'Product': form.data['product'], 'quantity_accepted': \
                 int(form.data['quantity_accepted']), 'quantity_rejected':int(form.data['quantity_rejected']), \
@@ -108,7 +99,6 @@ def product_to_irr(request,pk, irn):
             irr = iform.save(commit=False)
             irr.irr_no = irn
             irr.irr_headkey_id = pk
->>>>>>> ef75a67b287f39caba139b21bdb0581bb9f1aa47
             irr.wrs_number = randint(100000,999999)
             res = json.dumps(prod_to_irr)
             irr.product = res
@@ -179,7 +169,7 @@ def garv_entry_f(request):
         garvs = GARV.objects.all()
     return render(request, 'WISH/garv_entry_f.html', {'pars':pars, 'garvs':garvs})
 
-'''def garv_entry(request, pk):
+def garv_entry(request, pk):
     if request.method == "POST":
         form = GARV_entryForm(request.POST)
         if form.is_valid():
@@ -191,7 +181,7 @@ def garv_entry_f(request):
     else:
         form = GARV_entryForm()
         form.fields['product'] = forms.ModelChoiceField(Product_to_PAR.objects.filter(par_no=pk))
-    return render(request, 'WISH/garv_entry.html', {'form': form})'''
+    return render(request, 'WISH/garv_entry.html', {'form': form})
 
 def product_to_garv(request,pk):
     if request.method == "POST":
@@ -214,13 +204,13 @@ def par(request):
     if request.method == "POST":
         form = PAR_entryForm(request.POST)
         iform = Product_to_PARForm(request.POST)
-        par_entry = form.save(commit=False)
-        par_entry.par_date = time.strftime("%Y-%m-%d")
-        prod_to_par.append({'PAR_no': form.data['par_no'], 'Product': form.data['product'],\
-                            'Quantity': form.data['qty']})
         if form.is_valid() and iform.is_valid():
+            par_entry = form.save(commit=False)
+            par_entry.par_date = time.strftime("%Y-%m-%d")
+            prod_to_par.append({'Product': 'hgfgd',\
+                                'Quantity': 'jhghgfhf'})
             res = json.dumps(prod_to_par)
-            par.product = res
+            par_entry.product = prod_to_par
             par_entry.save()
             return redirect('WISH.views.par_entry', pk=par_entry.par_no)
     else:
@@ -234,12 +224,14 @@ def par_entry(request, pk):
         iform = Product_to_PARForm(request.POST)
         if form.is_valid() and iform.is_valid():
             par_entry = form.save(commit=False)
-            par_pro = iform.save(commit=False)
             par_entry.par_date = time.strftime("%Y-%m-%d")
-            par_pro.par_no_id = pk
+            prod_to_par.append({'Product': iform.data['product'],\
+                                'Quantity': iform.data['qty']})
+            res = json.dumps(prod_to_par)
+            par.product = res
+            par_entry.par_date = time.strftime("%Y-%m-%d")
             par_entry.par_no = pk
             par_entry.save()
-            par_pro.save()
             return redirect('WISH.views.par_entry', pk=pk)
     else:
         form = PAR_Form()
