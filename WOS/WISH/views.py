@@ -92,7 +92,6 @@ def product_to_irr(request,pk, irn):
     if request.method == "POST":
         form = Product_to_IRRForm(request.POST)
         iform = IRR_entry_cont_Form(request.POST)
-<<<<<<< HEAD
         irr = iform.save(commit=False)
         irr.irr_no = irn
         irr.irr_headkey_id = pk
@@ -100,15 +99,6 @@ def product_to_irr(request,pk, irn):
         form.data['quantity_accepted'], 'Quantity R.':form.data['quantity_rejected'], 'Quantity B.': \
         form.data['quantity_balance']})
         if form.is_valid() and iform.is_valid():
-=======
-        if form.is_valid() and iform.is_valid():
-            prod_to_irr.append({'IRR_no': irn, 'Product': form.data['product'], 'quantity_accepted': \
-                int(form.data['quantity_accepted']), 'quantity_rejected':int(form.data['quantity_rejected']), \
-                'quantity_balance': int(form.data['quantity_balance'])})
-            irr = iform.save(commit=False)
-            irr.irr_no = irn
-            irr.irr_headkey_id = pk
->>>>>>> ef75a67b287f39caba139b21bdb0581bb9f1aa47
             irr.wrs_number = randint(100000,999999)
             res = json.dumps(prod_to_irr)
             irr.product = res
@@ -179,7 +169,7 @@ def garv_entry_f(request):
         garvs = GARV.objects.all()
     return render(request, 'WISH/garv_entry_f.html', {'pars':pars, 'garvs':garvs})
 
-'''def garv_entry(request, pk):
+def garv_entry(request, pk):
     if request.method == "POST":
         form = GARV_entryForm(request.POST)
         if form.is_valid():
@@ -191,38 +181,42 @@ def garv_entry_f(request):
     else:
         form = GARV_entryForm()
         form.fields['product'] = forms.ModelChoiceField(Product_to_PAR.objects.filter(par_no=pk))
-    return render(request, 'WISH/garv_entry.html', {'form': form})'''
+    return render(request, 'WISH/garv_entry.html', {'form': form})
 
+
+prod_to_garv = []
 def product_to_garv(request,pk):
     if request.method == "POST":
         form = GARV_entryForm(request.POST)
-        prod_to_irr.append({'IRR_no': irn, 'Product': form.data['product'], 'Quantity A.': \
-        form.data['quantity_accepted'], 'Quantity R.':form.data['quantity_rejected'], 'Quantity B.': \
-        form.data['quantity_balance']})
+        #iform = Product_to_GARVform(request.POST)
+        prod_to_garv.append({'Product': form.data['product'], 'Quantity': \
+        form.data['qty'], 'PAR number':form.data['par_number'], 'Remarks': \
+        form.data['remarks']})
         if form.is_valid():
             garv = form.save(commit=False)
             garv.garv_date = time.strftime("%Y-%m-%d")
+            form = Product_to_GARVform(request.POST)
+            res = json.dumps(prod_to_garv)
+            garv.product = res
             garv.save()
             return redirect('WISH.views.product_to_garv', pk=pk)
     else:
         form = GARV_entryForm()
+        iform = Product_to_GARVform()
         par = PAR.objects.filter(dce=pk)
-    return render(request, 'WISH/garv_entry.html', {'form': form, 'pk': pk})
+        iform.fields['product'] = forms.ModelChoiceField(Product_to_PAR.objects.filter(par_no=par))
+        #iform.fields['par_number'] = forms.ModelChoiceField(Product_to_PAR.objects.filter(par_no=par))
+    return render(request, 'WISH/garv_entry.html', {'form': form, 'iform': iform, 'pk': pk})
 
-prod_to_par = []
 def par(request):
     if request.method == "POST":
         form = PAR_entryForm(request.POST)
         iform = Product_to_PARForm(request.POST)
-        par_entry = form.save(commit=False)
-        par_pro = iform.save(commit=False)
-        par_entry.par_date = time.strftime("%Y-%m-%d")
-        par_pro.par_no_id = par_entry.par_no
-        prod_to_par.append({'PAR_no': form.data['product_to_par.par_no_id'], 'Product': form.data['product_to_par.product_id'],\
-                            'Quantity': form.data['product_to_par.qty']})
         if form.is_valid() and iform.is_valid():
-            res = json.dumps(prod_to_par)
-            par.product = res
+            par_entry = form.save(commit=False)
+            par_pro = iform.save(commit=False)
+            par_entry.par_date = time.strftime("%Y-%m-%d")
+            par_pro.par_no_id = par_entry.par_no
             par_entry.save()
             par_pro.save()
             return redirect('WISH.views.par_entry', pk=par_entry.par_no)
@@ -275,16 +269,15 @@ def cme_form(request):
 
 def irr_form(request, pk):
     irs = get_object_or_404(IRR, pk=pk)
+    pros = Product_to_IRR.objects.filter(irr_no=pk)
+    amt_list = {}
     total = 0
-    products = irs.product
-    for product in products:
-        pro = Product.objects.get(product_number=product['Product'])
-        amount = float(product['quantity_accepted']) * int(pro.unit_cost)
-        product['amount'] =  amount
-        product['pros'] = pro
+    for pro in pros:
+        amount = pro.quantity_accepted * pro.product.unit_cost
+        pro.amt = amount
         total = total + amount
-    return render(request, 'WISH/irr_form.html', {'irs':irs, 'products': products, \
-                    'total': total, 'pro': pro})
+    return render(request, 'WISH/irr_form.html', {'irs':irs, 'pros': pros, \
+                    'amt_list': amt_list, 'total': total})
 
 #def irr_miv_form(request, mpk, ipk):
 #    mivs = get_object_or_404(MIV, pk=mpk)
