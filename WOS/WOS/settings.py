@@ -39,6 +39,7 @@ SUIT_CONFIG = {
 
 INSTALLED_APPS = (
     'suit',
+    'json_field',
     #'django_admin_bootstrapped',
     'django.contrib.admin',
     'django.contrib.auth',

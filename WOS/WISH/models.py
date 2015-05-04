@@ -1,10 +1,11 @@
 from django.db import models
+#from djangotoolbox.fields import DictField
 #from djorm_pgarray.fields import ArrayField
 #from django.dbarray import ArrayField
 #from django.contrib.postgres.fields import ArrayField
 from django.db.models.fields import CharField
 from simple_history.models import HistoricalRecords
-#from django_pg import models
+from json_field import JSONField #from django_pg import models
 #import dbarray
 #from audit_log.models import AuthStampedModel
 #from django_extensions.db.models import TimeStampedModel
@@ -120,6 +121,7 @@ class IRR_header(models.Model):
         return str(self.id)
 
 class IRR(models.Model):
+    product = JSONField()
     irr_headkey = models.ForeignKey(IRR_header, related_name="ih_iFK")
     irr_no = models.IntegerField(primary_key = True)
     cost_center_no = models.ForeignKey(Cost_center, null=True, blank=True, related_name="ccn_iFK")
