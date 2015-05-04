@@ -1,17 +1,21 @@
 from django.contrib import admin
+from simple_history.admin import SimpleHistoryAdmin
 from .models import *
+#import reversion
+
 
 # Register your models here.
-admin.site.register(Supplier)
-admin.site.register(Product)
-admin.site.register(PAR)
-admin.site.register(GARV)
-admin.site.register(Pending)
-admin.site.register(Cost_center)
-admin.site.register(Inventory_stat)
-admin.site.register(Employee)
-admin.site.register(IRR_header)
-admin.site.register(IRR)
-admin.site.register(MIV)
-admin.site.register(Product_to_IRR)
-admin.site.register(Product_to_PAR)
+admin.site.register(Supplier, SimpleHistoryAdmin)
+admin.site.register(Product, SimpleHistoryAdmin)
+admin.site.register(PAR, SimpleHistoryAdmin)
+admin.site.register(GARV, SimpleHistoryAdmin)
+admin.site.register(Pending, SimpleHistoryAdmin)
+admin.site.register(Cost_center, SimpleHistoryAdmin)
+admin.site.register(Inventory_stat, SimpleHistoryAdmin)
+admin.site.register(Employee, SimpleHistoryAdmin)
+admin.site.register(IRR_header, SimpleHistoryAdmin)
+admin.site.register(IRR, SimpleHistoryAdmin)
+admin.site.register(MIV, SimpleHistoryAdmin)
+admin.site.register(Product_to_IRR, SimpleHistoryAdmin)
+admin.site.register(Product_to_PAR, SimpleHistoryAdmin)
+#admin.site.register(Try, SimpleHistoryAdmin)

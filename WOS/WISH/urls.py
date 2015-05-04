@@ -7,6 +7,7 @@ urlpatterns = [
     url(r'^$', views.index),
     url(r'^product/new/$', views.product_new, name='product_new'),
     url(r'^par/$', views.par),
+     url(r'^try/$', views.try_entry),
     #url(r'^irr_miv_form/(?P<mpk>[0-9]+)/(?P<ipk>[0-9]+)$', views.irr_miv_form, name='irr_miv_form'),
     url(r'^irr_entry/$', views.irr_entry, name='irr_entry'),
     url(r'^irr_entry_cont/(?P<pk>[0-9]+)/$', views.irr_entry_cont, name='irr_entry_cont'),
@@ -36,5 +37,5 @@ urlpatterns = [
     url(r'^par_reports/$', views.par_reports),
     url(r'^garv_reports/$', views.garv_reports),
     url(r'^product_reports/$', views.product_reports),
-    #url(r'^file_entry/$', views.file_entry),
+    url(r'^file_entry/$', views.file_entry),
 ]

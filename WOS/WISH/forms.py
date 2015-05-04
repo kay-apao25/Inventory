@@ -1,5 +1,4 @@
 from django import forms
-
 from .models import *
 
 class ProductForm(forms.ModelForm):
@@ -79,3 +78,10 @@ class Product_to_GARVform(forms.ModelForm):
     class Meta:
         model = Product_to_GARV
         fields = ('product', 'qty', 'par_number', 'remarks',)
+
+class TryForm(forms.ModelForm):
+
+    class Meta:
+        model = Try
+        fields = ('text',)
+
