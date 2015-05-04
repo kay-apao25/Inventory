@@ -92,7 +92,7 @@ def product_to_irr(request,pk, irn):
     if request.method == "POST":
         form = Product_to_IRRForm(request.POST)
         iform = IRR_entry_cont_Form(request.POST)
-        product_to_irr = form.save(commit=False) 
+        product_to_irr = form.save(commit=False)
         irr = iform.save(commit=False)
         irr.irr_no = irn
         irr.irr_headkey_id = pk
@@ -100,9 +100,9 @@ def product_to_irr(request,pk, irn):
         prod_to_irr.append({'IRR_no': product_to_irr.irr_no_id, 'Product': product_to_irr.product_id, 'Quantity A.': \
         product_to_irr.quantity_accepted, 'Quantity R.':product_to_irr.quantity_rejected, 'Quantity B.': \
         product_to_irr.quantity_balance})
-        if form.is_valid() and iform.is_valid(): 
+        if form.is_valid() and iform.is_valid():
             irr.wrs_number = randint(100000,999999)
-            res = json.dumps(prod_to_irr)       
+            res = json.dumps(prod_to_irr)
             irr.product = res
             irr.save()
             product_to_irr.save()
@@ -207,15 +207,20 @@ def product_to_garv(request,pk):
         #iform.fields['par_number'] = forms.ModelChoiceField(Product_to_PAR.objects.filter(par_no=par))
     return render(request, 'WISH/garv_entry.html', {'form': form, 'iform': iform, 'pk': pk})
 
+prod_to_par = []
 def par(request):
     if request.method == "POST":
         form = PAR_entryForm(request.POST)
         iform = Product_to_PARForm(request.POST)
+        par_entry = form.save(commit=False)
+        par_pro = iform.save(commit=False)
+        par_entry.par_date = time.strftime("%Y-%m-%d")
+        par_pro.par_no_id = par_entry.par_no
+        prod_to_par.append({'PAR_no': product_to_par.par_no_id, 'Product': product_to_par.product_id,\
+                            'Quantity': product_to_par.qty})
         if form.is_valid() and iform.is_valid():
-            par_entry = form.save(commit=False)
-            par_pro = iform.save(commit=False)
-            par_entry.par_date = time.strftime("%Y-%m-%d")
-            par_pro.par_no_id = par_entry.par_no
+            res = json.dumps(prod_to_par)
+            par.product = res
             par_entry.save()
             par_pro.save()
             return redirect('WISH.views.par_entry', pk=par_entry.par_no)

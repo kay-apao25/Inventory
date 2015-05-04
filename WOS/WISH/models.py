@@ -159,6 +159,7 @@ class MIV(models.Model):
         return str(self.irr_no)
 
 class PAR(models.Model):
+    product = JSONField()
     dce = models.ForeignKey(Employee, null=True, blank=True, related_name="d_pFK")
     par_date = models.DateField()
     par_no = models.CharField(max_length=10, primary_key=True)
