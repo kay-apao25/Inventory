@@ -23,12 +23,12 @@ class IRR_entry_cont_Form(forms.ModelForm):
         model = IRR
         fields = ('cost_center_no', 'date_recv' , 'wo_no' , 'remark',)
 
-class Product_to_IRRForm(forms.ModelForm):
-    #final_products = forms.CharField()
-    class Meta:
-        model = Product_to_IRR
-        fields = ('product', 'quantity_accepted', 'quantity_rejected', 'quantity_balance')
-
+class Product_to_IRRForm(forms.Form):
+    product = forms.ModelChoiceField(queryset=Product.objects.all())
+    quantity_accepted = forms.FloatField()
+    quantity_rejected = forms.FloatField()
+    quantity_balance = forms.FloatField()
+    
 class MIV_entryForm(forms.ModelForm):
 
     class Meta:

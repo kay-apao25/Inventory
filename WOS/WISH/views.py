@@ -92,20 +92,17 @@ def product_to_irr(request,pk, irn):
     if request.method == "POST":
         form = Product_to_IRRForm(request.POST)
         iform = IRR_entry_cont_Form(request.POST)
-        product_to_irr = form.save(commit=False) 
         irr = iform.save(commit=False)
         irr.irr_no = irn
         irr.irr_headkey_id = pk
-        product_to_irr.irr_no_id= irn
-        prod_to_irr.append({'IRR_no': product_to_irr.irr_no_id, 'Product': product_to_irr.product_id, 'Quantity A.': \
-        product_to_irr.quantity_accepted, 'Quantity R.':product_to_irr.quantity_rejected, 'Quantity B.': \
-        product_to_irr.quantity_balance})
+        prod_to_irr.append({'IRR_no': irn, 'Product': form.data['product'], 'Quantity A.': \
+        form.data['quantity_accepted'], 'Quantity R.':form.data['quantity_rejected'], 'Quantity B.': \
+        form.data['quantity_balance']})
         if form.is_valid() and iform.is_valid(): 
             irr.wrs_number = randint(100000,999999)
             res = json.dumps(prod_to_irr)       
             irr.product = res
             irr.save()
-            product_to_irr.save()
             return redirect('WISH.views.product_to_irr', pk=pk, irn=irn)
     else:
         form = Product_to_IRRForm()
