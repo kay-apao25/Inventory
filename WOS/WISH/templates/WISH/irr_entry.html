@@ -7,20 +7,16 @@
     </div>
     <br>
     <form method="POST" class="irr_entry">{% csrf_token %}
-    {% if form.non_field_errors %}
-    <ul>
-      {% for error in form.non_field_errors %}
-        <li>{{ error }}</li>
-      {% endfor %}
-    </ul>
-    {% endif %}
     
-    {% for field in form %}
+    
+    {% for field in form%}
     {%if forloop.counter|divisibleby:"3" %}
-      <div></div><br><br>
-    {%endif%}
+      <div></div><br>
+          {%endif%}
 
-    {{field.label_tag}}&nbsp;&nbsp;{{field}}&nbsp;&nbsp;&nbsp;
+   {{ field.label }}: {{ field }}
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
     {%endfor%}
 <br>
 <br>

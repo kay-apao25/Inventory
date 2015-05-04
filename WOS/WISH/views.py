@@ -26,7 +26,7 @@ def miv_reports(request):
     return render(request, 'WISH/miv_reports.html', {'mivs': mivs})
 
 def wrs_reports(request):
-    wrss = MIV.objects.all()
+    wrss = IRR.objects.all()
     return render(request, 'WISH/wrs_reports.html', {'wrss': wrss})
 
 def par_reports(request):
@@ -92,6 +92,7 @@ def product_to_irr(request,pk, irn):
     if request.method == "POST":
         form = Product_to_IRRForm(request.POST)
         iform = IRR_entry_cont_Form(request.POST)
+<<<<<<< HEAD
         irr = iform.save(commit=False)
         irr.irr_no = irn
         irr.irr_headkey_id = pk
@@ -99,6 +100,15 @@ def product_to_irr(request,pk, irn):
         form.data['quantity_accepted'], 'Quantity R.':form.data['quantity_rejected'], 'Quantity B.': \
         form.data['quantity_balance']})
         if form.is_valid() and iform.is_valid():
+=======
+        if form.is_valid() and iform.is_valid():
+            prod_to_irr.append({'IRR_no': irn, 'Product': form.data['product'], 'quantity_accepted': \
+                int(form.data['quantity_accepted']), 'quantity_rejected':int(form.data['quantity_rejected']), \
+                'quantity_balance': int(form.data['quantity_balance'])})
+            irr = iform.save(commit=False)
+            irr.irr_no = irn
+            irr.irr_headkey_id = pk
+>>>>>>> d3d8e67d96f43620c051d6f95f771c72cf6ec523
             irr.wrs_number = randint(100000,999999)
             res = json.dumps(prod_to_irr)
             irr.product = res
@@ -183,7 +193,6 @@ def garv_entry(request, pk):
         form.fields['product'] = forms.ModelChoiceField(Product_to_PAR.objects.filter(par_no=pk))
     return render(request, 'WISH/garv_entry.html', {'form': form})
 
-
 prod_to_garv = []
 def product_to_garv(request,pk):
     if request.method == "POST":
@@ -199,6 +208,8 @@ def product_to_garv(request,pk):
             res = json.dumps(prod_to_garv)
             garv.product = res
             garv.save()
+            product_to_garv.garv_id = garv.pk
+            product_to_garv.save()
             return redirect('WISH.views.product_to_garv', pk=pk)
     else:
         form = GARV_entryForm()
@@ -251,8 +262,10 @@ def wrs_entry(request):
     return render(request, 'WISH/wrs_entry.html', {})
 
 def wrs_form(request, pk):
-    wrss = get_object_or_404(MIV, wrs_number=pk)
-    pros = Product_to_IRR.objects.filter(irr_no=wrss.irr_no)
+    wrss = get_object_or_404(IRR, wrs_number=pk)
+    pros = wrss.product
+    for pro in pros:
+        pro['product'] = Product.objects.get(product_number=pro['Product'])
     return render(request, 'WISH/wrs_form.html', {'wrss': wrss, 'pros': pros})
 
 def par_form(request, pk):
