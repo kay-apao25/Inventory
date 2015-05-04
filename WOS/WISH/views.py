@@ -197,28 +197,29 @@ def garv_entry(request, pk):
         form.fields['product'] = forms.ModelChoiceField(Product_to_PAR.objects.filter(par_no=pk))
     return render(request, 'WISH/garv_entry.html', {'form': form})
 
+prod_to_garv = []
 def product_to_garv(request,pk):
     if request.method == "POST":
         form = GARV_entryForm(request.POST)
         iform = Product_to_GARVform(request.POST)
-        if form.is_valid() and iform.is_valid():
-            product_to_garv = iform.save(commit=False)
+        if form.is_valid():
+            prod_to_garv.append({'Product': iform.data['product'], 'Quantity': \
+            iform.data['qty'], 'PAR number':iform.data['par_number'], 'Remarks': \
+            iform.data['remarks']})
             garv = form.save(commit=False)
             garv.garv_date = time.strftime("%Y-%m-%d")
             form = Product_to_GARVform(request.POST)
+            res = json.dumps(prod_to_garv)
+            garv.product = res
             garv.save()
-            product_to_garv.garv_id = garv.pk
-            product_to_garv.save()
             return redirect('WISH.views.product_to_garv', pk=pk)
     else:
         form = GARV_entryForm()
         iform = Product_to_GARVform()
         par = PAR.objects.filter(dce=pk)
         iform.fields['product'] = forms.ModelChoiceField(Product_to_PAR.objects.filter(par_no=par))
-        #iform.fields['par_number'] = forms.ModelChoiceField(Product_to_PAR.objects.filter(par_no=par))
     return render(request, 'WISH/garv_entry.html', {'form': form, 'iform': iform, 'pk': pk})
 
-prod_to_par = []
 def par(request):
     if request.method == "POST":
         form = PAR_entryForm(request.POST)
@@ -228,8 +229,8 @@ def par(request):
         prod_to_par.append({'PAR_no': form.data['par_no'], 'Product': form.data['product'],\
                             'Quantity': form.data['qty']})
         if form.is_valid() and iform.is_valid():
-            res = json.dumps(prod_to_par)
-            par.product = res
+            par_entry.par_date = time.strftime("%Y-%m-%d")
+            par_pro.par_no_id = par_entry.par_no
             par_entry.save()
             return redirect('WISH.views.par_entry', pk=par_entry.par_no)
     else:
@@ -282,16 +283,15 @@ def cme_form(request):
 
 def irr_form(request, pk):
     irs = get_object_or_404(IRR, pk=pk)
+    pros = Product_to_IRR.objects.filter(irr_no=pk)
+    amt_list = {}
     total = 0
-    products = irs.product
-    for product in products:
-        pro = Product.objects.get(product_number=product['Product'])
-        amount = float(product['quantity_accepted']) * int(pro.unit_cost)
-        product['amount'] =  amount
-        product['pros'] = pro
+    for pro in pros:
+        amount = pro.quantity_accepted * pro.product.unit_cost
+        pro.amt = amount
         total = total + amount
-    return render(request, 'WISH/irr_form.html', {'irs':irs, 'products': products, \
-                    'total': total, 'pro': pro})
+    return render(request, 'WISH/irr_form.html', {'irs':irs, 'pros': pros, \
+                    'amt_list': amt_list, 'total': total})
 
 #def irr_miv_form(request, mpk, ipk):
 #    mivs = get_object_or_404(MIV, pk=mpk)

@@ -58,6 +58,7 @@ class PAR_Form(forms.ModelForm):
         fields = ('dce', 'amt_cost', 'approved_by', \
         'issued_by', 'inv_stat_no', 'PO_number', 'date_acquired', 'wo_number', 'remark',)
 
+
 class Product_to_PARForm(forms.Form):
     product = forms.ModelChoiceField(queryset=Product.objects.all())
     par_no = forms.FloatField()
@@ -70,3 +71,15 @@ class GARV_entryForm(forms.ModelForm):
         fields = ('dce', 'garv_no', 'cc_number', 'wo_number',\
                     'inspected_by', 'date_inspected', 'confirmed_by', \
                     'date_confirmed', 'noted_by', )
+
+class Product_to_GARVform(forms.Form):
+    product = forms.ModelChoiceField(queryset=Product.objects.all())
+    qty = forms.FloatField()
+    par_number = forms.FloatField()
+    remarks = forms.CharField()
+
+class TryForm(forms.ModelForm):
+
+    class Meta:
+        model = Try
+        fields = ('text',)

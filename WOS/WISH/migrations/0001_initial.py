@@ -18,8 +18,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Cost_center',
             fields=[
-                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
-                ('created_with_session_key', audit_log.models.fields.CreatingSessionKeyField(max_length=40, null=True, editable=False)),
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),('created_with_session_key', audit_log.models.fields.CreatingSessionKeyField(max_length=40, null=True, editable=False)),
                 ('modified_with_session_key', audit_log.models.fields.LastSessionKeyField(max_length=40, null=True, editable=False)),
                 ('created', django_extensions.db.fields.CreationDateTimeField(default=django.utils.timezone.now, verbose_name='created', editable=False, blank=True)),
                 ('modified', django_extensions.db.fields.ModificationDateTimeField(default=django.utils.timezone.now, verbose_name='modified', editable=False, blank=True)),
@@ -104,6 +103,9 @@ class Migration(migrations.Migration):
             name='Inventory_stat',
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('inv_station_no', models.CharField(max_length=20)),
+                ('station_description', models.TextField()),
+                ('cost_center_no', models.ForeignKey(to='WISH.Cost_center')),
                 ('created_with_session_key', audit_log.models.fields.CreatingSessionKeyField(max_length=40, null=True, editable=False)),
                 ('modified_with_session_key', audit_log.models.fields.LastSessionKeyField(max_length=40, null=True, editable=False)),
                 ('created', django_extensions.db.fields.CreationDateTimeField(default=django.utils.timezone.now, verbose_name='created', editable=False, blank=True)),
@@ -181,7 +183,9 @@ class Migration(migrations.Migration):
                 ('date_issued', models.DateField()),
                 ('doc_date', models.DateField()),
                 ('remark', models.TextField()),
-                ('created_by', audit_log.models.fields.CreatingUserField(related_name='created_wish_miv_set', editable=False, to=settings.AUTH_USER_MODEL, null=True, verbose_name='created by')),
+                ('inv_station_no', models.ForeignKey(to='WISH.Inventory_stat')),
+                ('irr_no', models.ForeignKey(to='WISH.IRR')),
+               ('created_by', audit_log.models.fields.CreatingUserField(related_name='created_wish_miv_set', editable=False, to=settings.AUTH_USER_MODEL, null=True, verbose_name='created by')),
                 ('inv_station_no', models.ForeignKey(to='WISH.Inventory_stat')),
                 ('irr_no', models.ForeignKey(to='WISH.IRR')),
                 ('modified_by', audit_log.models.fields.LastUserField(related_name='modified_wish_miv_set', editable=False, to=settings.AUTH_USER_MODEL, null=True, verbose_name='modified by')),
@@ -194,8 +198,7 @@ class Migration(migrations.Migration):
         ),
         migrations.CreateModel(
             name='PAR',
-            fields=[
-                ('created_with_session_key', audit_log.models.fields.CreatingSessionKeyField(max_length=40, null=True, editable=False)),
+            fields=[('created_with_session_key', audit_log.models.fields.CreatingSessionKeyField(max_length=40, null=True, editable=False)),
                 ('modified_with_session_key', audit_log.models.fields.LastSessionKeyField(max_length=40, null=True, editable=False)),
                 ('created', django_extensions.db.fields.CreationDateTimeField(default=django.utils.timezone.now, verbose_name='created', editable=False, blank=True)),
                 ('modified', django_extensions.db.fields.ModificationDateTimeField(default=django.utils.timezone.now, verbose_name='modified', editable=False, blank=True)),
@@ -206,6 +209,10 @@ class Migration(migrations.Migration):
                 ('date_acquired', models.DateField(null=True, blank=True)),
                 ('PO_number', models.ForeignKey(blank=True, to='WISH.IRR_header', null=True)),
                 ('approved_by', models.ForeignKey(related_name='dce_FK2', blank=True, to='WISH.Employee', null=True)),
+                ('dce', models.ForeignKey(blank=True, to='WISH.Employee', null=True)),
+                ('inv_stat_no', models.ForeignKey(blank=True, to='WISH.Inventory_stat', null=True)),
+                ('issued_by', models.ForeignKey(related_name='dce_FK3', blank=True, to='WISH.Employee', null=True)),
+                ('wo_number', models.ForeignKey(blank=True, to='WISH.IRR', null=True)),
                 ('created_by', audit_log.models.fields.CreatingUserField(related_name='created_wish_par_set', editable=False, to=settings.AUTH_USER_MODEL, null=True, verbose_name='created by')),
                 ('dce', models.ForeignKey(blank=True, to='WISH.Employee', null=True)),
                 ('inv_stat_no', models.ForeignKey(blank=True, to='WISH.Inventory_stat', null=True)),
@@ -218,7 +225,7 @@ class Migration(migrations.Migration):
                 'abstract': False,
                 'get_latest_by': 'modified',
             },
-        ),
+            ),
         migrations.CreateModel(
             name='Pending',
             fields=[
@@ -269,6 +276,37 @@ class Migration(migrations.Migration):
                 ('remark', models.TextField()),
                 ('created_by', audit_log.models.fields.CreatingUserField(related_name='created_wish_product_set', editable=False, to=settings.AUTH_USER_MODEL, null=True, verbose_name='created by')),
                 ('modified_by', audit_log.models.fields.LastUserField(related_name='modified_wish_product_set', editable=False, to=settings.AUTH_USER_MODEL, null=True, verbose_name='modified by')),
+            ],
+
+        ),
+        migrations.CreateModel(
+            name='Product_to_GARV',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('qty', models.CharField(max_length=20)),
+                ('remarks', models.CharField(max_length=20, null=True)),
+                ('garv', models.ForeignKey(to='WISH.GARV')),
+                ('par_number', models.ForeignKey(to='WISH.PAR')),
+            ],
+        ),
+        migrations.CreateModel(
+            name='Product_to_IRR',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('quantity_accepted', models.FloatField()),
+                ('quantity_rejected', models.FloatField()),
+                ('quantity_balance', models.FloatField()),
+                ('irr_no', models.ForeignKey(to='WISH.IRR')),
+                ('product', models.ForeignKey(to='WISH.Product')),
+            ],
+        ),
+        migrations.CreateModel(
+            name='Product_to_PAR',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('qty', models.IntegerField()),
+                ('par_no', models.ForeignKey(to='WISH.PAR')),
+                ('product', models.ForeignKey(to='WISH.Product_to_IRR')),
             ],
             options={
                 'ordering': ('-modified', '-created'),
@@ -410,6 +448,7 @@ class Migration(migrations.Migration):
             field=models.ForeignKey(to='WISH.IRR_header'),
         ),
         migrations.AddField(
+
             model_name='irr',
             name='modified_by',
             field=audit_log.models.fields.LastUserField(related_name='modified_wish_irr_set', editable=False, to=settings.AUTH_USER_MODEL, null=True, verbose_name='modified by'),
@@ -423,6 +462,7 @@ class Migration(migrations.Migration):
             model_name='customer',
             name='dce',
             field=models.ForeignKey(to='WISH.Employee'),
+
         ),
         migrations.AddField(
             model_name='customer',
