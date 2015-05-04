@@ -204,15 +204,20 @@ def product_to_garv(request,pk):
         #iform.fields['par_number'] = forms.ModelChoiceField(Product_to_PAR.objects.filter(par_no=par))
     return render(request, 'WISH/garv_entry.html', {'form': form, 'iform': iform, 'pk': pk})
 
+prod_to_par = []
 def par(request):
     if request.method == "POST":
         form = PAR_entryForm(request.POST)
         iform = Product_to_PARForm(request.POST)
+        par_entry = form.save(commit=False)
+        par_pro = iform.save(commit=False)
+        par_entry.par_date = time.strftime("%Y-%m-%d")
+        par_pro.par_no_id = par_entry.par_no
+        prod_to_par.append({'PAR_no': form.data['product_to_par.par_no_id'], 'Product': form.data['product_to_par.product_id'],\
+                            'Quantity': form.data['product_to_par.qty']})
         if form.is_valid() and iform.is_valid():
-            par_entry = form.save(commit=False)
-            par_pro = iform.save(commit=False)
-            par_entry.par_date = time.strftime("%Y-%m-%d")
-            par_pro.par_no_id = par_entry.par_no
+            res = json.dumps(prod_to_par)
+            par.product = res
             par_entry.save()
             par_pro.save()
             return redirect('WISH.views.par_entry', pk=par_entry.par_no)
