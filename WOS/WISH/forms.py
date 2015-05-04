@@ -48,15 +48,15 @@ class PAR_entryForm(forms.ModelForm):
 
     class Meta:
         model = PAR
-        fields = ('dce', 'par_no', 'amt_cost', 'remark', 'approved_by', \
-        'issued_by', 'inv_stat_no', 'PO_number', 'date_acquired', 'wo_number', )
+        fields = ('dce', 'par_no', 'amt_cost', 'approved_by', \
+        'issued_by', 'inv_stat_no', 'PO_number', 'date_acquired', 'wo_number', 'remark', )
 
 class PAR_Form(forms.ModelForm):
 
     class Meta:
         model = PAR
-        fields = ('dce', 'amt_cost', 'remark', 'approved_by', \
-        'issued_by', 'inv_stat_no', 'PO_number', 'date_acquired', 'wo_number', )
+        fields = ('dce', 'amt_cost', 'approved_by', \
+        'issued_by', 'inv_stat_no', 'PO_number', 'date_acquired', 'wo_number', 'remark',)
 
 class Product_to_PARForm(forms.ModelForm):
     product = forms.ModelChoiceField(queryset = Product_to_IRR.objects.all() )
