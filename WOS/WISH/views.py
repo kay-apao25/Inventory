@@ -220,6 +220,9 @@ def product_to_garv(request,pk):
         iform.fields['product'] = forms.ModelChoiceField(Product_to_PAR.objects.filter(par_no=par))
     return render(request, 'WISH/garv_entry.html', {'form': form, 'iform': iform, 'pk': pk})
 
+prod_to_par = []
+prod_to_garv = []
+
 def par(request):
     if request.method == "POST":
         form = PAR_entryForm(request.POST)
@@ -283,22 +286,16 @@ def cme_form(request):
 
 def irr_form(request, pk):
     irs = get_object_or_404(IRR, pk=pk)
-    pros = Product_to_IRR.objects.filter(irr_no=pk)
-    amt_list = {}
+    products = irs.product
     total = 0
-    for pro in pros:
-        amount = pro.quantity_accepted * pro.product.unit_cost
-        pro.amt = amount
+    for product in products:
+        pro = Product.objects.get(product_number=product['Product'])
+        amount = float(product['quantity_accepted']) * int(pro.unit_cost)
+        product['amount'] = amount
+        product['pros'] = pro
         total = total + amount
-    return render(request, 'WISH/irr_form.html', {'irs':irs, 'pros': pros, \
-                    'amt_list': amt_list, 'total': total})
-
-#def irr_miv_form(request, mpk, ipk):
-#    mivs = get_object_or_404(MIV, pk=mpk)
-#    irs = get_object_or_404(IRR, pk=ipk)
-#    amount = irs.quantity_accepted * irs.asset_code.unit_cost
-#    total = amount
-#    return render(request, 'WISH/irr_miv_form.html', {'irs':irs , 'mivs':mivs, 'amount':amount, 'total':total})
+    return render(request, 'WISH/irr_form.html', {'irs':irs, 'products': products, \
+                     'total': total})
 
 def gatepass_form(request):
     return render(request, 'WISH/gatepass_form.html', {})
