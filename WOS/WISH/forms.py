@@ -28,7 +28,7 @@ class Product_to_IRRForm(forms.Form):
     quantity_accepted = forms.FloatField()
     quantity_rejected = forms.FloatField()
     quantity_balance = forms.FloatField()
-    
+
 class MIV_entryForm(forms.ModelForm):
 
     class Meta:
@@ -59,7 +59,7 @@ class PAR_Form(forms.ModelForm):
         'issued_by', 'inv_stat_no', 'PO_number', 'date_acquired', 'wo_number', 'remark',)
 
 class Product_to_PARForm(forms.ModelForm):
-    product = forms.ModelChoiceField(queryset = Product_to_IRR.objects.all() )
+    product = forms.ModelChoiceField(queryset = IRR.objects.all() )
 
     class Meta:
         model = Product_to_PAR
@@ -73,15 +73,14 @@ class GARV_entryForm(forms.ModelForm):
                     'inspected_by', 'date_inspected', 'confirmed_by', \
                     'date_confirmed', 'noted_by', )
 
-class Product_to_GARVform(forms.ModelForm):
+'''class Product_to_GARVform(forms.ModelForm):
 
     class Meta:
         model = Product_to_GARV
-        fields = ('product', 'qty', 'par_number', 'remarks',)
+        fields = ('product', 'qty', 'par_number', 'remarks',)'''
 
 class TryForm(forms.ModelForm):
 
     class Meta:
         model = Try
         fields = ('text',)
-
