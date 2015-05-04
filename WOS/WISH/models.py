@@ -134,18 +134,6 @@ class IRR(models.Model):
     def __unicode__(self):
         return str(self.irr_no)
 
-
-class Product_to_IRR(models.Model):
-    product = models.ForeignKey(Product, related_name="p_piFK")
-    irr_no = models.ForeignKey(IRR, related_name="i_piFK")
-    quantity_accepted = models.FloatField()
-    quantity_rejected = models.FloatField()
-    quantity_balance = models.FloatField()
-    history = HistoricalRecords()
-
-    def __str__(self):
-        return str(self.product.product_number)
-
 class MIV(models.Model):
     inv_station_no = models.ForeignKey(Inventory_stat, related_name="is_mFK")
     irr_no = models.ForeignKey(IRR, related_name="i_mFK")
@@ -178,7 +166,7 @@ class PAR(models.Model):
 
 class Product_to_PAR(models.Model):
     par_no = models.ForeignKey(PAR, related_name="par_ppFK")
-    product = models.ForeignKey(Product_to_IRR, related_name="p_ppFK")
+    #product = models.ForeignKey(Product_to_IRR, related_name="p_ppFK")
     qty = models.IntegerField()
     history = HistoricalRecords()
 
@@ -203,7 +191,7 @@ class GARV(models.Model):
 
 class Product_to_GARV(models.Model):
     garv = models.ForeignKey(GARV, related_name="g_pgFK")
-    product = models.ForeignKey(Product_to_IRR, related_name="p_pgFK")
+    #product = models.ForeignKey(Product_to_IRR, related_name="p_pgFK")
     qty = models.CharField(max_length=20)
     par_number = models.ForeignKey(PAR, related_name="pn_pgFK")
     remarks = models.CharField(max_length=20, null=True)
