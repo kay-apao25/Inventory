@@ -76,17 +76,16 @@
 				<th style="width:12%;text-align:center">Unit Price</th>
 				<th style="width:15%;text-align:center">Amount</th>
 			</tr>
-      {% for pro in pros%}
+      {% for product in products%}
 			<tr>
-
-				<td style="text-align:center"><br>{{pro.product.id}}<br><br></td>
-				<td style="text-align:center"><br>{{pro.product.nsn}}<br><br></td>
-				<td style="text-align:center"><br>{{pro.product.item_name}} - {{pro.product.description}}<br><br></td>
-				<td style="text-align:center"><br> {{pro.quantity_accepted}}<br><br></td>
-				<td style="text-align:center"><br> {{pro.quantity_rejected}}<br><br></td>
-				<td style="text-align:center"><br>{{pro.product.unit_measure }}<br><br></td>
-				<td style="text-align:center"><br>{{pro.product.unit_cost }}<br><br></td>
-        <td style="text-align:center"><br>{{ pro.amt }}<br><br></td>
+				<td style="text-align:center"><br>{{product.pros.id}}<br><br></td>
+				<td style="text-align:center"><br>{{product.pros.nsn}}<br><br></td>
+				<td style="text-align:center"><br>{{product.pros.item_name}} - {{product.pros.description}}<br><br></td>
+				<td style="text-align:center"><br> {{product.quantity_accepted}}<br><br></td>
+				<td style="text-align:center"><br> {{product.quantity_rejected}}<br><br></td>
+				<td style="text-align:center"><br>{{product.pros.unit_measure }}<br><br></td>
+				<td style="text-align:center"><br>{{product.pros.unit_cost }}<br><br></td>
+        		<td style="text-align:center"><br>{{ product.amount }}<br><br></td>
 
 			</tr>
       {% endfor %}
@@ -96,15 +95,15 @@
         <td colspan=8 style="text-align:right"><br>Total: {{ total }}<br><br></td>
       </tr>
 			<tr>
-				<td colspan="8">Findings/Observations:</td>
+				<td colspan="8">Findings/Observations: {{irs.remark}}</td>
 			</tr>
 			<tr>
-				<td style="text-align:center" colspan="2">Inspected & Accepted By:<br><u>{{irs.irr_headkey.dce_user.name}}dce_user</u><br>
+				<td style="text-align:center" colspan="2">Inspected & Accepted By:<br><u>{{irs.irr_headkey.dce_user.name}}</u><br>
           QA/Deputized Inspector<br>DCE:{{irs.irr_headkey.dce_user.dce}}<br>Date of inspection:{{irs.irr_headkey.proc_date}}</td>
 				<td style="text-align:center" >Received By:<br><u>{{irs.irr_headkey.dce_custodian.name}}</u><br>
-          Property Custodian<br>DCE:{{irs.irr_headkey.dce_custodian.dce}}<br>Date of inspection:{{irs.date_recv}}</td>
+          Property Custodian<br>DCE:{{irs.irr_headkey.dce_custodian.dce}}<br>Date of inspection: {{irs.date_recv}}</td>
 				<td style="text-align:center" colspan="3">Approved By:<br><u>{{irs.irr_headkey.dce_approved.name}}</u><br>
-          IS Cost Center Head<br>DCE:{{irs.irr_headkey.dce_approved.dce}}<br>Date of inspection:{{irs.irr_headkey.approved_date}}</td>
+          IS Cost Center Head<br>DCE:{{irs.irr_headkey.dce_approved.dce}}<br>Date of inspection: {{irs.irr_headkey.approved_date}}</td>
 				<td style="text-align:center" colspan="2">IRR<br>IS no. {{irs.irr_headkey.inv_station_no.inv_station_no}}
           <br> NO. {{irs.pk}}<br><br></td>
 
