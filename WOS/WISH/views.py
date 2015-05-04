@@ -212,13 +212,14 @@ def par(request):
     if request.method == "POST":
         form = PAR_entryForm(request.POST)
         iform = Product_to_PARForm(request.POST)
+        par_entry = form.save(commit=False)
+        par_entry.par_date = time.strftime("%Y-%m-%d")
+        prod_to_par.append({'PAR_no': form.data['par_no'], 'Product': form.data['product'],\
+                            'Quantity': form.data['qty']})
         if form.is_valid() and iform.is_valid():
-            par_entry = form.save(commit=False)
-            par_pro = iform.save(commit=False)
             par_entry.par_date = time.strftime("%Y-%m-%d")
             par_pro.par_no_id = par_entry.par_no
             par_entry.save()
-            par_pro.save()
             return redirect('WISH.views.par_entry', pk=par_entry.par_no)
     else:
         form = PAR_entryForm()
@@ -256,8 +257,7 @@ def wrs_form(request, pk):
 
 def par_form(request, pk):
     parss = get_object_or_404(PAR, pk=pk)
-    pros = Product_to_PAR.objects.filter(par_no=pk)
-    return render(request, 'WISH/par_form.html', {'pros': pros , 'parss':parss})
+    return render(request, 'WISH/par_form.html', {'parss':parss})
 
 def garv_form(request, pk):
     garvs = get_object_or_404(GARV, pk=pk)

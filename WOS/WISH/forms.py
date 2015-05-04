@@ -58,12 +58,11 @@ class PAR_Form(forms.ModelForm):
         fields = ('dce', 'amt_cost', 'approved_by', \
         'issued_by', 'inv_stat_no', 'PO_number', 'date_acquired', 'wo_number', 'remark',)
 
-class Product_to_PARForm(forms.ModelForm):
-    product = forms.ModelChoiceField(queryset = IRR.objects.all() )
 
-    class Meta:
-        model = Product_to_PAR
-        fields = ('product', 'qty', )
+class Product_to_PARForm(forms.Form):
+    product = forms.ModelChoiceField(queryset=Product.objects.all())
+    par_no = forms.FloatField()
+    qty = forms.IntegerField()
 
 class GARV_entryForm(forms.ModelForm):
 
