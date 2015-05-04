@@ -9,12 +9,17 @@ import json
 # Create your views here.
 def index(request):
     del prod_to_irr[:]
+    del prod_to_par[:]
+    del prod_to_garv[:]
     return render(request, 'WISH/index.html', {})
 
 def wrs_num(request):
     return render(request, 'WISH/wrs_num.html', {})
 
 def file_report(request):
+    del prod_to_irr[:]
+    del prod_to_par[:]
+    del prod_to_garv[:]
     return render(request, 'WISH/file_report.html', {})
 
 def irr_reports(request):
@@ -62,6 +67,9 @@ def product_new(request):
 
 
 def irr_entry(request):
+    del prod_to_irr[:]
+    del prod_to_par[:]
+    del prod_to_garv[:]
     if request.method == "POST":
         form = IRR_entryForm(request.POST)
         if form.is_valid():
@@ -74,7 +82,7 @@ def irr_entry(request):
         form = IRR_entryForm()
     return render(request, 'WISH/irr_entry.html', {'form': form})
 
-def try_entry(request):
+"""def try_entry(request):
     if request.method == "POST":
         form = TryForm(request.POST)
         if form.is_valid():
@@ -85,7 +93,7 @@ def try_entry(request):
             return redirect('WISH.views.index')
     else:
         form = TryForm()
-    return render(request, 'WISH/irr_entry.html', {'form': form})
+    return render(request, 'WISH/irr_entry.html', {'form': form})"""
 
 prod_to_irr = []
 def product_to_irr(request,pk, irn):
@@ -130,6 +138,9 @@ def irr_entry_cont(request, pk):
     return render(request, 'WISH/irr_entry_cont.html', {'form': form})
 
 def miv_entry_S(request, pk):
+    del prod_to_irr[:]
+    del prod_to_par[:]
+    del prod_to_garv[:]
     if request.method == "POST":
         form = MIV_entryForm(request.POST)
         if form.is_valid():
@@ -158,6 +169,9 @@ def miv_entry(request):
     return render(request, 'WISH/miv_entry_f.html', {'irrs':irrs})
 
 def garv_entry_f(request):
+    del prod_to_irr[:]
+    del prod_to_par[:]
+    del prod_to_garv[:]
     if request.method == "POST":
         form = GARV_entryForm(request.POST)
         if form.is_valid():
