@@ -276,7 +276,19 @@ def wrs_form(request, pk):
 
 def par_form(request, pk):
     parss = get_object_or_404(PAR, pk=pk)
-    return render(request, 'WISH/par_form.html', {'parss':parss})
+    products = parss.product
+    total = 0
+    for product in products:
+        pro = Product.objects.get(id=product['Product'])
+        amount = float(product['Quantity']) * int(pro.unit_cost)
+        product['amount'] = amount
+        product['pros'] = pro
+        product['description'] = pro.description
+        product['item_name'] = pro.item_name
+        product['unit'] = pro.unit_measure
+        product['from'] = pro.purchased_from
+        total = total + amount
+    return render(request, 'WISH/par_form.html', {'parss':parss, 'products': products, 'total': total})
 
 def garv_form(request, pk):
     garvs = get_object_or_404(GARV, pk=pk)
