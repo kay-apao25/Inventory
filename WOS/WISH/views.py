@@ -271,7 +271,7 @@ def wrs_form(request, pk):
     wrss = get_object_or_404(IRR, wrs_number=pk)
     pros = wrss.product
     for pro in pros:
-        pro['product'] = Product.objects.get(product_number=pro['Product'])
+        pro['product'] = Product.objects.get(id=pro['Product'])
     return render(request, 'WISH/wrs_form.html', {'wrss': wrss, 'pros': pros})
 
 def par_form(request, pk):
@@ -291,7 +291,7 @@ def irr_form(request, pk):
     products = irs.product
     total = 0
     for product in products:
-        pro = Product.objects.get(product_number=product['Product'])
+        pro = Product.objects.get(id=product['Product'])
         amount = float(product['quantity_accepted']) * int(pro.unit_cost)
         product['amount'] = amount
         product['pros'] = pro
@@ -308,7 +308,7 @@ def miv_form(request, pk):
     amt_list = {}
     total = 0
     for product in products:
-        pro = Product.objects.get(product_number=product['Product'])
+        pro = Product.objects.get(id=product['Product'])
         amount = float(product['quantity_accepted']) * int(pro.unit_cost)
         product['amount'] = amount
         product['pros'] = pro
