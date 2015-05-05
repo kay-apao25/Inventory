@@ -257,8 +257,14 @@ def par_entry(request, pk):
             par_entry.par_date = time.strftime("%Y-%m-%d")
             prod_to_par.append({'Product': iform.data['product'],\
                                 'Quantity': iform.data['qty']})
+            amt_cost = 0
+            for product in prod_to_par:
+                pro = Product.objects.get(id=product['Product'])
+                amount = float(product['Quantity']) * int(pro.unit_cost)
+                amt_cost = amt_cost + amount
             res = json.dumps(prod_to_par)
             par_entry.product = res
+            par_entry.amt_cost = amt_cost
             par_entry.par_date = time.strftime("%Y-%m-%d")
             par_entry.par_no = pk
             par_entry.save()
