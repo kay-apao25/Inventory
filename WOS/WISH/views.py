@@ -216,8 +216,9 @@ def product_to_garv(request,pk):
             return redirect('WISH.views.product_to_garv', pk=pk)
     else:
         form = GARV_entryForm()
-        iform = Product_to_GARVform()
-        iform.fields['product'] = forms.ModelChoiceField(PAR.objects.filter(product=par.product))
+        par = PAR.objects.get(dce=pk)
+        iform = Product_to_GARVform(products = par.product)
+        #iform.fields['product'] = forms.ModelChoiceField(PAR.objects.filter(par_no=par))
     return render(request, 'WISH/garv_entry.html', {'form': form, 'iform': iform, 'pk': pk})
 
 prod_to_par = []
@@ -230,8 +231,8 @@ def par(request):
         if form.is_valid() and iform.is_valid():
             par_entry = form.save(commit=False)
             par_entry.par_date = time.strftime("%Y-%m-%d")
-            prod_to_par.append({'Product': form.data['product'],\
-                                'Quantity': form.data['qty']})
+            prod_to_par.append({'Product': 'hgfgd',\
+                                'Quantity': 'jhghgfhf'})
             res = json.dumps(prod_to_par)
             par_entry.product = prod_to_par
             par_entry.save()
@@ -271,7 +272,7 @@ def wrs_form(request, pk):
     wrss = get_object_or_404(IRR, wrs_number=pk)
     pros = wrss.product
     for pro in pros:
-        pro['product'] = Product.objects.get(product_number=pro['Product'])
+        pro['product'] = Product.objects.get(id=pro['Product'])
     return render(request, 'WISH/wrs_form.html', {'wrss': wrss, 'pros': pros})
 
 def par_form(request, pk):
@@ -303,7 +304,7 @@ def irr_form(request, pk):
     products = irs.product
     total = 0
     for product in products:
-        pro = Product.objects.get(product_number=product['Product'])
+        pro = Product.objects.get(id=product['Product'])
         amount = float(product['quantity_accepted']) * int(pro.unit_cost)
         product['amount'] = amount
         product['pros'] = pro
@@ -320,7 +321,7 @@ def miv_form(request, pk):
     amt_list = {}
     total = 0
     for product in products:
-        pro = Product.objects.get(product_number=product['Product'])
+        pro = Product.objects.get(id=product['Product'])
         amount = float(product['quantity_accepted']) * int(pro.unit_cost)
         product['amount'] = amount
         product['pros'] = pro
