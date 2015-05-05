@@ -123,7 +123,7 @@ class IRR_header(models.Model):
 class IRR(models.Model):
     product = JSONField()
     irr_headkey = models.ForeignKey(IRR_header, related_name="ih_iFK")
-    irr_no = models.IntegerField(primary_key = True)
+    irr_no = models.AutoField(primary_key = True, default=000000)
     cost_center_no = models.ForeignKey(Cost_center, null=True, blank=True, related_name="ccn_iFK")
     date_recv = models.DateField(null=True, blank=True)
     wo_no = models.CharField(max_length=7, null=True, blank=True)
@@ -179,7 +179,7 @@ class GARV(models.Model):
     garv_date = models.DateField(null=True, blank=True)
     garv_no = models.CharField(max_length=10, primary_key=True)
     cc_number = models.ForeignKey(Cost_center, null=True, blank=True, related_name="cc_gFK")
-    wo_number = models.ForeignKey(IRR_header, null=True, blank=True, related_name="wo_gFK")
+    wo_number = models.ForeignKey(IRR, null=True, blank=True, related_name="wo_gFK")
     inspected_by = models.ForeignKey(Employee, related_name='dce_FK4', null=True, blank=True)
     date_inspected = models.DateField(null=True, blank=True)
     confirmed_by = models.ForeignKey(Employee, related_name='dce_FK5', null=True, blank=True)

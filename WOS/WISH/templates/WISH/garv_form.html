@@ -26,7 +26,7 @@
 	Maria Cristina, Iligan City
 	</p>
 	<br>
-		{% for pro in pros%}
+		{% for product in products%}
 		<h1 align="center">GPE ACCOUNTABILITY RELIEF VOUCHER</h1>
 
   	<span style="padding-left:1000px" align="right">Date: &nbsp;&nbsp; <u>{{ garvs.garv_date }}&nbsp;&nbsp;</u></span>
@@ -44,7 +44,7 @@
   <span style="padding-left:310px"></span>
 	<span>COST CENTER NAME: &nbsp;&nbsp; <u>{{ garvs.dce.cost_center_no.cost_center_name }}&nbsp;&nbsp;</u></span>
 	<br>
-	<span>WO NUMBER:&nbsp;&nbsp;&nbsp;<u>{{ pro.par_number.wo_number.wo_no }}</u></span>
+	<span>WO NUMBER:&nbsp;&nbsp;&nbsp;<u>{{ garvs.wo_number.wo_no }}</u></span>
 	<span style="padding-left:280px"></span>
   <span>WORK ORDER NAME:&nbsp;&nbsp;&nbsp;<u></u></span>
 
@@ -64,15 +64,15 @@
 		    <th> Remarks (Findings/Observations)</th>
 		  </tr>
 		  <tr>
-		    <td>{{ pro.product.product.id }}
+		    <td>{{ product.pros.id }}
 		    </td>
-		    <td>{{ pro.product.product.item_name }}-{{ pro.product.product.description }}
+		    <td>{{ product.pros.item_name }} - {{ product.pros.description }}
 		    </td>
-		    <td>{{ pro.product.product.unit_measure }}</td>
-		    <td>{{ pro.qty }}</td>
-		    <td>{{ pro.par_number.par_no }}</td>
+		    <td>{{ product.pros.unit_measure }}</td>
+		    <td>{{ product.pros.quantity }}</td>
+		    <td>{{ product.PAR_number }}</td>
 				<td></td>
-        <td>{{ pro.remarks }}</td>
+        <td>{{ product.Remarks }}</td>
 		  </tr>
 		</table>
 
