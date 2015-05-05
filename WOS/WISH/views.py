@@ -223,6 +223,7 @@ def product_to_garv(request,pk):
 prod_to_par = []
 prod_to_garv = []
 
+
 def par(request):
     if request.method == "POST":
         form = PAR_entryForm(request.POST)
