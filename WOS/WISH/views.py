@@ -228,13 +228,13 @@ def par(request):
     if request.method == "POST":
         form = PAR_entryForm(request.POST)
         iform = Product_to_PARForm(request.POST)
-        par_entry = form.save(commit=False)
-        par_entry.par_date = time.strftime("%Y-%m-%d")
-        prod_to_par.append({'PAR_no': form.data['par_no'], 'Product': form.data['product'],\
-                            'Quantity': form.data['qty']})
         if form.is_valid() and iform.is_valid():
+            par_entry = form.save(commit=False)
             par_entry.par_date = time.strftime("%Y-%m-%d")
-            par_pro.par_no_id = par_entry.par_no
+            prod_to_par.append({'Product': form.data['product'],\
+                                'Quantity': form.data['qty']})
+            res = json.dumps(prod_to_par)
+            par_entry.product = prod_to_par
             par_entry.save()
             return redirect('WISH.views.par_entry', pk=par_entry.par_no)
     else:
@@ -248,12 +248,14 @@ def par_entry(request, pk):
         iform = Product_to_PARForm(request.POST)
         if form.is_valid() and iform.is_valid():
             par_entry = form.save(commit=False)
-            par_pro = iform.save(commit=False)
             par_entry.par_date = time.strftime("%Y-%m-%d")
-            par_pro.par_no_id = pk
+            prod_to_par.append({'Product': iform.data['product'],\
+                                'Quantity': iform.data['qty']})
+            res = json.dumps(prod_to_par)
+            par.product = res
+            par_entry.par_date = time.strftime("%Y-%m-%d")
             par_entry.par_no = pk
             par_entry.save()
-            par_pro.save()
             return redirect('WISH.views.par_entry', pk=pk)
     else:
         form = PAR_Form()
