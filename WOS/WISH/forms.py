@@ -55,7 +55,7 @@ class PAR_Form(forms.ModelForm):
 
     class Meta:
         model = PAR
-        fields = ('dce', 'amt_cost', 'approved_by', \
+        fields = ('dce', 'approved_by', \
         'issued_by', 'inv_stat_no', 'PO_number', 'date_acquired', 'wo_number', 'remark',)
 
 
