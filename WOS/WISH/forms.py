@@ -75,10 +75,10 @@ class Product_to_GARVform(forms.Form):
 
     product = forms.ModelChoiceField(queryset=Product.objects.all())
 
-    def __init__(self, products,*args, **kwargs):
+    '''def __init__(self, products,*args, **kwargs):
         super(Product_to_GARVform, self).__init__(*args, **kwargs)
         for product in products:
-            self.fields['product'].queryset = Product.objects.filter(id = product['Product'])
+            self.fields['product'].queryset = Product.objects.filter(id = product['Product'])'''
 
 
 

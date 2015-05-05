@@ -209,7 +209,6 @@ def product_to_garv(request,pk):
             iform.data['remarks']})
             garv = form.save(commit=False)
             garv.garv_date = time.strftime("%Y-%m-%d")
-            form = Product_to_GARVform(request.POST)
             res = json.dumps(prod_to_garv)
             garv.product = res
             garv.save()
