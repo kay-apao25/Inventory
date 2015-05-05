@@ -210,7 +210,7 @@ def product_to_garv(request,pk):
             garv = form.save(commit=False)
             garv.garv_date = time.strftime("%Y-%m-%d")
             res = json.dumps(prod_to_garv)
-            garv.product = res
+            garv.product_to_GARV = res
             garv.save()
             return redirect('WISH.views.product_to_garv', pk=pk)
     else:
@@ -222,6 +222,7 @@ def product_to_garv(request,pk):
 
 prod_to_par = []
 prod_to_garv = []
+
 
 def par(request):
     if request.method == "POST":
