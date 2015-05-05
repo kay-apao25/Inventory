@@ -73,9 +73,9 @@ class Product(models.Model):
     nsn = models.CharField(max_length=10)
     slc_number = models.IntegerField()
     product_number = models.CharField(max_length=10)
-    generic_name = models.TextField()
+    generic_name = models.TextField(max_length=25)
     item_name = models.CharField(max_length=10)
-    brand = models.TextField()
+    brand = models.TextField(max_length=25)
     part_number = models.CharField(max_length=8)
     manufacture_date = models.DateField()
     expiry_date = models.DateField(null=True, blank=True)
@@ -90,10 +90,10 @@ class Product(models.Model):
     average_amount = models.FloatField()
     balance_limit = models.FloatField()
     serial_number = models.CharField(max_length=15)
-    model = models.TextField()
+    model = models.TextField(max_length=25)
     amount = models.FloatField()
-    description = models.TextField()
-    remark = models.TextField()
+    description = models.TextField(max_length=25)
+    remark = models.TextField(max_length=25, null=True, blank=True)
     history = HistoricalRecords()
 
 
@@ -140,7 +140,7 @@ class MIV(models.Model):
     wrs_number = models.CharField(max_length = 8)
     date_issued = models.DateField()
     doc_date = models.DateField()
-    remark = models.TextField()
+    remark = models.TextField(null=True, blank=True)
     history = HistoricalRecords()
 
     def __str__(self):
