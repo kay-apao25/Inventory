@@ -58,16 +58,23 @@
 		    <th style='width:30%'>Remarks</th>
 		    <th>Work Order No.</th>
 		  </tr>
+			{% for product in products%}
 		  <tr>
-		    <td><br>{{ pro.product.product.id }}<br><br><br><br></td>
-		    <td>{{ pro.product.product.item_name }}-{{ pro.product.product.description }}<br><br><br><br></td>
-		    <td>{{ pro.product.product.unit_measure }}<br><br><br><br></td>
-		    <td>{{ pro.qty }}<br><br><br><br></td>
-		    <td>{{ pro.product.product.unit_cost }}<br><br><br><br></td>
+		    <td><br>{{ product.Product }}<br><br><br><br></td>
+		    <td>{{ product.item_name }}-{{ product.description }}<br><br><br><br></td>
+		    <td>{{ product.unit }}<br><br><br><br></td>
+		    <td>{{ product.Quantity }}<br><br><br><br></td>
+		    <td>{{ product.amount }}<br><br><br><br></td>
 		    <td>{{ parss.date_acquired }}<br><br><br><br></td>
 		    <td>{{ parss.remark }}<br><br><br><br></td>
 		    <td>{{ parss.wo_number }}<br><br><br><br></td>
 		  </tr>
+				{% endfor %}
+			<tr>
+				<td colspan="8" style ="text-align:right">
+					Total Amount:{{ total }}
+				</td>
+			</tr>
 
 		</table>
 
@@ -98,13 +105,13 @@
 				<br>
 				<u>{{parss.approved_by.name}}</u>
 				<br>
-				{{parss.issued_by.position}}
+				{{parss.approved_by.position}}
 				<br>
 		    	Cost Center Head
 		    </td>
 		    <td>
 				<br>
-				<u>{{parss.approved_by.name}}</u>
+				<u>{{parss.issued_by.name}}</u>
 				<br>
 				{{parss.issued_by.position}}
 				<br>
@@ -130,12 +137,12 @@
 	<p>"The accountable employee is responsible for the issued property items,
 		subject to the provisions of the National Accounting and Auditing Laws."
 	</p>
-	{% for proos in pros %}
+	{% for product in products%}
 	<span align="left">
-	Purchased from: {{proos.product.product.purchased_from.supplier_name}}
+	Purchased from: {{ product.from.supplier_name}}
 	</span>
-	<br>
 	{% endfor %}
+	<br>
 	<span align="left">
 	P.O.No.: {{parss.PO_number.po_number}}
 	</span>
