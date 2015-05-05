@@ -71,6 +71,15 @@ class GARV_entryForm(forms.ModelForm):
                     'inspected_by', 'date_inspected', 'confirmed_by', \
                     'date_confirmed', 'noted_by', )
 
+class GARV_Form(forms.ModelForm):
+
+    class Meta:
+        model = GARV
+        fields = ('dce', 'cc_number', 'wo_number',\
+                    'inspected_by', 'date_inspected', 'confirmed_by', \
+                    'date_confirmed', 'noted_by', )
+
+
 class Product_to_GARVform(forms.Form):
 
     product = forms.ModelChoiceField(queryset=Product.objects.all())
@@ -83,7 +92,6 @@ class Product_to_GARVform(forms.Form):
 
 
     qty = forms.FloatField()
-    par_number = forms.FloatField()
     remarks = forms.CharField()
 
 class TryForm(forms.ModelForm):
