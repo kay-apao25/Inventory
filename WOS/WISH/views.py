@@ -9,12 +9,17 @@ import json
 # Create your views here.
 def index(request):
     del prod_to_irr[:]
+    del prod_to_par[:]
+    del prod_to_garv[:]
     return render(request, 'WISH/index.html', {})
 
 def wrs_num(request):
     return render(request, 'WISH/wrs_num.html', {})
 
 def file_report(request):
+    del prod_to_irr[:]
+    del prod_to_par[:]
+    del prod_to_garv[:]
     return render(request, 'WISH/file_report.html', {})
 
 def irr_reports(request):
@@ -62,6 +67,9 @@ def product_new(request):
 
 
 def irr_entry(request):
+    del prod_to_irr[:]
+    del prod_to_par[:]
+    del prod_to_garv[:]
     if request.method == "POST":
         form = IRR_entryForm(request.POST)
         if form.is_valid():
@@ -74,7 +82,7 @@ def irr_entry(request):
         form = IRR_entryForm()
     return render(request, 'WISH/irr_entry.html', {'form': form})
 
-def try_entry(request):
+"""def try_entry(request):
     if request.method == "POST":
         form = TryForm(request.POST)
         if form.is_valid():
@@ -85,7 +93,7 @@ def try_entry(request):
             return redirect('WISH.views.index')
     else:
         form = TryForm()
-    return render(request, 'WISH/irr_entry.html', {'form': form})
+    return render(request, 'WISH/irr_entry.html', {'form': form})"""
 
 prod_to_irr = []
 def product_to_irr(request,pk, irn):
@@ -130,6 +138,9 @@ def irr_entry_cont(request, pk):
     return render(request, 'WISH/irr_entry_cont.html', {'form': form})
 
 def miv_entry_S(request, pk):
+    del prod_to_irr[:]
+    del prod_to_par[:]
+    del prod_to_garv[:]
     if request.method == "POST":
         form = MIV_entryForm(request.POST)
         if form.is_valid():
@@ -158,6 +169,9 @@ def miv_entry(request):
     return render(request, 'WISH/miv_entry_f.html', {'irrs':irrs})
 
 def garv_entry_f(request):
+    del prod_to_irr[:]
+    del prod_to_par[:]
+    del prod_to_garv[:]
     if request.method == "POST":
         form = GARV_entryForm(request.POST)
         if form.is_valid():
@@ -205,6 +219,9 @@ def product_to_garv(request,pk):
         par = PAR.objects.filter(dce=pk)
         iform.fields['product'] = forms.ModelChoiceField(Product_to_PAR.objects.filter(par_no=par))
     return render(request, 'WISH/garv_entry.html', {'form': form, 'iform': iform, 'pk': pk})
+
+prod_to_par = []
+prod_to_garv = []
 
 def par(request):
     if request.method == "POST":
@@ -271,22 +288,16 @@ def cme_form(request):
 
 def irr_form(request, pk):
     irs = get_object_or_404(IRR, pk=pk)
-    pros = Product_to_IRR.objects.filter(irr_no=pk)
-    amt_list = {}
+    products = irs.product
     total = 0
-    for pro in pros:
-        amount = pro.quantity_accepted * pro.product.unit_cost
-        pro.amt = amount
+    for product in products:
+        pro = Product.objects.get(product_number=product['Product'])
+        amount = float(product['quantity_accepted']) * int(pro.unit_cost)
+        product['amount'] = amount
+        product['pros'] = pro
         total = total + amount
-    return render(request, 'WISH/irr_form.html', {'irs':irs, 'pros': pros, \
-                    'amt_list': amt_list, 'total': total})
-
-#def irr_miv_form(request, mpk, ipk):
-#    mivs = get_object_or_404(MIV, pk=mpk)
-#    irs = get_object_or_404(IRR, pk=ipk)
-#    amount = irs.quantity_accepted * irs.asset_code.unit_cost
-#    total = amount
-#    return render(request, 'WISH/irr_miv_form.html', {'irs':irs , 'mivs':mivs, 'amount':amount, 'total':total})
+    return render(request, 'WISH/irr_form.html', {'irs':irs, 'products': products, \
+                     'total': total})
 
 def gatepass_form(request):
     return render(request, 'WISH/gatepass_form.html', {})
