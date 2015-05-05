@@ -46,9 +46,9 @@
       {% for pro in pros %}
   		<tr>
     		<td >{{ pro.product.slc_number }}</td>
-    		<td style="text-align:left;font-style:italic"><b><u>&nbsp;&nbsp;&nbsp;&nbsp;PR # {{ pro.product.product_number }}, PO # 
-        {{ wrss.irr_no.irr_headkey.po_number }}&nbsp;&nbsp;&nbsp;&nbsp;</u></b>
-    			<br>
+    		<td style="text-align:left;font-style:italic"><b><u>&nbsp;&nbsp;&nbsp;&nbsp;PR # , PO # 
+        {{ wrss.irr_headkey.po_number }}&nbsp;&nbsp;&nbsp;&nbsp;</u></b>
+      		<br>
     			<br>
     				{{ pro.product.item_name }}, {{ pro.product.description }}
 				<br>

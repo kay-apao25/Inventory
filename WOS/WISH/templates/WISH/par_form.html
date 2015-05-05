@@ -58,7 +58,6 @@
 		    <th style='width:30%'>Remarks</th>
 		    <th>Work Order No.</th>
 		  </tr>
-			{% for pro in pros %}
 		  <tr>
 		    <td><br>{{ pro.product.product.id }}<br><br><br><br></td>
 		    <td>{{ pro.product.product.item_name }}-{{ pro.product.product.description }}<br><br><br><br></td>
@@ -69,7 +68,6 @@
 		    <td>{{ parss.remark }}<br><br><br><br></td>
 		    <td>{{ parss.wo_number }}<br><br><br><br></td>
 		  </tr>
-			{% endfor %}
 
 		</table>
 

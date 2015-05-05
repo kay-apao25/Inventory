@@ -14,15 +14,33 @@
   {% endif %}
     <form method="POST" class="product-form">{% csrf_token %}
     
-        {% for field in form %}
-        <div id="errors">
-        <strong>  {{ field.errors }}	</strong>
-        </div>
-        <div id="my_form">
-    		 {{ field.label_tag }}<br>{{ field }}
-		</div>
-		<br>
-		{% endfor %}
+        {% for field in form%}
+    {% if forloop.counter|divisibleby:'3' and forloop.counter == 3%}
+      <br><div></div><br>
+      <strong><span style="margin-right:20px"></span><span id="errors">{{ field.errors.as_text }}</span><span style="margin-right:70px"></span>
+      <span id="errors">{{ field.errors.as_text }}</span></strong> 
+        <br><br>
+      {%elif forloop.counter|divisibleby:'3' and forloop.counter != 3%}
+        <br><div></div><br>
+        <strong> <span id="errors">{{ field.errors.as_text }}</span><span style="margin-right:145px"></span>
+          <span id="errors">{{ field.errors.as_text }}</span><span style="margin-right:145px"></span> 
+          <span id="errors">{{ field.errors.as_text }}</span><span style="margin-right:145px"></span></strong> 
+        <br><br>
+      {%elif forloop.counter == 13%}
+        {{ field.label }}: {{ field }}
+        <br><div></div><br>
+        <strong><span id="errors">{{ field.errors.as_text }}</span><span style="margin-right:150px"></span>
+          <span id="errors">{{ field.errors.as_text }}</span><span style="margin-right:150px"></span></strong> 
+        <br><br>
+    {%endif%}
+    
+    {% if forloop.counter != 13%}
+      {{ field.label }}: {{ field }}
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    {%else%}
+    {%endif%}
+    
+    {%endfor%}
         <button type="submit" class="save btn btn-default">Save</button>
     </form>
 {% endblock %}

@@ -72,11 +72,17 @@ class GARV_entryForm(forms.ModelForm):
                     'date_confirmed', 'noted_by', )
 
 class Product_to_GARVform(forms.Form):
+<<<<<<< HEAD
 
     '''def __init__(self, current_user, *args, **kwargs):
         super(RatingForm, self).__init__(*args, **kwargs)
         self.fields['to_user'].queryset = self.fields['to_user'].queryset.exclude(id=current_user.id)
     form = RatingForm(current_user=request.user)'''
+=======
+    """def __init__(self, current_user, *args, **kwargs):
+        super(RatingForm, self).__init__(*args, **kwargs)
+        self.fields['to_user'].queryset = self.fields['to_user'].queryset.exclude(id=current_user.id)"""
+>>>>>>> 960b448b5b946465a052cbf9bab6db2107b10e1b
 
     product = forms.ModelChoiceField(queryset=Product.objects.all())
     

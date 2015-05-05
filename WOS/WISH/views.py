@@ -76,7 +76,7 @@ def irr_entry(request):
             irr_entry = form.save(commit=False)
             irr_no = randint(100000,999999)
             irr_entry.save()
-            return redirect('WISH.views.product_to_irr', pk=irr_entry.pk, irn=irr_no)
+            return redirect('WISH.views.product_to_irr', pk=irr_entry.pk, irn=irr_no)#, inv=irr_entry.inv_station_no)
             #return redirect('WISH.views.irr_entry_cont', pk=irr_entry.pk)
     else:
         form = IRR_entryForm()
@@ -96,7 +96,7 @@ def irr_entry(request):
     return render(request, 'WISH/irr_entry.html', {'form': form})"""
 
 prod_to_irr = []
-def product_to_irr(request,pk, irn):
+def product_to_irr(request, pk, irn):
     if request.method == "POST":
         form = Product_to_IRRForm(request.POST)
         iform = IRR_entry_cont_Form(request.POST)
@@ -115,9 +115,10 @@ def product_to_irr(request,pk, irn):
     else:
         form = Product_to_IRRForm()
         iform = IRR_entry_cont_Form()
+        #form.fields['product'] = forms.ModelChoiceField(Product_to_PAR.objects.filter(par_no=pk))
     return render(request, 'WISH/product_to_irr.html', {'form': form, 'iform': iform, 'pk': pk})
 
-def irr_entry_cont(request, pk):
+"""def irr_entry_cont(request, pk):
     if request.method == "POST":
         form = IRR_entry_cont_Form(request.POST)
         #iform = IRR_entryForm()
@@ -135,7 +136,7 @@ def irr_entry_cont(request, pk):
             return redirect('WISH.views.product_to_irr', pk=irr_entry_cont.pk)
     else:
         form = IRR_entry_cont_Form()
-    return render(request, 'WISH/irr_entry_cont.html', {'form': form})
+    return render(request, 'WISH/irr_entry_cont.html', {'form': form})"""
 
 def miv_entry_S(request, pk):
     del prod_to_irr[:]
@@ -251,7 +252,7 @@ def par_entry(request, pk):
             prod_to_par.append({'Product': iform.data['product'],\
                                 'Quantity': iform.data['qty']})
             res = json.dumps(prod_to_par)
-            par.product = res
+            par_entry.product = res
             par_entry.par_date = time.strftime("%Y-%m-%d")
             par_entry.par_no = pk
             par_entry.save()
