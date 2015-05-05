@@ -72,6 +72,10 @@ class GARV_entryForm(forms.ModelForm):
                     'date_confirmed', 'noted_by', )
 
 class Product_to_GARVform(forms.Form):
+    """def __init__(self, current_user, *args, **kwargs):
+        super(RatingForm, self).__init__(*args, **kwargs)
+        self.fields['to_user'].queryset = self.fields['to_user'].queryset.exclude(id=current_user.id)"""
+
     product = forms.ModelChoiceField(queryset=Product.objects.all())
     qty = forms.FloatField()
     par_number = forms.FloatField()

@@ -217,8 +217,7 @@ def product_to_garv(request,pk):
     else:
         form = GARV_entryForm()
         iform = Product_to_GARVform()
-        par = PAR.objects.filter(dce=pk)
-        iform.fields['product'] = forms.ModelChoiceField(Product_to_PAR.objects.filter(par_no=par))
+        iform.fields['product'] = forms.ModelChoiceField(PAR.objects.filter(product=par.product))
     return render(request, 'WISH/garv_entry.html', {'form': form, 'iform': iform, 'pk': pk})
 
 prod_to_par = []
@@ -252,7 +251,7 @@ def par_entry(request, pk):
             prod_to_par.append({'Product': iform.data['product'],\
                                 'Quantity': iform.data['qty']})
             res = json.dumps(prod_to_par)
-            par.product = res
+            par_entry.product = res
             par_entry.par_date = time.strftime("%Y-%m-%d")
             par_entry.par_no = pk
             par_entry.save()
