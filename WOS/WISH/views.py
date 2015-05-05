@@ -230,8 +230,8 @@ def par(request):
         if form.is_valid() and iform.is_valid():
             par_entry = form.save(commit=False)
             par_entry.par_date = time.strftime("%Y-%m-%d")
-            prod_to_par.append({'Product': 'hgfgd',\
-                                'Quantity': 'jhghgfhf'})
+            prod_to_par.append({'Product': form.data['product'],\
+                                'Quantity': form.data['qty']})
             res = json.dumps(prod_to_par)
             par_entry.product = prod_to_par
             par_entry.save()
