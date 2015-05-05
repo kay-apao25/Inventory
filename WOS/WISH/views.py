@@ -26,7 +26,7 @@ def miv_reports(request):
     return render(request, 'WISH/miv_reports.html', {'mivs': mivs})
 
 def wrs_reports(request):
-    wrss = MIV.objects.all()
+    wrss = IRR.objects.all()
     return render(request, 'WISH/wrs_reports.html', {'wrss': wrss})
 
 def par_reports(request):
@@ -154,8 +154,8 @@ def miv_entry(request):
             return redirect('WISH.views.index')
     else:
         irrs = IRR.objects.all()
-        pros = Product_to_IRR.objects.all()
-    return render(request, 'WISH/miv_entry_f.html', {'irrs':irrs, 'pros':pros})
+    #    pros = Product_to_IRR.objects.all()
+    return render(request, 'WISH/miv_entry_f.html', {'irrs':irrs})
 
 def garv_entry_f(request):
     if request.method == "POST":
@@ -183,23 +183,29 @@ def garv_entry(request, pk):
         form.fields['product'] = forms.ModelChoiceField(Product_to_PAR.objects.filter(par_no=pk))
     return render(request, 'WISH/garv_entry.html', {'form': form})
 
+prod_to_garv = []
 def product_to_garv(request,pk):
     if request.method == "POST":
         form = GARV_entryForm(request.POST)
-        prod_to_irr.append({'IRR_no': irn, 'Product': form.data['product'], 'Quantity A.': \
-        form.data['quantity_accepted'], 'Quantity R.':form.data['quantity_rejected'], 'Quantity B.': \
-        form.data['quantity_balance']})
+        iform = Product_to_GARVform(request.POST)
         if form.is_valid():
+            prod_to_garv.append({'Product': iform.data['product'], 'Quantity': \
+            iform.data['qty'], 'PAR number':iform.data['par_number'], 'Remarks': \
+            iform.data['remarks']})
             garv = form.save(commit=False)
             garv.garv_date = time.strftime("%Y-%m-%d")
+            form = Product_to_GARVform(request.POST)
+            res = json.dumps(prod_to_garv)
+            garv.product = res
             garv.save()
             return redirect('WISH.views.product_to_garv', pk=pk)
     else:
         form = GARV_entryForm()
+        iform = Product_to_GARVform()
         par = PAR.objects.filter(dce=pk)
-    return render(request, 'WISH/garv_entry.html', {'form': form, 'pk': pk})
+        iform.fields['product'] = forms.ModelChoiceField(Product_to_PAR.objects.filter(par_no=par))
+    return render(request, 'WISH/garv_entry.html', {'form': form, 'iform': iform, 'pk': pk})
 
-prod_to_par = []
 def par(request):
     if request.method == "POST":
         form = PAR_entryForm(request.POST)
@@ -245,8 +251,10 @@ def wrs_entry(request):
     return render(request, 'WISH/wrs_entry.html', {})
 
 def wrs_form(request, pk):
-    wrss = get_object_or_404(MIV, wrs_number=pk)
-    pros = Product_to_IRR.objects.filter(irr_no=wrss.irr_no)
+    wrss = get_object_or_404(IRR, wrs_number=pk)
+    pros = wrss.product
+    for pro in pros:
+        pro['product'] = Product.objects.get(product_number=pro['Product'])
     return render(request, 'WISH/wrs_form.html', {'wrss': wrss, 'pros': pros})
 
 def par_form(request, pk):
@@ -263,16 +271,15 @@ def cme_form(request):
 
 def irr_form(request, pk):
     irs = get_object_or_404(IRR, pk=pk)
+    pros = Product_to_IRR.objects.filter(irr_no=pk)
+    amt_list = {}
     total = 0
-    products = irs.product
-    for product in products:
-        pro = Product.objects.get(product_number=product['Product'])
-        amount = float(product['quantity_accepted']) * int(pro.unit_cost)
-        product['amount'] =  amount
-        product['pros'] = pro
+    for pro in pros:
+        amount = pro.quantity_accepted * pro.product.unit_cost
+        pro.amt = amount
         total = total + amount
-    return render(request, 'WISH/irr_form.html', {'irs':irs, 'products': products, \
-                    'total': total, 'pro': pro})
+    return render(request, 'WISH/irr_form.html', {'irs':irs, 'pros': pros, \
+                    'amt_list': amt_list, 'total': total})
 
 #def irr_miv_form(request, mpk, ipk):
 #    mivs = get_object_or_404(MIV, pk=mpk)
@@ -286,14 +293,16 @@ def gatepass_form(request):
 
 def miv_form(request, pk):
     mivs = get_object_or_404(MIV, pk=pk)
-    pros = Product_to_IRR.objects.filter(irr_no=mivs.irr_no)
+    products = mivs.irr_no.product
     amt_list = {}
     total = 0
-    for pro in pros:
-        amount = pro.quantity_accepted * pro.product.unit_cost
-        pro.amt = amount
+    for product in products:
+        pro = Product.objects.get(product_number=product['Product'])
+        amount = float(product['quantity_accepted']) * int(pro.unit_cost)
+        product['amount'] = amount
+        product['pros'] = pro
         total = total + amount
-    return render(request, 'WISH/miv_form.html', {'mivs':mivs, 'pros': pros, \
+    return render(request, 'WISH/miv_form.html', {'mivs':mivs, 'products':products, \
                     'amt_list': amt_list, 'total': total})
 
 def irr_report(request):
