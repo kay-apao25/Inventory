@@ -52,7 +52,9 @@ def file_entry(request):
 def product_new(request):
     if request.method == "POST":
         form = ProductForm(request.POST)
-        if form.is_valid():
+        form1 = ProductForm1(request.POST)
+        form2 = ProductForm2(request.POST)
+        if form.is_valid() and form1.is_valid() and form2.is_valid() :
             product = form.save(commit=False)
             if len(Product.objects.all()) != 0:
                 no = int((Product.objects.latest('id')).slc_number) + 1
@@ -61,13 +63,24 @@ def product_new(request):
                     product.slc_number = '0' + product.slc_number
             else:
                 product.slc_number = '000000'
-            product.amount = product.unit_cost * product.quantity
+            product1 = form1.save(commit=False)
+            product1.amount = product1.unit_cost * product1.quantity
+            product1.save()
+            product2 = form2.save(commit=False)
+
+            product2.save()
             product.save()
-            return redirect('WISH.views.index')
+
+
+
+        return redirect('WISH.views.index')
             #return redirect('WISH.views.irr_entry', pk=product.pk, instat=product.inv_station_no_fk_id, sup=product.purchased_from_id)
+
     else:
         form = ProductForm()
-    return render(request, 'WISH/product_add.html', {'form': form})
+        form1 = ProductForm1()
+        form2 = ProductForm2()
+    return render(request, 'WISH/product_add.html', {'form': form , 'form1':form1, 'form2': form2})
 
 
 def irr_entry(request):

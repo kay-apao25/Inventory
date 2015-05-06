@@ -7,9 +7,21 @@ class ProductForm(forms.ModelForm):
     class Meta:
         model = Product
         fields = ('product_number', 'item_name', 'nsn',\
-        	'generic_name', 'brand', 'part_number', 'manufacture_date', 'expiry_date', 'classification', \
-        	'stock', 'block', 'unit_measure', 'unit_cost', 'quantity', 'average_amount', 'status',\
-        	'balance_limit', 'serial_number', 'model', 'description', 'remark', 'purchased_from', 'inv_station_no')
+        	'generic_name', 'brand', 'part_number', 'manufacture_date', 'expiry_date')
+
+class ProductForm1(forms.ModelForm):
+
+    class Meta:
+        model = Product
+        fields = ( 'classification', \
+        	'stock', 'block', 'unit_measure', 'unit_cost', 'quantity', 'average_amount', 'status')
+
+class ProductForm2(forms.ModelForm):
+
+    class Meta:
+        model = Product
+        fields = ('balance_limit', 'serial_number', 'model', 'description', 'remark', 'purchased_from', 'inv_station_no')
+
 
 class IRR_entryForm(forms.ModelForm):
 
@@ -99,8 +111,8 @@ class Product_to_GARVform(forms.Form):
     qty = forms.FloatField()
     remarks = forms.CharField()
 
-class TryForm(forms.ModelForm):
+'''class TryForm(forms.ModelForm):
 
     class Meta:
         model = Try
-        fields = ('text',)
+        fields = ('text',)'''
