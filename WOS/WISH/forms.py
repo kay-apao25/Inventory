@@ -12,11 +12,29 @@ class ProductForm(forms.ModelForm):
         	'balance_limit', 'serial_number', 'model', 'description', 'remark', 'purchased_from', 'inv_station_no')
 
 class IRR_entryForm(forms.ModelForm):
-
     class Meta:
         model = IRR_header
-        fields = ( 'inv_station_no', 'supplier', 'reference', 'invoice_number', 'po_number', 'dr_number', \
-            'dce_custodian', 'dce_user', 'dce_approved','proc_date', 'approved_date','type_n', 'date_dlvrd',)
+        exclude = ('inv_station_no', 'supplier', 'reference', 'invoice_number', 'po_number', 'dr_number',\
+                    'dce_custodian', 'dce_user', 'dce_approved','proc_date', 'approved_date','type_n', 'date_dlvrd',)
+
+
+class IRR_entryForm1(forms.Form):
+    inv_station_no = forms.ModelChoiceField(queryset=Inventory_stat.objects.all())
+    supplier = forms.ModelChoiceField(queryset=Supplier.objects.all())
+    reference = forms.CharField()
+    invoice_number = forms.CharField()
+    po_number = forms.CharField()
+    dr_number = forms.CharField()
+
+
+class IRR_entryForm2(forms.Form):
+    dce_custodian = forms.ModelChoiceField(queryset=Employee.objects.all())
+    dce_user = forms.ModelChoiceField(queryset=Employee.objects.all())
+    dce_approved = forms.ModelChoiceField(queryset=Employee.objects.all())
+    proc_date = forms.DateField()
+    approved_date = forms.DateField()
+    type_n = forms.CharField()
+    date_dlvrd = forms.DateField()
 
 class IRR_entry_cont_Form(forms.ModelForm):
 
@@ -86,11 +104,10 @@ class Product_to_GARVform(forms.Form):
     product = forms.ModelChoiceField(queryset=Product.objects.all())
     qty = forms.FloatField()
     remarks = forms.CharField()
-    
+
 
 class Product_to_GARVform1(forms.Form):
 
     product = forms.ModelChoiceField(queryset=Product.objects.all())
     qty = forms.FloatField()
     remarks = forms.CharField()
-
