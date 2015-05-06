@@ -272,9 +272,12 @@ def par(request, inv):
     else:
         form = PAR_entryForm()
         iform = Product_to_PARForm()
-        form.fields['dce'] = forms.ModelChoiceField(Employee.objects.filter(cost_center_no=IRR.objects.get(irr_no=inv).irr_headkey.inv_station_no.cost_center_no.id))
-        form.fields['approved_by'] = forms.ModelChoiceField(Employee.objects.filter(cost_center_no=IRR.objects.get(irr_no=inv).irr_headkey.inv_station_no.cost_center_no.id))
-        form.fields['issued_by'] = forms.ModelChoiceField(Employee.objects.filter(cost_center_no=IRR.objects.get(irr_no=inv).irr_headkey.inv_station_no.cost_center_no.id))
+        form.fields['dce'] = forms.ModelChoiceField(Employee.objects.filter(\
+            cost_center_no=IRR.objects.get(irr_no=inv).irr_headkey.inv_station_no.cost_center_no.id))
+        form.fields['approved_by'] = forms.ModelChoiceField(Employee.objects.filter(\
+            cost_center_no=IRR.objects.get(irr_no=inv).irr_headkey.inv_station_no.cost_center_no.id))
+        form.fields['issued_by'] = forms.ModelChoiceField(Employee.objects.filter(\
+            cost_center_no=IRR.objects.get(irr_no=inv).irr_headkey.inv_station_no.cost_center_no.id))
         products = IRR.objects.get(irr_no=inv).product
         for product in products:
             iform.fields['product'] = forms.ModelChoiceField(Product.objects.filter(id=product['Product']))
@@ -305,9 +308,12 @@ def par_entry(request, pk, inv):
     else:
         form = PAR_Form()
         iform = Product_to_PARForm()
-        form.fields['dce'] = forms.ModelChoiceField(Employee.objects.filter(cost_center_no=IRR.objects.get(irr_no=inv).irr_headkey.inv_station_no.cost_center_no.id))
-        form.fields['approved_by'] = forms.ModelChoiceField(Employee.objects.filter(cost_center_no=IRR.objects.get(irr_no=inv).irr_headkey.inv_station_no.cost_center_no.id))
-        form.fields['issued_by'] = forms.ModelChoiceField(Employee.objects.filter(cost_center_no=IRR.objects.get(irr_no=inv).irr_headkey.inv_station_no.cost_center_no.id))
+        form.fields['dce'] = forms.ModelChoiceField(Employee.objects.filter(\
+            cost_center_no=IRR.objects.get(irr_no=inv).irr_headkey.inv_station_no.cost_center_no.id))
+        form.fields['approved_by'] = forms.ModelChoiceField(Employee.objects.filter(\
+            cost_center_no=IRR.objects.get(irr_no=inv).irr_headkey.inv_station_no.cost_center_no.id))
+        form.fields['issued_by'] = forms.ModelChoiceField(Employee.objects.filter(\
+            cost_center_no=IRR.objects.get(irr_no=inv).irr_headkey.inv_station_no.cost_center_no.id))
         products = IRR.objects.get(irr_no=inv).product
         for product in products:
             iform.fields['product'] = forms.ModelChoiceField(Product.objects.filter(id=product['Product']))

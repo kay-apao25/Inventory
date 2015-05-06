@@ -1,16 +1,7 @@
 from django.db import models
-#from djangotoolbox.fields import DictField
-#from djorm_pgarray.fields import ArrayField
-#from django.dbarray import ArrayField
-#from django.contrib.postgres.fields import ArrayField
 from django.db.models.fields import CharField
 from simple_history.models import HistoricalRecords
-from json_field import JSONField #from django_pg import models
-#import dbarray
-#from audit_log.models import AuthStampedModel
-#from django_extensions.db.models import TimeStampedModel
-#from audit_log.models.managers import AuditLog
-
+from json_field import JSONField
 
 # Create your models here.
 class Supplier(models.Model):
@@ -202,7 +193,7 @@ class Product_to_GARV(models.Model):
     def __str__(self):
         return str(self.par_number)
 
-class Pending(models.Model):
+"""class Pending(models.Model):
     item_name = models.TextField()
     supplier_number = models.ForeignKey(Supplier, related_name="sn_penFK")
     serial_number = models.CharField(max_length=10)
@@ -219,4 +210,4 @@ class Pending(models.Model):
 
 class Try(models.Model):
     text = models.ManyToManyField(PAR)
-    history = HistoricalRecords()
+    history = HistoricalRecords()"""
