@@ -7,43 +7,29 @@
     </div>
     <br>
     <form method="POST" class="irr_entry">{% csrf_token %}
-    {% if iform.non_field_errors %}
-    <ul>
-      {% for error in iform.non_field_errors %}
-        <li>{{ error }}</li>
-      {% endfor %}
-    </ul>
-    {% endif %}
+    <table width="10%">
+    <tr>
+    <td colspan="2">
+     {% for field in iform %}
+   		&nbsp;&nbsp;{{field | bootstrap_horizontal:'col-lg-4'}}&nbsp;&nbsp;&nbsp;
+   	 {%endfor%}
+     <br>
+     <div align="center"><button type="submit" class="save btn btn-default">Add Another Item</button>
+     	<br><br><br><br><br><br><br><br>
+     </div>
+     </td>
+     <td style="padding:20px">
+     {% for field in form %}
 
-    {% for field in iform %}
-    {%if forloop.counter|divisibleby:"3" %}
-      <div></div><br><br>
-    {%endif%}
-
-    <b>{{field.label}}:</b>&nbsp;&nbsp;{{field}}&nbsp;&nbsp;&nbsp;
-    {%endfor%}
-<br>
-<br>
-<br>
-
-    <button type="submit" class="save btn btn-default">Add Another Item</button>
-
-<br>
-<br>
-{% if iform.non_field_errors %}
-<ul>
-  {% for error in form.non_field_errors %}
-    <li>{{ error }}</li>
-  {% endfor %}
-</ul>
-{% endif %}
-      {% for field in form %}
-      {%if forloop.counter|divisibleby:"2" %}
-        <div></div><br><br>
-      {%endif%}
-
-      {{field.label_tag}}&nbsp;&nbsp;{{field}}&nbsp;&nbsp;&nbsp;
-      {%endfor%}
-      <br><br><br><br>
-  <button type="submit" class="save btn btn-default">Save</button>
+   		&nbsp;&nbsp;{{field | bootstrap_horizontal:'col-lg-4'}}&nbsp;&nbsp;&nbsp;
+   		
+     {%endfor%}
+     <br>
+     <div align="center"><button type="submit" class="save btn btn-default">Save</button></div>
+     </td>
+     </tr>
+     </table>
+      
+   
+   </form>
 {% endblock %}

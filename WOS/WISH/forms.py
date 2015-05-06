@@ -61,11 +61,8 @@ class PAR_Form(forms.ModelForm):
 
 
 class Product_to_PARForm(forms.Form):
-    #product = get_object_or_404(Product, id=product_id)
     product = forms.ModelChoiceField(Product.objects.all())
     qty = forms.IntegerField()
-    #form.product.queryset = Product.objects.filter(product_id=product)
-
 
 
 class GARV_entryForm(forms.ModelForm):
@@ -80,27 +77,20 @@ class GARV_Form(forms.ModelForm):
 
     class Meta:
         model = GARV
-        fields = ('cc_number', 'inspected_by', \
-                    'date_inspected', 'confirmed_by', \
+        fields = ('cc_number', \
+                    'inspected_by', 'date_inspected', 'confirmed_by', \
                     'date_confirmed', 'noted_by', )
-
 
 class Product_to_GARVform(forms.Form):
 
     product = forms.ModelChoiceField(queryset=Product.objects.all())
+    qty = forms.FloatField()
+    remarks = forms.CharField()
+    
 
-    '''def __init__(self, products,*args, **kwargs):
-        super(Product_to_GARVform, self).__init__(*args, **kwargs)
-        for product in products:
-            self.fields['product'].queryset = Product.objects.filter(id = product['Product'])'''
+class Product_to_GARVform1(forms.Form):
 
-
-
+    product = forms.ModelChoiceField(queryset=Product.objects.all())
     qty = forms.FloatField()
     remarks = forms.CharField()
 
-class TryForm(forms.ModelForm):
-
-    class Meta:
-        model = Try
-        fields = ('text',)
