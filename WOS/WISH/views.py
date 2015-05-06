@@ -107,25 +107,11 @@ def irr_entry(request):
 
             irr_entry.save()
             return redirect('WISH.views.product_to_irr', pk=irr_entry.pk, irn=irr_no, inv=int(irr_entry.inv_station_no_id))
-            #return redirect('WISH.views.irr_entry_cont', pk=irr_entry.pk)
     else:
         form = IRR_entryForm()
         form1 = IRR_entryForm1()
         form2 = IRR_entryForm2()
     return render(request, 'WISH/irr_entry.html', {'form': form, 'form1': form1, 'form2': form2})
-
-"""def try_entry(request):
-    if request.method == "POST":
-        form = TryForm(request.POST)
-        if form.is_valid():
-            irr_entry = form.save(commit=False)
-            #irr_no = randint(100000,999999)
-            irr_entry.save()
-            #return redirect('WISH.views.product_to_irr', pk=irr_entry.pk, irn=irr_no)
-            return redirect('WISH.views.index')
-    else:
-        form = TryForm()
-    return render(request, 'WISH/irr_entry.html', {'form': form})"""
 
 prod_to_irr = []
 def product_to_irr(request, pk, irn, inv):
@@ -153,26 +139,6 @@ def product_to_irr(request, pk, irn, inv):
         iform = IRR_entry_cont_Form()
         form.fields['product'] = forms.ModelChoiceField(Product.objects.filter(inv_station_no=inv))
     return render(request, 'WISH/product_to_irr.html', {'form': form, 'iform': iform, 'pk': pk})
-
-"""def irr_entry_cont(request, pk):
-    if request.method == "POST":
-        form = IRR_entry_cont_Form(request.POST)
-        #iform = IRR_entryForm()
-
-        if form.is_valid():
-            irr_entry_cont = form.save(commit=False)
-            irr_entry_cont.irr_no = randint(100000,999999)
-            irr_entry_cont.irr_headkey_id = pk
-            irr_entry.wrs_number = randint(100000,999999)
-            #irr_entry_cont.quantity_rejected = irr_entry_cont.quantity_actual - irr_entry_cont.quantity_accepted
-            #irr_entry_cont.quantity_balance = irr_entry_cont.quantity_rejected
-            #for product in irr.asset_code():
-
-            irr_entry_cont.save()
-            return redirect('WISH.views.product_to_irr', pk=irr_entry_cont.pk)
-    else:
-        form = IRR_entry_cont_Form()
-    return render(request, 'WISH/irr_entry_cont.html', {'form': form})"""
 
 def miv_entry_S(request, pk):
     del prod_to_irr[:]
