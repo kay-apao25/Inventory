@@ -15,6 +15,7 @@ urlpatterns = [
     url(r'^miv_entry_S/(?P<pk>[0-9]+)/$', views.miv_entry_S),
     url(r'^par_entry/(?P<pk>[0-9]+)/$', views.par_entry, name='par_entry'),
     url(r'^par_form/(?P<pk>[0-9]+)/$', views.par_form),
+    url(r'^product_form/(?P<pk>[0-9]+)/$', views.product_form),
     url(r'^garv_entry_f/$', views.garv_entry_f),
     url(r'^garv_entry/(?P<pk>[0-9]+)/(?P<garv>[0-9]+)/$', views.garv_entry),
     url(r'^product_to_garv/(?P<pk>[0-9]+)/$', views.product_to_garv),
@@ -38,4 +39,5 @@ urlpatterns = [
     url(r'^garv_reports/$', views.garv_reports),
     url(r'^product_reports/$', views.product_reports),
     url(r'^file_entry/$', views.file_entry),
+
 ]

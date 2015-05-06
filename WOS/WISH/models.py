@@ -27,7 +27,7 @@ class Supplier(models.Model):
     history = HistoricalRecords()
 
     def __str__(self):
-        return self.supplier_name + ", " + self.supplier_address + ", " + self.supplier_number
+        return self.supplier_name + ", " + self.supplier_address
 
 class Cost_center(models.Model):
     cost_center_name = models.TextField(max_length=20)
@@ -190,7 +190,7 @@ class GARV(models.Model):
     def __str__(self):
         return str(self.dce)
 
-'''class Product_to_GARV(models.Model):
+class Product_to_GARV(models.Model):
     garv = models.ForeignKey(GARV, related_name="g_pgFK")
     #product = models.ForeignKey(Product_to_IRR, related_name="p_pgFK")
     qty = models.CharField(max_length=20)
@@ -199,7 +199,7 @@ class GARV(models.Model):
     history = HistoricalRecords()
 
     def __str__(self):
-        return str(self.par_number)'''
+        return str(self.par_number)
 
 class Pending(models.Model):
     item_name = models.TextField()

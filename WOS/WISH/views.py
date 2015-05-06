@@ -287,6 +287,11 @@ def wrs_form(request, pk):
         pro['product'] = Product.objects.get(id=pro['Product'])
     return render(request, 'WISH/wrs_form.html', {'wrss': wrss, 'pros': pros})
 
+def product_form(request, pk):
+    prod = get_object_or_404(Product, pk=pk)
+    return render(request, 'WISH/product_form.html', {'prod': prod})
+
+
 def par_form(request, pk):
     parss = get_object_or_404(PAR, pk=pk)
     products = parss.product
