@@ -258,20 +258,29 @@ def par(request, inv):
             par_entry.par_date = time.strftime("%Y-%m-%d")
             prod_to_par.append({'Product': iform.data['product'],\
                                 'Quantity': iform.data['qty']})
+            amt_cost = 0
+            for product in prod_to_par:
+                pro = Product.objects.get(id=product['Product'])
+                amount = float(product['Quantity']) * int(pro.unit_cost)
+                amt_cost = amt_cost + amount
+            par_entry.amt_cost = amt_cost
             res = json.dumps(prod_to_par)
             par_entry.product = prod_to_par
             par_entry.inv_station_no_id = IRR.objects.get(irr_no=inv).irr_headkey.inv_station_no
             par_entry.save()
-            return redirect('WISH.views.par_entry', pk=par_entry.par_no)
+            return redirect('WISH.views.par_entry', pk=par_entry.par_no, inv=inv)
     else:
         form = PAR_entryForm()
         iform = Product_to_PARForm()
+        form.fields['dce'] = forms.ModelChoiceField(Employee.objects.filter(cost_center_no=IRR.objects.get(irr_no=inv).irr_headkey.inv_station_no.cost_center_no.id))
+        form.fields['approved_by'] = forms.ModelChoiceField(Employee.objects.filter(cost_center_no=IRR.objects.get(irr_no=inv).irr_headkey.inv_station_no.cost_center_no.id))
+        form.fields['issued_by'] = forms.ModelChoiceField(Employee.objects.filter(cost_center_no=IRR.objects.get(irr_no=inv).irr_headkey.inv_station_no.cost_center_no.id))
         products = IRR.objects.get(irr_no=inv).product
         for product in products:
             iform.fields['product'] = forms.ModelChoiceField(Product.objects.filter(id=product['Product']))
     return render(request, 'WISH/par_entry.html', {'form': form, 'iform': iform})
 
-def par_entry(request, pk):
+def par_entry(request, pk, inv):
     if request.method == "POST":
         form = PAR_Form(request.POST)
         iform = Product_to_PARForm(request.POST)
@@ -287,14 +296,21 @@ def par_entry(request, pk):
                 amt_cost = amt_cost + amount
             res = json.dumps(prod_to_par)
             par_entry.product = res
+            par_entry.inv_station_no_id = IRR.objects.get(irr_no=inv).irr_headkey.inv_station_no
             par_entry.amt_cost = amt_cost
             par_entry.par_date = time.strftime("%Y-%m-%d")
             par_entry.par_no = pk
             par_entry.save()
-            return redirect('WISH.views.par_entry', pk=pk)
+            return redirect('WISH.views.par_entry', pk=pk, inv=inv)
     else:
         form = PAR_Form()
         iform = Product_to_PARForm()
+        form.fields['dce'] = forms.ModelChoiceField(Employee.objects.filter(cost_center_no=IRR.objects.get(irr_no=inv).irr_headkey.inv_station_no.cost_center_no.id))
+        form.fields['approved_by'] = forms.ModelChoiceField(Employee.objects.filter(cost_center_no=IRR.objects.get(irr_no=inv).irr_headkey.inv_station_no.cost_center_no.id))
+        form.fields['issued_by'] = forms.ModelChoiceField(Employee.objects.filter(cost_center_no=IRR.objects.get(irr_no=inv).irr_headkey.inv_station_no.cost_center_no.id))
+        products = IRR.objects.get(irr_no=inv).product
+        for product in products:
+            iform.fields['product'] = forms.ModelChoiceField(Product.objects.filter(id=product['Product']))
     return render(request, 'WISH/par_entry.html', {'form': form, 'iform': iform})
 
 def wrs_entry(request):
