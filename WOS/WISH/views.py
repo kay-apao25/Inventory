@@ -120,10 +120,6 @@ def product_to_irr(request, pk, irn):
             if len(IRR.objects.all()) != 0:
                 no = int((IRR.objects.latest('id')).wrs_number) + 1
                 irr.wrs_number = str(no)
-                if (6-len(irr.wrs_number)) < 0:
-                    for i in range(6-len(irr.wrs_number)):
-                        irr.wrs_number = '0' + irr.wrs_number
-                irr.wrs_number = irr.inv_headkey.inv_station_no.inv_station_no + irr.wrs_number
             else:
                 irr.wrs_number = irr.irr_headkey.inv_station_no.inv_station_no + '000000'
             res = json.dumps(prod_to_irr)
