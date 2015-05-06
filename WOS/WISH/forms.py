@@ -7,9 +7,21 @@ class ProductForm(forms.ModelForm):
     class Meta:
         model = Product
         fields = ('product_number', 'item_name', 'nsn',\
-        	'generic_name', 'brand', 'part_number', 'manufacture_date', 'expiry_date', 'classification', \
-        	'stock', 'block', 'unit_measure', 'unit_cost', 'quantity', 'average_amount', 'status',\
-        	'balance_limit', 'serial_number', 'model', 'description', 'remark', 'purchased_from', 'inv_station_no')
+        	'generic_name', 'brand', 'part_number', 'manufacture_date', 'expiry_date')
+
+class ProductForm1(forms.ModelForm):
+
+    class Meta:
+        model = Product
+        fields = ( 'classification', \
+        	'stock', 'block', 'unit_measure', 'unit_cost', 'quantity', 'average_amount', 'status')
+
+class ProductForm2(forms.ModelForm):
+
+    class Meta:
+        model = Product
+        fields = ('balance_limit', 'serial_number', 'model', 'description', 'remark', 'purchased_from', 'inv_station_no')
+
 
 class IRR_entryForm(forms.ModelForm):
     class Meta:
@@ -111,3 +123,12 @@ class Product_to_GARVform1(forms.Form):
     product = forms.ModelChoiceField(queryset=Product.objects.all())
     qty = forms.FloatField()
     remarks = forms.CharField()
+<<<<<<< HEAD
+
+'''class TryForm(forms.ModelForm):
+
+    class Meta:
+        model = Try
+        fields = ('text',)'''
+=======
+>>>>>>> 9e4638f30498893d6f234f9bc36c0ce426550f8d
