@@ -233,6 +233,7 @@ def product_to_garv(request, pk):
             garv = form.save(commit=False)
             garv.garv_date = time.strftime("%Y-%m-%d")
             garv.dce = (PAR.objects.get(par_no=pk)).dce
+            garv.garv_no = iform.data['garv_no']
             garv.wo_number = (PAR.objects.get(par_no=pk)).wo_number
             res = json.dumps(prod_to_garv)
             garv.product_to_GARV = res
@@ -240,7 +241,6 @@ def product_to_garv(request, pk):
             return redirect('WISH.views.garv_entry', g=garv.garv_no, pk=pk)
     else:
         form = GARV_entryForm()
-        #par = PAR.objects.get(dce=pk)
         iform = Product_to_GARVform()#products= par.product)
         #iform.fields['product'] = forms.ModelChoiceField(PAR.objects.filter(par_no=par))
     return render(request, 'WISH/garv_entry.html', {'form': form, 'iform': iform})
@@ -263,9 +263,7 @@ def garv_entry(request, g, pk):
             return redirect('WISH.views.garv_entry', g=g, pk=pk)
     else:
         form = GARV_Form()
-        #par = PAR.objects.get(dce=pk)
-        iform = Product_to_GARVform()#products= par.product)
-        #iform.fields['product'] = forms.ModelChoiceField(PAR.objects.filter(par_no=par))
+        iform = Product_to_GARVform()
     return render(request, 'WISH/garv_entry.html', {'form': form, 'iform': iform})
 
 prod_to_par = []

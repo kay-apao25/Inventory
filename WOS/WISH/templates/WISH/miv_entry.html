@@ -7,24 +7,8 @@
     </div>
     <form method="POST" class="product-form">{% csrf_token %}
     
-    {% for field in form %}
-    {%if forloop.counter|divisibleby:'3'%}
-      <div></div><br>
-      <strong><span style="margin-right:20px"></span><span id="errors">{{ field.errors.as_text }}</span><span style="margin-right:120px"></span>
-      <span id="errors">{{ field.errors.as_text }}</span></strong> 
-        <br><br>
-    {%elif forloop.counter == 3%}
-      <strong><span style="margin-right:20px"></span><span id="errors">{{ field.errors.as_text }}</span><span style="margin-right:120px"></span>
-      </strong> 
-    {%endif%}
-    {%if field.label ==  'Remark' %}
-      {{field.label}}:<br>{{field}}
-    {% else %}
-      {{field.label}}:&nbsp;&nbsp;{{field}}&nbsp;&nbsp;&nbsp;
-    {%endif%}
-
-    {%endfor%}
-      <br><br><br>
-         <div align="center"><button type="submit" class="save btn btn-default">Save</button></div> 
+    {{form | bootstrap }}
+      <br>
+      <div align="center"><button type="submit" class="save btn btn-default">Save</button></div> 
       </form>
 {% endblock %}
