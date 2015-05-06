@@ -54,9 +54,13 @@ def product_new(request):
         form = ProductForm(request.POST)
         if form.is_valid():
             product = form.save(commit=False)
-            product.slc_number = randint(100000,999999)
-            product.nsn = randint(500000,999999)
-            #product.cost_center_no_id = product.inv_station_no.cost_center_no_id
+            if len(Product.objects.all()) != 0:
+                no = int((IRR.objects.latest('id')).slc_number) + 1
+                product.slc_number = str(no)
+                for i in range(6-len(product.slc_number)):
+                    product.slc_number = '0' + product.slc_number
+            else:
+                product.slc_number = '000000'
             product.amount = product.unit_cost * product.quantity
             product.save()
             return redirect('WISH.views.index')
@@ -74,10 +78,16 @@ def irr_entry(request):
         form = IRR_entryForm(request.POST)
         if form.is_valid():
             irr_entry = form.save(commit=False)
-            irr_no = randint(100000,999999)
+            if len(IRR.objects.all()) != 0:
+                no = int((IRR.objects.latest('id')).irr_no) + 1
+                irr_no = str(no)
+                if (6-len(irr_no)) > 0:
+                    for i in range(6-len(irr_no)):
+                        irr_no = '0' + irr_no
+            else:
+                irr_no = '000000'
             irr_entry.save()
-            return redirect('WISH.views.product_to_irr', pk=irr_entry.pk, irn=irr_no)#, inv=irr_entry.inv_station_no)
-            #return redirect('WISH.views.irr_entry_cont', pk=irr_entry.pk)
+            return redirect('WISH.views.product_to_irr', pk=irr_entry.pk, irn=irr_no)
     else:
         form = IRR_entryForm()
     return render(request, 'WISH/irr_entry.html', {'form': form})
@@ -107,7 +117,15 @@ def product_to_irr(request, pk, irn):
             irr = iform.save(commit=False)
             irr.irr_no = irn
             irr.irr_headkey_id = pk
-            irr.wrs_number = randint(100000,999999)
+            if len(IRR.objects.all()) != 0:
+                no = int((IRR.objects.latest('id')).wrs_number) + 1
+                irr.wrs_number = str(no)
+                if (6-len(irr.wrs_number)) < 0:
+                    for i in range(6-len(irr.wrs_number)):
+                        irr.wrs_number = '0' + irr.wrs_number
+                irr.wrs_number = irr.inv_headkey.inv_station_no.inv_station_no + irr.wrs_number
+            else:
+                irr.wrs_number = irr.irr_headkey.inv_station_no.inv_station_no + '000000'
             res = json.dumps(prod_to_irr)
             irr.product = res
             irr.save()
@@ -146,11 +164,17 @@ def miv_entry_S(request, pk):
         form = MIV_entryForm(request.POST)
         if form.is_valid():
             miv_entry = form.save(commit=False)
+            if len(MIV.objects.all()) != 0:
+                no = int((MIV.objects.latest('id')).miv_no) + 1
+                miv_entry.miv_no = str(no)
+                if (6-len(miv_entry.miv_no)) < 0:
+                    for i in range(6-len(miv_entry.miv_no)):
+                        miv_entry.miv_no = '0' + miv_entry.miv_no
+            else:
+                miv_entry.miv_no = '000000'
             miv_entry.doc_date = time.strftime("%Y-%m-%d")
             miv_entry.irr_no_id = pk
-            #miv_entry.irr_headkey = miv_entry.product.irr_headkey
             miv_entry.cost_center_no_id = miv_entry.inv_station_no.cost_center_no_id
-            #miv_entry.amount = miv_entry.asset_code.unit_cost * miv_entry.quantity
             miv_entry.save()
             return redirect('WISH.views.index')
     else:
@@ -195,10 +219,12 @@ def product_to_garv(request, pk):
             iform.data['remarks']})
             garv = form.save(commit=False)
             garv.garv_date = time.strftime("%Y-%m-%d")
+            garv.dce = (PAR.objects.get(par_no=pk)).dce
+            garv.wo_number = (PAR.objects.get(par_no=pk)).wo_number
             res = json.dumps(prod_to_garv)
             garv.product_to_GARV = res
             garv.save()
-            return redirect('WISH.views.garv_entry', garv=garv.garv_no, pk=pk)
+            return redirect('WISH.views.garv_entry', g=garv.garv_no, pk=pk)
     else:
         form = GARV_entryForm()
         #par = PAR.objects.get(dce=pk)
@@ -206,21 +232,22 @@ def product_to_garv(request, pk):
         #iform.fields['product'] = forms.ModelChoiceField(PAR.objects.filter(par_no=par))
     return render(request, 'WISH/garv_entry.html', {'form': form, 'iform': iform})
 
-def garv_entry(request, garv, pk):
+def garv_entry(request, g, pk):
     if request.method == "POST":
         form = GARV_Form(request.POST)
         iform = Product_to_GARVform(request.POST)
         if form.is_valid():
             prod_to_garv.append({'Product': iform.data['product'], 'Quantity': \
-            iform.data['qty'], 'PAR_number':pk, 'Remarks': \
-            iform.data['remarks']})
+            iform.data['qty'], 'PAR_number':pk, 'Remarks': iform.data['remarks']})
             garv = form.save(commit=False)
             garv.garv_date = time.strftime("%Y-%m-%d")
-            garv.garv_no = garv
+            garv.dce = (PAR.objects.get(par_no=pk)).dce
+            garv.wo_number = (PAR.objects.get(par_no=pk)).wo_number
+            garv.garv_no = g
             res = json.dumps(prod_to_garv)
             garv.product_to_GARV = res
             garv.save()
-            return redirect('WISH.views.garv_entry', garv=garv, pk=pk)
+            return redirect('WISH.views.garv_entry', g=g, pk=pk)
     else:
         form = GARV_Form()
         #par = PAR.objects.get(dce=pk)

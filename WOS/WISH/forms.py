@@ -5,7 +5,7 @@ class ProductForm(forms.ModelForm):
 
     class Meta:
         model = Product
-        fields = ('product_number', 'item_name', \
+        fields = ('product_number', 'item_name', 'nsn',\
         	'generic_name', 'brand', 'part_number', 'manufacture_date', 'expiry_date', 'classification', \
         	'stock', 'block', 'unit_measure', 'unit_cost', 'quantity', 'average_amount', 'status',\
         	'balance_limit', 'serial_number', 'model', 'description', 'remark', 'purchased_from',)
@@ -33,7 +33,7 @@ class MIV_entryForm(forms.ModelForm):
 
     class Meta:
         model = MIV
-        fields = ( 'date_issued', 'inv_station_no', 'remark')
+        fields = ( 'date_issued', 'remark')
         '''widgets = {
             'quantity': forms.TextInput(attrs={'placeholder': 'Quantity'}),
             'date_issued': forms.TextInput(attrs={'placeholder': 'Date Issued'}),
@@ -67,7 +67,7 @@ class GARV_entryForm(forms.ModelForm):
 
     class Meta:
         model = GARV
-        fields = ('dce', 'garv_no', 'cc_number', 'wo_number',\
+        fields = ('garv_no', 'cc_number', \
                     'inspected_by', 'date_inspected', 'confirmed_by', \
                     'date_confirmed', 'noted_by', )
 
@@ -75,8 +75,8 @@ class GARV_Form(forms.ModelForm):
 
     class Meta:
         model = GARV
-        fields = ('dce', 'cc_number', 'wo_number',\
-                    'inspected_by', 'date_inspected', 'confirmed_by', \
+        fields = ('cc_number', 'inspected_by', \
+                    'date_inspected', 'confirmed_by', \
                     'date_confirmed', 'noted_by', )
 
 
