@@ -1,54 +1,38 @@
 {% extends 'WISH/index.html' %}
-
+{% load bootstrap %}
 
 {% block content %}
+<style type="text/css">
+        .form-group{
+          width:400px;
+        }
+      </style>
     <div class="page-header">
       <h1 align="center">PAR Entry </h1>
     </div>
     <div align="right"><a href= "{% url 'WISH.views.index' %}"><i class="fa fa-arrow-right"></i> Exit</a></div>
     <form method="POST" class="post-form">{% csrf_token %}
-      {% if iform.non_field_errors %}
-      <ul>
-        {% for error in iform.non_field_errors %}
-          <li>{{ error }}</li>
-        {% endfor %}
-      </ul>
-    {% endif %}
-    {% for field in iform %}
-    {%if forloop.counter|divisibleby:"3" %}
-      <div></div><br><br>
-    {%endif%}
+      <table width="50%">
+    <tr>
+    <td style="padding:20px">
+     {% for field in iform %}
+      &nbsp;&nbsp;{{field | bootstrap_horizontal:'col-lg-4'}}&nbsp;&nbsp;&nbsp;
+     {%endfor%}
+     <br>
+     <div align="center"><button type="submit" class="save btn btn-default">Add Another Item</button>
+      <br><br><br><br><br><br><br><br>
+     </div>
+     </td>
+     <td style="padding:20px">
+     {% for field in form %}
 
-    {{field.label_tag}}&nbsp;&nbsp;{{field}}&nbsp;&nbsp;&nbsp;
-    {%endfor%}
-    <br><br><br><br>
-      <!--<div align="right"><a href= "{% url 'WISH.views.index' %}"><i class="fa fa-arrow-right"></i> Exit</a></div>-->
-
-          <button type="submit" class="save btn btn-default">Add Another Item</button><br><br>
-
-      <br>
-      <br>
-      {% if form.non_field_errors %}
-      <ul>
-        {% for error in form.non_field_errors %}
-          <li>{{ error }}</li>
-        {% endfor %}
-      </ul>
-    {% endif %}
-        {% for field in form %}
-        {%if forloop.counter|divisibleby:"2" %}
-          <div></div><br><br>
-        {%endif%}
-
-
-        {%if field.label ==  'Remark' %}
-          <b>{{field.label}}:</b><br>{{field}}
-        {% else %}
-          <b>{{field.label}}:</b>&nbsp;&nbsp;{{field}}&nbsp;&nbsp;&nbsp;
-        {%endif%}
-        {%endfor%}
-
-    <br><br><br><br>
-        <button type="submit" class="save btn btn-default">Save</button>
+      &nbsp;&nbsp;{{field | bootstrap_horizontal:'col-lg-4'}}&nbsp;&nbsp;&nbsp;
+      
+     {%endfor%}
+     <br>
+     <div align="center"><button type="submit" class="save btn btn-default">Save</button></div>
+     </td>
+     </tr>
+     </table>
 
 {% endblock %}

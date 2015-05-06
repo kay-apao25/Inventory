@@ -123,12 +123,3 @@ class Product_to_GARVform1(forms.Form):
     product = forms.ModelChoiceField(queryset=Product.objects.all())
     qty = forms.FloatField()
     remarks = forms.CharField()
-<<<<<<< HEAD
-
-'''class TryForm(forms.ModelForm):
-
-    class Meta:
-        model = Try
-        fields = ('text',)'''
-=======
->>>>>>> 9e4638f30498893d6f234f9bc36c0ce426550f8d
