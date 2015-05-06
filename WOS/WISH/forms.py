@@ -24,11 +24,29 @@ class ProductForm2(forms.ModelForm):
 
 
 class IRR_entryForm(forms.ModelForm):
-
     class Meta:
         model = IRR_header
-        fields = ( 'inv_station_no', 'supplier', 'reference', 'invoice_number', 'po_number', 'dr_number', \
-            'dce_custodian', 'dce_user', 'dce_approved','proc_date', 'approved_date','type_n', 'date_dlvrd',)
+        exclude = ('inv_station_no', 'supplier', 'reference', 'invoice_number', 'po_number', 'dr_number',\
+                    'dce_custodian', 'dce_user', 'dce_approved','proc_date', 'approved_date','type_n', 'date_dlvrd',)
+
+
+class IRR_entryForm1(forms.Form):
+    inv_station_no = forms.ModelChoiceField(queryset=Inventory_stat.objects.all())
+    supplier = forms.ModelChoiceField(queryset=Supplier.objects.all())
+    reference = forms.CharField()
+    invoice_number = forms.CharField()
+    po_number = forms.CharField()
+    dr_number = forms.CharField()
+
+
+class IRR_entryForm2(forms.Form):
+    dce_custodian = forms.ModelChoiceField(queryset=Employee.objects.all())
+    dce_user = forms.ModelChoiceField(queryset=Employee.objects.all())
+    dce_approved = forms.ModelChoiceField(queryset=Employee.objects.all())
+    proc_date = forms.DateField()
+    approved_date = forms.DateField()
+    type_n = forms.CharField()
+    date_dlvrd = forms.DateField()
 
 class IRR_entry_cont_Form(forms.ModelForm):
 
@@ -73,11 +91,8 @@ class PAR_Form(forms.ModelForm):
 
 
 class Product_to_PARForm(forms.Form):
-    #product = get_object_or_404(Product, id=product_id)
     product = forms.ModelChoiceField(Product.objects.all())
     qty = forms.IntegerField()
-    #form.product.queryset = Product.objects.filter(product_id=product)
-
 
 
 class GARV_entryForm(forms.ModelForm):
@@ -92,27 +107,28 @@ class GARV_Form(forms.ModelForm):
 
     class Meta:
         model = GARV
-        fields = ('cc_number', 'inspected_by', \
-                    'date_inspected', 'confirmed_by', \
+        fields = ('cc_number', \
+                    'inspected_by', 'date_inspected', 'confirmed_by', \
                     'date_confirmed', 'noted_by', )
-
 
 class Product_to_GARVform(forms.Form):
 
     product = forms.ModelChoiceField(queryset=Product.objects.all())
-
-    '''def __init__(self, products,*args, **kwargs):
-        super(Product_to_GARVform, self).__init__(*args, **kwargs)
-        for product in products:
-            self.fields['product'].queryset = Product.objects.filter(id = product['Product'])'''
-
-
-
     qty = forms.FloatField()
     remarks = forms.CharField()
+
+
+class Product_to_GARVform1(forms.Form):
+
+    product = forms.ModelChoiceField(queryset=Product.objects.all())
+    qty = forms.FloatField()
+    remarks = forms.CharField()
+<<<<<<< HEAD
 
 '''class TryForm(forms.ModelForm):
 
     class Meta:
         model = Try
         fields = ('text',)'''
+=======
+>>>>>>> 9e4638f30498893d6f234f9bc36c0ce426550f8d
