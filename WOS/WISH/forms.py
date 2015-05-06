@@ -1,5 +1,6 @@
 from django import forms
 from .models import *
+from .views import *
 
 class ProductForm(forms.ModelForm):
 
@@ -8,7 +9,7 @@ class ProductForm(forms.ModelForm):
         fields = ('product_number', 'item_name', 'nsn',\
         	'generic_name', 'brand', 'part_number', 'manufacture_date', 'expiry_date', 'classification', \
         	'stock', 'block', 'unit_measure', 'unit_cost', 'quantity', 'average_amount', 'status',\
-        	'balance_limit', 'serial_number', 'model', 'description', 'remark', 'purchased_from',)
+        	'balance_limit', 'serial_number', 'model', 'description', 'remark', 'purchased_from', 'inv_station_no')
 
 class IRR_entryForm(forms.ModelForm):
 
@@ -28,6 +29,10 @@ class Product_to_IRRForm(forms.Form):
     quantity_accepted = forms.FloatField()
     quantity_rejected = forms.FloatField()
     quantity_balance = forms.FloatField()
+
+    def __init__(self, inv_station,*args, **kwargs):
+        super(Product_to_IRRForm, self).__init__(*args, **kwargs)
+        self.fields['product'].queryset = Product.objects.filter(inv_station_no=str(inv_station))
 
 class MIV_entryForm(forms.ModelForm):
 
@@ -60,8 +65,12 @@ class PAR_Form(forms.ModelForm):
 
 
 class Product_to_PARForm(forms.Form):
-    product = forms.ModelChoiceField(queryset=Product.objects.all())
+    #product = get_object_or_404(Product, id=product_id)
+    #product = forms.ModelChoiceField()
     qty = forms.IntegerField()
+    #form.product.queryset = Product.objects.filter(product_id=product)
+
+
 
 class GARV_entryForm(forms.ModelForm):
 

@@ -6,11 +6,37 @@
    </div>
    <table style="width:100%;" align="center" class="table">
       <thead>
-      	<th>Product No.</th>
+      	<th>Item name w/ description</th>
+        <th>Product number</th>
+        <th>Model and Brand</th>
+        <th>Serial number</th>
+        <th>NSN</th>
+        <th>Puchased from</th>
+
       </thead>
-      	{% for prod in prods %}	
+      	{% for prod in prods %}
       		<tr>
-      			<td>{{ prod.product_number }}</td>
+            <td>
+              <a href="{% url 'WISH.views.product_form' pk=prod.pk %}">
+              {{ prod.item_name}}-{{prod.description}}
+            </td>
+            <td>
+            {{ prod.product_number }}
+            </a>
+          </td>
+          <td>
+            {{ prod.model}}-{{prod.brand}}
+          </td>
+          <td>
+            {{ prod.serial_number}}
+          </td>
+          <td>
+            {{ prod.nsn}}
+          </td>
+          <td>
+            {{ prod.purchased_from}}
+          </td>
+
       		</tr>
       	{% endfor %}
    </table>
