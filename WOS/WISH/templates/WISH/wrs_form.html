@@ -75,15 +75,13 @@
   			<span>
         <td colspan="4" style="text-align:left">Remarks:
   					<span>
-  						<input type="checkbox" name="inspected" value="0"> Inspected, accepted and received above item/s as issued.
-						<span style="padding-left:490px"></span>
+  						{{ wrss.remark }}
+						<span style="padding-left:1000px"></span>
 						WRS NO. <u>&nbsp;&nbsp;{{ wrss.wrs_number }}&nbsp;&nbsp;</u>
   					</span>
   					<br>
 					<span style="padding-left:82px"></span>
-					<input type="checkbox" name="rejected" value="1"> Rejected due to non-conformance (item/s # __________).<br>
-					<span style="padding-left:82px"></span>
-					<input type="checkbox" name="return" value="2"> Return damaged item/s for replacement (item/s # _________).<br>
+					
 			</span>
 			</td>
   		</tr>

@@ -55,7 +55,7 @@ def product_new(request):
         if form.is_valid():
             product = form.save(commit=False)
             if len(Product.objects.all()) != 0:
-                no = int((IRR.objects.latest('id')).slc_number) + 1
+                no = int((Product.objects.latest('id')).slc_number) + 1
                 product.slc_number = str(no)
                 for i in range(6-len(product.slc_number)):
                     product.slc_number = '0' + product.slc_number
@@ -179,30 +179,25 @@ def miv_entry_S(request, pk):
     return render(request, 'WISH/miv_entry.html', {'form': form })
 
 def miv_entry(request):
-    if request.method == "POST":
-        form = MIV_entryForm(request.POST)
-        if form.is_valid():
-            miv_entry = form.save(commit=False)
-            miv_entry.save()
-            return redirect('WISH.views.index')
-    else:
-        irrs = IRR.objects.all()
-    #    pros = Product_to_IRR.objects.all()
+    del prod_to_irr[:]
+    del prod_to_par[:]
+    del prod_to_garv[:]
+    irrs = IRR.objects.all()
     return render(request, 'WISH/miv_entry_f.html', {'irrs':irrs})
+
+def par_f(request):
+    del prod_to_irr[:]
+    del prod_to_par[:]
+    del prod_to_garv[:]
+    irrs = IRR.objects.all()
+    return render(request, 'WISH/par_f.html', {'irrs':irrs})
 
 def garv_entry_f(request):
     del prod_to_irr[:]
     del prod_to_par[:]
     del prod_to_garv[:]
-    if request.method == "POST":
-        form = GARV_entryForm(request.POST)
-        if form.is_valid():
-            garv_entry = form.save(commit=False)
-            garv_entry.save()
-            return redirect('WISH.views.index')
-    else:
-        pars = PAR.objects.all()
-        garvs = GARV.objects.all()
+    pars = PAR.objects.all()
+    garvs = GARV.objects.all()
     return render(request, 'WISH/garv_entry_f.html', {'pars':pars, 'garvs':garvs})
 
 prod_to_garv = []
@@ -254,7 +249,7 @@ def garv_entry(request, g, pk):
 
 prod_to_par = []
 prod_to_garv = []
-def par(request):
+def par(request, inv):
     if request.method == "POST":
         form = PAR_entryForm(request.POST)
         iform = Product_to_PARForm(request.POST)
@@ -265,11 +260,15 @@ def par(request):
                                 'Quantity': iform.data['qty']})
             res = json.dumps(prod_to_par)
             par_entry.product = prod_to_par
+            par_entry.inv_station_no_id = IRR.objects.get(irr_no=inv).irr_headkey.inv_station_no
             par_entry.save()
             return redirect('WISH.views.par_entry', pk=par_entry.par_no)
     else:
         form = PAR_entryForm()
         iform = Product_to_PARForm()
+        products = IRR.objects.get(irr_no=inv).product
+        for product in products:
+            iform.fields['product'] = forms.ModelChoiceField(Product.objects.filter(id=product['Product']))
     return render(request, 'WISH/par_entry.html', {'form': form, 'iform': iform})
 
 def par_entry(request, pk):

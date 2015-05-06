@@ -159,7 +159,7 @@ class PAR(models.Model):
     inv_stat_no = models.ForeignKey(Inventory_stat, related_name="is_pFK", null=True, blank=True)
     PO_number = models.ForeignKey(IRR_header, related_name="po_pFK", null=True, blank=True)
     date_acquired = models.DateField(null=True, blank=True)
-    wo_number = models.ForeignKey(IRR, related_name="wo_pFK", null=True, blank=True)
+    #wo_number = models.ForeignKey(IRR, related_name="wo_pFK", null=True, blank=True)
     history = HistoricalRecords()
 
     def __str__(self):

@@ -50,19 +50,19 @@ class PAR_entryForm(forms.ModelForm):
     class Meta:
         model = PAR
         fields = ('dce', 'par_no', 'approved_by', \
-        'issued_by', 'inv_stat_no', 'PO_number', 'date_acquired', 'wo_number', 'remark', )
+        'issued_by', 'PO_number', 'date_acquired', 'remark', )
 
 class PAR_Form(forms.ModelForm):
 
     class Meta:
         model = PAR
         fields = ('dce', 'approved_by', \
-        'issued_by', 'inv_stat_no', 'PO_number', 'date_acquired', 'wo_number', 'remark',)
+        'issued_by', 'PO_number', 'date_acquired', 'remark',)
 
 
 class Product_to_PARForm(forms.Form):
     #product = get_object_or_404(Product, id=product_id)
-    #product = forms.ModelChoiceField()
+    product = forms.ModelChoiceField(Product.objects.all())
     qty = forms.IntegerField()
     #form.product.queryset = Product.objects.filter(product_id=product)
 
