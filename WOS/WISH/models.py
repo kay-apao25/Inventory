@@ -27,7 +27,7 @@ class Supplier(models.Model):
     history = HistoricalRecords()
 
     def __str__(self):
-        return self.supplier_name + ", " + self.supplier_address + ", " + self.supplier_number
+        return self.supplier_name + ", " + self.supplier_address
 
 class Cost_center(models.Model):
     cost_center_name = models.TextField(max_length=20)
@@ -71,7 +71,7 @@ class Customer(models.Model):
 
 class Product(models.Model):
     nsn = models.CharField(max_length=10)
-    slc_number = models.IntegerField()
+    slc_number = models.CharField(max_length=10)
     product_number = models.CharField(max_length=10)
     generic_name = models.TextField(max_length=25)
     item_name = models.CharField(max_length=10)
@@ -124,7 +124,7 @@ class IRR_header(models.Model):
 class IRR(models.Model):
     product = JSONField()
     irr_headkey = models.ForeignKey(IRR_header, related_name="ih_iFK")
-    irr_no = models.AutoField(primary_key = True, default=000000)
+    irr_no = models.CharField(max_length=10)
     cost_center_no = models.ForeignKey(Cost_center, null=True, blank=True, related_name="ccn_iFK")
     date_recv = models.DateField(null=True, blank=True)
     wo_no = models.CharField(max_length=7, null=True, blank=True)
@@ -136,9 +136,9 @@ class IRR(models.Model):
         return str(self.irr_no)
 
 class MIV(models.Model):
-    inv_station_no = models.ForeignKey(Inventory_stat, related_name="is_mFK")
+    miv_no = models.CharField(max_length=10)
     irr_no = models.ForeignKey(IRR, related_name="i_mFK")
-    wrs_number = models.CharField(max_length = 8)
+    wrs_number = models.CharField(max_length = 10)
     date_issued = models.DateField()
     doc_date = models.DateField()
     remark = models.TextField(null=True, blank=True)
@@ -191,7 +191,7 @@ class GARV(models.Model):
     def __str__(self):
         return str(self.dce)
 
-'''class Product_to_GARV(models.Model):
+class Product_to_GARV(models.Model):
     garv = models.ForeignKey(GARV, related_name="g_pgFK")
     #product = models.ForeignKey(Product_to_IRR, related_name="p_pgFK")
     qty = models.CharField(max_length=20)
@@ -200,7 +200,7 @@ class GARV(models.Model):
     history = HistoricalRecords()
 
     def __str__(self):
-        return str(self.par_number)'''
+        return str(self.par_number)
 
 class Pending(models.Model):
     item_name = models.TextField()
