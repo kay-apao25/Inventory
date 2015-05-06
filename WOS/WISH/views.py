@@ -54,6 +54,7 @@ def product_new(request):
         form = ProductForm(request.POST)
         form1 = ProductForm1(request.POST)
         form2 = ProductForm2(request.POST)
+        form3 = ProductForm3(request.POST)
         if form.is_valid() and form1.is_valid() and form2.is_valid() :
             product = form.save(commit=False)
             if len(Product.objects.all()) != 0:
@@ -71,8 +72,6 @@ def product_new(request):
             product2.save()
             product.save()
 
-
-
         return redirect('WISH.views.index')
             #return redirect('WISH.views.irr_entry', pk=product.pk, instat=product.inv_station_no_fk_id, sup=product.purchased_from_id)
 
@@ -80,7 +79,8 @@ def product_new(request):
         form = ProductForm()
         form1 = ProductForm1()
         form2 = ProductForm2()
-    return render(request, 'WISH/product_add.html', {'form': form , 'form1':form1, 'form2': form2})
+        form3 = ProductForm3()
+    return render(request, 'WISH/product_add.html', {'form3': form3 , 'form1':form1, 'form2': form2})
 
 
 def irr_entry(request):

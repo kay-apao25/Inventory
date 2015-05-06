@@ -1,26 +1,46 @@
 from django import forms
-from .models import *
+from .forms import *
 from .views import *
 
 class ProductForm(forms.ModelForm):
 
     class Meta:
         model = Product
-        fields = ('product_number', 'item_name', 'nsn',\
-        	'generic_name', 'brand', 'part_number', 'manufacture_date', 'expiry_date')
+        exclude = ('product_number', 'item_name', 'nsn',\
+            'generic_name', 'brand', 'part_number', 'manufacture_date', 'expiry_date', 'classification', \
+            'stock', 'block', 'unit_measure', 'unit_cost', 'quantity', 'average_amount', 'status', \
+            'balance_limit', 'serial_number', 'model', 'description', 'remark', 'purchased_from', 'inv_station_no',)
 
-class ProductForm1(forms.ModelForm):
+class ProductForm1(forms.Form):
+    nsn = forms.CharField(max_length=10)
+    slc_number = forms.CharField(max_length=10)
+    product_number = forms.CharField(max_length=10)
+    generic_name = forms.CharField(max_length=25)
+    item_name = forms.CharField(max_length=10)
+    brand = forms.CharField(max_length=25)
+    part_number = forms.CharField(max_length=8)
+    manufacture_date = forms.DateField()
+    inv_station_no = forms.ModelChoiceField(queryset=Inventory_stat.objects.all())
 
-    class Meta:
-        model = Product
-        fields = ( 'classification', \
-        	'stock', 'block', 'unit_measure', 'unit_cost', 'quantity', 'average_amount', 'status')
+class ProductForm2(forms.Form):
+    expiry_date = forms.DateField()
+    unit_cost = forms.FloatField()
+    quantity = forms.FloatField()
+    classification = forms.CharField(max_length=30)
+    stock = forms.CharField(max_length=10)
+    block = forms.CharField(max_length=10)
+    unit_measure = forms.CharField(max_length=10)
+    status = forms.CharField(max_length=10)
 
-class ProductForm2(forms.ModelForm):
-
-    class Meta:
-        model = Product
-        fields = ('balance_limit', 'serial_number', 'model', 'description', 'remark', 'purchased_from', 'inv_station_no')
+class ProductForm3(forms.Form):
+    purchased_from = forms.ModelChoiceField(queryset=Supplier.objects.all())
+    average_amount = forms.FloatField()
+    balance_limit = forms.FloatField()
+    serial_number = forms.CharField(max_length=15)
+    model = forms.CharField(max_length=25)
+    amount = forms.FloatField()
+    description = forms.CharField(max_length=25)
+    remark = forms.CharField(max_length=25)
 
 
 class IRR_entryForm(forms.ModelForm):
