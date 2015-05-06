@@ -30,10 +30,6 @@ class Product_to_IRRForm(forms.Form):
     quantity_rejected = forms.FloatField()
     quantity_balance = forms.FloatField()
 
-    def __init__(self, inv_station,*args, **kwargs):
-        super(Product_to_IRRForm, self).__init__(*args, **kwargs)
-        self.fields['product'].queryset = Product.objects.filter(inv_station_no=str(inv_station))
-
 class MIV_entryForm(forms.ModelForm):
 
     class Meta:

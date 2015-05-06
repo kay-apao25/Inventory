@@ -109,7 +109,7 @@ def irr_entry(request):
 prod_to_irr = []
 def product_to_irr(request, pk, irn, inv):
     if request.method == "POST":
-        form = Product_to_IRRForm(inv_station=inv)
+        form = Product_to_IRRForm(request.POST)
         iform = IRR_entry_cont_Form(request.POST)
         if form.is_valid() and iform.is_valid():
             prod_to_irr.append({'IRR_no': irn, 'Product': form.data['product'], 'quantity_accepted': \
@@ -128,9 +128,9 @@ def product_to_irr(request, pk, irn, inv):
             irr.save()
             return redirect('WISH.views.product_to_irr', pk=pk, irn=irn, inv=int(inv))
     else:
-        form = Product_to_IRRForm(inv_station=inv)
+        form = Product_to_IRRForm()
         iform = IRR_entry_cont_Form()
-        #form.fields['product'] = forms.ModelChoiceField(Product_to_PAR.objects.filter(par_no=pk))
+        form.fields['product'] = forms.ModelChoiceField(Product.objects.filter(inv_station_no=inv))
     return render(request, 'WISH/product_to_irr.html', {'form': form, 'iform': iform, 'pk': pk})
 
 """def irr_entry_cont(request, pk):
