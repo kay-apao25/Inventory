@@ -76,7 +76,7 @@ def irr_entry(request):
             irr_entry = form.save(commit=False)
             irr_no = randint(100000,999999)
             irr_entry.save()
-            return redirect('WISH.views.product_to_irr', pk=irr_entry.pk, irn=irr_no)#, inv=irr_entry.inv_station_no)
+            return redirect('WISH.views.product_to_irr', pk=irr_entry.pk, irn=irr_no, inv=int(irr_entry.inv_station_no_id))
             #return redirect('WISH.views.irr_entry_cont', pk=irr_entry.pk)
     else:
         form = IRR_entryForm()
@@ -96,9 +96,9 @@ def irr_entry(request):
     return render(request, 'WISH/irr_entry.html', {'form': form})"""
 
 prod_to_irr = []
-def product_to_irr(request, pk, irn):
+def product_to_irr(request, pk, irn, inv):
     if request.method == "POST":
-        form = Product_to_IRRForm(request.POST)
+        form = Product_to_IRRForm(inv_station=inv)
         iform = IRR_entry_cont_Form(request.POST)
         if form.is_valid() and iform.is_valid():
             prod_to_irr.append({'IRR_no': irn, 'Product': form.data['product'], 'quantity_accepted': \
@@ -111,9 +111,9 @@ def product_to_irr(request, pk, irn):
             res = json.dumps(prod_to_irr)
             irr.product = res
             irr.save()
-            return redirect('WISH.views.product_to_irr', pk=pk, irn=irn)
+            return redirect('WISH.views.product_to_irr', pk=pk, irn=irn, inv=int(inv))
     else:
-        form = Product_to_IRRForm()
+        form = Product_to_IRRForm(inv_station=inv)
         iform = IRR_entry_cont_Form()
         #form.fields['product'] = forms.ModelChoiceField(Product_to_PAR.objects.filter(par_no=pk))
     return render(request, 'WISH/product_to_irr.html', {'form': form, 'iform': iform, 'pk': pk})

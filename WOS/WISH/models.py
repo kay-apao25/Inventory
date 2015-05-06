@@ -95,6 +95,7 @@ class Product(models.Model):
     description = models.TextField(max_length=25)
     remark = models.TextField(max_length=25, null=True, blank=True)
     history = HistoricalRecords()
+    inv_station_no = models.ForeignKey(Inventory_stat, related_name="inv_iFK")
 
 
     def __str__(self):
