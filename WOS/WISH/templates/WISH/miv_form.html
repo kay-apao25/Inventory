@@ -1,95 +1,91 @@
+<!DOCTYPE html>
+
+{% load staticfiles %}
 <html>
     <head>
+    	<meta name="viewport" content="width=device-width, initial-scale=1">
+    	<link rel="stylesheet" type="text/css" href="{% static 'css/forms_style.css' %}">
+
         <title>miv_form</title>
-        <style type="text/css">
-        	table, th, td{
-        		border: 1px solid black;
-        		border-collapse: collapse;
-        		text-align: left;
-        	}
-        	th, td {
-        		padding: 5px
-        	}
-        </style>
+
     </head>
+
     <body>
-		<div>
-        	<span align="left" > Republic of the Philippines</span>
-        	<span style="padding-left:950px;"></span>
-          	<span align="right"> Mindanao Regional Center</span>
-        </div>
-        <div><span align ="left">National Power Corporation</span>
-        	<span style="padding-left:830px;"></span>
-        	<span align="right"> Mindanao Generation-Central WareHouse</span>
-        </div>
-        <h3 align="center"> MATERIALS ISSUE VOUCHER </h3>
+	    <center>
+		    <div style="width:826px;height:1169px;border:1px solid #000;">
+		    	<p align="left" class="left_marg">REPUBLIC OF THE PHILIPPINES<br>NATIONAL POWER CORPORATION</p>
+				<p align="right" class="right_marg">MINDANAO REGIONAL CENTER<br>MINDANAO GENERATION - CENTRAL WAREHOUSE</p>
 
-		<span style="padding-left:1200px;"></span>
+		        <h1 align="center">MATERIALS ISSUE VOUCHER</h1>
 
-		<span align ="right"> {{mivs.doc_date}}</span>
+				<p align ="right" class="right_marg_norm">Date: {{mivs.doc_date}}</p>
 
-		<table style="width:100%;" align="center" >
-			<tr>
-				<td colspan="3">Requisitioning Cost Center: {{mivs.inv_station_no.cost_center_no.cost_center_name}}</td>
-				<td colspan="7">Cost Center No.: {{mivs.inv_station_no.cost_center_no.id}}</td>
-				<td colspan="4">WRS No.: {{mivs.irr_no.wrs_number}}</td>
+				<table style="width:90%" align="center">
+					<tr>
+						<td>Requisitioning Cost Center: <br><center>{{mivs.irr_no.cost_center_no.cost_center_name}}</center></td>
+						<td>Cost Center No.:  <br><center>{{mivs.irr_no.cost_center_no.id}} </center></td>
+						<td>WRS No.:{{mivs.irr_no.wrs_number}} </td>
+					</tr>
+				</table>
 
+				<table style="width:90%" class="tbl3">
+					<tr>
+						<th class="miv" rowspan="2">NAPOCOR<br>SUPPLY NO.</th>
+						<th class="miv" rowspan="2">PARTICULARS</th>
+						<th class="miv" rowspan="2">QUANTITY/<br>UNIT OF MEASURE</th>
+						<th class="miv" rowspan="2">MWA UNIT OF PRICE/<br>AMOUNT</th>
+						<th class="miv" colspan="6">SUBSIDIARY LEDGER</th>
+						<th class="miv" rowspan="2">Plant Code</th>
+						<th class="miv" rowspan="2">ACT</th>
+						<th class="miv" rowspan="2">USA</th>
+					</tr>
+					<tr>
+						<th class="miv">A&G</th>
+						<th class="miv">O&M</th>
+						<th class="miv">OTH</th>
+						<th class="miv">MV</th>
+						<th class="miv">T</th>
+						<th class="miv">JO/WO</th>
+					</tr>
+          {% for product in products %}
+					<tr>
+						<td><br>{{product.pros.nsn}}<br><br><br></td> <!--NAPOCOR SUPPLY NO.-->
+						<td><br>{{product.pros.item_name}}, {{product.pros.description}}<br><br><br></td> <!--PARTICULARS-->
+						<td><br> {{product.pros.unit_measure}} | {{product.pros.quantity}}<br><br><br></td> <!--QUANTITY/UNIT OF MEASURE-->
+						<td><br>{{product.pros.unit_cost}}<br><br><br></td> <!--MWA UNIT PRICE/AMOUNT-->
+						<td></td> <!--A&G-->
+						<td></td> <!--O&M-->
+						<td></td> <!--OTH-->
+						<td></td> <!--MV-->
+						<td></td> <!--T-->
+						<td></td> <!--JO/WO-->
+						<td></td> <!--PLANT CODE-->
+						<td></td> <!--ACT-->
+						<td></td> <!--USA-->
+					</tr>
+          {%  endfor %}
+				</table>
 
-			</tr>
-			<tr>
-				<th rowspan="2" style="width:5%;text-align:center" >NPC Supp No.</th>
-				<th rowspan="2" style="text-align:center">Particulars</th>
-				<th rowspan="2" style="width:12%;text-align:center">Quantity/Unit of Measure</th>
-				<th rowspan="2" style="width:12%;text-align:center">MWA Unit Price Amount</th>
-				<th colspan="6" style="width:30%;text-align:center">Subsidiary Ledger</th>
-				<th rowspan="2" style="width:5%;text-align:center">Plant Code</th>
-				<th rowspan="2" style="width:5%;text-align:center" >Act</th>
-				<th rowspan="2" style="width:5%;text-align:center" >USA</th>
+				<table style="width:90%" class="tbl3">
+					<tr>
+						<td style="font-size: 15px" rowspan="4">(T) JO/WO </td>
+						<td style="font-size: 15px" rowspan="4">ACTIVITY: </td>
+						<td style="font-size: 15px" rowspan="4">REMARKS: {{mivs.remark}}</td>
+					</tr>
+				</table>
 
-			</tr>
-
-			<tr>
-			<td style="width:4%;text-align:center" >A&G</td>
-			<td style="width:4%;text-align:center">O&M</td>
-			<td style="width:4%;text-align:center" >OTH</td>
-			<td style="width:4%;text-align:center" >MV</td>
-			<td style="width:4%;text-align:center" >T</td>
-			<td style="width:4%;text-align:center" >JO/WO</td>
-			</tr>
-      {% for product in products %}
-			<tr>
-				<td style="text-align:center"><br>{{product.pros.nsn}}<br></td>
-				<td style="text-align:center"><br>{{product.pros.item_name}}, {{product.pros.description}}<br></td>
-				<td style="text-align:center"><br> {{product.pros.unit_measure}} | {{product.pros.quantity}}<br></td>
-				<td style="text-align:center"><br>{{product.pros.unit_cost}}<br></td>
-				<td style="text-align:center"><br></td>
-				<td style="text-align:center"><br></td>
-				<td style="text-align:center"><br></td>
-				<td style="text-align:center"><br></td>
-				<td style="text-align:center"><br></td>
-				<td style="text-align:center"><br></td>
-				<td style="text-align:center"><br></td>
-				<td style="text-align:center"><br></td>
-				<td style="text-align:center"><br><br></td>
-			</tr>
-      {%  endfor %}
-			<tr>
-				<td colspan="2">JO/WO <br>   J - Job Order <br>   W - Job Order</td>
-				<td colspan="2">Activity: <br>1. Operations <br> 2. Maintenance <br> 3. Fuel & Additives  </td>
-				<td colspan="9">Remarks: {{mivs.remark}}</td>
-
-			</tr>
-			<tr>
-				<td style="text-align:center" colspan="2">Approved By: <br><u>{{mivs.irr_no.irr_headkey.dce_approved}}</u><br>IS Cost Center Head<br>
-          DCE:{{mivs.irr_no.irr_headkey.dce_approved.dce}}<br>date: {{mivs.irr_no.irr_headkey.approved_date}}</td>
-				<td style="text-align:center" colspan="3" > Issued By:  <br> <u>{{mivs.irr_no.irr_headkey.dce_custodian}}</u><br>Property Custodian
-          <br>DCE:{{mivs.irr_no.irr_headkey.dce_custodian.dce}}<br>date: {{mivs.irr_no.date_recv}}</td>
-				<td style="text-align:center" colspan="2">Recieved item/s as stated above:<br><u>{{mivs.irr_no.irr_headkey.dce_user}}</u>
-          <br>Requisitioners/Representatives<br>DCE:{{mivs.irr_no.irr_headkey.dce_user.dce}}<br>date: {{mivs.irr_no.irr_headkey.proc_date}}</td>
-				<td style="text-align:center" colspan="6">MIV<br>IS No. {{mivs.inv_station_no.inv_station_no}} <br> NO {{mivs.id}}<br><br></td>
-
-			</tr>
-
-		</table>
-    </body>
+				<table style="width:90%" class="tbl3">
+					<tr style="font-size: 15px">
+						<td rowspan="4">Approved by: <center> <br><u>{{mivs.irr_no.irr_headkey.dce_approved}}</u><br>IS Cost Center Head<br>
+              DCE:{{mivs.irr_no.irr_headkey.dce_approved.dce}}<br>date: {{mivs.irr_no.irr_headkey.approved_date}}</center></td>
+						<td rowspan="4">Issued by: <center><br> <u>{{mivs.irr_no.irr_headkey.dce_custodian}}</u><br>Property Custodian
+              <br>DCE:{{mivs.irr_no.irr_headkey.dce_custodian.dce}}<br>date: {{mivs.irr_no.date_recv}}</center></td>
+						<td rowspan="4">Received item/s as stated above:<center><br><u>{{mivs.irr_no.irr_headkey.dce_user}}</u>
+              <br>Requisitioners/Representatives<br>DCE:{{mivs.irr_no.irr_headkey.dce_user.dce}}<br>date: {{mivs.irr_no.irr_headkey.proc_date}} </center></td>
+						<td rowspan="4"><center>MIV <br>IS No. {{mivs.irr_no.irr_headkey.inv_station_no.inv_station_no}} <br> NO {{mivs.id}}<br><br></center> </td>
+					</tr>
+				</table>
+			</div>
+		</center>
+	</body>
 </html>
