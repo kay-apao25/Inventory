@@ -230,7 +230,7 @@ def product_to_garv(request, pk):
 
 def garv_entry(request, g, pk):
     if request.method == "POST":
-        form = GARV_entryForm(request.POST)
+        form = GARV_Form(request.POST)
         iform = Product_to_GARVform(request.POST)
         if form.is_valid():
             prod_to_garv.append({'Product': iform.data['product'], 'Quantity': \
@@ -245,7 +245,7 @@ def garv_entry(request, g, pk):
             garv.save()
             return redirect('WISH.views.garv_entry', g=g, pk=pk)
     else:
-        form = GARV_entryForm()
+        form = GARV_Form()
         iform = Product_to_GARVform()
         products = PAR.objects.get(par_no=pk).product
         iform.fields['product'] = forms.ModelChoiceField(Product.objects.all().filter(id__in=\
