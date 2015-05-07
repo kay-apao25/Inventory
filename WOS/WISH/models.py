@@ -1,11 +1,11 @@
 from django.db import models
 from django.db.models.fields import CharField
 from simple_history.models import HistoricalRecords
-from json_field import JSONField 
+from json_field import JSONField
 
 # Create your models here.
 class Supplier(models.Model):
-    supplier_number = models.CharField(max_length=8)
+    supplier_number = models.CharField(max_length=15)
     supplier_name = models.TextField(max_length=20)
     supplier_address = models.TextField(max_length=20)
     telephone_number = models.CharField(max_length=20)
