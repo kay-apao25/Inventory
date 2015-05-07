@@ -72,7 +72,15 @@ def product_new(request):
                 setattr(product, key, form1.data[key1])
                 setattr(product, key, form2.data[key1])
                 setattr(product, key, form3.data[key1])
-                product.amount = int(form2.data['unit_cost']) * int(form2.data['quantity'])
+                if form2.data['expiry_date'] == '':
+                    product.expiry_date = None
+                if int(form2.data['quantity']) > 1:
+                    if form2.data['unit_measure'] == 'box':
+                        product.unit_measure = str(product.unit_measure) + 'es'
+                    else:
+                        product.unit_measure = str(product.unit_measure) + 's' 
+            product.amount = int(form2.data['unit_cost']) * int(form2.data['quantity'])
+            
 
             product.save()
             return redirect('WISH.views.index')
@@ -187,7 +195,7 @@ def par_f(request):
     del prod_to_irr[:]
     del prod_to_par[:]
     del prod_to_garv[:]
-    irrs = IRR.objects.all()
+    irrs = IRR.objects.filter(is_par=False)
     return render(request, 'WISH/par_f.html', {'irrs':irrs})
 
 def garv_entry_f(request):
@@ -226,8 +234,8 @@ def product_to_garv(request, pk):
 
 def garv_entry(request, g, pk):
     if request.method == "POST":
-        form = GARV_Form(request.POST)
-        iform = Product_to_GARVform(request.POST)
+        form = GARV_entryForm(request.POST)
+        iform = Product_to_GARVform1(request.POST)
         if form.is_valid():
             prod_to_garv.append({'Product': iform.data['product'], 'Quantity': \
             iform.data['qty'], 'PAR_number':pk, 'Remarks': iform.data['remarks']})
@@ -241,8 +249,8 @@ def garv_entry(request, g, pk):
             garv.save()
             return redirect('WISH.views.garv_entry', g=g, pk=pk)
     else:
-        form = GARV_Form()
-        iform = Product_to_GARVform()
+        form = GARV_entryForm()
+        iform = Product_to_GARVform1()
         products = PAR.objects.get(par_no=pk).product
         iform.fields['product'] = forms.ModelChoiceField(Product.objects.all().filter(id__in=\
             [Product.objects.get(id=p['Product']).id for p in products]))
@@ -267,8 +275,12 @@ def par(request, inv):
             par_entry.amt_cost = amt_cost
             res = json.dumps(prod_to_par)
             par_entry.product = prod_to_par
-            par_entry.inv_station_no_id = IRR.objects.get(irr_no=inv).irr_headkey.inv_station_no
+            par_entry.inv_stat_no_id = IRR.objects.get(irr_no=inv).irr_headkey.inv_station_no.id
             par_entry.par_no = iform.data['par_no']
+            #par_entry.PO_number_id = str(IRR.objects.get(irr_no=inv).irr_headkey.po_number)
+            irr = IRR.objects.get(irr_no=inv)
+            irr.is_par = 'True'
+            irr.save()
             par_entry.save()
             return redirect('WISH.views.par_entry', pk=par_entry.par_no, inv=inv)
     else:
@@ -301,10 +313,14 @@ def par_entry(request, pk, inv):
                 amt_cost = amt_cost + amount
             res = json.dumps(prod_to_par)
             par_entry.product = res
-            par_entry.inv_station_no_id = IRR.objects.get(irr_no=inv).irr_headkey.inv_station_no
+            par_entry.inv_stat_no_id = IRR.objects.get(irr_no=inv).irr_headkey.inv_station_no.id
             par_entry.amt_cost = amt_cost
             par_entry.par_date = time.strftime("%Y-%m-%d")
             par_entry.par_no = pk
+            #par_entry.PO_number = str(IRR.objects.get(irr_no=inv).irr_headkey.po_number)
+            irr = IRR.objects.get(irr_no=inv)
+            irr.is_par = 'True'
+            irr.save()
             par_entry.save()
             return redirect('WISH.views.par_entry', pk=pk, inv=inv)
     else:
