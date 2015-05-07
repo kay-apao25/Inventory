@@ -21,7 +21,7 @@
   {% endif %}
     <form method="POST" class="product-form">{% csrf_token %}
 
-  <table width="50%">
+  <table width="50%" >
     <tr>
     <td style="padding:20px">
      {% for field in form1 %}
@@ -34,7 +34,7 @@
 
       &nbsp;&nbsp;{{field | bootstrap_horizontal:'col-lg-4'}}&nbsp;&nbsp;&nbsp;
 
-      
+
      {%endfor%}
      <br><br><br>
      </td>
@@ -42,7 +42,7 @@
      {% for field in form3 %}
 
       &nbsp;&nbsp;{{field | bootstrap_horizontal:'col-lg-4'}}&nbsp;&nbsp;&nbsp;
-      
+
      {%endfor%}
      <br><br><br>
      </td>
