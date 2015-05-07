@@ -85,35 +85,63 @@ class MIV_entryForm(forms.ModelForm):
     class Meta:
         model = MIV
         fields = ( 'date_issued', 'remark')
-        '''widgets = {
-            'quantity': forms.TextInput(attrs={'placeholder': 'Quantity'}),
-            'date_issued': forms.TextInput(attrs={'placeholder': 'Date Issued'}),
-            'remark': forms.TextInput(attrs={'placeholder': 'Remark'}),
-            #'asset_code': forms.TextInput(attrs={'placeholder': 'Asset Code'}),
-            'irr_no': forms.TextInput(attrs={'placeholder': 'IRR No.'}),
-            'inv_station_no': forms.TextInput(attrs={'placeholder': 'Inventory Station No.'}),
-        }
-        fields = ( 'quantity', 'date_issued',  'remark' , 'product', 'inv_station_no',)'''
 
-class PAR_entryForm(forms.ModelForm):
+#class PAR_entryForm(forms.ModelForm):
 
-    class Meta:
-        model = PAR
-        fields = ('dce', 'par_no', 'approved_by', \
-        'issued_by', 'PO_number', 'date_acquired', 'remark', )
+    """def __init__(self, irn, *args, **kwargs):
+        super(PAR_entryForm, self).__init__(*args, **kwargs)
+        self.fields['dce'] = forms.ModelChoiceField(Employee.objects.filter(\
+            cost_center_no=IRR.objects.get(irr_no=irn).irr_headkey.inv_station_no.cost_center_no.id))
+        self.fields['approved_by'] = forms.ModelChoiceField(Employee.objects.filter(\
+            cost_center_no=IRR.objects.get(irr_no=irn).irr_headkey.inv_station_no.cost_center_no.id))
+        self.fields['issued_by'] = forms.ModelChoiceField(Employee.objects.filter(\
+            cost_center_no=IRR.objects.get(irr_no=irn).irr_headkey.inv_station_no.cost_center_no.id))"""
+
+
+#    class Meta:
+#        model = PAR
+#        fields = ('dce', 'par_no', 'approved_by', \
+#        'issued_by', 'PO_number', 'date_acquired', 'remark', )
 
 class PAR_Form(forms.ModelForm):
 
+    """def __init__(self, irn, *args, **kwargs):
+        super(PAR_Form, self).__init__(*args, **kwargs)
+        self.fields['dce'] = forms.ModelChoiceField(Employee.objects.filter(\
+            cost_center_no=IRR.objects.get(irr_no=irn).irr_headkey.inv_station_no.cost_center_no.id))
+        self.fields['approved_by'] = forms.ModelChoiceField(Employee.objects.filter(\
+            cost_center_no=IRR.objects.get(irr_no=irn).irr_headkey.inv_station_no.cost_center_no.id))
+        self.fields['issued_by'] = forms.ModelChoiceField(Employee.objects.filter(\
+            cost_center_no=IRR.objects.get(irr_no=irn).irr_headkey.inv_station_no.cost_center_no.id))"""
+
     class Meta:
         model = PAR
-        fields = ('dce', 'approved_by', \
-        'issued_by', 'PO_number', 'date_acquired', 'remark',)
+        fields = ('dce', 'approved_by', 'issued_by', 'PO_number', 'date_acquired', 'remark',)
 
 
 class Product_to_PARForm(forms.Form):
-    product = forms.ModelChoiceField(Product.objects.all())
-    qty = forms.IntegerField()
 
+    """def __init__(self, irn, *args, **kwargs):
+        super(Product_to_PARForm, self).__init__(*args, **kwargs)
+        products = IRR.objects.get(irr_no=irn).product
+        self.fields['product'] = forms.ModelChoiceField(Product.objects.all().filter(id__in=\"
+            [Product.objects.get(id=p['Product']).id for p in products]))"""
+    
+    product = forms.ModelChoiceField(queryset=Product.objects.all(), required=True)
+    qty = forms.IntegerField(required=True)
+    par_no = forms.CharField(required=True)
+
+    
+class Product_to_PARForm1(forms.Form):
+
+    """def __init__(self, irn, *args, **kwargs):
+        super(Product_to_PARForm, self).__init__(*args, **kwargs)
+        products = IRR.objects.get(irr_no=irn).product
+        self.fields['product'] = forms.ModelChoiceField(Product.objects.all().filter(id__in=\"
+            [Product.objects.get(id=p['Product']).id for p in products]))"""
+    
+    product = forms.ModelChoiceField(queryset=Product.objects.all(), required=True)
+    qty = forms.IntegerField(required=True)
 
 class GARV_entryForm(forms.ModelForm):
 
