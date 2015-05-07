@@ -124,22 +124,24 @@ class GARV_entryForm(forms.ModelForm):
                     'date_confirmed', 'noted_by', )
 
 class GARV_Form(forms.ModelForm):
+    cc_number = forms.ModelChoiceField(queryset=PAR.objects.all())
 
     class Meta:
         model = GARV
-        fields = ('cc_number', \
-                    'inspected_by', 'date_inspected', 'confirmed_by', \
-                    'date_confirmed', 'noted_by', )
+        fields = ('cc_number', 'inspected_by', 'date_inspected', \
+        'confirmed_by', 'date_confirmed', 'noted_by', )
+
+    """def __init__(self, pk, *args, **kwargs):
+       super(GARV_Form, self).__init__(*args, **kwargs)
+       self.fields['product'].queryset = PAR.objects.all().filter(par_no=pk)"""
+
 
 class Product_to_GARVform(forms.Form):
 
-    product = forms.ModelChoiceField(queryset=Product.objects.all())
+    product = forms.ModelChoiceField(queryset=PAR.objects.all())
     qty = forms.FloatField()
     remarks = forms.CharField()
 
-
-class Product_to_GARVform1(forms.Form):
-
-    product = forms.ModelChoiceField(queryset=Product.objects.all())
-    qty = forms.FloatField()
-    remarks = forms.CharField()
+    def __init__(self, var, *args, **kwargs):
+       super(Product_to_GARVform, self).__init__(*args, **kwargs)
+       self.fields['product'].queryset = var
