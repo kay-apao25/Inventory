@@ -64,12 +64,51 @@ def product_new(request):
                     product.slc_number = '0' + product.slc_number
             else:
                 product.slc_number = '000000'
-            product1 = form1.save(commit=False)
-            product1.amount = product1.unit_cost * product1.quantity
-            product1.save()
-            product2 = form2.save(commit=False)
+            product.amount = int(form1.data['unit_cost']) * int(form1.data['quantity'])
 
-            product2.save()
+            """for key in form.data.keys():
+                print key
+                for key1 in form1.data.keys():
+                    if key == key1:
+                        print key1
+                        #product[key] = form1.data[key1]
+                for key2 in form2.data.keys():
+                    if key == key2:
+                        print key2
+                        #product[key] = form2.data[key2]
+                for key3 in form3.data.keys():
+                    if key == key3:
+                        print key3
+                        #product[key] = form3.data[key3]"""
+
+            product.product_number = form1.data['product_number']
+            product.item_name = form1.data['item_name']
+            product.nsn = form1.data['nsn']
+            product.generic_name = form1.data['generic_name']
+            product.brand = form1.data['brand']
+            product.part_number = form1.data['part_number']
+            product.manufacture_date = form1.data['manufacture_date']
+            product.inv_station_no_id = form1.data['inv_station_no']
+
+
+            product.expiry_date = form2.data['expiry_date']
+            product.classification = form2.data['classification']
+            product.stock = form2.data['stock']
+            product.block = form2.data['block']
+            product.unit_measure = form2.data['unit_measure']
+            product.unit_cost = form2.data['unit_cost']
+            product.quantity = form2.data['quantity']
+            product.status = form2.data['status']
+
+
+            product.average_amount = form3.data['average_amount']
+            product.balance_limit = form3.data['balance_limit']
+            product.serial_number = form3.data['serial_number']
+            product.model = form3.data['model']
+            product.description = form3.data['description']
+            product.remark = form3.data['remark']
+            product.purchased_from_id = form3.data['purchased_from']
+
             product.save()
 
         return redirect('WISH.views.index')

@@ -6,14 +6,15 @@ class ProductForm(forms.ModelForm):
 
     class Meta:
         model = Product
-        exclude = ('product_number', 'item_name', 'nsn',\
-            'generic_name', 'brand', 'part_number', 'manufacture_date', 'expiry_date', 'classification', \
-            'stock', 'block', 'unit_measure', 'unit_cost', 'quantity', 'average_amount', 'status', \
-            'balance_limit', 'serial_number', 'model', 'description', 'remark', 'purchased_from', 'inv_station_no',)
+        exclude = ('product_number', 'item_name', 'nsn', 'generic_name', 'brand',\
+            'part_number', 'manufacture_date', 'expiry_date', 'classification', \
+            'stock', 'block', 'unit_measure', 'unit_cost', 'quantity', \
+            'average_amount', 'status', 'balance_limit', 'serial_number',\
+            'model', 'description', 'remark', 'purchased_from', 'inv_station_no', \
+            'slc_number', 'amount', )
 
 class ProductForm1(forms.Form):
     nsn = forms.CharField(max_length=10)
-    slc_number = forms.CharField(max_length=10)
     product_number = forms.CharField(max_length=10)
     generic_name = forms.CharField(max_length=25)
     item_name = forms.CharField(max_length=10)
@@ -38,7 +39,6 @@ class ProductForm3(forms.Form):
     balance_limit = forms.FloatField()
     serial_number = forms.CharField(max_length=15)
     model = forms.CharField(max_length=25)
-    amount = forms.FloatField()
     description = forms.CharField(max_length=25)
     remark = forms.CharField(max_length=25)
 
