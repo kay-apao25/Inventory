@@ -33,7 +33,7 @@ class ProductForm2(forms.Form):
         ('ream', 'ream'),
     )
     expiry_date = forms.DateField(required=False)
-    unit_cost = forms.FloatField()
+    unit_cost = forms.DecimalField(decimal_places=2)
     quantity = forms.IntegerField(initial='1')
     classification = forms.CharField(max_length=30)
     stock = forms.CharField(max_length=10)
