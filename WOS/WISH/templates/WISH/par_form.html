@@ -1,159 +1,84 @@
+<!DOCTYPE html>
 
-<html lang="en">
-<head>
+{% load staticfiles %}
+<html>
+	<head>
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<link rel="stylesheet" type="text/css" href="{% static 'css/forms_style.css' %}">
 
-	<style type="text/css">
-		table, th, td {
-			border: 1px solid black;
-			border-collapse: collapse;
-			text-align: center
-		}
-		th, td {
-			padding: 5px
-		}
-	</style>
+		<title>par_form</title>
+	</head>
 
-</head>
-<body>
+	<body>
+		<center>
+		    <div style="width:826px;height:1169px;border:1px solid #000;">
+		    	<img src="{% static 'css/npclogo.png' %}" class="left_marg_npclogo" align="left">
+		    	&nbsp;
+		    	<p align="left" class="left_marg_par">Republic of the Philippines<br>National Power Corporation<br>MINDANAO GENERATION<br>(MINGEN)<br>Maria Cristina, Iligan City</p> <br><br><br>
+					{% if parss.amt_cost >= 10000 %}
+						<h1 align="center">PROPERTY ACCOUNTABILITY RECEIPT</h1>
+					{% else %}
+						<h1 align="center">INDIVIDUAL SHEET</h1>
+						<h1 align="center" style="margin-top:0px">CONTROLLED MATERIALS AND EQUIPMENT</h1>
+					{% endif %}
+					<br><br><br>
 
-	<p align="left">
-	Republic of the Philippines
-	<br>
-	National Power Corporation
-	<br>
-	MINDANAO GENERATION (MINGEN)
-	<br>
-	Maria Cristina, Iligan City
-	</p>
-	<br>
+		    	<p class="par" align="left">Accountable Employee: <u>{{parss.dce.name}}</u></p>
+		    	<p class="par" align="left">Designation: <u>{{parss.dce.position}}</u> </p>
+		    	<p class="par" align="left">Section/Department: <u>{{parss.dce.cost_center_no}}</p>
+		    	<p align="right">Date: <u>{{ parss.par_date }}</p>
 
+		    	<table style="width: 90%" class="par">
+		    		<tr>
+		    			<th><br>Asset Code<br></th>
+		    			<th><br>Description<br></th>
+		    			<th><br>Unit<br></th>
+		    			<th><br>Qty.<br></th>
+		    			<th><br>Amount<br></th>
+							<th><br>Date Acquired<br></th>
+							<th><br>Remarks<br></th>
+		    			<th><br>Work Order No.<br></th>
+		    		</tr>
+						{% for product in products%}
+		    		<tr>
 
-	{% if parss.amt_cost >= 10000 %}
-		<h1 align="center">PROPERTY ACCOUNTABILITY RECEIPT</h1>
-	{% else %}
-		<h1 align="center">INDIVIDUAL SHEET</h1>
-		<h1 align="center">CONTROLLED MATERIALS AND EQUIPMENT</h1>
-	{% endif %}
+		    			<td ><br><center>{{ product.Product }}</center><br><br><br></td>
+		    			<td ><br><center>{{ product.item_name }}-{{ product.description }}</center><br><br><br></td>
+		    			<td ><br><center>{{ product.unit }}</center><br><br><br></td>
+		    			<td ><br><center>{{ product.Quantity }}</center><br><br><br></td>
+		    			<td ><br><center>{{ product.amount }}</center><br><br><br></td>
+							<td ><br><center>{{ parss.date_acquired }}</center><br><br><br></td>
+							<td ><br><center>{{ parss.remark }}</center><br><br><br></td>
+		    			<td ><br><center>{{ parss.wo_number }}</center><br><br><br></td>
 
-	<span>Accountable Employee:&nbsp;&nbsp;&nbsp;<u>{{parss.dce.name}}</u></span>
-	<br>
-	<span>Designation:&nbsp;&nbsp;&nbsp;<u>{{parss.dce.position}}</u></span>
-	<br>
-	<span>Section/Department:&nbsp;&nbsp;&nbsp;<u>{{parss.dce.cost_center_no}}</u></span>
-	<span style="padding-left:600px"></span>
-	<span align="right">Date Prepared: &nbsp;&nbsp; <u>{{ parss.par_date }}&nbsp;&nbsp;</u></span>
-	<br>
-	<br>
-	<br>
+		    		</tr>
+						{% endfor %}
 
-	<!--Table1-->
-			<table style='width:100%' align='center'>
-		  <tr>
-		    <th style='width:5%'>Asset Code</th>
-		    <th style='width:30%'>Description</th>
-		    <th>Unit</th>
-		    <th>Qty</th>
-		    <th style='width:5%'>Amount</th>
-		    <th>Date Acquired</th>
-		    <th style='width:30%'>Remarks</th>
-		    <th>Work Order No.</th>
-		  </tr>
-			{% for product in products%}
-		  <tr>
-		    <td><br>{{ product.Product }}<br><br><br><br></td>
-		    <td>{{ product.item_name }}-{{ product.description }}<br><br><br><br></td>
-		    <td>{{ product.unit }}<br><br><br><br></td>
-		    <td>{{ product.Quantity }}<br><br><br><br></td>
-		    <td>{{ product.amount }}<br><br><br><br></td>
-		    <td>{{ parss.date_acquired }}<br><br><br><br></td>
-		    <td>{{ parss.remark }}<br><br><br><br></td>
-		    <td>{{ parss.wo_number }}<br><br><br><br></td>
-		  </tr>
-				{% endfor %}
-			<tr>
-				<td colspan="8" style ="text-align:center">
-					Total Amount:{{ total }}
-				</td>
-			</tr>
+		    	</table>
 
-		</table>
+		    	<table style="width: 90%" class="par">
+		    		<tr>
+		    			<td>Approved: <br><center>
+							<u>{{parss.approved_by.name}}</u>
+							<br>
+							{{parss.approved_by.position}}
+							<br>
+					    	Cost Center Head</center></td>
+		    			<td>Issued by:<center>
+							<u>{{parss.issued_by.name}}</u>
+							<br>
+							{{parss.issued_by.position}}
+							<br>
+					    	Supvg. Property Officer</center> </td>
+		    			<td>Received:<center><u>{{parss.dce.name}}<br></u>
+							Accountable Employee</center>
+						</td>
 
+		    			<td> <center>PAR<br>{{parss.par_no}}</center>
+							<center>IS No. {{parss.inv_stat_no.inv_station_no}}</center></td>
+						</tr>
 
-	<!--Table3-->
-		<table style='width:100%' align='center'>
-		  <tr>
-			  <td style='text-align:left'>
-			  	Approved:
-			  </td>
-
-			  <td style='text-align:left'>
-			  	Issued by:
-			  </td>
-
-			  <td style='text-align:left'>
-			  	Received:
-			  </td>
-
-			  <td>
-			  	PAR/CME
-			  </td>
-		  </tr>
-
-
-		  <tr>
-		    <td>
-				<br>
-				<u>{{parss.approved_by.name}}</u>
-				<br>
-				{{parss.approved_by.position}}
-				<br>
-		    	Cost Center Head
-		    </td>
-		    <td>
-				<br>
-				<u>{{parss.issued_by.name}}</u>
-				<br>
-				{{parss.issued_by.position}}
-				<br>
-		    	Supvg. Property Officer
-		    </td>
-		    <td>
-				<br>
-				<u>{{parss.dce.name}}</u>
-				<br>
-				<br>
-				Accountable Employee
-			</td>
-		    <td>
-		    	{{parss.par_no}}
-		    	<br>
-		    	(IS No. {{parss.inv_stat_no.inv_station_no}})
-		    </td>
-		  </tr>
-		</table>
-
-		<br>
-
-	<p>"The accountable employee is responsible for the issued property items,
-		subject to the provisions of the National Accounting and Auditing Laws."
-	</p>
-	{% for product in products%}
-	<span align="left">
-	Purchased from: {{ product.from.supplier_name}}
-	</span>
-	{% endfor %}
-	<br>
-	<span align="left">
-	P.O.No.: {{parss.PO_number.po_number}}
-	</span>
-	<br>
-	<span align="left">
-	CSI No.: {{parss.PO_number.invoice_number}}
-	</span>
-	<br>
-
-
-
-
-</body>
+			</div>
+		</center>
+	</body>
 </html>
