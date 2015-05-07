@@ -271,14 +271,16 @@ def par(request, inv):
         form = PAR_entryForm()
         iform = Product_to_PARForm()
         form.fields['dce'] = forms.ModelChoiceField(Employee.objects.filter(\
-            cost_center_no=IRR.objects.get(irr_no=inv).irr_headkey.inv_station_no.cost_center_no.id))
+            cost_center_no=IRR.objects.get(irr_no=str(inv)).irr_headkey.inv_station_no.cost_center_no.id))
         form.fields['approved_by'] = forms.ModelChoiceField(Employee.objects.filter(\
-            cost_center_no=IRR.objects.get(irr_no=inv).irr_headkey.inv_station_no.cost_center_no.id))
+            cost_center_no=IRR.objects.get(irr_no=str(inv)).irr_headkey.inv_station_no.cost_center_no.id))
         form.fields['issued_by'] = forms.ModelChoiceField(Employee.objects.filter(\
-            cost_center_no=IRR.objects.get(irr_no=inv).irr_headkey.inv_station_no.cost_center_no.id))
-        products = IRR.objects.get(irr_no=inv).product
+            cost_center_no=IRR.objects.get(irr_no=str(inv)).irr_headkey.inv_station_no.cost_center_no.id))
+        products = IRR.objects.get(irr_no=str(inv)).product
+        prod_list = []
         for product in products:
-            iform.fields['product'] = forms.ModelChoiceField(Product.objects.filter(id=product['Product']))
+            prod = Product.objects.get(id=product['Product'])
+        iform.fields['product'].choices = [(p) for p in prod_list]
     return render(request, 'WISH/par_entry.html', {'form': form, 'iform': iform})
 
 def par_entry(request, pk, inv):
@@ -312,9 +314,12 @@ def par_entry(request, pk, inv):
             cost_center_no=IRR.objects.get(irr_no=inv).irr_headkey.inv_station_no.cost_center_no.id))
         form.fields['issued_by'] = forms.ModelChoiceField(Employee.objects.filter(\
             cost_center_no=IRR.objects.get(irr_no=inv).irr_headkey.inv_station_no.cost_center_no.id))
-        products = IRR.objects.get(irr_no=inv).product
+        products = IRR.objects.get(irr_no=str(inv)).product
+        prod_list = []
         for product in products:
-            iform.fields['product'] = forms.ModelChoiceField(Product.objects.filter(id=product['Product']))
+            prod = Product.objects.get(id=product['Product'])
+            prod_list.append([prod.item_name, prod.description]) 
+        iform.fields['product'].choices = [(p) for p in prod_list]
     return render(request, 'WISH/par_entry.html', {'form': form, 'iform': iform})
 
 def wrs_entry(request):
