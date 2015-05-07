@@ -149,7 +149,7 @@ class Product_to_PARForm1(forms.Form):
             [Product.objects.get(id=p['Product']).id for p in products]))"""
 
     product = forms.ModelChoiceField(queryset=Product.objects.all(), required=True)
-    qty = forms.IntegerField(required=True)
+    quantity = forms.IntegerField(required=True)
 
 class GARV_entryForm(forms.ModelForm):
 
@@ -175,7 +175,7 @@ class GARV_entryForm(forms.ModelForm):
 class Product_to_GARVform(forms.Form):
 
     product = forms.ModelChoiceField(queryset=PAR.objects.all())
-    qty = forms.FloatField()
+    quantity = forms.FloatField()
     remarks = forms.CharField()
     garv_no = forms.CharField(required=True)
 
@@ -186,7 +186,7 @@ class Product_to_GARVform(forms.Form):
 class Product_to_GARVform1(forms.Form):
 
     product = forms.ModelChoiceField(queryset=PAR.objects.all())
-    qty = forms.FloatField()
+    quantity = forms.FloatField()
     remarks = forms.CharField()
     
     """def __init__(self, var, *args, **kwargs):

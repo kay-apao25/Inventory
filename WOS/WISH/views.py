@@ -267,7 +267,7 @@ def par(request, inv):
             par_entry = form.save(commit=False)
             par_entry.par_date = time.strftime("%Y-%m-%d")
             prod_to_par.append({'Product': iform.data['product'],\
-                                'Quantity': iform.data['qty']})
+                                'Quantity': iform.data['quantity']})
             amt_cost = 0
             for product in prod_to_par:
                 pro = Product.objects.get(id=product['Product'])
@@ -306,7 +306,7 @@ def par_entry(request, pk, inv):
             par_entry = form.save(commit=False)
             par_entry.par_date = time.strftime("%Y-%m-%d")
             prod_to_par.append({'Product': iform.data['product'],\
-                                'Quantity': iform.data['qty']})
+                                'Quantity': iform.data['quantity']})
             amt_cost = 0
             for product in prod_to_par:
                 pro = Product.objects.get(id=product['Product'])

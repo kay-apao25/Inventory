@@ -186,7 +186,7 @@ class GARV(models.Model):
 class Product_to_GARV(models.Model):
     garv = models.ForeignKey(GARV, related_name="g_pgFK")
     #product = models.ForeignKey(Product_to_IRR, related_name="p_pgFK")
-    qty = models.CharField(max_length=20)
+    quantity = models.CharField(max_length=20)
     par_number = models.ForeignKey(PAR, related_name="pn_pgFK")
     remarks = models.CharField(max_length=20, null=True)
     history = HistoricalRecords()
