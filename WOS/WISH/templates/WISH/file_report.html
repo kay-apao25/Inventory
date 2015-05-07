@@ -9,7 +9,7 @@
 .nav-tabs {
     margin: 0;
     padding: 0;
-    border: 0;    
+    border: 0;
 }
 .nav-tabs > li > a {
     background: #DADADA;
@@ -38,8 +38,8 @@
         <h1 align="center">File Reports</h1>
      </div>
     <!-- Nav tabs -->
-<div class="container" style="width:920px;">
-    
+<div class="container" style="width:50%;">
+
     <ul class="nav nav-tabs" role="tablist">
       <li class="active">
           <a href="#irr" role="tab" data-toggle="tab">
@@ -66,44 +66,44 @@
           </a>
       </li>
     </ul>
-  
+
 <!-- Tab panes -->
-    <div class="tab-content">
+    <div class="tab-content" >
       <div class="tab-pane fade active in" id="irr">
-          <script> 
+          <script>
           $(function(){
-            $("#irr").load("{% url 'WISH.views.irr_reports' %}"); 
+            $("#irr").load("{% url 'WISH.views.irr_reports' %}");
           });
-          </script> 
+          </script>
       </div>
       <div class="tab-pane fade" id="miv">
-          <script> 
+          <script>
           $(function(){
-            $("#miv").load("{% url 'WISH.views.miv_reports' %}"); 
+            $("#miv").load("{% url 'WISH.views.miv_reports' %}");
           });
-          </script> 
+          </script>
       </div>
       <div class="tab-pane fade" id="wrs">
-          <script> 
+          <script>
           $(function(){
-            $("#wrs").load("{% url 'WISH.views.wrs_reports' %}"); 
+            $("#wrs").load("{% url 'WISH.views.wrs_reports' %}");
           });
-          </script> 
+          </script>
       </div>
       <div class="tab-pane fade" id="par">
-          <script> 
+          <script>
           $(function(){
-            $("#par").load("{% url 'WISH.views.par_reports' %}"); 
+            $("#par").load("{% url 'WISH.views.par_reports' %}");
           });
-          </script> 
+          </script>
       </div>
       <div class="tab-pane fade" id="garv">
-          <script> 
+          <script>
           $(function(){
-            $("#garv").load("{% url 'WISH.views.garv_reports' %}"); 
+            $("#garv").load("{% url 'WISH.views.garv_reports' %}");
           });
-          </script> 
+          </script>
       </div>
-    </div> 
+    </div>
 </div>
 {% endblock %}

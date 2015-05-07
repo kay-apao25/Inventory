@@ -210,7 +210,7 @@ def miv_entry_S(request, pk):
                 miv_entry.miv_no = '000000'
             miv_entry.doc_date = time.strftime("%Y-%m-%d")
             miv_entry.irr_no_id = pk
-            miv_entry.cost_center_no_id = miv_entry.inv_station_no.cost_center_no_id
+            #miv_entry.cost_center_no_id = miv_entry.inv_station_no.cost_center_no_id
             miv_entry.save()
             return redirect('WISH.views.index')
     else:
@@ -357,7 +357,7 @@ def par_entry(request, pk, inv):
         prod_list = []
         for product in products:
             prod = Product.objects.get(id=product['Product'])
-            prod_list.append([prod.item_name, prod.description]) 
+            prod_list.append([prod.item_name, prod.description])
         iform.fields['product'].choices = [(p) for p in prod_list]
     return render(request, 'WISH/par_entry.html', {'form': form, 'iform': iform})
 
