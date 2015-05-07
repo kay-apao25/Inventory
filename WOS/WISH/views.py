@@ -64,51 +64,12 @@ def product_new(request):
                     product.slc_number = '0' + product.slc_number
             else:
                 product.slc_number = '000000'
-            product.amount = int(form1.data['unit_cost']) * int(form1.data['quantity'])
+            product1 = form1.save(commit=False)
+            product1.amount = product1.unit_cost * product1.quantity
+            product1.save()
+            product2 = form2.save(commit=False)
 
-            """for key in form.data.keys():
-                print key
-                for key1 in form1.data.keys():
-                    if key == key1:
-                        print key1
-                        #product[key] = form1.data[key1]
-                for key2 in form2.data.keys():
-                    if key == key2:
-                        print key2
-                        #product[key] = form2.data[key2]
-                for key3 in form3.data.keys():
-                    if key == key3:
-                        print key3
-                        #product[key] = form3.data[key3]"""
-
-            product.product_number = form1.data['product_number']
-            product.item_name = form1.data['item_name']
-            product.nsn = form1.data['nsn']
-            product.generic_name = form1.data['generic_name']
-            product.brand = form1.data['brand']
-            product.part_number = form1.data['part_number']
-            product.manufacture_date = form1.data['manufacture_date']
-            product.inv_station_no_id = form1.data['inv_station_no']
-
-
-            product.expiry_date = form2.data['expiry_date']
-            product.classification = form2.data['classification']
-            product.stock = form2.data['stock']
-            product.block = form2.data['block']
-            product.unit_measure = form2.data['unit_measure']
-            product.unit_cost = form2.data['unit_cost']
-            product.quantity = form2.data['quantity']
-            product.status = form2.data['status']
-
-
-            product.average_amount = form3.data['average_amount']
-            product.balance_limit = form3.data['balance_limit']
-            product.serial_number = form3.data['serial_number']
-            product.model = form3.data['model']
-            product.description = form3.data['description']
-            product.remark = form3.data['remark']
-            product.purchased_from_id = form3.data['purchased_from']
-
+            product2.save()
             product.save()
 
         return redirect('WISH.views.index')
@@ -210,7 +171,7 @@ def miv_entry_S(request, pk):
                 miv_entry.miv_no = '000000'
             miv_entry.doc_date = time.strftime("%Y-%m-%d")
             miv_entry.irr_no_id = pk
-            miv_entry.cost_center_no_id = miv_entry.inv_station_no.cost_center_no_id
+            #miv_entry.cost_center_no_id = miv_entry.inv_station_no.cost_center_no_id
             miv_entry.save()
             return redirect('WISH.views.index')
     else:
@@ -288,7 +249,7 @@ prod_to_par = []
 prod_to_garv = []
 def par(request, inv):
     if request.method == "POST":
-        form = PAR_entryForm(request.POST)
+        form = PAR_Form(request.POST)
         iform = Product_to_PARForm(request.POST)
         if form.is_valid() and iform.is_valid():
             par_entry = form.save(commit=False)
@@ -304,28 +265,27 @@ def par(request, inv):
             res = json.dumps(prod_to_par)
             par_entry.product = prod_to_par
             par_entry.inv_station_no_id = IRR.objects.get(irr_no=inv).irr_headkey.inv_station_no
+            par_entry.par_no = iform.data['par_no']
             par_entry.save()
             return redirect('WISH.views.par_entry', pk=par_entry.par_no, inv=inv)
     else:
-        form = PAR_entryForm()
+        form = PAR_Form()
         iform = Product_to_PARForm()
         form.fields['dce'] = forms.ModelChoiceField(Employee.objects.filter(\
-            cost_center_no=IRR.objects.get(irr_no=str(inv)).irr_headkey.inv_station_no.cost_center_no.id))
+            cost_center_no=IRR.objects.get(irr_no=inv).irr_headkey.inv_station_no.cost_center_no.id))
         form.fields['approved_by'] = forms.ModelChoiceField(Employee.objects.filter(\
-            cost_center_no=IRR.objects.get(irr_no=str(inv)).irr_headkey.inv_station_no.cost_center_no.id))
+            cost_center_no=IRR.objects.get(irr_no=inv).irr_headkey.inv_station_no.cost_center_no.id))
         form.fields['issued_by'] = forms.ModelChoiceField(Employee.objects.filter(\
-            cost_center_no=IRR.objects.get(irr_no=str(inv)).irr_headkey.inv_station_no.cost_center_no.id))
-        products = IRR.objects.get(irr_no=str(inv)).product
-        prod_list = []
-        for product in products:
-            prod = Product.objects.get(id=product['Product'])
-        iform.fields['product'].choices = [(p) for p in prod_list]
+            cost_center_no=IRR.objects.get(irr_no=inv).irr_headkey.inv_station_no.cost_center_no.id))
+        products = IRR.objects.get(irr_no=inv).product
+        iform.fields['product'] = forms.ModelChoiceField(Product.objects.all().filter(id__in=\
+            [Product.objects.get(id=p['Product']).id for p in products]))
     return render(request, 'WISH/par_entry.html', {'form': form, 'iform': iform})
 
 def par_entry(request, pk, inv):
     if request.method == "POST":
         form = PAR_Form(request.POST)
-        iform = Product_to_PARForm(request.POST)
+        iform = Product_to_PARForm1(request.POST)
         if form.is_valid() and iform.is_valid():
             par_entry = form.save(commit=False)
             par_entry.par_date = time.strftime("%Y-%m-%d")
@@ -346,19 +306,16 @@ def par_entry(request, pk, inv):
             return redirect('WISH.views.par_entry', pk=pk, inv=inv)
     else:
         form = PAR_Form()
-        iform = Product_to_PARForm()
+        iform = Product_to_PARForm1()
         form.fields['dce'] = forms.ModelChoiceField(Employee.objects.filter(\
             cost_center_no=IRR.objects.get(irr_no=inv).irr_headkey.inv_station_no.cost_center_no.id))
         form.fields['approved_by'] = forms.ModelChoiceField(Employee.objects.filter(\
             cost_center_no=IRR.objects.get(irr_no=inv).irr_headkey.inv_station_no.cost_center_no.id))
         form.fields['issued_by'] = forms.ModelChoiceField(Employee.objects.filter(\
             cost_center_no=IRR.objects.get(irr_no=inv).irr_headkey.inv_station_no.cost_center_no.id))
-        products = IRR.objects.get(irr_no=str(inv)).product
-        prod_list = []
-        for product in products:
-            prod = Product.objects.get(id=product['Product'])
-            prod_list.append([prod.item_name, prod.description]) 
-        iform.fields['product'].choices = [(p) for p in prod_list]
+        products = IRR.objects.get(irr_no=inv).product
+        iform.fields['product'] = forms.ModelChoiceField(Product.objects.all().filter(id__in=\
+            [Product.objects.get(id=p['Product']).id for p in products]))
     return render(request, 'WISH/par_entry.html', {'form': form, 'iform': iform})
 
 def wrs_entry(request):
