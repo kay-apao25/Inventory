@@ -220,13 +220,17 @@ def product_to_garv(request, pk):
             return redirect('WISH.views.garv_entry', g=garv.garv_no, pk=pk)
     else:
         form = GARV_entryForm()
-        iform = Product_to_GARVform()#products= par.product)
+        iform = Product_to_GARVform()
+        products = PAR.objects.get(par_no=pk).product
+        iform.fields['product'] = forms.ModelChoiceField(Product.objects.all().filter(id__in=\
+            [Product.objects.get(id=p['Product']).id for p in products]))
+        #products= par.product)
         #iform.fields['product'] = forms.ModelChoiceField(PAR.objects.filter(par_no=par))
     return render(request, 'WISH/garv_entry.html', {'form': form, 'iform': iform})
 
 def garv_entry(request, g, pk):
     if request.method == "POST":
-        form = GARV_Form(request.POST)
+        form = GARV_entryForm(request.POST)
         iform = Product_to_GARVform(request.POST)
         if form.is_valid():
             prod_to_garv.append({'Product': iform.data['product'], 'Quantity': \
@@ -241,8 +245,11 @@ def garv_entry(request, g, pk):
             garv.save()
             return redirect('WISH.views.garv_entry', g=g, pk=pk)
     else:
-        form = GARV_Form()
+        form = GARV_entryForm()
         iform = Product_to_GARVform()
+        products = PAR.objects.get(par_no=pk).product
+        iform.fields['product'] = forms.ModelChoiceField(Product.objects.all().filter(id__in=\
+            [Product.objects.get(id=p['Product']).id for p in products]))
     return render(request, 'WISH/garv_entry.html', {'form': form, 'iform': iform})
 
 prod_to_par = []
