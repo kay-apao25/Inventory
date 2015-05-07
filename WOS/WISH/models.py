@@ -115,7 +115,7 @@ class IRR_header(models.Model):
 class IRR(models.Model):
     product = JSONField()
     irr_headkey = models.ForeignKey(IRR_header, related_name="ih_iFK")
-    irr_no = models.CharField(max_length=10)
+    irr_no = models.CharField(max_length=10, primary_key=True)
     cost_center_no = models.ForeignKey(Cost_center, null=True, blank=True, related_name="ccn_iFK")
     date_recv = models.DateField(null=True, blank=True)
     wo_no = models.CharField(max_length=7, null=True, blank=True)
