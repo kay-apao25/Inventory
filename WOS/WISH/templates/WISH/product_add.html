@@ -10,7 +10,7 @@
       </style>
     <div class="page-header">
         	<!--<img src=""></img>-->
-       	<h1 align="center">Fill for Product Record</h1>
+       	<h2 align="center">Fill for Product Record</h2>
 	</div>
     {% if form.non_field_errors %}
     <ul>
@@ -23,31 +23,29 @@
 
   <table width="50%" >
     <tr>
-    <td style="padding:20px">
+    <td>
      {% for field in form1 %}
-      &nbsp;&nbsp;{{field | bootstrap_horizontal:'col-lg-4'}}&nbsp;&nbsp;&nbsp;
+      {{field | bootstrap_horizontal:'col-lg-4'}}&nbsp;&nbsp;&nbsp;
      {%endfor%}
      </div>
-     </td>
-     <td style="padding:20px">
+    </td>
+    
+    <td style="padding:5px">
      {% for field in form2 %}
-
       &nbsp;&nbsp;{{field | bootstrap_horizontal:'col-lg-4'}}&nbsp;&nbsp;&nbsp;
-
-
      {%endfor%}
      <br><br><br>
-     </td>
-     <td style="padding:20px">
+    </td>
+    
+    <td style="padding:5px">
      {% for field in form3 %}
-
       &nbsp;&nbsp;{{field | bootstrap_horizontal:'col-lg-4'}}&nbsp;&nbsp;&nbsp;
 
      {%endfor%}
      <br><br><br>
-     </td>
-     </tr>
-     </table>
-     <div align="center">   <button type="submit" class="save btn btn-default">Save</button></div>
+    </td>
+    </tr>
+  </table>
+     <div align="center"><button type="submit" class="save btn btn-default">Save</button></div>
     </form>
 {% endblock %}
