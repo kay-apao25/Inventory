@@ -1,0 +1,142 @@
+body {
+    background-color: #ffe6c6;
+    margin:0;
+    padding:10px;
+    -webkit-backface-visibility:hidden;
+}
+
+h1 {
+    margin-left: 25px;
+}
+
+a.hover {
+    color: white;
+    background-color: black;
+}
+
+/* ============================== NAVIGATION ==================================== */
+
+#inv:hover {
+    color: rgb(157,157,157);
+}
+
+#header {
+    top: 0px;
+    left:50%;
+    position: right;
+    color: #FFFFFF;
+    font-family: Perpetua Titling MT;
+    font-size: 35px;
+    background-color: #526a8e;
+    max-width: 640px;
+    z-index: 1;
+    text-align: center;
+    display: block;
+    margin:0px;
+    padding-top: 45px;
+    padding-right: 300px;
+    padding-bottom: 45px;
+    padding-left: 300px;
+}
+
+.dropdown-submenu {
+    position: relative;
+}
+
+.dropdown-submenu>.dropdown-menu {
+    top: 0;
+    left: 100%;
+    margin-top: -6px;
+    margin-left: -1px;
+    -webkit-border-radius: 0 6px 6px 6px;
+    -moz-border-radius: 0 6px 6px;
+    border-radius: 0 6px 6px 6px;
+}
+
+.dropdown-submenu:hover>.dropdown-menu {
+    display: block;
+}
+
+.dropdown-submenu>a:after {
+    display: block;
+    content: " ";
+    float: right;
+    width: 0;
+    height: 0;
+    border-color: transparent;
+    border-style: solid;
+    border-width: 5px 0 5px 5px;
+    border-left-color: #ccc;
+    margin-top: 5px;
+    margin-right: -10px;
+}
+
+.dropdown-submenu:hover>a:after {
+    border-left-color: #fff;
+}
+
+.dropdown-submenu.pull-left {
+    float: none;
+}
+
+.dropdown-submenu.pull-left>.dropdown-menu {
+    left: -100%;
+    margin-left: 10px;
+    -webkit-border-radius: 6px 0 6px 6px;
+    -moz-border-radius: 6px 0 6px 6px;
+    border-radius: 6px 0 6px 6px;
+}
+
+/* ==================================== POP-UP ====================================== */
+
+/* text-based popup styling */
+
+.white-popup {
+  position: relative;
+  background: #FFF;
+  padding: 25px;
+  width:auto;
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+/* =================== Zoom effect =============== */
+
+.mfp-zoom-in {
+  /* start state */
+  .mfp-with-anim {
+    opacity: 0;
+    transition: all 0.2s ease-in-out;
+    transform: scale(0.8);
+  }
+
+  &.mfp-bg {
+    opacity: 0;
+      transition: all 0.3s ease-out;
+  }
+
+  /* animate in */
+  &.mfp-ready {
+    .mfp-with-anim {
+      opacity: 1;
+      transform: scale(1);
+    }
+    &.mfp-bg {
+      opacity: 0.8;
+    }
+  }
+
+  /* animate out */
+  &.mfp-removing {
+
+    .mfp-with-anim {
+      transform: scale(0.8);
+      opacity: 0;
+    }
+    &.mfp-bg {
+      opacity: 0;
+    }
+
+  }
+
+}
