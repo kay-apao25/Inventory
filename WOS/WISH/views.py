@@ -64,17 +64,18 @@ def product_new(request):
                     product.slc_number = '0' + product.slc_number
             else:
                 product.slc_number = '000000'
-            product1 = form1.save(commit=False)
-            product1.amount = product1.unit_cost * product1.quantity
-            product1.save()
-            product2 = form2.save(commit=False)
+            
+            for key in form.data.keys():
+                key1 = key
+                if key == 'inv_station_no' or key == 'purchased_from':
+                    key = key + '_id'
+                setattr(product, key, form1.data[key1])
+                setattr(product, key, form2.data[key1])
+                setattr(product, key, form3.data[key1])
+                product.amount = int(form2.data['unit_cost']) * int(form2.data['quantity'])
 
-            product2.save()
             product.save()
-
-        return redirect('WISH.views.index')
-            #return redirect('WISH.views.irr_entry', pk=product.pk, instat=product.inv_station_no_fk_id, sup=product.purchased_from_id)
-
+            return redirect('WISH.views.index')
     else:
         form = ProductForm()
         form1 = ProductForm1()
@@ -94,7 +95,7 @@ def irr_entry(request):
         if form.is_valid() and form1.is_valid():
             irr_entry = form.save(commit=False)
             if len(IRR.objects.all()) != 0:
-                no = int((IRR.objects.latest('id')).irr_no) + 1
+                no = int((IRR.objects.latest('wrs_number')).irr_no) + 1
                 irr_no = str(no)
                 if (6-len(irr_no)) > 0:
                     for i in range(6-len(irr_no)):
@@ -102,21 +103,12 @@ def irr_entry(request):
             else:
                 irr_no = '000000'
 
-            irr_entry.inv_station_no_id = form1.data['inv_station_no']
-            irr_entry.supplier_id = form1.data['supplier']
-            irr_entry.reference = form1.data['reference']
-            irr_entry.invoice_number = form1.data['invoice_number']
-            irr_entry.po_number = form1.data['po_number']
-            irr_entry.dr_number = form1.data['dr_number']
-
-            irr_entry.dce_custodian_id = form2.data['dce_custodian']
-            irr_entry.dce_user_id = form2.data['dce_user']
-            irr_entry.dce_approved_id = form2.data['dce_approved']
-            irr_entry.proc_date = form2.data['proc_date']
-            irr_entry.approved_date = form2.data['approved_date']
-            irr_entry.type_n = form2.data['type_n']
-            irr_entry.date_dlvrd = form2.data['date_dlvrd']
-
+            for key in form.data.keys():
+                key1 = key
+                if key == 'supplier' or key == 'inv_station_no' or key == 'dce_custodian' or key == 'dce_user' or key == 'dce_approved':
+                    key = key + '_id'
+                setattr(irr_entry, key, form1.data[key1])
+                setattr(irr_entry, key, form2.data[key1])
 
             irr_entry.save()
             return redirect('WISH.views.product_to_irr', pk=irr_entry.pk, irn=irr_no, inv=int(irr_entry.inv_station_no_id))
@@ -139,7 +131,7 @@ def product_to_irr(request, pk, irn, inv):
             irr.irr_no = irn
             irr.irr_headkey_id = pk
             if len(IRR.objects.all()) != 0:
-                no = int((IRR.objects.latest('id')).wrs_number) + 1
+                no = int((IRR.objects.latest('wrs_number')).wrs_number) + 1
                 irr.wrs_number = str(no)
             else:
                 irr.wrs_number = irr.irr_headkey.inv_station_no.inv_station_no + '000000'
@@ -220,8 +212,7 @@ def product_to_garv(request, pk):
             return redirect('WISH.views.garv_entry', g=garv.garv_no, pk=pk)
     else:
         form = GARV_entryForm()
-        iform = Product_to_GARVform()#products= par.product)
-        #iform.fields['product'] = forms.ModelChoiceField(PAR.objects.filter(par_no=par))
+        iform = Product_to_GARVform()
     return render(request, 'WISH/garv_entry.html', {'form': form, 'iform': iform})
 
 def garv_entry(request, g, pk):
