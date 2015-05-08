@@ -214,7 +214,7 @@ def product_to_garv(request, pk):
         iform = Product_to_GARVform(request.POST)
         if form.is_valid():
             prod_to_garv.append({'Product': iform.data['product'], 'Quantity': \
-            iform.data['qty'], 'PAR_number': pk, 'Remarks': \
+            iform.data['quantity'], 'PAR_number': pk, 'Remarks': \
             iform.data['remarks']})
             garv = form.save(commit=False)
             garv.garv_date = time.strftime("%Y-%m-%d")
@@ -239,7 +239,7 @@ def garv_entry(request, g, pk):
         iform = Product_to_GARVform1(request.POST)
         if form.is_valid():
             prod_to_garv.append({'Product': iform.data['product'], 'Quantity': \
-            iform.data['qty'], 'PAR_number':pk, 'Remarks': iform.data['remarks']})
+            iform.data['quantity'], 'PAR_number':pk, 'Remarks': iform.data['remarks']})
             garv = form.save(commit=False)
             garv.garv_date = time.strftime("%Y-%m-%d")
             garv.dce = (PAR.objects.get(par_no=pk)).dce
