@@ -53,9 +53,9 @@ def file_entry(request):
 def product_new(request):
     if request.method == "POST":
         form = ProductForm(request.POST)
-        form1 = ProductForm.ProductForm1(request.POST)
-        form2 = ProductForm.ProductForm2(request.POST)
-        form3 = ProductForm.ProductForm3(request.POST)
+        form1 = ProductForm1(request.POST)
+        form2 = ProductForm2(request.POST)
+        form3 = ProductForm3(request.POST)
         if form.is_valid() and form1.is_valid() and form2.is_valid() :
             product = form.save(commit=False)
             if len(Product.objects.all()) != 0:
@@ -87,9 +87,9 @@ def product_new(request):
             return redirect('WISH.views.index')
     else:
         form = ProductForm()
-        form1 = ProductForm.ProductForm1()
-        form2 = ProductForm.ProductForm2()
-        form3 = ProductForm.ProductForm3()
+        form1 = ProductForm1()
+        form2 = ProductForm2()
+        form3 = ProductForm3()
     return render(request, 'WISH/product_add.html', {'form3': form3 , 'form1':form1, 'form2': form2})
 
 
@@ -391,21 +391,48 @@ def wrs_form(request, pk):
 
 def product_form(request, pk):
     product = get_object_or_404(Product, pk=pk)
-    form = ProductForm(request.POST or None, instance=product)
-    form1 = ProductForm.ProductForm1(request.POST or None)
-    form2 = ProductForm.ProductForm2(request.POST or None)
-    form3 = ProductForm.ProductForm3(request.POST or None)
-    if form.is_valid():
-        form.save(commit=False)
-        for key in form.data.keys():
-            key1 = key
-            if key == 'inv_station_no' or key == 'purchased_from':
-                key = key + '_id'
-            getattr(form, key)
-            getattr(form, key)
-            getattr(form, key)
-        form.save()
-        return redirect('WISH.views.index')
+    if request.method == 'POST':
+        form = ProductForm(request.POST)
+        form1 = ProductForm5.ProductForm1(request.POST)
+        form2 = ProductForm5.ProductForm2(request.POST)
+        form3 = ProductForm5.ProductForm3(request.POST)
+        if form.is_valid(): #form1.is_valid() and form2.is_valid() and form3.is_valid():
+            prod = form.save(commit=False)
+            prod.slc_number = product.slc_number
+            if form2.data['expiry_date'] == '':
+                prod.expiry_date = None
+            if int(form2.data['quantity']) > 1:
+                if form2.data['unit_measure'] == 'box':
+                    prod.unit_measure = str(product.unit_measure) + 'es'
+                else:
+                    prod.unit_measure = str(product.unit_measure) + 's'
+            prod.amount = int(form2.data['unit_cost']) * int(form2.data['quantity'])
+
+            for key in form.data.keys():
+                key1 = key
+                if key == 'inv_station_no' or key == 'purchased_from':
+                    key = key + '_id'
+                setattr(prod, key, form1.data[key1])
+                setattr(prod, key, form2.data[key1])
+                setattr(prod, key, form3.data[key1])
+            prod.save()
+            #product.save()
+            return redirect('WISH.views.index')
+    else:
+        form = ProductForm5(instance=product)
+        form1 = ProductForm5.ProductForm1()
+        form2 = ProductForm5.ProductForm2()
+        form3 = ProductForm5.ProductForm3()
+        for key in form.fields.keys():
+            for key1 in form1.fields.keys():
+                if key == key1:
+                    form1.fields[key].initial = getattr(product, key)
+            for key2 in form2.fields.keys():
+                if key == key2:
+                    form2.fields[key].initial = getattr(product, key)
+            for key3 in form3.fields.keys():
+                if key == key3:
+                    form3.fields[key].initial = getattr(product, key)
     return render(request, 'WISH/product_form.html', {'form1': form1, 'form2': form2, 'form3': form3 })
 
 
