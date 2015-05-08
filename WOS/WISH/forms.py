@@ -13,8 +13,7 @@ class ProductForm(forms.ModelForm):
             'average_amount', 'status', 'balance_limit', 'serial_number',\
             'model', 'description', 'remarks', 'purchased_from', 'inv_station_no', \
             'slc_number', 'amount', )
-
-class ProductForm5(forms.ModelForm):
+"""class ProductForm5(forms.ModelForm):
 
     class Meta:
         model = Product
@@ -23,7 +22,7 @@ class ProductForm5(forms.ModelForm):
             'stock', 'block', 'unit_measure', 'unit_cost', 'quantity', \
             'average_amount', 'status', 'balance_limit', 'serial_number',\
             'model', 'description', 'remark', 'purchased_from', 'inv_station_no', \
-            'slc_number', 'amount', )
+            'slc_number', 'amount', )"""
 
 
 
