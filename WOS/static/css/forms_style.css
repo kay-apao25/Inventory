@@ -28,6 +28,10 @@ p {
 	margin-right: 30px;
 }
 
+li {
+	list-style: none;
+}
+
 th.miv {
 	font-size: 0.5em;
 	text-decoration: bold;
@@ -39,6 +43,7 @@ table.tbl3 {
 	border-collapse: collapse;
 	border-style: hidden dashed dashed dashed;
 	text-align: left;
+	margin-top: 0px;
 	margin-left: 30px;
 	margin-right: 30px;
 	padding-top: 0px;
@@ -52,6 +57,19 @@ table.par {
 	border-collapse: collapse;
 	border-style: solid;
 	text-align: left;
+}
+
+td.garv {
+	border-style: hidden hidden solid;
+}
+
+td.wrs {
+	border-style: solid solid solid hidden;
+	vertical-align: top;
+}
+
+td.wrs_va {
+	vertical-align: top;
 }
 
 p.par {
@@ -112,8 +130,30 @@ p.date {
 	font-size: 0.75em;
 }
 
+.left_marg_garv {
+	margin-top: 0;
+	margin-left: 30px;
+	line-height: 1.5em;
+	display: block;
+	float: left;
+	width: 950px;
+	background-color: white;
+	font-size: 1em;
+}
+
+.left_marg_wrs {
+	margin-top: 50px;
+	line-height: 1.5em;
+	display: block;
+	float: center;
+	width: 400px;
+	background-color: white;
+	font-size: 1em;
+	text-align: center;
+}
+
 .left_marg_npclogo {
-	margin-top: 75px;
+	margin-top: 80px;
 	margin-left: 30px;
 }
 

@@ -1,154 +1,80 @@
+{% load staticfiles %}
+
 <!DOCTYPE html>
-<html lang="en">
-<head>
-	<style>
-		table, th, td {
-    		border: 1px solid black;
-    		border-collapse: collapse;
-    		text-align: center;
-    }
-		th, td {
-    		padding: 5px;
-		}
-    
-  </style>
-</head>
-<body>
-	
-    <span style="margin-left:350px">
-    <img src="http://upload.wikimedia.org/wikipedia/en/0/0f/Napocor_logo.JPG" style="width:100px;height:100px;">
-      <h4 align="center"> National Power Corporation
-      <br>
-                Mindanao Generation
-      <br>
-          Maria Cristina, Iligan City, Philippines
-      </h4>
-    </img>
-		
-    
-    <br>
-		</span>
-    
-		<h1 align="center">WAREHOUSE REQUISITION SLIP</h1>
-	
-		<p align="center" style="font-size:90%;font-style:italic">(Materials, Supplies and Equipments)</p>
+<html>
+	<head>
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<link rel="stylesheet" type="text/css" href="{% static 'css/forms_style.css' %}">
 
-    <p align="right">Date:<u>&nbsp;&nbsp;{% now "DATE_FORMAT" %}&nbsp;&nbsp;</u></p>
-		<p style="padding-left:30px">Cost Center:&nbsp;<u>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ wrss.cost_center_no }}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</u></p>
-		<br>
-    <table style="width:100%;border-style:solid;border-width:2px;" align="center">
-  		<tr>
-    		<th style="width:10%">NAPOCOR SUPPLY NO. (NSN) SLC</th>
-    		<th style="width:60%">PARTICULARS</th>
-    		<th style="">QUANTITY</th>
-    		<th style="width:15%">UNIT OF MEASURE</th>
-  		</tr>
-      {% for pro in pros %}
-  		<tr>
-    		<td >{{ pro.product.slc_number }}</td>
-    		<td style="text-align:left;font-style:italic"><b><u>&nbsp;&nbsp;&nbsp;&nbsp;PR # , PO # 
-        {{ wrss.irr_headkey.po_number }}&nbsp;&nbsp;&nbsp;&nbsp;</u></b>
-      		<br>
-    			<br>
-    				{{ pro.product.item_name }}, {{ pro.product.description }}
-				<br>
-				<br>
-    				
-    			<br>
-    			<br>
-    			<br>
-    		</td>
-    		<td>	{{ pro.quantity_accepted }}
-    			<br>
-    			<br>
-    			<br>
-    		</td>
-    		<td>	{{ pro.product.unit_measure }}
-    			<br>
-    			<br>
-    			<br>
-    			
-    		</td>
-  		</tr>
-      {% endfor %}
-  		<tr>
-  			<span>
-        <td colspan="4" style="text-align:left">Remarks:
-  					<span>
-  						{{ wrss.remarks }}
-						<span style="padding-left:1000px"></span>
-						WRS NO. <u>&nbsp;&nbsp;{{ wrss.wrs_number }}&nbsp;&nbsp;</u>
-  					</span>
-  					<br>
-					<span style="padding-left:82px"></span>
-					
-			</span>
-			</td>
-  		</tr>
-  		<tr>
-  			<td colspan="2" style="text-align:left;">
-        <span style="padding-left:20px"></span>
-        	<span style="font-size:90%;font-style:italic">Requsitioned by:</span>	
-  					<span style="padding-left:230px"></span>
-  				<span style="font-size:90%;font-style:italic">Approved by: (Requisitioning CCH)</span>	
-  				<br>
-  				<br>
-  				<br>
-  				
-  				<span style="padding-left:20px"></span>
-          <span style="font-size:95%;"><u>&nbsp;&nbsp;&nbsp;&nbsp;
-  														{{ wrss.irr_headkey.dce_custodian.name }}
-  												&nbsp;&nbsp;&nbsp;&nbsp;</u></span>
-  					<span style="padding-left:240px"></span>
-  				<span style="font-size:95%;"><u>&nbsp;&nbsp;&nbsp;&nbsp;
-  														{{ wrss.irr_headkey.dce_user.name}}
-  												&nbsp;&nbsp;&nbsp;&nbsp;</u></span>
-  				<br>
-  				
-  				<span style="padding-left:20px"></span>
-  				<span style="font-size:95%;font-style:italic">Name, Signature and Date</span>
-  					<span style="padding-left:250px"></span>
-  				<span style="font-size:95%;font-style:italic">Name, Signature and Date</span>
-  				<br>
+		<title>WRS</title>
+	</head>
 
-  				<span style="padding-left:18px"></span>
-  				<span style="font-size:95%;font-style:italic">DCE No.: </span>{{ wrss.irr_headkey.dce_custodian.dce }}
-  					<span style="padding-left:370px"></span>
-  				<span style="font-size:95%;font-style:italic">DCE No.: </span>{{ wrss.irr_headkey.dce_user.dce }}
-  			</td>
-  			<td>
-        	<p style="font-size:92%;text-align:left;">WRS forwarded to MRC-Central Warehouse on:</p>
-  				<p style="font-size:92%;font-style:italic">Date:<u>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-  																   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-  																   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-  																</u></p>
-  				<p style="font-size:92%;font-style:italic">Time:<u>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-  																   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-  																   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-  																</u></p>
-  				<p style="font-size:92%;font-style:italic">Rec'd:<u>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-  																   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-  																   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-  																</u></p>
-  			</td>
-  			<td>
-  				<p style="font-size:92%;text-align:left;">Item/s issued to the end-user on:</p>
-  				
-  				<p style="font-size:92%;font-style:italic">Date:<u>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-  																   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-  																   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-  																</u></p>
-  				<p style="font-size:92%;font-style:italic">Time:<u>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-  																   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-  																   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-  																</u></p>
-  				<p style="font-size:92%;font-style:italic">Rec'd:<u>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-  																   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-  																   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-  																</u></p>
-  			</td>
-  		</tr>
-  		</table> 
-	</div>
-</body>
+	<body>
+		<center>
+		    <div style="width:1169px;height:826px;border:1px solid #000;">
+			    <img src="{% static 'css/npclogo.png' %}" align="left" style="margin-top: 50px; margin-left: 275px">
+
+					    	<p align="left" class="left_marg_wrs">
+					    		National Power Corporation<br>
+					    		Mindanao Generation<br>
+					    		Maria Cristina, Iligan City, Philippines<br><br>
+					    		<strong style="font-size: 1.5em;">WAREHOUSE REQUISITION SLIP</strong><br>
+					    		<strong style="font-size: 0.90em; font-style: italic">(Materials, Supplies and Equipment)</strong>
+					    	</p>
+
+					    	<p align="right" class="right_marg_norm">Date: {% now "DATE_FORMAT" %}</p>
+					    	<p align="left" class="left_marg_norm"> Cost Center: {{ wrss.cost_center_no }}</p>
+
+					    	<table style="width:90%">
+					    		<tr>
+					    			<th style="text-align: center" width="125px">NAPOCOR<br>SUPPLY NO.<br>(NSN) SLC</th>
+					    			<th style="text-align: center">PARTICULARS</th>
+					    			<th style="text-align: center" width="150px">QUANTITY</th>
+					    			<th style="text-align: center" width="100px">UNIT OF MEASURE</th>
+					    		</tr>
+									{% for pro in pros %}
+					    		<tr>
+					    			<td>{{ pro.product.slc_number }} </td> <!--NSN-->
+					    			<td><b><u>&nbsp;&nbsp;&nbsp;&nbsp;PR # , PO #
+						        {{ wrss.irr_headkey.po_number }}&nbsp;&nbsp;&nbsp;&nbsp;</u></b><br><br>
+										<center>{{ pro.product.item_name }}, {{ pro.product.description }}</center>
+										</td> <!--PARTICULARS-->
+					    			<td>{{ pro.quantity_accepted }}</td> <!--QUANTITY-->
+					    			<td>{{ pro.product.unit_measure }}</td> <!--UNIT OF MEASURE-->
+					    		</tr>
+									{% endfor %}
+					    	</table>
+
+					    	<table style="width: 90%" class="tbl3">
+					    		<tr>
+					    			<td width="750px">Remarks:{{ wrss.remarks }} </td>
+					    			<td class="wrs">WRS NO. {{ wrss.wrs_number }} </td>
+					    		</tr>
+					    	</table>
+
+					    	<table style="width: 90%" class="tbl3">
+					    		<tr>
+					    			<td width="300px" class="wrs_va"><strong>Requisitioned by: </strong><br><br>
+											<u><center>{{ wrss.irr_headkey.dce_custodian.name }}</center></u>
+											<center>Name , Signature and Date</center>
+											<center>DCE No.: </span>{{ wrss.irr_headkey.dce_custodian.dce }}</center></td>
+					    			<td class="wrs"><strong>Approved by: (Requisitioning CCH)</strong><br><br>
+											<u><center> {{ wrss.irr_headkey.dce_user.name}} </center></u>
+											<center>Name , Signature and Date</center>
+											<center>DCE No.: </span>{{ wrss.irr_headkey.dce_user.dce }}</center></td>
+					    			<td width="180px"><strong>WRS forwarded to MRC-<br>Central Warehouse on:</strong><br><br>
+					    				<li>Date: </li>
+					    				<li>Time: </li>
+					    				<li>Rec'd: </li>
+					    			</td>
+					    			<td width="150px"><strong>Item/s issued to the<br>end-user on:</strong><br><br>
+					    				<li>Date: </li>
+					    				<li>Time: </li>
+					    				<li>Rec'd: </li>
+					    			</td>
+					    		</tr>
+					    	</table>
+		    </div>
+		</center>
+	</body>
 </html>
