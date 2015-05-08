@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponseRedirect
-from random import randint
+from django.db.models import Q
+#from random import randint
 from .models import *
 from .forms import *
 import time

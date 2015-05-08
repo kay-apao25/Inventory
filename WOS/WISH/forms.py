@@ -1,6 +1,7 @@
 from django import forms
 from .forms import *
 from .views import *
+from django.db.models import Q
 
 class ProductForm(forms.ModelForm):
 
