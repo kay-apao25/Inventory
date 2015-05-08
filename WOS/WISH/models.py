@@ -71,7 +71,7 @@ class Product(models.Model):
     manufacture_date = models.DateField()
     expiry_date = models.DateField(null=True, blank=True)
     unit_cost = models.FloatField()
-    quantity = models.FloatField(default = '1')
+    quantity = models.IntegerField(default = 1)
     classification = models.CharField(max_length=30)
     stock = models.CharField(max_length=10)
     block = models.CharField(max_length=10)
@@ -87,6 +87,7 @@ class Product(models.Model):
     remarks = models.TextField(max_length=25, null=True, blank=True)
     history = HistoricalRecords()
     inv_station_no = models.ForeignKey(Inventory_stat, related_name="inv_iFK")
+    balance = models.IntegerField(default = 0)
 
 
     def __str__(self):

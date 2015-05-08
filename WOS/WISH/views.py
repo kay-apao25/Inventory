@@ -153,6 +153,15 @@ def product_to_irr(request, pk, irn, inv):
                 irr.wrs_number = irr.irr_headkey.inv_station_no.inv_station_no + '000000'
             res = json.dumps(prod_to_irr)
             irr.product = res
+            prods = irr.product
+            for prod in prods:
+                p = Product.objects.get(id=(prod['Product']))
+                p.quantity = int(prod['quantity_accepted'])
+                p.balance = int(prod['quantity_balance'])
+                if p.balance == 0:
+                    p.status = 'Complete'
+                    #p.remarks = 'Product has an IRR Record (IRR No: ' + irn + ')'
+            p.save()
             irr.save()
             return redirect('WISH.views.product_to_irr', pk=pk, irn=irn, inv=int(inv))
     else:
@@ -190,6 +199,7 @@ def miv_entry_S(request, pk):
                         'form': form })
                 p.amount = int(p.unit_cost) * int(p.quantity)
                 p.average_amount = p.amount
+                #p.remarks = p.remarks + ', Product has a MIV Record (MIV No: ' + miv_entry.miv_no + ')'
             p.save()
             miv_entry.save()
             return redirect('WISH.views.index')
@@ -239,6 +249,7 @@ def product_to_garv(request, pk):
             for prod in prods:
                 p = Product.objects.get(id=(prod['Product']))
                 p.quantity = int(p.quantity) + int(prod['Quantity'])
+                #p.remarks = 'Product has a GARV Record (GARV No: ' + garv.garv_no + ')'
             p.save()
             garv.save()
             return redirect('WISH.views.garv_entry', g=garv.garv_no, pk=pk)
@@ -269,6 +280,7 @@ def garv_entry(request, g, pk):
             for prod in prods:
                 p = Product.objects.get(id=(prod['Product']))
                 p.quantity = int(p.quantity) + int(prod['Quantity'])
+                #p.remarks = 'Product has a GARV Record (GARV No: ' + garv.garv_no + ')'
             p.save()
             garv.save()
             return redirect('WISH.views.garv_entry', g=g, pk=pk)
