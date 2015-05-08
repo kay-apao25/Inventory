@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import render, redirect, get_object_or_404, render_to_response
 from django.http import HttpResponseRedirect
 from django.db.models import Q
 #from random import randint
@@ -114,10 +114,12 @@ def irr_entry(request):
 
             for key in form.data.keys():
                 key1 = key
-                if key == 'supplier' or key == 'inv_station_no' or key == 'dce_custodian' or key == 'dce_user' or key == 'dce_approved':
+                if key == 'supplier' or key == 'inv_station_no' or key == 'dce_user' or key == 'dce_approved':
                     key = key + '_id'
                 setattr(irr_entry, key, form1.data[key1])
                 setattr(irr_entry, key, form2.data[key1])
+
+            irr_entry.dce_custodian = Employee.objects.get(name=(str(request.user.first_name) + ' ' + str(request.user.last_name)))
 
             irr_entry.save()
             return redirect('WISH.views.product_to_irr', pk=irr_entry.pk, irn=irr_no, inv=int(irr_entry.inv_station_no_id))
@@ -151,7 +153,7 @@ def product_to_irr(request, pk, irn, inv):
     else:
         form = Product_to_IRRForm()
         iform = IRR_entry_cont_Form()
-        form.fields['product'] = forms.ModelChoiceField(Product.objects.filter(inv_station_no=inv))
+        form.fields['product'] = forms.ModelChoiceField(Product.objects.filter(inv_station_no=inv), label='Product *')
     return render(request, 'WISH/product_to_irr.html', {'form': form, 'iform': iform, 'pk': pk})
 
 def miv_entry_S(request, pk):
@@ -176,6 +178,11 @@ def miv_entry_S(request, pk):
             for prod in prods:
                 p = Product.objects.get(id=(prod['Product']))
                 p.quantity = int(p.quantity) - int(prod['quantity_accepted'])
+                if p.quantity < 0:
+                    p.quantity = 0
+                    return render_to_response('WISH/miv_entry.html',
+                        { 'error': 'No stock for such item.',
+                        'form': form })
                 p.amount = int(p.unit_cost) * int(p.quantity)
                 p.average_amount = p.amount
             p.save()
@@ -183,7 +190,7 @@ def miv_entry_S(request, pk):
             return redirect('WISH.views.index')
     else:
         form = MIV_entryForm()
-    return render(request, 'WISH/miv_entry.html', {'form': form })
+    return render(request, 'WISH/miv_entry.html', {'form': form})
 
 def miv_entry(request):
     del prod_to_irr[:]
@@ -223,6 +230,11 @@ def product_to_garv(request, pk):
             garv.wo_number = (PAR.objects.get(par_no=pk)).wo_number
             res = json.dumps(prod_to_garv)
             garv.product_to_GARV = res
+            prods = garv.product_to_GARV
+            for prod in prods:
+                p = Product.objects.get(id=(prod['Product']))
+                p.quantity = int(p.quantity) + int(prod['Quantity'])
+            p.save()
             garv.save()
             return redirect('WISH.views.garv_entry', g=garv.garv_no, pk=pk)
     else:
@@ -230,8 +242,8 @@ def product_to_garv(request, pk):
         iform = Product_to_GARVform()
         products = PAR.objects.get(par_no=pk).product
         iform.fields['product'] = forms.ModelChoiceField(Product.objects.all().filter(id__in=\
-            [Product.objects.get(id=p['Product']).id for p in products]))
-        form.fields['cc_number'] = forms.ModelChoiceField(Cost_center.objects.filter(id=PAR.objects.get(par_no=pk).inv_stat_no.cost_center_no.id))
+            [Product.objects.get(id=p['Product']).id for p in products]), label='Product *')
+        form.fields['cc_number'] = forms.ModelChoiceField(Cost_center.objects.filter(id=PAR.objects.get(par_no=pk).inv_stat_no.cost_center_no.id), label='CC number*')
     return render(request, 'WISH/garv_entry.html', {'form': form, 'iform': iform})
 
 def garv_entry(request, g, pk):
@@ -248,6 +260,11 @@ def garv_entry(request, g, pk):
             garv.garv_no = g
             res = json.dumps(prod_to_garv)
             garv.product_to_GARV = res
+            prods = garv.product_to_GARV
+            for prod in prods:
+                p = Product.objects.get(id=(prod['Product']))
+                p.quantity = int(p.quantity) + int(prod['Quantity'])
+            p.save()
             garv.save()
             return redirect('WISH.views.garv_entry', g=g, pk=pk)
     else:
@@ -255,8 +272,8 @@ def garv_entry(request, g, pk):
         iform = Product_to_GARVform1()
         products = PAR.objects.get(par_no=pk).product
         iform.fields['product'] = forms.ModelChoiceField(Product.objects.all().filter(id__in=\
-            [Product.objects.get(id=p['Product']).id for p in products]))
-        form.fields['cc_number'] = forms.ModelChoiceField(Cost_center.objects.filter(id=PAR.objects.get(par_no=pk).inv_stat_no.cost_center_no.id))
+            [Product.objects.get(id=p['Product']).id for p in products]), label='Product*')
+        form.fields['cc_number'] = forms.ModelChoiceField(Cost_center.objects.filter(id=PAR.objects.get(par_no=pk).inv_stat_no.cost_center_no.id), label='CC number*')
     return render(request, 'WISH/garv_entry.html', {'form': form, 'iform': iform})
 
 prod_to_par = []
@@ -280,6 +297,7 @@ def par(request, inv):
             par_entry.product = prod_to_par
             par_entry.inv_stat_no_id = IRR.objects.get(irr_no=inv).irr_headkey.inv_station_no.id
             par_entry.par_no = iform.data['par_no']
+            par_entry.issued_by = Employee.objects.get(name=(str(request.user.first_name) + ' ' + str(request.user.last_name)))
             #par_entry.PO_number_id = str(IRR.objects.get(irr_no=inv).irr_headkey.po_number)
             irr = IRR.objects.get(irr_no=inv)
             irr.is_par = 'True'
@@ -290,14 +308,14 @@ def par(request, inv):
         form = PAR_Form()
         iform = Product_to_PARForm()
         form.fields['dce'] = forms.ModelChoiceField(Employee.objects.filter(\
-            cost_center_no=IRR.objects.get(irr_no=inv).irr_headkey.inv_station_no.cost_center_no.id))
+            cost_center_no=IRR.objects.get(irr_no=inv).irr_headkey.inv_station_no.cost_center_no.id), label='Accountable Employee*')
         form.fields['approved_by'] = forms.ModelChoiceField(Employee.objects.filter(\
-            cost_center_no=IRR.objects.get(irr_no=inv).irr_headkey.inv_station_no.cost_center_no.id))
+            cost_center_no=IRR.objects.get(irr_no=inv).irr_headkey.inv_station_no.cost_center_no.id), label='Approved by*')
         form.fields['issued_by'] = forms.ModelChoiceField(Employee.objects.filter(\
-            cost_center_no=IRR.objects.get(irr_no=inv).irr_headkey.inv_station_no.cost_center_no.id))
+            cost_center_no=IRR.objects.get(irr_no=inv).irr_headkey.inv_station_no.cost_center_no.id), label='Issued by*')
         products = IRR.objects.get(irr_no=inv).product
         iform.fields['product'] = forms.ModelChoiceField(Product.objects.all().filter(id__in=\
-            [Product.objects.get(id=p['Product']).id for p in products]))
+            [Product.objects.get(id=p['Product']).id for p in products]), label='Product *')
     return render(request, 'WISH/par_entry.html', {'form': form, 'iform': iform})
 
 def par_entry(request, pk, inv):

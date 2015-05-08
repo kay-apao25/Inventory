@@ -8,15 +8,16 @@
         }
       </style>
     <div class="page-header">
-      <h1 align="center">PAR Entry </h1>
+      <h2 align="center">PAR Entry </h2>
     </div>
     <!--<div align="right"><a href= "{% url 'WISH.views.index' %}"><i class="fa fa-arrow-right"></i> Exit</a></div>-->
     <form method="POST" class="post-form">{% csrf_token %}
+    <strong><p style="font-size:15px">Fields with asterisk are required.</p></strong>
       <table width="50%">
     <tr>
     <td style="padding:20px">
      {% for field in iform %}
-      &nbsp;&nbsp;{{field | bootstrap_horizontal:'col-lg-4'}}&nbsp;&nbsp;&nbsp;
+      &nbsp;&nbsp;{{field | bootstrap_horizontal:'col-lg-4'}} &nbsp;&nbsp;&nbsp;
      {%endfor%}
      <br>
      <div align="center"><button type="submit" class="save btn btn-default">Add Another Item</button>
@@ -26,7 +27,7 @@
      <td style="padding:20px">
      {% for field in form %}
 
-      &nbsp;&nbsp;{{field | bootstrap_horizontal:'col-lg-4'}}&nbsp;&nbsp;&nbsp;
+      &nbsp;&nbsp;{{field | bootstrap_horizontal:'col-lg-4'}} &nbsp;&nbsp;&nbsp;
       
      {%endfor%}
      <br>

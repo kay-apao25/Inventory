@@ -80,11 +80,11 @@ class Product(models.Model):
     purchased_from = models.ForeignKey(Supplier, related_name="s_pFK")
     average_amount = models.FloatField()
     balance_limit = models.FloatField()
-    serial_number = models.CharField(max_length=15)
+    serial_number = models.CharField(max_length=15, null=True, blank=True)
     model = models.TextField(max_length=25)
     amount = models.FloatField()
     description = models.TextField(max_length=25)
-    remark = models.TextField(max_length=25, null=True, blank=True)
+    remarks = models.TextField(max_length=25, null=True, blank=True)
     history = HistoricalRecords()
     inv_station_no = models.ForeignKey(Inventory_stat, related_name="inv_iFK")
 
@@ -120,7 +120,7 @@ class IRR(models.Model):
     date_recv = models.DateField(null=True, blank=True)
     wo_no = models.CharField(max_length=7, null=True, blank=True)
     wrs_number = models.CharField(max_length = 8)
-    remark = models.TextField(max_length = 30, null=True, blank=True)
+    remarks = models.TextField(max_length = 30, null=True, blank=True)
     is_par = models.BooleanField(default=False)
     history = HistoricalRecords()
 
@@ -133,7 +133,7 @@ class MIV(models.Model):
     wrs_number = models.CharField(max_length = 10)
     date_issued = models.DateField()
     doc_date = models.DateField()
-    remark = models.TextField(null=True, blank=True)
+    remarks = models.TextField(null=True, blank=True)
     history = HistoricalRecords()
 
     def __str__(self):
@@ -145,7 +145,7 @@ class PAR(models.Model):
     par_date = models.DateField()
     par_no = models.CharField(max_length=10, primary_key=True)
     amt_cost = models.FloatField(null=True, blank=True)
-    remark = models.TextField(null=True, blank=True)
+    remarks = models.TextField(null=True, blank=True)
     approved_by = models.ForeignKey(Employee, related_name='dce_FK2', null=True, blank=True)
     issued_by = models.ForeignKey(Employee, related_name='dce_FK3', null=True, blank=True)
     inv_stat_no = models.ForeignKey(Inventory_stat, related_name="is_pFK", null=True, blank=True)
@@ -156,15 +156,6 @@ class PAR(models.Model):
 
     def __str__(self):
         return self.par_no
-
-class Product_to_PAR(models.Model):
-    par_no = models.ForeignKey(PAR, related_name="par_ppFK")
-    #product = models.ForeignKey(Product_to_IRR, related_name="p_ppFK")
-    quantity = models.IntegerField()
-    history = HistoricalRecords()
-
-    def __str__(self):
-        return str(self.par_no)
 
 class GARV(models.Model):
     product_to_GARV = JSONField()
@@ -182,17 +173,6 @@ class GARV(models.Model):
 
     def __str__(self):
         return str(self.dce)
-
-class Product_to_GARV(models.Model):
-    garv = models.ForeignKey(GARV, related_name="g_pgFK")
-    #product = models.ForeignKey(Product_to_IRR, related_name="p_pgFK")
-    quantity = models.CharField(max_length=20)
-    par_number = models.ForeignKey(PAR, related_name="pn_pgFK")
-    remarks = models.CharField(max_length=20, null=True)
-    history = HistoricalRecords()
-
-    def __str__(self):
-        return str(self.par_number)
 
 """class Pending(models.Model):
     item_name = models.TextField()
