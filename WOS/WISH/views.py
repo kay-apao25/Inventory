@@ -65,7 +65,7 @@ def product_new(request):
                     product.slc_number = '0' + product.slc_number
             else:
                 product.slc_number = '000000'
-            
+
             for key in form.data.keys():
                 key1 = key
                 if key == 'inv_station_no' or key == 'purchased_from':
@@ -79,9 +79,9 @@ def product_new(request):
                     if form2.data['unit_measure'] == 'box':
                         product.unit_measure = str(product.unit_measure) + 'es'
                     else:
-                        product.unit_measure = str(product.unit_measure) + 's' 
+                        product.unit_measure = str(product.unit_measure) + 's'
             product.amount = int(form2.data['unit_cost']) * int(form2.data['quantity'])
-            
+
 
             product.save()
             return redirect('WISH.views.index')
@@ -352,9 +352,25 @@ def wrs_form(request, pk):
         pro['product'] = Product.objects.get(id=pro['Product'])
     return render(request, 'WISH/wrs_form.html', {'wrss': wrss, 'pros': pros})
 
+
 def product_form(request, pk):
-    prod = get_object_or_404(Product, pk=pk)
-    return render(request, 'WISH/product_form.html', {'prod': prod})
+    product = get_object_or_404(Product, pk=pk)
+    form = ProductForm(request.POST or None, instance=product)
+    form1 = ProductForm1(request.POST or None)
+    form2 = ProductForm2(request.POST or None)
+    form3 = ProductForm3(request.POST or None)
+    if form.is_valid():
+        form.save(commit=False)
+        for key in form.data.keys():
+            key1 = key
+            if key == 'inv_station_no' or key == 'purchased_from':
+                key = key + '_id'
+            getattr(form, key)
+            getattr(form, key)
+            getattr(form, key)
+        form.save()
+        return redirect('WISH.views.index')
+    return render(request, 'WISH/product_form.html', {'form1': form1, 'form2': form2, 'form3': form3 })
 
 
 def par_form(request, pk):
