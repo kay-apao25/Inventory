@@ -1,27 +1,27 @@
 {% block content %}
   <table style="width:100%;" align="center" class="table">
     <thead>
-     	<th>IRR NO.</th>
-       <th>COST CENTER NAME</th>
-       <th>DATE RECEIVED</th>
-       <th>WORK ORDER NO.</th>
+     	<th><center>IRR NO.</center></th>
+       <th><center>COST CENTER NAME</center></th>
+       <th><center>DATE RECEIVED</center></th>
+       <th><center>WORK ORDER NO.</center></th>
 
     </thead>
      	{% for irr in irrs %}
       	<tr>
           <td>
             <a href="{% url 'WISH.views.irr_form' pk=irr.pk %}">
-              {{ irr.pk }}
+            <center>{{ irr.pk }}</center>
             </a>
           </td>
           <td>
-            {{irr.cost_center_no}}
+          <center>{{irr.cost_center_no}}</center>
           </td>
           <td>
-            {{irr.date_recv}}
+          <center>{{irr.date_recv}}</center>
           </td>
           <td>
-            {{irr.wo_no}}
+          <center>{{irr.wo_no}}</center>
           </td>
       	</tr>
       {% endfor %}
