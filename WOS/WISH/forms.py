@@ -85,9 +85,9 @@ class IRR_entry_cont_Form(forms.ModelForm):
 
 class Product_to_IRRForm(forms.Form):
     product = forms.ModelChoiceField(queryset=Product.objects.all())
-    quantity_accepted = forms.FloatField()
-    quantity_rejected = forms.FloatField()
-    quantity_balance = forms.FloatField()
+    quantity_accepted = forms.IntegerField()
+    quantity_rejected = forms.IntegerField()
+    quantity_balance = forms.IntegerField()
 
 class MIV_entryForm(forms.ModelForm):
 
@@ -175,7 +175,7 @@ class GARV_Form(forms.ModelForm):
 class Product_to_GARVform(forms.Form):
 
     product = forms.ModelChoiceField(queryset=PAR.objects.all())
-    quantity = forms.FloatField()
+    quantity = forms.IntegerField()
     remarks = forms.CharField()
     garv_no = forms.CharField(required=True)
 
@@ -186,7 +186,7 @@ class Product_to_GARVform(forms.Form):
 class Product_to_GARVform1(forms.Form):
 
     product = forms.ModelChoiceField(queryset=PAR.objects.all())
-    quantity = forms.FloatField()
+    quantity = forms.IntegerField()
     remarks = forms.CharField()
 
     """def __init__(self, var, *args, **kwargs):
