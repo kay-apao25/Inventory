@@ -82,7 +82,6 @@ def product_new(request):
                         product.unit_measure = str(product.unit_measure) + 's'
             product.amount = int(form2.data['unit_cost']) * int(form2.data['quantity'])
 
-
             product.save()
             return redirect('WISH.views.index')
     else:
@@ -141,7 +140,7 @@ def product_to_irr(request, pk, irn, inv):
                     'quantity_balance': int(form.data['quantity_balance'])})
             else:
                 return render_to_response('WISH/product_to_irr.html',
-                        { 'error': 'Product -' + str(Product.objects.get(id=int(form.data['product'])).item_name +  '- is still pending.'),
+                        { 'error': 'Product -' + str(Product.objects.get(id=int(form.data['product'])).item_name) +  '- is still pending.',
                         'form': form, 'iform': iform})
             irr = iform.save(commit=False)
             irr.irr_no = irn
@@ -392,6 +391,9 @@ def wrs_form(request, pk):
         pro['product'] = Product.objects.get(id=pro['Product'])
     return render(request, 'WISH/wrs_form.html', {'wrss': wrss, 'pros': pros})
 
+def product_details(request, pk):
+    prod = get_object_or_404(Product, pk=pk)
+    return render(request, 'WISH/product_details.html', {'prod': prod})
 
 def product_form(request, pk):
     product = get_object_or_404(Product, pk=pk)
@@ -460,14 +462,8 @@ def garv_form(request, pk):
     total = 0
     for product in products:
         pro = Product.objects.get(id=product['Product'])
-        #amount = float(product['quantity_accepted']) * int(pro.unit_cost)
-        #product['amount'] = amount
         product['pros'] = pro
-        #total = total + amount
     return render(request, 'WISH/garv_form.html', {'garvs': garvs, 'products': products})
-
-def cme_form(request):
-    return render(request, 'WISH/cme_form.html', {})
 
 def irr_form(request, pk):
     irs = get_object_or_404(IRR, pk=pk)
@@ -481,9 +477,6 @@ def irr_form(request, pk):
         total = total + amount
     return render(request, 'WISH/irr_form.html', {'irs':irs, 'products': products, \
                      'total': total})
-
-def gatepass_form(request):
-    return render(request, 'WISH/gatepass_form.html', {})
 
 def miv_form(request, pk):
     mivs = get_object_or_404(MIV, miv_no=pk)
@@ -499,11 +492,17 @@ def miv_form(request, pk):
     return render(request, 'WISH/miv_form.html', {'mivs':mivs, 'products':products, \
                     'amt_list': amt_list, 'total': total})
 
-def irr_report(request):
+"""def irr_report(request):
     if 'q' in request.GET and request.GET['q']:
         q = request.GET['q']
         return redirect('WISH.views.irr_form', pk=q)
     return render(request, 'WISH/irr_report.html', {})
+
+def gatepass_form(request):
+    return render(request, 'WISH/gatepass_form.html', {})
+
+def cme_form(request):
+    return render(request, 'WISH/cme_form.html', {})
 
 def miv_report(request):
     if 'q' in request.GET and request.GET['q']:
@@ -521,4 +520,4 @@ def garv_report(request):
     if 'q' in request.GET and request.GET['q']:
         q = request.GET['q']
         return redirect('WISH.views.garv_form', pk=q)
-    return render(request, 'WISH/garv_report.html', {})
+    return render(request, 'WISH/garv_report.html', {})"""

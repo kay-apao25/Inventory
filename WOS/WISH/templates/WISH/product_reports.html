@@ -17,7 +17,7 @@
       	{% for prod in prods %}
       		<tr>
             <td>
-              <a href="{% url 'WISH.views.product_form' pk=prod.pk %}">
+              <a href="{% url 'WISH.views.product_details' pk=prod.pk %}">
               <center>{{ prod.item_name}}-{{prod.description}}</center>
             </td>
             <td>
