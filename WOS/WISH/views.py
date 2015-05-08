@@ -53,9 +53,9 @@ def file_entry(request):
 def product_new(request):
     if request.method == "POST":
         form = ProductForm(request.POST)
-        form1 = ProductForm1(request.POST)
-        form2 = ProductForm2(request.POST)
-        form3 = ProductForm3(request.POST)
+        form1 = ProductForm.ProductForm1(request.POST)
+        form2 = ProductForm.ProductForm2(request.POST)
+        form3 = ProductForm.ProductForm3(request.POST)
         if form.is_valid() and form1.is_valid() and form2.is_valid() :
             product = form.save(commit=False)
             if len(Product.objects.all()) != 0:
@@ -87,9 +87,9 @@ def product_new(request):
             return redirect('WISH.views.index')
     else:
         form = ProductForm()
-        form1 = ProductForm1()
-        form2 = ProductForm2()
-        form3 = ProductForm3()
+        form1 = ProductForm.ProductForm1()
+        form2 = ProductForm.ProductForm2()
+        form3 = ProductForm.ProductForm3()
     return render(request, 'WISH/product_add.html', {'form3': form3 , 'form1':form1, 'form2': form2})
 
 
@@ -375,9 +375,9 @@ def wrs_form(request, pk):
 def product_form(request, pk):
     product = get_object_or_404(Product, pk=pk)
     form = ProductForm(request.POST or None, instance=product)
-    form1 = ProductForm1(request.POST or None)
-    form2 = ProductForm2(request.POST or None)
-    form3 = ProductForm3(request.POST or None)
+    form1 = ProductForm.ProductForm1(request.POST or None)
+    form2 = ProductForm.ProductForm2(request.POST or None)
+    form3 = ProductForm.ProductForm3(request.POST or None)
     if form.is_valid():
         form.save(commit=False)
         for key in form.data.keys():
