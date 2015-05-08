@@ -6,35 +6,35 @@
    </div>
    <table style="width:80%;" align="center" class="table">
       <thead>
-      	<th>Item name w/ description</th>
-        <th>Product number</th>
-        <th>Model and Brand</th>
-        <th>Serial number</th>
-        <th>NSN</th>
-        <th>Puchased from</th>
+      	<th><center>Item name w/ description</center></th>
+        <th><center>Product number</center></th>
+        <th><center>Model and Brand</center></th>
+        <th><center>Serial number</center></th>
+        <th><center>NSN</center></th>
+        <th><center>Puchased from</center></th>
 
       </thead>
       	{% for prod in prods %}
       		<tr>
             <td>
               <a href="{% url 'WISH.views.product_form' pk=prod.pk %}">
-              {{ prod.item_name}}-{{prod.description}}
+              <center>{{ prod.item_name}}-{{prod.description}}</center>
             </td>
             <td>
-            {{ prod.product_number }}
+              <center>{{ prod.product_number }}</center>
             </a>
           </td>
           <td>
-            {{ prod.model}}-{{prod.brand}}
+            <center>{{ prod.model}}-{{prod.brand}}</center>
           </td>
           <td>
-            {{ prod.serial_number}}
+            <center>{{ prod.serial_number}}</center>
           </td>
           <td>
-            {{ prod.nsn}}
+            <center>{{ prod.nsn}}<center>
           </td>
           <td>
-            {{ prod.purchased_from}}
+            <center>{{ prod.purchased_from}}</center>
           </td>
 
       		</tr>
