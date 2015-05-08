@@ -33,7 +33,7 @@
 	
 		<p align="center" style="font-size:90%;font-style:italic">(Materials, Supplies and Equipments)</p>
 
-    <p align="right">Date:<u>&nbsp;&nbsp;{{ wrss.date_issued }}&nbsp;&nbsp;</u></p>
+    <p align="right">Date:<u>&nbsp;&nbsp;{% now "DATE_FORMAT" %}&nbsp;&nbsp;</u></p>
 		<p style="padding-left:30px">Cost Center:&nbsp;<u>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ wrss.cost_center_no }}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</u></p>
 		<br>
     <table style="width:100%;border-style:solid;border-width:2px;" align="center">
