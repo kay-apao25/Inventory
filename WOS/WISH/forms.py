@@ -35,7 +35,7 @@ class ProductForm(forms.ModelForm):
         )
         expiry_date = forms.DateField(widget=forms.TextInput(attrs={'placeholder': 'YYYY-MM-DD'}), required=False)
         unit_cost = forms.DecimalField(label='Unit cost*', decimal_places=2)
-        quantity = forms.IntegerField(initial='1', label='Quantity *')
+        quantity = forms.IntegerField(initial=1, label='Quantity *')
         classification = forms.CharField(label='Classification*', max_length=30)
         stock = forms.CharField(label='Stock *', max_length=10)
         block = forms.CharField(label='Block *', max_length=10)
