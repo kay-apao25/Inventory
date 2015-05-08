@@ -29,7 +29,7 @@ p {
 }
 
 th.miv {
-	font-size: 0.5em;	
+	font-size: 0.5em;
 	text-decoration: bold;
 	text-align: center;
 }
@@ -60,10 +60,10 @@ p.par {
 
 p.par_right {
 	margin-right: 30px;
-	
+
 	float: right;
-	
-	
+
+
 	padding-bottom: -1.5%;
 }
 
@@ -71,7 +71,7 @@ p.par_left {
 	margin-right: 30px;
 
 	float: left;
-	
+
 	padding-bottom: -1.5%;
 }
 
@@ -107,7 +107,7 @@ p.date {
 	line-height: 1.5em;
 	display: block;
 	float: left;
-	width: 150px;
+	width: 200px;
 	background-color: white;
 	font-size: 0.75em;
 }
