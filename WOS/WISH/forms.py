@@ -14,6 +14,19 @@ class ProductForm(forms.ModelForm):
             'model', 'description', 'remarks', 'purchased_from', 'inv_station_no', \
             'slc_number', 'amount', )
 
+class ProductForm5(forms.ModelForm):
+
+    class Meta:
+        model = Product
+        fields = ('product_number', 'item_name', 'nsn', 'generic_name', 'brand',\
+            'part_number', 'manufacture_date', 'expiry_date', 'classification', \
+            'stock', 'block', 'unit_measure', 'unit_cost', 'quantity', \
+            'average_amount', 'status', 'balance_limit', 'serial_number',\
+            'model', 'description', 'remark', 'purchased_from', 'inv_station_no', \
+            'slc_number', 'amount', )
+
+
+
 class ProductForm1(forms.Form):
     nsn = forms.CharField(label='NSN *', max_length=10)
     product_number = forms.CharField(label='Product number *', max_length=10)
