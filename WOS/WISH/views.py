@@ -65,7 +65,7 @@ def product_new(request):
                     product.slc_number = '0' + product.slc_number
             else:
                 product.slc_number = '000000'
-            
+
             for key in form.data.keys():
                 key1 = key
                 if key == 'inv_station_no' or key == 'purchased_from':
@@ -231,6 +231,7 @@ def product_to_garv(request, pk):
         products = PAR.objects.get(par_no=pk).product
         iform.fields['product'] = forms.ModelChoiceField(Product.objects.all().filter(id__in=\
             [Product.objects.get(id=p['Product']).id for p in products]))
+        form.fields['cc_number'] = forms.ModelChoiceField(Employee.objects.filter(cost_center_no=(PAR.objects.get(par_no=pk).inv_stat_no.cost_center_no.id)))
     return render(request, 'WISH/garv_entry.html', {'form': form, 'iform': iform})
 
 def garv_entry(request, g, pk):
@@ -255,7 +256,7 @@ def garv_entry(request, g, pk):
         products = PAR.objects.get(par_no=pk).product
         iform.fields['product'] = forms.ModelChoiceField(Product.objects.all().filter(id__in=\
             [Product.objects.get(id=p['Product']).id for p in products]))
-        form.fields['cc_number'] = forms.ModelChoiceField(PAR.objects.get(par_no=pk).inv_stat_no.cost_center_no.id)
+        form.fields['cc_number'] = forms.ModelChoiceField(Employee.objects.filter(cost_center_no=(PAR.objects.get(par_no=pk).inv_stat_no.cost_center_no.id)))
     return render(request, 'WISH/garv_entry.html', {'form': form, 'iform': iform})
 
 prod_to_par = []

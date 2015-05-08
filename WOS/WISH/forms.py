@@ -160,13 +160,12 @@ class GARV_entryForm(forms.ModelForm):
                     'inspected_by', 'date_inspected', 'confirmed_by', \
                     'date_confirmed', 'noted_by', )
 
-#"""class GARV_Form(forms.ModelForm):
-#    cc_number = forms.ModelChoiceField(queryset=Cost_center.objects.all())
+class GARV_Form(forms.ModelForm):
 
-#    class Meta:
-#        model = GARV
-#        fields = ('cc_number', 'inspected_by', 'date_inspected', \
-#        'confirmed_by', 'date_confirmed', 'noted_by', )"""
+    class Meta:
+        model = GARV
+        fields = ('cc_number', 'inspected_by', 'date_inspected', \
+        'confirmed_by', 'date_confirmed', 'noted_by', )
 
     """def __init__(self, pk, *args, **kwargs):
        super(GARV_Form, self).__init__(*args, **kwargs)
@@ -189,7 +188,7 @@ class Product_to_GARVform1(forms.Form):
     product = forms.ModelChoiceField(queryset=PAR.objects.all())
     quantity = forms.FloatField()
     remarks = forms.CharField()
-    
+
     """def __init__(self, var, *args, **kwargs):
        super(Product_to_GARVform, self).__init__(*args, **kwargs)
        self.fields['product'].queryset = var"""
