@@ -1,0 +1,133 @@
+{% extends 'WISH/index.html' %}
+ {% block content %}
+<html>
+    <head>
+        <title>Product Details</title>
+        <style type="text/css" >
+        	table, th, td{
+        		border: 1px solid black;
+        		border-collapse: collapse;
+        		text-align: left;
+            font-weight: italic;
+        	}
+        	th, td {
+        		padding: 5px
+        	}
+        </style>
+        <h1 align="center"><b>Product Details</b></h1>
+    </head>
+
+    <body>
+      <table style="width:70%;" align="center" bgcolor="#00FF00">
+        <tr>
+          <td >
+            <b>NSN :</b><br> <center>{{prod.nsn}}</center>
+          </td>
+          <td >
+            <b>SLC :</b> <br><center>{{prod.slc_number}}</center>
+          </td>
+          <td>
+            <b>Product number :</b><br><center> {{prod.product_number}}</center>
+          </td>
+
+        </tr>
+        <tr>
+
+          <td>
+            <b>Generic name : </b><br><center>{{prod.generic_name}}</center>
+          </td>
+          <td>
+            <b>Item name :</b><br> <center>{{prod.item_name}}</center>
+          </td>
+          <td>
+            <b>Brand :</b><br> <center>{{prod.brand}}</center>
+          </td>
+
+        </tr>
+        <tr>
+          <td>
+            <b>Part number :</b> <br><center>{{prod.part_number}}</center>
+          </td>
+          <td>
+            <b>Manufacture date :</b><br> <center>{{prod.manufacture_date}}</center>
+          </td>
+          <td>
+            <b>Expiry date : </b><br><center>{{prod.expiry_date}}</center>
+          </td>
+
+        </tr>
+        <tr>
+
+          <td>
+            <b>Unit cost :</b> <br><center>{{prod.unit_cost}}</center>
+          </td>
+          <td>
+            <b>Quantity : </b><br><center>{{prod.quantity}}</center>
+          </td>
+          <td>
+            <b>Classification :</b> <br><center>{{prod.classification}}</center>
+          </td>
+
+
+        </tr>
+        <tr>
+          <td>
+            <b>Stock : </b> <br><center>{{prod.stock}}</center>
+          </td>
+          <td>
+            <b>Block : </b> <br><center>{{prod.block}}</center>
+          </td>
+          <td>
+            <b>Unit measure : </b> <br><center>{{prod.unit_measure}}</center>
+          </td>
+
+        </tr>
+        <tr>
+
+          <td>
+            <b>Status : </b> <br><center>{{prod.status}}</center>
+          </td>
+          <td>
+            <b>Purchased from :</b> <br><center> {{prod.purchased_from}}</center>
+          </td>
+          <td>
+            <b>Average Amount : </b> <br><center>{{prod.average_amount}}</center>
+          </td>
+
+
+        </tr>
+        <tr>
+          <td>
+            <b>Balance limit :</b> <br><center> {{prod.balance_limit}}</center>
+          </td>
+          <td>
+            <b>Serial number :</b> <br><center> {{prod.serial_number}}</center>
+          </td>
+          <td>
+            <b>Model : </b> <br><center>{{prod.model}}</center>
+          </td>
+
+        </tr>
+        <tr>
+
+          <td>
+            <b>Amount :</b> <br><center> {{prod.amount}}</center>
+          </td>
+          <td>
+            <b>Descrition :</b> <br><center> {{prod.description}}</center>
+          </td>
+          <td>
+            <b>Remarks : </b> <br><center>{{prod.remarks}}</center>
+          </td>
+
+        </tr>
+
+
+      </table>
+      <br><br>
+      <div align="center"><a href="{% url 'WISH.views.product_form' pk=prod.pk %}">Edit</a></div>
+    </body>
+
+</html>
+
+{% endblock %}

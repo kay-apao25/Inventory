@@ -13,6 +13,7 @@ urlpatterns = [
     url(r'^par_entry/(?P<pk>[0-9]+)/(?P<inv>[0-9]+)/$', views.par_entry, name='par_entry'),
     url(r'^par_form/(?P<pk>[0-9]+)/$', views.par_form),
     url(r'^product_form/(?P<pk>[0-9]+)/$', views.product_form),
+    url(r'^product_details/(?P<pk>[0-9]+)/$', views.product_details),
     url(r'^garv_entry_f/$', views.garv_entry_f),
     url(r'^garv_entry/(?P<g>[0-9]+)/(?P<pk>[0-9]+)/$', views.garv_entry),
     url(r'^product_to_garv/(?P<pk>[0-9]+)/$', views.product_to_garv),
