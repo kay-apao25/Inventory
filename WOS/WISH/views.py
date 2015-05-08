@@ -156,6 +156,10 @@ def product_to_irr(request, pk, irn, inv):
             prods = irr.product
             for prod in prods:
                 p = Product.objects.get(id=(prod['Product']))
+                if int(prod['quantity_accepted']) > p.quantity:
+                    return render_to_response('WISH/product_to_irr.html',
+                        { 'error': 'Accepted quantity is greater than the number of stocked items.',
+                        'form': form, 'iform': iform})
                 p.quantity = int(prod['quantity_accepted'])
                 p.balance = int(prod['quantity_balance'])
                 if p.balance == 0:
@@ -395,37 +399,35 @@ def product_details(request, pk):
 def product_form(request, pk):
     product = get_object_or_404(Product, pk=pk)
     if request.method == 'POST':
-        form = ProductForm(request.POST)
-        form1 = ProductForm5.ProductForm1(request.POST)
-        form2 = ProductForm5.ProductForm2(request.POST)
-        form3 = ProductForm5.ProductForm3(request.POST)
-        if form.is_valid(): #form1.is_valid() and form2.is_valid() and form3.is_valid():
-            prod = form.save(commit=False)
-            prod.slc_number = product.slc_number
-            if form2.data['expiry_date'] == '':
-                prod.expiry_date = None
-            if int(form2.data['quantity']) > 1:
-                if form2.data['unit_measure'] == 'box':
-                    prod.unit_measure = str(product.unit_measure) + 'es'
-                else:
-                    prod.unit_measure = str(product.unit_measure) + 's'
-            prod.amount = int(form2.data['unit_cost']) * int(form2.data['quantity'])
-
+        form = ProductForm5(request.POST)
+        form1 = ProductForm1(request.POST)
+        form2 = ProductForm2(request.POST)
+        form3 = ProductForm3(request.POST)
+        if form1.is_valid() and form2.is_valid() and form3.is_valid():
             for key in form.data.keys():
                 key1 = key
                 if key == 'inv_station_no' or key == 'purchased_from':
-                    key = key + '_id'
-                setattr(prod, key, form1.data[key1])
-                setattr(prod, key, form2.data[key1])
-                setattr(prod, key, form3.data[key1])
-            prod.save()
-            #product.save()
+                    product.inv_station_no_id = product.inv_station_no_id
+                    product.purchased_from_id = product.purchased_from_id
+                else:
+                    setattr(product, key, form1.data[key1])
+                    setattr(product, key, form2.data[key1])
+                    setattr(product, key, form3.data[key1])
+            if form2.data['expiry_date'] == '':
+                product.expiry_date = None    
+            if int(form2.data['quantity']) > 1:
+                if form2.data['unit_measure'] == 'box':
+                    product.unit_measure = str(product.unit_measure) + 'es'
+                else:
+                    product.unit_measure = str(product.unit_measure) + 's'
+            product.amount = float(form2.data['unit_cost']) * int(form2.data['quantity'])
+            product.save()
             return redirect('WISH.views.index')
     else:
         form = ProductForm5(instance=product)
-        form1 = ProductForm5.ProductForm1()
-        form2 = ProductForm5.ProductForm2()
-        form3 = ProductForm5.ProductForm3()
+        form1 = ProductForm1()
+        form2 = ProductForm2()
+        form3 = ProductForm3()
         for key in form.fields.keys():
             for key1 in form1.fields.keys():
                 if key == key1:

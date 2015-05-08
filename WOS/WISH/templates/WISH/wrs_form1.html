@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<style>
+		table, th, td {
+    		border: 1px solid black;
+    		border-collapse: collapse;
+    		text-align: center;
+    }
+		th, td {
+    		padding: 5px;
+		}
+    
+  </style>
+</head>
+<body>
+	
+    <span style="margin-left:350px">
+    <img src="http://upload.wikimedia.org/wikipedia/en/0/0f/Napocor_logo.JPG" style="width:100px;height:100px;">
+      <h4 align="center"> National Power Corporation
+      <br>
+                Mindanao Generation
+      <br>
+          Maria Cristina, Iligan City, Philippines
+      </h4>
+    </img>
+		
+    
+    <br>
+		</span>
+    
+		<h1 align="center">WAREHOUSE REQUISITION SLIP</h1>
+	
+		<p align="center" style="font-size:90%;font-style:italic">(Materials, Supplies and Equipments)</p>
+
+    <p align="right">Date:<u>&nbsp;&nbsp;{% now "DATE_FORMAT" %}&nbsp;&nbsp;</u></p>
+		<p style="padding-left:30px">Cost Center:&nbsp;<u>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ wrss.cost_center_no }}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</u></p>
+		<br>
+    <table style="width:100%;border-style:solid;border-width:2px;" align="center">
+  		<tr>
+    		<th style="width:10%">NAPOCOR SUPPLY NO. (NSN) SLC</th>
+    		<th style="width:60%">PARTICULARS</th>
+    		<th style="">QUANTITY</th>
+    		<th style="width:15%">UNIT OF MEASURE</th>
+  		</tr>
+      {% for pro in pros %}
+  		<tr>
+    		<td >{{ pro.product.slc_number }}</td>
+    		<td style="text-align:left;font-style:italic"><b><u>&nbsp;&nbsp;&nbsp;&nbsp;PR # , PO # 
+        {{ wrss.irr_headkey.po_number }}&nbsp;&nbsp;&nbsp;&nbsp;</u></b>
+      		<br>
+    			<br>
+    				{{ pro.product.item_name }}, {{ pro.product.description }}
+				<br>
+				<br>
+    				
+    			<br>
+    			<br>
+    			<br>
+    		</td>
+    		<td>	{{ pro.quantity_accepted }}
+    			<br>
+    			<br>
+    			<br>
+    		</td>
+    		<td>	{{ pro.product.unit_measure }}
+    			<br>
+    			<br>
+    			<br>
+    			
+    		</td>
+  		</tr>
+      {% endfor %}
+  		<tr>
+  			<span>
+        <td colspan="4" style="text-align:left">Remarks:
+  					<span>
+  						{{ wrss.remarks }}
+						<span style="padding-left:1000px"></span>
+						WRS NO. <u>&nbsp;&nbsp;{{ wrss.wrs_number }}&nbsp;&nbsp;</u>
+  					</span>
+  					<br>
+					<span style="padding-left:82px"></span>
+					
+			</span>
+			</td>
+  		</tr>
+  		<tr>
+  			<td colspan="2" style="text-align:left;">
+        <span style="padding-left:20px"></span>
+        	<span style="font-size:90%;font-style:italic">Requsitioned by:</span>	
+  					<span style="padding-left:230px"></span>
+  				<span style="font-size:90%;font-style:italic">Approved by: (Requisitioning CCH)</span>	
+  				<br>
+  				<br>
+  				<br>
+  				
+  				<span style="padding-left:20px"></span>
+          <span style="font-size:95%;"><u>&nbsp;&nbsp;&nbsp;&nbsp;
+  														{{ wrss.irr_headkey.dce_custodian.name }}
+  												&nbsp;&nbsp;&nbsp;&nbsp;</u></span>
+  					<span style="padding-left:240px"></span>
+  				<span style="font-size:95%;"><u>&nbsp;&nbsp;&nbsp;&nbsp;
+  														{{ wrss.irr_headkey.dce_user.name}}
+  												&nbsp;&nbsp;&nbsp;&nbsp;</u></span>
+  				<br>
+  				
+  				<span style="padding-left:20px"></span>
+  				<span style="font-size:95%;font-style:italic">Name, Signature and Date</span>
+  					<span style="padding-left:250px"></span>
+  				<span style="font-size:95%;font-style:italic">Name, Signature and Date</span>
+  				<br>
+
+  				<span style="padding-left:18px"></span>
+  				<span style="font-size:95%;font-style:italic">DCE No.: </span>{{ wrss.irr_headkey.dce_custodian.dce }}
+  					<span style="padding-left:370px"></span>
+  				<span style="font-size:95%;font-style:italic">DCE No.: </span>{{ wrss.irr_headkey.dce_user.dce }}
+  			</td>
+  			<td>
+        	<p style="font-size:92%;text-align:left;">WRS forwarded to MRC-Central Warehouse on:</p>
+  				<p style="font-size:92%;font-style:italic">Date:<u>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  																   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  																   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  																</u></p>
+  				<p style="font-size:92%;font-style:italic">Time:<u>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  																   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  																   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  																</u></p>
+  				<p style="font-size:92%;font-style:italic">Rec'd:<u>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  																   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  																   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  																</u></p>
+  			</td>
+  			<td>
+  				<p style="font-size:92%;text-align:left;">Item/s issued to the end-user on:</p>
+  				
+  				<p style="font-size:92%;font-style:italic">Date:<u>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  																   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  																   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  																</u></p>
+  				<p style="font-size:92%;font-style:italic">Time:<u>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  																   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  																   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  																</u></p>
+  				<p style="font-size:92%;font-style:italic">Rec'd:<u>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  																   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  																   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  																</u></p>
+  			</td>
+  		</tr>
+  		</table> 
+	</div>
+</body>
+</html>
