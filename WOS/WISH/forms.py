@@ -22,7 +22,7 @@ class ProductForm5(forms.ModelForm):
             'part_number', 'manufacture_date', 'expiry_date', 'classification', \
             'stock', 'block', 'unit_measure', 'unit_cost', 'quantity', \
             'average_amount', 'status', 'balance_limit', 'serial_number',\
-            'model', 'description', 'remark', 'purchased_from', 'inv_station_no', \
+            'model', 'description', 'remarks', 'purchased_from', 'inv_station_no', \
             'slc_number', 'amount', )
 
 
