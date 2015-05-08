@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+	<style type="text/css">
+		table, th, td {
+			border: 1px solid black;
+			border-collapse: collapse;
+			text-align: center
+		}
+		th, td {
+			padding: 5px
+		}
+	</style>
+
+</head>
+<body>
+
+	<p align="left">
+	Republic of the Philippines
+	<br>
+	National Power Corporation
+	<br>
+	MINDANAO GENERATION (MINGEN)
+	<br>
+	Maria Cristina, Iligan City
+	</p>
+	<br>
+		{% for product in products%}
+		<h1 align="center">GPE ACCOUNTABILITY RELIEF VOUCHER</h1>
+
+  	<span style="padding-left:1000px" align="right">Date: &nbsp;&nbsp; <u>{{ garvs.garv_date }}&nbsp;&nbsp;</u></span>
+		<br>
+
+		<span>DCE NUMBER:&nbsp;&nbsp;&nbsp;<u>{{ garvs.dce.name }}</u></span>
+	  <span style="padding-left:300px"></span>
+		<span>ACCOUNTABLE PERSON: &nbsp;&nbsp; <u>{{ garvs.dce.name }}&nbsp;&nbsp;</u></span>
+		<span style="padding-left:320px"></span>
+		<span>DESIGNATION: &nbsp;&nbsp; <u>{{ garvs.dce.position }}&nbsp;&nbsp;</u></span>
+
+
+	<br>
+	<span>CC NUMBER:&nbsp;&nbsp;&nbsp;<u>{{ garvs.dce.charging_cc_no }}</u></span>
+  <span style="padding-left:310px"></span>
+	<span>COST CENTER NAME: &nbsp;&nbsp; <u>{{ garvs.dce.cost_center_no.cost_center_name }}&nbsp;&nbsp;</u></span>
+	<br>
+	<span>WO NUMBER:&nbsp;&nbsp;&nbsp;<u>{{ garvs.wo_number.wo_no }}</u></span>
+	<span style="padding-left:280px"></span>
+  <span>WORK ORDER NAME:&nbsp;&nbsp;&nbsp;<u></u></span>
+
+	<br>
+	<br>
+	<br>
+
+	<!--Table1-->
+			<table style='width:100%' align='center'>
+		  <tr>
+		    <th style='width:5%'>Property Number</th>
+		    <th style='width:30%'>Description</th>
+		    <th>Unit</th>
+		    <th>Qty</th>
+		    <th style='width:10%'>PAR Number</th>
+		    <th> NTR.</th>
+		    <th> Remarks (Findings/Observations)</th>
+		  </tr>
+		  <tr>
+		    <td>{{ product.pros.id }}
+		    </td>
+		    <td>{{ product.pros.item_name }} - {{ product.pros.description }}
+		    </td>
+		    <td>{{ product.pros.unit_measure }}</td>
+		    <td>{{ product.pros.quantity }}</td>
+		    <td>{{ product.PAR_number }}</td>
+				<td></td>
+        <td>{{ product.Remarks }}</td>
+		  </tr>
+		</table>
+
+    <!--table2-->
+    <table style='width:100%' align='center'>
+      <tr>
+        <th style='text-align:left'>Nature:
+        </th>
+      </tr>
+
+      <tr>
+        <td>1-RETURN
+					<span style="padding-left:300px"></span>
+            2-CONDONATION
+						<span style="padding-left:300px"></span>
+            3-REFUND
+        </td>
+      </tr>
+
+    </table>
+
+
+	<!--Table3-->
+		<table style='width:100%' align='center'>
+		  <tr>
+			  <td style='text-align:left'>
+			  	Returned/Reported by:
+			  </td>
+
+			  <td style='text-align:left'>
+			  	Inspected/Confirmed by:
+			  </td>
+
+			  <td style='text-align:left'>
+			  	Received/Confirmed by:
+			  </td>
+
+			  <td>
+			  	Noted by:
+			  </td>
+
+        <td>
+			  	GARV NO:
+			  </td>
+		  </tr>
+
+
+		  <tr>
+		    <td>
+				<br>
+				<u>{{ garvs.dce.name }}</u>
+				<br>
+        ACCOUNTABLE PERSON
+				<br>
+        DATE: {{ garvs.garv_date }}
+		    </td>
+		    <td>
+				<br>
+				<u>{{ garvs.inspected_by.name }}</u>
+				<br>
+				TECH. PROP. INSP. COA
+				<br>
+				DATE: {{ garvs.date_inspected }}
+		    </td>
+		    <td>
+				<br>
+				<u>{{ garvs.confirmed_by.name }}</u>
+				<br>
+        PROP. OFF/CUSTODIAN
+				<br>
+				DATE: {{ garvs.date_confirmed }}
+				<span style="padding-left:30px"></span>
+        DCE: {{ garvs.confirmed_by.dce }}
+			</td>
+
+			<td>
+			<br>
+			<u>{{ garvs.noted_by.name }}</u>
+			<br>
+			WMICD/MMO/COST CENTER
+
+		</td>
+
+		    <td>
+		    	{{ pro.garv.garv_no }}
+		    	<br>
+		    	(IS No. {{ garvs.wo_number.inv_station_no.inv_station_no }})
+		    </td>
+
+
+		  </tr>
+		</table>
+
+		<br>
+
+	<p>"The accountable employee is responsible for the issued property items,
+		subject to the provisions of the National Accounting and Auditing Laws."
+	</p>
+
+	<span align="left">
+	Purchased from: {{ pro.product.product.purchased_from.supplier_name }}
+	</span>
+	<br>
+	<span align="left">
+	P.O.No.: {{ garvs.wo_number.po_number }}
+	</span>
+	<br>
+	<span align="left">
+	CSI No.: {{ garvs.wo_number.invoice_number}}
+	</span>
+	<br>
+	{% endfor %}
+
+
+</body>
+</html>
