@@ -59,8 +59,8 @@
 		    			<td></td> <!--NTR-->
 		    			<td>{{ product.Remarks }}</td> <!--REMARKS-->
 		    		</tr>
+		    			{% endfor %}
 		    	</table>
-					{% endfor %}
 		    	<table style="width: 95%" class="tbl3">
 		    		<tr>
 		    			<td>NATURE:</td>
@@ -91,7 +91,7 @@
 		    			<td>Noted by: <center><br><u>{{ garvs.noted_by.name }}</u>
 							<br>
 							WMICD/MMO/COST CENTER</center></td>
-		    			<td rowspan="2">GARV NO<center><br>{{ pro.garv.garv_no }}
+		    			<td>GARV NO<center><br>{{ pro.garv.garv_no }}
 				    	<br>
 				    	(IS No. {{ garvs.wo_number.inv_station_no.inv_station_no }})</center></td>
 		    		</tr>
