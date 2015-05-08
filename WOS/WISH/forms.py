@@ -152,8 +152,7 @@ class GARV_entryForm(forms.ModelForm):
                     'date_confirmed', 'noted_by', )
 
 class GARV_Form(forms.ModelForm):
-    cc_number = forms.ModelChoiceField(queryset=Cost_center.objects.all())
-
+    
     class Meta:
         model = GARV
         fields = ('cc_number', 'inspected_by', 'date_inspected', \
