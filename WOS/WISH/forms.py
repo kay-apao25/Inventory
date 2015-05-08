@@ -87,9 +87,9 @@ class IRR_entryForm2(forms.Form):
 
 class IRR_entry_cont_Form(forms.ModelForm):
 
-    date_recv = forms.DateField(widget=forms.TextInput(attrs={'placeholder': 'YYYY-MM-DD'}), label='Date received *')
-    cost_center_no = forms.ModelChoiceField(queryset=Cost_center.objects.all(), label='Cost center *')
-    wo_no = forms.CharField(label='WO number *')
+    date_recv = forms.DateField(widget=forms.TextInput(attrs={'placeholder': 'YYYY-MM-DD'}), label='Date received *', required=False)
+    cost_center_no = forms.ModelChoiceField(queryset=Cost_center.objects.all(), label='Cost center *', required=False)
+    wo_no = forms.CharField(label='WO number *', required=False)
 
     class Meta:
         model = IRR

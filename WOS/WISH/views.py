@@ -135,9 +135,14 @@ def product_to_irr(request, pk, irn, inv):
         form = Product_to_IRRForm(request.POST)
         iform = IRR_entry_cont_Form(request.POST)
         if form.is_valid() and iform.is_valid():
-            prod_to_irr.append({'IRR_no': irn, 'Product': form.data['product'], 'quantity_accepted': \
-                int(form.data['quantity_accepted']), 'quantity_rejected':int(form.data['quantity_rejected']), \
-                'quantity_balance': int(form.data['quantity_balance'])})
+            if Product.objects.get(id=int(form.data['product'])).status != 'Pending':
+                prod_to_irr.append({'IRR_no': irn, 'Product': form.data['product'], 'quantity_accepted': \
+                    int(form.data['quantity_accepted']), 'quantity_rejected':int(form.data['quantity_rejected']), \
+                    'quantity_balance': int(form.data['quantity_balance'])})
+            else:
+                return render_to_response('WISH/product_to_irr.html',
+                        { 'error': 'Product -' + str(Product.objects.get(id=int(form.data['product'])).item_name +  '- is still pending.'),
+                        'form': form, 'iform': iform})
             irr = iform.save(commit=False)
             irr.irr_no = irn
             irr.irr_headkey_id = pk
