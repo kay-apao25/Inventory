@@ -14,6 +14,43 @@ class ProductForm(forms.ModelForm):
             'model', 'description', 'remarks', 'purchased_from', 'inv_station_no', \
             'slc_number', 'amount', )
 
+    class ProductForm1(forms.Form):
+        nsn = forms.CharField(label='NSN *', max_length=10)
+        product_number = forms.CharField(label='Product number *', max_length=10)
+        generic_name = forms.CharField(label='Generic name *', max_length=25)
+        item_name = forms.CharField(label='Item name*', max_length=10)
+        brand = forms.CharField(label='Brand *', max_length=25)
+        part_number = forms.CharField(label='Part number *', max_length=8)
+        manufacture_date = forms.DateField(label='Manufacture date *', widget=forms.TextInput(attrs={'placeholder': 'YYYY-MM-DD'}))
+        inv_station_no = forms.ModelChoiceField(label='Inventory station *', queryset=Inventory_stat.objects.all())
+
+    class ProductForm2(forms.Form):
+        UNIT_CHOICES = (
+            ('unit', 'unit'),
+            ('piece', 'piece'),
+            ('box', 'box'),
+            ('pack', 'pack'),
+            ('pad', 'pad'),
+            ('ream', 'ream'),
+        )
+        expiry_date = forms.DateField(widget=forms.TextInput(attrs={'placeholder': 'YYYY-MM-DD'}), required=False)
+        unit_cost = forms.DecimalField(label='Unit cost*', decimal_places=2)
+        quantity = forms.IntegerField(initial='1', label='Quantity *')
+        classification = forms.CharField(label='Classification*', max_length=30)
+        stock = forms.CharField(label='Stock *', max_length=10)
+        block = forms.CharField(label='Block *', max_length=10)
+        unit_measure = forms.ChoiceField(label='Unit measure *', choices=UNIT_CHOICES)
+        status = forms.CharField(label='Status *', max_length=10, initial='Pending')
+
+    class ProductForm3(forms.Form):
+        purchased_from = forms.ModelChoiceField(queryset=Supplier.objects.all(), label='Purchased from *')
+        average_amount = forms.FloatField(label='Average amount *')
+        balance_limit = forms.FloatField(label='Balance limit *')
+        serial_number = forms.CharField(max_length=15, required=False)
+        model = forms.CharField(label='Model *', max_length=25)
+        description = forms.CharField(label='Description*', max_length=25)
+        remarks = forms.CharField(max_length=25, required=False)
+
 class ProductForm5(forms.ModelForm):
 
     class Meta:
@@ -24,46 +61,6 @@ class ProductForm5(forms.ModelForm):
             'average_amount', 'status', 'balance_limit', 'serial_number',\
             'model', 'description', 'remark', 'purchased_from', 'inv_station_no', \
             'slc_number', 'amount', )
-
-
-
-class ProductForm1(forms.Form):
-    nsn = forms.CharField(label='NSN *', max_length=10)
-    product_number = forms.CharField(label='Product number *', max_length=10)
-    generic_name = forms.CharField(label='Generic name *', max_length=25)
-    item_name = forms.CharField(label='Item name*', max_length=10)
-    brand = forms.CharField(label='Brand *', max_length=25)
-    part_number = forms.CharField(label='Part number *', max_length=8)
-    manufacture_date = forms.DateField(label='Manufacture date *', widget=forms.TextInput(attrs={'placeholder': 'YYYY-MM-DD'}))
-    inv_station_no = forms.ModelChoiceField(label='Inventory station *', queryset=Inventory_stat.objects.all())
-
-class ProductForm2(forms.Form):
-    UNIT_CHOICES = (
-        ('unit', 'unit'),
-        ('piece', 'piece'),
-        ('box', 'box'),
-        ('pack', 'pack'),
-        ('pad', 'pad'),
-        ('ream', 'ream'),
-    )
-    expiry_date = forms.DateField(widget=forms.TextInput(attrs={'placeholder': 'YYYY-MM-DD'}), required=False)
-    unit_cost = forms.DecimalField(label='Unit cost*', decimal_places=2)
-    quantity = forms.IntegerField(initial='1', label='Quantity *')
-    classification = forms.CharField(label='Classification*', max_length=30)
-    stock = forms.CharField(label='Stock *', max_length=10)
-    block = forms.CharField(label='Block *', max_length=10)
-    unit_measure = forms.ChoiceField(label='Unit measure *', choices=UNIT_CHOICES)
-    status = forms.CharField(label='Status *', max_length=10, initial='Pending')
-
-class ProductForm3(forms.Form):
-    purchased_from = forms.ModelChoiceField(queryset=Supplier.objects.all(), label='Purchased from *')
-    average_amount = forms.FloatField(label='Average amount *')
-    balance_limit = forms.FloatField(label='Balance limit *')
-    serial_number = forms.CharField(max_length=15, required=False)
-    model = forms.CharField(label='Model *', max_length=25)
-    description = forms.CharField(label='Description*', max_length=25)
-    remarks = forms.CharField(max_length=25, required=False)
-
 
 class IRR_entryForm(forms.ModelForm):
     class Meta:
