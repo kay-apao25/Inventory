@@ -417,8 +417,6 @@ def product_form(request, pk):
 
             product.save()
             return redirect('WISH.views.index')
-        else:
-            return redirect('WISH.views.irr_report')
     else:
         form = ProductForm5(instance=product)
         form1 = ProductForm1()
