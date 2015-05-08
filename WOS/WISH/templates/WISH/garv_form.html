@@ -18,7 +18,7 @@
 				    	<img src="{% static 'css/npclogo.png' %}" class="left_marg_npclogo" align="left">
 				    	&nbsp;
 				    	<p align="left" class="left_marg_par">Republic of the Philippines<br>National Power Corporation<br>MINDANAO GENERATION<br>(MINGEN)<br>Maria Cristina, Iligan City</p> <br><br><br>
-							{% for product in products%}
+
 				    	<h1 align="center">GPE ACCOUNTABILITY RELIEF VOUCHER</h1>
 
 				    	<p align ="right" class="right_marg_norm">Date: <u>{{ garvs.garv_date }}</u></p>
@@ -49,6 +49,7 @@
 		    			<th style="text-align: center">NTR.</th>
 		    			<th style="text-align: center">REMARKS<br>(Findings/Observations)</th>
 		    		</tr>
+						{% for product in products%}
 		    		<tr>
 		    			<td>{{ product.pros.id }}</td> <!--PROPERTY NUMBER-->
 		    			<td>{{ product.pros.item_name }} - {{ product.pros.description }}</td> <!--DESCRIPTION-->
