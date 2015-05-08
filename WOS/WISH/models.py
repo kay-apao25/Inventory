@@ -121,6 +121,7 @@ class IRR(models.Model):
     wo_no = models.CharField(max_length=7, null=True, blank=True)
     wrs_number = models.CharField(max_length = 8)
     remark = models.TextField(max_length = 30, null=True, blank=True)
+    is_par = models.BooleanField(default=False)
     history = HistoricalRecords()
 
     def __unicode__(self):
@@ -148,7 +149,7 @@ class PAR(models.Model):
     approved_by = models.ForeignKey(Employee, related_name='dce_FK2', null=True, blank=True)
     issued_by = models.ForeignKey(Employee, related_name='dce_FK3', null=True, blank=True)
     inv_stat_no = models.ForeignKey(Inventory_stat, related_name="is_pFK", null=True, blank=True)
-    PO_number = models.ForeignKey(IRR_header, related_name="po_pFK", null=True, blank=True)
+    #PO_number = models.CharField(null=True, blank=True)
     date_acquired = models.DateField(null=True, blank=True)
     wo_number = models.ForeignKey(IRR, related_name="wo_pFK", null=True, blank=True)
     history = HistoricalRecords()
@@ -159,7 +160,7 @@ class PAR(models.Model):
 class Product_to_PAR(models.Model):
     par_no = models.ForeignKey(PAR, related_name="par_ppFK")
     #product = models.ForeignKey(Product_to_IRR, related_name="p_ppFK")
-    qty = models.IntegerField()
+    quantity = models.IntegerField()
     history = HistoricalRecords()
 
     def __str__(self):
@@ -185,7 +186,7 @@ class GARV(models.Model):
 class Product_to_GARV(models.Model):
     garv = models.ForeignKey(GARV, related_name="g_pgFK")
     #product = models.ForeignKey(Product_to_IRR, related_name="p_pgFK")
-    qty = models.CharField(max_length=20)
+    quantity = models.CharField(max_length=20)
     par_number = models.ForeignKey(PAR, related_name="pn_pgFK")
     remarks = models.CharField(max_length=20, null=True)
     history = HistoricalRecords()

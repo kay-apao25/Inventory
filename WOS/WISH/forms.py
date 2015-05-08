@@ -1,6 +1,7 @@
 from django import forms
 from .forms import *
 from .views import *
+from django.db.models import Q
 
 class ProductForm(forms.ModelForm):
 
@@ -24,14 +25,22 @@ class ProductForm1(forms.Form):
     inv_station_no = forms.ModelChoiceField(queryset=Inventory_stat.objects.all())
 
 class ProductForm2(forms.Form):
-    expiry_date = forms.DateField()
-    unit_cost = forms.FloatField()
-    quantity = forms.FloatField()
+    UNIT_CHOICES = (
+        ('unit', 'unit'),
+        ('piece', 'piece'),
+        ('box', 'box'),
+        ('pack', 'pack'),
+        ('pad', 'pad'),
+        ('ream', 'ream'),
+    )
+    expiry_date = forms.DateField(required=False)
+    unit_cost = forms.DecimalField(decimal_places=2)
+    quantity = forms.IntegerField(initial='1')
     classification = forms.CharField(max_length=30)
     stock = forms.CharField(max_length=10)
     block = forms.CharField(max_length=10)
-    unit_measure = forms.CharField(max_length=10)
-    status = forms.CharField(max_length=10)
+    unit_measure = forms.ChoiceField(choices=UNIT_CHOICES)
+    status = forms.CharField(max_length=10, initial='Pending')
 
 class ProductForm3(forms.Form):
     purchased_from = forms.ModelChoiceField(queryset=Supplier.objects.all())
@@ -116,7 +125,7 @@ class PAR_Form(forms.ModelForm):
 
     class Meta:
         model = PAR
-        fields = ('dce', 'approved_by', 'issued_by', 'PO_number', 'date_acquired', 'remark',)
+        fields = ('dce', 'approved_by', 'issued_by', 'date_acquired', 'remark',)
 
 
 class Product_to_PARForm(forms.Form):
@@ -128,7 +137,7 @@ class Product_to_PARForm(forms.Form):
             [Product.objects.get(id=p['Product']).id for p in products]))"""
 
     product = forms.ModelChoiceField(queryset=Product.objects.all(), required=True)
-    qty = forms.IntegerField(required=True)
+    quantity = forms.IntegerField(required=True)
     par_no = forms.CharField(required=True)
 
 
@@ -141,18 +150,18 @@ class Product_to_PARForm1(forms.Form):
             [Product.objects.get(id=p['Product']).id for p in products]))"""
 
     product = forms.ModelChoiceField(queryset=Product.objects.all(), required=True)
-    qty = forms.IntegerField(required=True)
+    quantity = forms.IntegerField(required=True)
 
 class GARV_entryForm(forms.ModelForm):
 
     class Meta:
         model = GARV
-        fields = ('garv_no', 'cc_number', \
+        fields = ('cc_number', \
                     'inspected_by', 'date_inspected', 'confirmed_by', \
                     'date_confirmed', 'noted_by', )
 
 class GARV_Form(forms.ModelForm):
-    
+
     class Meta:
         model = GARV
         fields = ('cc_number', 'inspected_by', 'date_inspected', \
@@ -166,7 +175,18 @@ class GARV_Form(forms.ModelForm):
 class Product_to_GARVform(forms.Form):
 
     product = forms.ModelChoiceField(queryset=PAR.objects.all())
-    qty = forms.FloatField()
+    quantity = forms.FloatField()
+    remarks = forms.CharField()
+    garv_no = forms.CharField(required=True)
+
+    """def __init__(self, var, *args, **kwargs):
+       super(Product_to_GARVform, self).__init__(*args, **kwargs)
+       self.fields['product'].queryset = var"""
+
+class Product_to_GARVform1(forms.Form):
+
+    product = forms.ModelChoiceField(queryset=PAR.objects.all())
+    quantity = forms.FloatField()
     remarks = forms.CharField()
 
     """def __init__(self, var, *args, **kwargs):
