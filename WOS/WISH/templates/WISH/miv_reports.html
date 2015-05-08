@@ -1,29 +1,29 @@
 {% block content %}
   <table style="width:100%;" align="center" class="table">
     <thead>
-    	<th>MIV No.</th>
-      <th>IRR No:</th>
-      <th>DATE ISSUED:</th>
-      <th>WRS No.</th>
+    	<th><center>MIV No.</center></th>
+      <th><center>IRR No:</center></th>
+      <th><center>DATE ISSUED:</center></th>
+      <th><center>WRS No.</center></th>
 
     </thead>
     	{% for miv in mivs %}
      	<tr>
         <td>
           <a href="{% url 'WISH.views.miv_form' pk=miv.miv_no %}">
-            {{miv.miv_no}}
+          <center>{{miv.miv_no}}</center>
           </a>
         </td>
 
         <td>
-          {{miv.irr_no}}
+        <center>{{miv.irr_no}}</center>
         </td>
 
         <td>
-          {{miv.date_issued}}
+        <center>{{miv.date_issued}}</center>
         </td>
         <td>
-          {{miv.irr_no.wrs_number}}
+        <center>{{miv.irr_no.wrs_number}}</center>
         </td>
 
       </tr>
