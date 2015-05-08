@@ -156,6 +156,10 @@ def product_to_irr(request, pk, irn, inv):
             prods = irr.product
             for prod in prods:
                 p = Product.objects.get(id=(prod['Product']))
+                if int(prod['quantity_accepted']) > p.quantity:
+                    return render_to_response('WISH/product_to_irr.html',
+                        { 'error': 'Accepted quantity is greater than the number of stocked items.',
+                        'form': form, 'iform': iform})
                 p.quantity = int(prod['quantity_accepted'])
                 p.balance = int(prod['quantity_balance'])
                 if p.balance == 0:
@@ -414,7 +418,6 @@ def product_form(request, pk):
                 else:
                     product.unit_measure = str(product.unit_measure) + 's'
             product.amount = float(form2.data['unit_cost']) * int(form2.data['quantity'])
-
             product.save()
             return redirect('WISH.views.index')
     else:
