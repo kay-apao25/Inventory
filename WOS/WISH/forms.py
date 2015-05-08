@@ -46,6 +46,10 @@ class ProductForm2(forms.Form):
         ('pad', 'pad'),
         ('ream', 'ream'),
     )
+    STATUS_CHOICES = (
+        ('Complete', 'Complete'),
+        ('Pending', 'Pending'),
+    )
     expiry_date = forms.DateField(widget=forms.TextInput(attrs={'placeholder': 'YYYY-MM-DD'}), required=False)
     unit_cost = forms.DecimalField(label='Unit cost*', decimal_places=2)
     quantity = forms.IntegerField(initial='1', label='Quantity *')
@@ -53,7 +57,7 @@ class ProductForm2(forms.Form):
     stock = forms.CharField(label='Stock *', max_length=10)
     block = forms.CharField(label='Block *', max_length=10)
     unit_measure = forms.ChoiceField(label='Unit measure *', choices=UNIT_CHOICES)
-    status = forms.CharField(label='Status *', max_length=10, initial='Pending')
+    status = forms.ChoiceField(choices=STATUS_CHOICES, label='Status *')
 
 class ProductForm3(forms.Form):
     purchased_from = forms.ModelChoiceField(queryset=Supplier.objects.all(), label='Purchased from *')
@@ -90,9 +94,9 @@ class IRR_entryForm2(forms.Form):
 
 class IRR_entry_cont_Form(forms.ModelForm):
 
-    date_recv = forms.DateField(widget=forms.TextInput(attrs={'placeholder': 'YYYY-MM-DD'}), label='Date received *')
-    cost_center_no = forms.ModelChoiceField(queryset=Cost_center.objects.all(), label='Cost center *')
-    wo_no = forms.CharField(label='WO number *')
+    date_recv = forms.DateField(widget=forms.TextInput(attrs={'placeholder': 'YYYY-MM-DD'}), label='Date received *', required=False)
+    cost_center_no = forms.ModelChoiceField(queryset=Cost_center.objects.all(), label='Cost center *', required=False)
+    wo_no = forms.CharField(label='WO number *', required=False)
 
     class Meta:
         model = IRR
