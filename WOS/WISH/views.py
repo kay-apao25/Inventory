@@ -134,6 +134,8 @@ def product_to_irr(request, pk, irn, inv):
         form = Product_to_IRRForm(request.POST)
         iform = IRR_entry_cont_Form(request.POST)
         if form.is_valid() and iform.is_valid():
+            if int(form.data['quantity_balance']) == 0:
+                Product.objects.get(id=int(form.data['product'])).status = 'Complete'
             if Product.objects.get(id=int(form.data['product'])).status != 'Pending':
                 prod_to_irr.append({'IRR_no': irn, 'Product': form.data['product'], 'quantity_accepted': \
                     int(form.data['quantity_accepted']), 'quantity_rejected':int(form.data['quantity_rejected']), \
@@ -161,9 +163,8 @@ def product_to_irr(request, pk, irn, inv):
                         'form': form, 'iform': iform})
                 p.quantity = int(prod['quantity_accepted'])
                 p.balance = int(prod['quantity_balance'])
-                if p.balance == 0:
-                    p.status = 'Complete'
-                    #p.remarks = 'Product has an IRR Record (IRR No: ' + irn + ')'
+                #p.remarks = 'Product has an IRR Record (IRR No: ' + irn + ')'
+            
             p.save()
             irr.save()
             return redirect('WISH.views.product_to_irr', pk=pk, irn=irn, inv=int(inv))
@@ -406,12 +407,10 @@ def product_form(request, pk):
             for key in form.data.keys():
                 key1 = key
                 if key == 'inv_station_no' or key == 'purchased_from':
-                    product.inv_station_no_id = product.inv_station_no_id
-                    product.purchased_from_id = product.purchased_from_id
-                else:
-                    setattr(product, key, form1.data[key1])
-                    setattr(product, key, form2.data[key1])
-                    setattr(product, key, form3.data[key1])
+                    key = key + '_id'
+                setattr(product, key, form1.data[key1])
+                setattr(product, key, form2.data[key1])
+                setattr(product, key, form3.data[key1])
             if form2.data['expiry_date'] == '':
                 product.expiry_date = None    
             if int(form2.data['quantity']) > 1:
