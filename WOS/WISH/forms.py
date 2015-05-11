@@ -62,7 +62,7 @@ class ProductForm5(forms.ModelForm):
             'model', 'description', 'remarks', 'purchased_from', 'inv_station_no', \
             'slc_number', 'amount',)
 
-class ProductForm1(forms.Form):
+"""class ProductForm1(forms.Form):
     nsn = forms.CharField(label='NSN *', max_length=10)
     product_number = forms.CharField(label='Product number *', max_length=10)
     generic_name = forms.CharField(label='Generic name *', max_length=25)
@@ -89,7 +89,7 @@ class ProductForm3(forms.Form):
     serial_number = forms.CharField(max_length=15, required=False)
     model = forms.CharField(label='Model *', max_length=25)
     description = forms.CharField(label='Description*', max_length=25)
-    remarks = forms.CharField(max_length=25, required=False)
+    remarks = forms.CharField(max_length=25, required=False)"""
 
 class IRR_entryForm(forms.ModelForm):
     class Meta:
