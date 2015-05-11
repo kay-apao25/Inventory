@@ -34,6 +34,8 @@ TEMPLATE_CONTEXT_PROCESSORS = TCP + (
 SUIT_CONFIG = {
     'ADMIN_NAME': 'Administrator',
     'MENU_EXCLUDE': ('auth.group', 'auth'),
+    'SHOW_REQUIRED_ASTERISK': True,
+    'LIST_PER_PAGE': 20,
 }
 # Application definition
 
