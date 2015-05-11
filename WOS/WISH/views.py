@@ -137,11 +137,11 @@ def product_to_irr(request, pk, irn, inv):
             if int(form.data['quantity_balance']) == 0:
                 Product.objects.get(id=int(form.data['product'])).status = 'Complete'
             if Product.objects.get(id=int(form.data['product'])).status != 'Pending':
-                prod_to_irr.append({'IRR_no': irn, 'Product': form.data['product'], 'quantity_accepted': \
+                prod_to_irr.append({'Product': form.data['product'], 'quantity_accepted': \
                     int(form.data['quantity_accepted']), 'quantity_rejected':int(form.data['quantity_rejected']), \
-                    'quantity_balance': int(form.data['quantity_balance'])})
+                    'quantity_balance': int(form.data['quantity_balance']), 'is_par':False})
             else:
-                return render_to_response('WISH/product_to_irr.html',
+                return render(request, 'WISH/product_to_irr.html',
                         { 'error': 'Product -' + str(Product.objects.get(id=int(form.data['product'])).item_name) +  '- is still pending.',
                         'form': form, 'iform': iform})
             irr = iform.save(commit=False)
@@ -158,7 +158,8 @@ def product_to_irr(request, pk, irn, inv):
             for prod in prods:
                 p = Product.objects.get(id=(prod['Product']))
                 if int(prod['quantity_accepted']) > p.quantity:
-                    return render_to_response('WISH/product_to_irr.html',
+                    form.fields['product'] = forms.ModelChoiceField(queryset=Product.objects.filter(inv_station_no=inv), label='Product *', required=True)
+                    return render(request, 'WISH/product_to_irr.html',
                         { 'error': 'Accepted quantity is greater than the number of stocked items.',
                         'form': form, 'iform': iform})
                 p.quantity = int(prod['quantity_accepted'])
@@ -171,7 +172,7 @@ def product_to_irr(request, pk, irn, inv):
     else:
         form = Product_to_IRRForm()
         iform = IRR_entry_cont_Form()
-        form.fields['product'] = forms.ModelChoiceField(Product.objects.filter(inv_station_no=inv), label='Product *')
+        form.fields['product'] = forms.ModelChoiceField(queryset=Product.objects.filter(inv_station_no=inv), label='Product *', required=True)
     return render(request, 'WISH/product_to_irr.html', {'form': form, 'iform': iform, 'pk': pk})
 
 def miv_entry_S(request, pk):
@@ -300,6 +301,7 @@ def garv_entry(request, g, pk):
 prod_to_par = []
 prod_to_garv = []
 def par(request, inv):
+    prod_list = []
     if request.method == "POST":
         form = PAR_Form(request.POST)
         iform = Product_to_PARForm(request.POST)
@@ -321,7 +323,14 @@ def par(request, inv):
             par_entry.issued_by = Employee.objects.get(name=(str(request.user.first_name) + ' ' + str(request.user.last_name)))
             #par_entry.PO_number_id = str(IRR.objects.get(irr_no=inv).irr_headkey.po_number)
             irr = IRR.objects.get(irr_no=inv)
-            irr.is_par = 'True'
+            for prod in irr.product:
+                if prod['Product'] == str(iform.data['product']):
+                    prod['is_par'] = True
+                if prod['is_par'] == False:
+                    prod_list.append(int(prod['Product']))
+            if len(prod_list) == 0:
+                irr.is_par = True
+                return redirect('WISH.views.index')
             irr.save()
             par_entry.save()
             return redirect('WISH.views.par_entry', pk=par_entry.par_no, inv=inv)
@@ -335,11 +344,15 @@ def par(request, inv):
         form.fields['issued_by'] = forms.ModelChoiceField(Employee.objects.filter(\
             cost_center_no=IRR.objects.get(irr_no=inv).irr_headkey.inv_station_no.cost_center_no.id), label='Issued by*')
         products = IRR.objects.get(irr_no=inv).product
+        for prod in products:
+            if prod['is_par'] == False:
+                prod_list.append(int(prod['Product']))
         iform.fields['product'] = forms.ModelChoiceField(Product.objects.all().filter(id__in=\
-            [Product.objects.get(id=p['Product']).id for p in products]), label='Product *')
+            [Product.objects.get(id=p).id for p in prod_list]), label='Product *')
     return render(request, 'WISH/par_entry.html', {'form': form, 'iform': iform})
 
 def par_entry(request, pk, inv):
+    prod_list = []
     if request.method == "POST":
         form = PAR_Form(request.POST)
         iform = Product_to_PARForm1(request.POST)
@@ -361,7 +374,15 @@ def par_entry(request, pk, inv):
             par_entry.par_no = pk
             #par_entry.PO_number = str(IRR.objects.get(irr_no=inv).irr_headkey.po_number)
             irr = IRR.objects.get(irr_no=inv)
-            irr.is_par = 'True'
+            prod_list = []
+            for prod in irr.product:
+                if prod['Product'] == str(iform.data['product']):
+                    prod['is_par'] = True
+                if prod['is_par'] == False:
+                    prod_list.append(int(prod['Product']))
+            if len(prod_list) == 0:
+                irr.is_par = True
+                return redirect ('WISH.views.index')
             irr.save()
             par_entry.save()
             return redirect('WISH.views.par_entry', pk=pk, inv=inv)
@@ -375,8 +396,11 @@ def par_entry(request, pk, inv):
         form.fields['issued_by'] = forms.ModelChoiceField(Employee.objects.filter(\
             cost_center_no=IRR.objects.get(irr_no=inv).irr_headkey.inv_station_no.cost_center_no.id))
         products = IRR.objects.get(irr_no=inv).product
+        for prod in products:
+            if prod['is_par'] == False:
+                prod_list.append(int(prod['Product']))
         iform.fields['product'] = forms.ModelChoiceField(Product.objects.all().filter(id__in=\
-            [Product.objects.get(id=p['Product']).id for p in products]))
+            [Product.objects.get(id=p).id for p in prod_list]))
     return render(request, 'WISH/par_entry.html', {'form': form, 'iform': iform})
 
 def wrs_entry(request):
