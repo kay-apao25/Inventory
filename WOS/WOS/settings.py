@@ -52,7 +52,6 @@ INSTALLED_APPS = (
     'simple_history',
     'WISH',
     'bootstrapform',
-    'datetimewidget',
     'bootstrap3_datetime',
 )
 

@@ -2,7 +2,6 @@ from django import forms
 from .forms import *
 from .views import *
 from django.db.models import Q
-from datetimewidget.widgets import DateTimeWidget
 from bootstrap3_datetime.widgets import DateTimePicker
 
 class ProductForm(forms.ModelForm):
