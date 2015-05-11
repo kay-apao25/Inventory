@@ -202,9 +202,9 @@ class GARV_entryForm(forms.ModelForm):
     date_inspected = forms.DateField(widget=forms.TextInput(attrs={'placeholder': 'YYYY-MM-DD'}), label='Date inspected *')
     date_confirmed = forms.DateField(widget=forms.TextInput(attrs={'placeholder': 'YYYY-MM-DD'}), label='Date confirmed *')
     cc_number = forms.CharField(label='CC number *')
-    inspected_by = forms.CharField(label='Inspected by *')
-    confirmed_by = forms.CharField(label='Confirmed by *')
-    noted_by = forms.CharField(label='Noted by *')
+    inspected_by = forms.ModelChoiceField(queryset=Employee.objects.all(), label='Inspected by *')
+    confirmed_by = forms.ModelChoiceField(queryset=Employee.objects.all(), label='Confirmed by *')
+    noted_by = forms.ModelChoiceField(queryset=Employee.objects.all(), label='Noted by *')
 
     class Meta:
         model = GARV
