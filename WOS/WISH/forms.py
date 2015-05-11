@@ -182,9 +182,8 @@ class GARV_entryForm(forms.ModelForm):
 
     class Meta:
         model = GARV
-        fields = ('cc_number', \
-                    'inspected_by', 'date_inspected', 'confirmed_by', \
-                    'date_confirmed', 'noted_by', )
+        fields = ('cc_number', 'inspected_by', 'confirmed_by', 'noted_by',\
+                    'date_confirmed','date_inspected', )
 
 #class GARV_Form(forms.ModelForm):
 
