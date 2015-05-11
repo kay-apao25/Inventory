@@ -50,6 +50,8 @@ INSTALLED_APPS = (
     'simple_history',
     'WISH',
     'bootstrapform',
+    'datetimewidget',
+    'bootstrap3_datetime',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -60,6 +62,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django.middleware.locale.LocaleMiddleware',
     #'audit_log.middleware.UserLoggingMiddleware',
     'simple_history.middleware.HistoryRequestMiddleware',
 )

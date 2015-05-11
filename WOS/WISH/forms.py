@@ -2,6 +2,8 @@ from django import forms
 from .forms import *
 from .views import *
 from django.db.models import Q
+from datetimewidget.widgets import DateTimeWidget
+from bootstrap3_datetime.widgets import DateTimePicker
 
 class ProductForm(forms.ModelForm):
 
@@ -21,7 +23,8 @@ class ProductForm1(forms.Form):
     item_name = forms.CharField(label='Item name*', max_length=10)
     brand = forms.CharField(label='Brand *', max_length=25)
     part_number = forms.CharField(label='Part number *', max_length=8)
-    manufacture_date = forms.DateField(label='Manufacture date *', widget=forms.TextInput(attrs={'placeholder': 'YYYY-MM-DD'}))
+    manufacture_date = forms.DateField(label='Manufacture date *',
+        widget=DateTimePicker(options={"format": "YYYY-MM-DD", "pickTime": False}))
     inv_station_no = forms.ModelChoiceField(label='Inventory station *', queryset=Inventory_stat.objects.all())
 
 class ProductForm2(forms.Form):
@@ -33,7 +36,7 @@ class ProductForm2(forms.Form):
         ('pad', 'pad'),
         ('ream', 'ream'),
     )
-    expiry_date = forms.DateField(widget=forms.TextInput(attrs={'placeholder': 'YYYY-MM-DD'}), required=False)
+    expiry_date = forms.DateField(widget=DateTimePicker(options={"format": "YYYY-MM-DD", "pickTime": False}), required=False)
     unit_cost = forms.DecimalField(label='Unit cost*', decimal_places=2)
     quantity = forms.IntegerField(initial='1', label='Quantity *')
     classification = forms.CharField(label='Classification*', max_length=30)
@@ -62,35 +65,6 @@ class ProductForm5(forms.ModelForm):
             'model', 'description', 'remarks', 'purchased_from', 'inv_station_no', \
             'slc_number', 'amount',)
 
-"""class ProductForm1(forms.Form):
-    nsn = forms.CharField(label='NSN *', max_length=10)
-    product_number = forms.CharField(label='Product number *', max_length=10)
-    generic_name = forms.CharField(label='Generic name *', max_length=25)
-    item_name = forms.CharField(label='Item name*', max_length=10)
-    brand = forms.CharField(label='Brand *', max_length=25)
-    part_number = forms.CharField(label='Part number *', max_length=8)
-    manufacture_date = forms.DateField(label='Manufacture date *', widget=forms.TextInput(attrs={'placeholder': 'YYYY-MM-DD'}))
-    inv_station_no = forms.CharField(label='Inventory station *')
-
-class ProductForm2(forms.Form):
-    expiry_date = forms.DateField(widget=forms.TextInput(attrs={'placeholder': 'YYYY-MM-DD'}), required=False)
-    unit_cost = forms.DecimalField(label='Unit cost*', decimal_places=2)
-    quantity = forms.IntegerField(initial=1, label='Quantity *')
-    classification = forms.CharField(label='Classification*', max_length=30)
-    stock = forms.CharField(label='Stock *', max_length=10)
-    block = forms.CharField(label='Block *', max_length=10)
-    unit_measure = forms.CharField(label='Unit measure *')
-    status = forms.CharField(label='Status *', max_length=10, initial='Pending')
-
-class ProductForm3(forms.Form):
-    purchased_from = forms.CharField(label='Purchased from *')
-    average_amount = forms.FloatField(label='Average amount *')
-    balance_limit = forms.FloatField(label='Balance limit *')
-    serial_number = forms.CharField(max_length=15, required=False)
-    model = forms.CharField(label='Model *', max_length=25)
-    description = forms.CharField(label='Description*', max_length=25)
-    remarks = forms.CharField(max_length=25, required=False)"""
-
 class IRR_entryForm(forms.ModelForm):
     class Meta:
         model = IRR_header
@@ -110,13 +84,13 @@ class IRR_entryForm1(forms.Form):
 class IRR_entryForm2(forms.Form):
     dce_user = forms.ModelChoiceField(queryset=Employee.objects.all(), label='User *')
     dce_approved = forms.ModelChoiceField(queryset=Employee.objects.all(), label='Approved by *')
-    proc_date = forms.DateField(widget=forms.TextInput(attrs={'placeholder': 'YYYY-MM-DD'}), label='Proc date *')
-    approved_date = forms.DateField(widget=forms.TextInput(attrs={'placeholder': 'YYYY-MM-DD'}), label='Approved date*')
-    date_dlvrd = forms.DateField(widget=forms.TextInput(attrs={'placeholder': 'YYYY-MM-DD'}), label='Delivery date *')
+    proc_date = forms.DateField(widget=DateTimePicker(options={"format": "YYYY-MM-DD", "pickTime": False}), label='Proc date *')
+    approved_date = forms.DateField(widget=DateTimePicker(options={"format": "YYYY-MM-DD", "pickTime": False}), label='Approved date*')
+    date_dlvrd = forms.DateField(widget=DateTimePicker(options={"format": "YYYY-MM-DD", "pickTime": False}), label='Delivery date *')
 
 class IRR_entry_cont_Form(forms.ModelForm):
 
-    date_recv = forms.DateField(widget=forms.TextInput(attrs={'placeholder': 'YYYY-MM-DD'}), label='Date received *', required=False)
+    date_recv = forms.DateField(widget=DateTimePicker(options={"format": "YYYY-MM-DD", "pickTime": False}), label='Date received *', required=False)
     cost_center_no = forms.ModelChoiceField(queryset=Cost_center.objects.all(), label='Cost center *', required=False)
     wo_no = forms.CharField(label='WO number *', required=False)
 
@@ -132,7 +106,7 @@ class Product_to_IRRForm(forms.Form):
 
 class MIV_entryForm(forms.ModelForm):
 
-    date_issued = forms.DateField(widget=forms.TextInput(attrs={'placeholder': 'YYYY-MM-DD'}), label='Date issued *')
+    date_issued = forms.DateField(widget=DateTimePicker(options={"format": "YYYY-MM-DD", "pickTime": False}), label='Date issued *')
 
     class Meta:
         model = MIV
@@ -166,7 +140,7 @@ class PAR_Form(forms.ModelForm):
         self.fields['issued_by'] = forms.ModelChoiceField(Employee.objects.filter(\
             cost_center_no=IRR.objects.get(irr_no=irn).irr_headkey.inv_station_no.cost_center_no.id))"""
 
-    date_acquired = forms.DateField(widget=forms.TextInput(attrs={'placeholder': 'YYYY-MM-DD'}), label='Date acquired*')
+    date_acquired = forms.DateField(widget=DateTimePicker(options={"format": "YYYY-MM-DD", "pickTime": False}), label='Date acquired*')
 
     class Meta:
         model = PAR
@@ -199,8 +173,8 @@ class Product_to_PARForm1(forms.Form):
 
 class GARV_entryForm(forms.ModelForm):
 
-    date_inspected = forms.DateField(widget=forms.TextInput(attrs={'placeholder': 'YYYY-MM-DD'}), label='Date inspected *')
-    date_confirmed = forms.DateField(widget=forms.TextInput(attrs={'placeholder': 'YYYY-MM-DD'}), label='Date confirmed *')
+    date_inspected = forms.DateField(widget=DateTimePicker(options={"format": "YYYY-MM-DD", "pickTime": False}), label='Date inspected *')
+    date_confirmed = forms.DateField(widget=DateTimePicker(options={"format": "YYYY-MM-DD", "pickTime": False}), label='Date confirmed *')
     cc_number = forms.CharField(label='CC number *')
     inspected_by = forms.ModelChoiceField(queryset=Employee.objects.all(), label='Inspected by *')
     confirmed_by = forms.ModelChoiceField(queryset=Employee.objects.all(), label='Confirmed by *')
