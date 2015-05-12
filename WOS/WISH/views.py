@@ -61,6 +61,20 @@ def product_reports(request):
 def file_entry(request):
     return render(request, 'WISH/file_entry.html', {})
 
+def stat_lib(request):
+    if request.method == "POST":
+        form = Stat_lib(request.POST)
+        if form.is_valid() :
+            product = form.save(commit=False)
+
+
+            product.save()
+            return redirect('WISH.views.index')
+
+    else:
+        form = Stat_lib()
+    return render(request, 'WISH/stat_lib.html', {'form': form })
+
 def product_new(request):
     if request.method == "POST":
         form = ProductForm(request.POST)
