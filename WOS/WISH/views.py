@@ -8,7 +8,6 @@ from .models import *
 from .forms import *
 import time
 import json
-from fm.views import AjaxCreateView
 
 # Create your views here.
 #msg = ''

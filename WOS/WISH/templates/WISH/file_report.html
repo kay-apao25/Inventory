@@ -38,26 +38,26 @@
 
     <ul class="nav nav-tabs" role="tablist">
       <li class="active">
-          <a href="#irr" role="tab" data-toggle="tab">
+          <a id='irrb' href="#irr" role="tab" data-toggle="tab">
               IRR Reports
           </a>
       </li>
-      <li><a href="#miv" role="tab" data-toggle="tab">
+      <li><a id='mivb' href="#miv" role="tab" data-toggle="tab">
               MIV Reports
           </a>
       </li>
        <li>
-          <a href="#wrs" role="tab" data-toggle="tab">
+          <a id='wrsb' href="#wrs" role="tab" data-toggle="tab">
               WRS Reports
           </a>
       </li>
       <li>
-          <a href="#par" role="tab" data-toggle="tab">
+          <a id='parb' href="#par" role="tab" data-toggle="tab">
               PAR Reports
           </a>
       </li>
       <li>
-          <a href="#garv" role="tab" data-toggle="tab">
+          <a id='garvb' href="#garv" role="tab" data-toggle="tab">
               GARV Reports
           </a>
       </li>
@@ -102,4 +102,37 @@
       </div>
     </div>
 </div>
+<script type="text/javascript">
+  $('#irrb').click(function(){
+       $("#system-search2").val('');
+       $("#system-search3").val('');
+       $("#system-search4").val('');
+       $("#system-search5").val('');
+   });
+  $('#mivb').click(function(){
+       $("#system-search").val('');
+       $("#system-search3").val('');
+       $("#system-search4").val('');
+       $("#system-search5").val('');
+   });
+  $('#wrsb').click(function(){
+       $("#system-search").val('');
+       $("#system-search2").val('');
+       $("#system-search4").val('');
+       $("#system-search5").val('');
+   });
+  $('#parb').click(function(){
+       $("#system-search").val('');
+       $("#system-search2").val('');
+       $("#system-search3").val('');
+       $("#system-search5").val('');
+   });
+  $('#garvb').click(function(){
+       $("#system-search").val('');
+       $("#system-search2").val('');
+       $("#system-search3").val('');
+       $("#system-search4").val('');
+   });
+</script>
+
 {% endblock %}
