@@ -37,6 +37,10 @@ class ProductForm2(forms.Form):
         ('pad', 'pad'),
         ('ream', 'ream'),
     )
+    STATUS_CHOICES = (
+        ('Complete', 'Complete'),
+        ('Pending', 'Pending'),
+    )
 
     expiry_date = forms.DateField(widget=DateTimePicker(options={"format": "YYYY-MM-DD", "pickTime": False}), required=False)
     unit_cost = forms.DecimalField(label='Unit cost*', decimal_places=2)
@@ -45,7 +49,7 @@ class ProductForm2(forms.Form):
     stock = forms.CharField(label='Stock *', max_length=10)
     block = forms.CharField(label='Block *', max_length=10)
     unit_measure = forms.ChoiceField(label='Unit measure *', choices=UNIT_CHOICES)
-    status = forms.CharField(label='Status *', max_length=10, initial='Pending')
+    status = forms.CharField(label='Status *', max_length=10, choices=STATUS_CHOICES)
 
 class ProductForm3(forms.Form):
     purchased_from = forms.ModelChoiceField(queryset=Supplier.objects.all(), label='Purchased from *')
