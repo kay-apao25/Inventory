@@ -29,6 +29,29 @@ def file_report(request):
     del prod_to_garv[:]
     return render(request, 'WISH/file_report.html', {})
 
+def libraries(request):
+    del prod_to_irr[:]
+    del prod_to_par[:]
+    del prod_to_garv[:]
+    return render(request, 'WISH/libraries.html', {})
+
+def inv_stat(request):
+    inv = Inventory_stat.objects.all()
+    return render(request, 'WISH/inv_stat.html', {'inv': inv})
+
+def cost_center(request):
+    cos = Cost_center.objects.all()
+    return render(request, 'WISH/cost_center.html', {'cos': cos})
+
+def supplier(request):
+    sup = Supplier.objects.all()
+    return render(request, 'WISH/supplier.html', {'sup': sup})
+
+def employee(request):
+    em = Employee.objects.all()
+    return render(request, 'WISH/employee.html', {'em': em})
+
+
 def irr_reports(request):
     irrs = IRR.objects.all()
     return render(request, 'WISH/irr_reports.html', {'irrs': irrs})
