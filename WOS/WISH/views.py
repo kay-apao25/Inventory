@@ -8,6 +8,7 @@ from .models import *
 from .forms import *
 import time
 import json
+
 # Create your views here.
 #msg = ''
 def index(request):
