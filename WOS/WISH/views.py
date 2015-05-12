@@ -167,12 +167,6 @@ def product_to_irr(request, pk, irn, inv):
                 p.quantity = int(form.data['quantity_accepted'])
                 p.balance = int(form.data['quantity_balance'])
                 #p.remarks = 'Product has an IRR Record (IRR No: ' + irn + ')'
-<<<<<<< HEAD
-
-            p.save()
-            irr.save()
-            return redirect('WISH.views.product_to_irr', pk=pk, irn=irn, inv=int(inv))
-=======
                 p.save()
                 
                 irr = iform.save(commit=False)
