@@ -14,6 +14,9 @@ def index(request):
     del prod_to_garv[:]
     return render(request, 'WISH/index.html', {})
 
+def aboutus(request):
+    return render(request, 'WISH/AboutUs.html', {})
+
 def wrs_num(request):
     return render(request, 'WISH/wrs_num.html', {})
 
@@ -165,7 +168,7 @@ def product_to_irr(request, pk, irn, inv):
                 p.quantity = int(prod['quantity_accepted'])
                 p.balance = int(prod['quantity_balance'])
                 #p.remarks = 'Product has an IRR Record (IRR No: ' + irn + ')'
-            
+
             p.save()
             irr.save()
             return redirect('WISH.views.product_to_irr', pk=pk, irn=irn, inv=int(inv))
@@ -436,7 +439,7 @@ def product_form(request, pk):
                 setattr(product, key, form2.data[key1])
                 setattr(product, key, form3.data[key1])
             if form2.data['expiry_date'] == '':
-                product.expiry_date = None    
+                product.expiry_date = None
             if int(form2.data['quantity']) > 1:
                 if form2.data['unit_measure'] == 'box':
                     product.unit_measure = str(product.unit_measure) + 'es'

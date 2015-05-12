@@ -4,6 +4,7 @@ from . import views
 urlpatterns = [
     url(r'^wrs_form/(?P<pk>[0-9]+)/$', views.wrs_form),
     url(r'^$', views.index),
+    url(r'^Aboutus/$', views.aboutus),
     url(r'^product/new/$', views.product_new, name='product_new'),
     url(r'^par/(?P<inv>[0-9]+)/$', views.par),
     url(r'^par_f/$', views.par_f),
