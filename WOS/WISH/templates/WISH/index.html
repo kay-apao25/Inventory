@@ -63,9 +63,20 @@
 	              	<li><a href="{% url 'WISH.views.product_reports' %}">Product Reports</a></li>
 	              </ul>
 	            </li>
+
+							<li class="dropdown">
+	              <a class="dropdown-toggle" data-toggle="dropdown" href="#">Libraries (Add)<span class="caret"></span></a>
+	              <ul class="dropdown-menu">
+	              	<li><a href="#">Inventory Station Library</a></li>
+	              	<li><a href="#">Cost Center Library</a></li>
+									<li><a href="#">Supplier Library</a></li>
+									<li><a href="#">Employee Profile</a></li>
+	              </ul>
+	            </li>
 	          </ul>
 
 	          <ul class="nav navbar-nav navbar-right">
+							<li><a href="{% url 'WISH.views.aboutus' %}"><span ></span> About Us</a></li>
 	           <li><a href="#"><span class="glyphicon glyphicon-log-out"></span> Log out</a></li>
 	          </ul>
 	        </div>

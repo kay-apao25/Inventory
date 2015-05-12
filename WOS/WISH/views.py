@@ -22,6 +22,9 @@ def index(request):
     #messages.success(request, "Huge success!")
     return render(request, 'WISH/index.html', {})
 
+def aboutus(request):
+    return render(request, 'WISH/AboutUs.html', {})
+
 def wrs_num(request):
     return render(request, 'WISH/wrs_num.html', {})
 
@@ -164,6 +167,12 @@ def product_to_irr(request, pk, irn, inv):
                 p.quantity = int(form.data['quantity_accepted'])
                 p.balance = int(form.data['quantity_balance'])
                 #p.remarks = 'Product has an IRR Record (IRR No: ' + irn + ')'
+<<<<<<< HEAD
+
+            p.save()
+            irr.save()
+            return redirect('WISH.views.product_to_irr', pk=pk, irn=irn, inv=int(inv))
+=======
                 p.save()
                 
                 irr = iform.save(commit=False)
@@ -191,6 +200,7 @@ def product_to_irr(request, pk, irn, inv):
                 
                   
             #return redirect('WISH.views.product_to_irr', pk=pk, irn=irn, inv=int(inv))
+>>>>>>> 764356636102732a31c8d7eafada9a626ffcdbe5
     else:
         form = Product_to_IRRForm()
         iform = IRR_entry_cont_Form()
@@ -468,7 +478,7 @@ def product_form(request, pk):
                 setattr(product, key, form2.data[key1])
                 setattr(product, key, form3.data[key1])
             if form2.data['expiry_date'] == '':
-                product.expiry_date = None    
+                product.expiry_date = None
             if int(form2.data['quantity']) > 1:
                 if form2.data['unit_measure'] == 'box':
                     product.unit_measure = str(product.unit_measure) + 'es'
