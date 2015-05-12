@@ -194,7 +194,6 @@ def product_to_irr(request, pk, irn, inv):
                 
                   
             #return redirect('WISH.views.product_to_irr', pk=pk, irn=irn, inv=int(inv))
->>>>>>> 764356636102732a31c8d7eafada9a626ffcdbe5
     else:
         form = Product_to_IRRForm()
         iform = IRR_entry_cont_Form()
