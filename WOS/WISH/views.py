@@ -132,14 +132,6 @@ def irr_entry(request):
         form2 = IRR_entryForm2(request.POST)
         if form.is_valid() and form1.is_valid():
             irr_entry = form.save(commit=False)
-            if len(IRR.objects.all()) != 0:
-                no = int((IRR.objects.latest('wrs_number')).irr_no) + 1
-                irr_no = str(no)
-                if (6-len(irr_no)) > 0:
-                    for i in range(6-len(irr_no)):
-                        irr_no = '0' + irr_no
-            else:
-                irr_no = '000000'
 
             for key in form.data.keys():
                 key1 = key
@@ -151,7 +143,7 @@ def irr_entry(request):
             irr_entry.dce_custodian = Employee.objects.get(name=(str(request.user.first_name) + ' ' + str(request.user.last_name)))
 
             irr_entry.save()
-            return redirect('WISH.views.product_to_irr', pk=irr_entry.pk, irn=irr_no, inv=int(irr_entry.inv_station_no_id))
+            return redirect('WISH.views.product_to_irr', pk=irr_entry.pk, inv=int(irr_entry.inv_station_no_id))
     else:
         form = IRR_entryForm()
         form1 = IRR_entryForm1()
@@ -159,7 +151,7 @@ def irr_entry(request):
     return render(request, 'WISH/irr_entry.html', {'form': form, 'form1': form1, 'form2': form2})
 
 prod_to_irr = []
-def product_to_irr(request, pk, irn, inv):
+def product_to_irr(request, pk, inv):
     if request.method == "POST":
         form = Product_to_IRRForm(request.POST)
         iform = IRR_entry_cont_Form(request.POST)
@@ -186,42 +178,46 @@ def product_to_irr(request, pk, irn, inv):
                 p.save()
 
                 irr = iform.save(commit=False)
-                irr.irr_no = irn
+                if len(IRR.objects.all()) != 0:
+                    no = int((IRR.objects.latest('wrs_number')).irr_no) + 1
+                    irr.irr_no = str(no)
+                    if (6-len(irr.irr_no)) > 0:
+                        for i in range(6-len(irr.irr_no)):
+                            irr.irr_no = '0' + irr.irr_no
+                else:
+                    irr.irr_no = '000000'
+                
                 irr.irr_headkey_id = pk
                 if len(IRR.objects.all()) != 0:
                     no = int((IRR.objects.latest('wrs_number')).wrs_number) + 1
                     irr.wrs_number = str(no)
                 else:
                     irr.wrs_number = irr.irr_headkey.inv_station_no.inv_station_no + '000000'
+                
                 res = json.dumps(prod_to_irr)
                 irr.product = res
 
                 if iform.has_changed():
-                    msg = 'IRR record (IRR No. - ' + irn + ') was successfully added.'
+                    msg = 'IRR record (IRR No. - ' + irr.irr_no + ') was successfully added.'
                     irr.save()
-                    exit = 'Exit'
                 else:
                     msg = 'Item (' + str(Product.objects.get(id=int(form.data['product'])).item_name) + ') was successfully added'
 
-                    form = Product_to_IRRForm()
-                    iform = IRR_entry_cont_Form()
-                    form.fields['product'] = forms.ModelChoiceField(queryset=Product.objects.filter(inv_station_no=inv), \
-                        label='Product *', required=True)
-
+                form = Product_to_IRRForm()
+                iform = IRR_entry_cont_Form()
+                form.fields['product'] = forms.ModelChoiceField(queryset=Product.objects.filter(inv_station_no=inv).filter(quantity__gt=0), \
+                    label='Product *', required=True)
 
             #return redirect('WISH.views.product_to_irr', pk=pk, irn=irn, inv=int(inv))
     else:
         form = Product_to_IRRForm()
         iform = IRR_entry_cont_Form()
-        form.fields['product'] = forms.ModelChoiceField(queryset=Product.objects.filter(inv_station_no=inv), label='Product *', required=True)
+        form.fields['product'] = forms.ModelChoiceField(queryset=Product.objects.filter(inv_station_no=inv).filter(quantity__gt=0), label='Product *', required=True)
     try:
         try:
             return render(request, 'WISH/product_to_irr.html', {'form': form, 'iform': iform, 'error': error})
         except:
-            try:
-                return render(request, 'WISH/product_to_irr.html', {'msg': msg, 'exit': exit})
-            except:
-                return render(request, 'WISH/product_to_irr.html', {'form': form, 'iform': iform, 'msg': msg})
+            return render(request, 'WISH/product_to_irr.html', {'form': form, 'iform': iform, 'msg': msg})
     except:
         return render(request, 'WISH/product_to_irr.html', {'form': form, 'iform': iform})
 

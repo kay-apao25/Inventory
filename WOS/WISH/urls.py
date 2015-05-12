@@ -20,7 +20,7 @@ urlpatterns = [
     url(r'^product_to_garv/(?P<pk>[0-9]+)/$', views.product_to_garv),
     url(r'^garv_form/(?P<pk>[0-9]+)/$', views.garv_form),
     url(r'^wrs_entry/$', views.wrs_entry),
-    url(r'^product_to_irr/(?P<pk>[0-9]+)/(?P<irn>[0-9]+)/(?P<inv>[0-9]+)/$', views.product_to_irr),
+    url(r'^product_to_irr/(?P<pk>[0-9]+)/(?P<inv>[0-9]+)/$', views.product_to_irr),
     url(r'^irr_form/(?P<pk>[0-9]+)/$', views.irr_form),
     url(r'^miv_form/(?P<pk>[0-9]+)/$', views.miv_form),
     #url(r'^irr_report/$', views.irr_report),
