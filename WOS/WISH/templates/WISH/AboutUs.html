@@ -1,6 +1,7 @@
 {% extends 'WISH/index.html' %}
 
 {% block content %}
+{% load staticfiles %}
 
 <!DOCTYPE html>
 <html lang="en">
@@ -151,7 +152,7 @@
 											 <div class="img-container">
 												  <div class="img">
 													 <img
-														  src="https://www.facebook.com/photo.php?fbid=894394640619600&set=a.104749309584141.6885.100001472178835&type=1&theater"
+														  src="{% static 'css/LC.jpg' %}"
 														  alt="img">
 												  </div>
 											  </div>
@@ -506,12 +507,12 @@
 						<div class="paper">
 
 							<a class="call"
-							   href="https://www.facebook.com/jennie.ramos.395">
+							   href="https://www.facebook.com/">
 							   Visit my Fb Page
 							</a>
 
 							<a class="mail"
-							   href="https://mail.google.com/mail/u/0/#inbox?compose=148994ec5b496cd2">
+							   href="https://mail.google.com">
 							   <font size="2" >jennieramos06@gmail.com </font> </a>
 						</div>
 					</div>
