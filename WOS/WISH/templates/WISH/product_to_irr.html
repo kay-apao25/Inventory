@@ -10,37 +10,54 @@
       </style>
 
 
-     <div class="page-header">
-          <!--<img src=""></img>-->
-          <h2 align="center">Fill for IRR Record (continuation)</h2>
-      </div>
+     <!--<div class="page-header">
+          <img src=""></img>-->
+         <!-- <h2 align="center">Fill for IRR Record (continuation)</h2>
+      </div>-->
     <form method="POST" class="irr_entry">{% csrf_token %}
-    <strong><p style="font-size:15px">Fields with asterisk are required.</p></strong>
-    <strong><p style="font-size:15px">{{error}}</p></strong>
-      <table width="50%">
-    <tr>
-    <td style="padding:20px">
-     {% for field in form %}
-      &nbsp;&nbsp;{{field | bootstrap_horizontal:'col-lg-4'}}&nbsp;&nbsp;&nbsp;
-     {%endfor%}
+    {% if exit %}
+      {%if msg%}
+        <div class="alert alert-success" style="width:400px">
+          {{ msg }}
+        </div>
+      {% endif %}
+      <div align="center"><a href= "{% url 'WISH.views.index' %}"><i class="glyphicon glyphicon-share-alt"></i> {{ exit }}</a></div>
+    {% else %}
+      <strong><p style="font-size:15px">Fields with asterisk are required.</p></strong>
+      {%if msg%}
+        <div class="alert alert-success" style="width:400px">
+          {{ msg }}
+        </div>
+      {% endif %}
+      {%if error%}
+        <div class="alert alert-danger" style="width:400px">
+          {{ error }}
+        </div>
+      {% endif %}
+        <table width="50%">
+          <tr>
+            <td style="padding:20px">
+              {% for field in form %}
+                &nbsp;&nbsp;{{field | bootstrap_horizontal:'col-lg-4'}}&nbsp;&nbsp;&nbsp;
+              {%endfor%}
      <br>
-     <div align="center"><button type="submit" class="save btn btn-default">Add Another Item</button>
+        <div align="center"><button type="submit" class="save btn btn-default">Add Another Item</button></div>
+     
     <br><br><br><br><br><br><br><br>
-     </div>
-     </td>
-     <td style="padding:20px">
-     {% for field in iform %}
-
-      &nbsp;&nbsp;{{field | bootstrap_horizontal:'col-lg-4'}}&nbsp;&nbsp;&nbsp;
-
-     {%endfor%}
+     
+            </td>
+            <td style="padding:20px">
+              {% for field in iform %}
+                 &nbsp;&nbsp;{{field | bootstrap_horizontal:'col-lg-4'}}&nbsp;&nbsp;&nbsp;
+              {%endfor%}
      <br>
-
-     </td>
-     </tr>
-     </table>
-     <div align="center"><button type="submit" class="save btn btn-default">Save</button></div>
+            </td>
+          </tr>
+        </table>
+        <div align="center"><button type="submit" class="save btn btn-default">Save</button></div>
+     
     </form>
+    {% endif %}
 
 
 {% endblock %}
