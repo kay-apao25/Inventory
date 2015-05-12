@@ -7,16 +7,27 @@
           width:400px;
         }
       </style>
-    <div class="page-header">
-      <h2 align="center">Fill for MIV Record</h2>
-    </div>
     <form method="POST" class="product-form">{% csrf_token %}
-    <strong><p style="font-size:15px">{{error}}</p></strong>
-    <strong><p style="font-size:15px">Fields with asterisk are required.</p></strong>
-    <br>
+    {% if exit %}
+      {%if msg%}
+        <div class="alert alert-success" style="width:400px">
+          {{ msg }}
+        </div>
+        <div align="center"><a href= "{% url 'WISH.views.index' %}"><i class="glyphicon glyphicon-share-alt"></i> {{ exit }}</a></div>
+      {% endif %}
+    {% else %}
+      {%if error%}
+          <div class="alert alert-danger" style="width:400px">
+            {{ error }}
+          </div>
+      {% endif %}
+      <strong><p style="font-size:15px">Fields with asterisk are required.</p></strong>
+      
+      <br>
 
-    {{form | bootstrap }}
+      {{form | bootstrap }}
       <br>
       <div align="center"><button type="submit" class="save btn btn-default">Save</button></div>
       </form>
+    {% endif %}
 {% endblock %}

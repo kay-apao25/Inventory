@@ -2,15 +2,11 @@
 {% load bootstrap %}
 
 {% block content %}
-<div class="alert alert-success" role="alert">PAR is successfully added.</div>
 <style type="text/css">
         .form-group{
           width:400px;
         }
       </style>
-    <div class="page-header">
-      <h2 align="center">PAR Entry </h2>
-    </div>
     <!--<div align="right"><a href= "{% url 'WISH.views.index' %}"><i class="fa fa-arrow-right"></i> Exit</a></div>-->
     <form method="POST" class="post-form">{% csrf_token %}
     <strong><p style="font-size:15px">Fields with asterisk are required.</p></strong>
@@ -22,7 +18,7 @@
      {%endfor%}
      <br>
      <div align="center"><button type="submit" class="save btn btn-default">Add Another Item</button>
-      <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+      <br><br><br><br><br><br><br><br>
      </div>
      </td>
      <td style="padding:20px">
