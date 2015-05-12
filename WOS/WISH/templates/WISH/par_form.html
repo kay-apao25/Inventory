@@ -79,6 +79,21 @@
 						</tr>
 
 			</div>
+			<br><br>
+
+	    <style type="text/css">
+	        @page { margin: 1; }
+	      </style>
+	      <button id="printpagebutton" onclick="myFunction()">Print this Form</button>
+	      <script>
+	    function myFunction() {
+	      var printButton = document.getElementById("printpagebutton");
+	      printButton.style.visibility = 'hidden';
+
+	      window.print();
+	      printButton.style.visibility = 'visible';
+	    }
+	</script>
 		</center>
 	</body>
 </html>
