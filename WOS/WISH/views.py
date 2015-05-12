@@ -15,11 +15,6 @@ def index(request):
     del prod_to_irr[:]
     del prod_to_par[:]
     del prod_to_garv[:]
-    #if msg != '':
-    #    messages.add_message(request, messages.SUCCESS, 'successful')
-    #    return render_to_response('WISH/index.html', context_instance=RequestContext(request))
-    #else:
-    #messages.success(request, "Huge success!")
     return render(request, 'WISH/index.html', {})
 
 def aboutus(request):
@@ -77,12 +72,19 @@ def stat_lib(request):
 
 def product_new(request):
     if request.method == "POST":
+
+        #Forms containing the entries entered by the user
         form = ProductForm(request.POST)
         form1 = ProductForm1(request.POST)
         form2 = ProductForm2(request.POST)
         form3 = ProductForm3(request.POST)
+        
+        #Non-empty forms are to be validated.
         if form.is_valid() and form1.is_valid() and form2.is_valid() :
+            
             product = form.save(commit=False)
+            
+            #Generation of SLC number
             if len(Product.objects.all()) != 0:
                 no = int((Product.objects.latest('id')).slc_number) + 1
                 product.slc_number = str(no)
@@ -91,6 +93,7 @@ def product_new(request):
             else:
                 product.slc_number = '000000'
 
+            #Assignment of values in Product model
             for key in form.data.keys():
                 key1 = key
                 if key == 'inv_station_no' or key == 'purchased_from':
@@ -98,41 +101,58 @@ def product_new(request):
                 setattr(product, key, form1.data[key1])
                 setattr(product, key, form2.data[key1])
                 setattr(product, key, form3.data[key1])
-                if form2.data['expiry_date'] == '':
-                    product.expiry_date = None
-                if int(form2.data['quantity']) > 1:
-                    if form2.data['unit_measure'] == 'box':
-                        product.unit_measure = str(product.unit_measure) + 'es'
-                    else:
-                        product.unit_measure = str(product.unit_measure) + 's'
+            
+            if form2.data['expiry_date'] == '':
+                product.expiry_date = None
+            if int(form2.data['quantity']) > 1:
+                if form2.data['unit_measure'] == 'box':
+                    product.unit_measure = str(product.unit_measure) + 'es'
+                else:
+                    product.unit_measure = str(product.unit_measure) + 's'
+            
             product.amount = int(form2.data['unit_cost']) * int(form2.data['quantity'])
 
             product.save()
+            
+            #Message to be returned if adding of the new product entry.
             msg = 'Product (' + form1.data['item_name'] + ') was added successfully.'
+            
+            #Displaying of blank forms
             form1 = ProductForm1()
             form2 = ProductForm2()
             form3 = ProductForm3()
     else:
+        #Displaying of blank forms
         form = ProductForm()
         form1 = ProductForm1()
         form2 = ProductForm2()
         form3 = ProductForm3()
+    
+    #Rendering of forms and/or messages
     try:
         return render(request, 'WISH/product_add.html', {'form3': form3 , 'form1':form1, 'form2': form2, 'msg': msg})
     except:
         return render(request, 'WISH/product_add.html', {'form3': form3 , 'form1':form1, 'form2': form2})
 
 def irr_entry(request):
+
+    #Cleaning of Product_to_IRR, Product_to_PAR and Product_to_GARV lists
     del prod_to_irr[:]
     del prod_to_par[:]
     del prod_to_garv[:]
+
     if request.method == "POST":
+
+        #Forms containing the entries entered by the user
         form = IRR_entryForm(request.POST)
         form1 = IRR_entryForm1(request.POST)
         form2 = IRR_entryForm2(request.POST)
+
+        #Non-empty forms are to be validated.
         if form.is_valid() and form1.is_valid():
             irr_entry = form.save(commit=False)
 
+            #Assignment of values in IRR header model
             for key in form.data.keys():
                 key1 = key
                 if key == 'supplier' or key == 'inv_station_no' or key == 'dce_user' or key == 'dce_approved':
@@ -141,33 +161,44 @@ def irr_entry(request):
                 setattr(irr_entry, key, form2.data[key1])
 
             irr_entry.dce_custodian = Employee.objects.get(name=(str(request.user.first_name) + ' ' + str(request.user.last_name)))
-
             irr_entry.save()
+
             return redirect('WISH.views.product_to_irr', pk=irr_entry.pk, inv=int(irr_entry.inv_station_no_id))
     else:
         form = IRR_entryForm()
         form1 = IRR_entryForm1()
         form2 = IRR_entryForm2()
+
+    #Rendering of forms
     return render(request, 'WISH/irr_entry.html', {'form': form, 'form1': form1, 'form2': form2})
 
-prod_to_irr = []
+prod_to_irr = [] #Product_to_IRR list: List for storing products to be added in a specific IRR form
 def product_to_irr(request, pk, inv):
     if request.method == "POST":
+
+        #Forms containing the entries entered by the user
         form = Product_to_IRRForm(request.POST)
         iform = IRR_entry_cont_Form(request.POST)
+
+        #Non-empty forms are to be validated.
         if form.is_valid() and iform.is_valid():
+
+            #To check if the desired quantity of products to be delivered are delivered already.
             if int(form.data['quantity_balance']) == 0:
                 p = Product.objects.get(id=int(form.data['product']))
                 p.status = 'Complete'
                 p.save()
             
+            #To check if quantity accepted entered is less than the present stocked items.
             if Product.objects.get(id=int(form.data['product'])).quantity < int(form.data['quantity_accepted']):
                 error = 'Accepted quantity is greater than the number of stocked items.'
 
+            #To check if the delivering process of the product is already completed.
             elif Product.objects.get(id=int(form.data['product'])).status == 'Pending':
                 error = 'Product -' + str(Product.objects.get(id=int(form.data['product'])).item_name) +  '- is still pending.'
 
             else:
+                #Storing of products for this specific IRR form.
                 prod_to_irr.append({'Product': form.data['product'], 'quantity_accepted': \
                     int(form.data['quantity_accepted']), 'quantity_rejected':int(form.data['quantity_rejected']), \
                     'quantity_balance': int(form.data['quantity_balance']), 'is_par':False})
@@ -178,6 +209,8 @@ def product_to_irr(request, pk, inv):
                 p.save()
 
                 irr = iform.save(commit=False)
+                
+                #Generation of IRR number
                 if len(IRR.objects.all()) != 0:
                     no = int((IRR.objects.latest('wrs_number')).irr_no) + 1
                     irr.irr_no = str(no)
@@ -186,17 +219,19 @@ def product_to_irr(request, pk, inv):
                             irr.irr_no = '0' + irr.irr_no
                 else:
                     irr.irr_no = '000000'
-                
-                irr.irr_headkey_id = pk
+
+                #Generation of WRS number
                 if len(IRR.objects.all()) != 0:
                     no = int((IRR.objects.latest('wrs_number')).wrs_number) + 1
                     irr.wrs_number = str(no)
                 else:
                     irr.wrs_number = irr.irr_headkey.inv_station_no.inv_station_no + '000000'
                 
+                irr.irr_headkey_id = pk
                 res = json.dumps(prod_to_irr)
                 irr.product = res
 
+                #To check if all entries for the IRR form is filled.
                 if iform.has_changed():
                     msg = 'IRR record (IRR No. - ' + irr.irr_no + ') was successfully added.'
                     irr.save()
@@ -205,14 +240,18 @@ def product_to_irr(request, pk, inv):
 
                 form = Product_to_IRRForm()
                 iform = IRR_entry_cont_Form()
+
+                #Assigning the specific choices of products to be displayed
                 form.fields['product'] = forms.ModelChoiceField(queryset=Product.objects.filter(inv_station_no=inv).filter(quantity__gt=0), \
                     label='Product *', required=True)
 
-            #return redirect('WISH.views.product_to_irr', pk=pk, irn=irn, inv=int(inv))
     else:
         form = Product_to_IRRForm()
         iform = IRR_entry_cont_Form()
-        form.fields['product'] = forms.ModelChoiceField(queryset=Product.objects.filter(inv_station_no=inv).filter(quantity__gt=0), label='Product *', required=True)
+        form.fields['product'] = forms.ModelChoiceField(queryset=Product.objects.filter(inv_station_no=inv).filter(quantity__gt=0), \
+            label='Product *', required=True)
+
+    #Rendering of forms and/or messages and/or errors
     try:
         try:
             return render(request, 'WISH/product_to_irr.html', {'form': form, 'iform': iform, 'error': error})
@@ -223,22 +262,36 @@ def product_to_irr(request, pk, inv):
 
 
 def miv_entry_S(request, pk):
+
+    #Cleaning of Product_to_IRR, Product_to_PAR and Product_to_GARV lists
     del prod_to_irr[:]
     del prod_to_par[:]
     del prod_to_garv[:]
+
     if request.method == "POST":
+
+        #Forms containing the entries entered by the user
         form = MIV_entryForm(request.POST)
+
+        #Non-empty forms are to be validated.
         if form.is_valid():
+
             error = ''
+            
             miv_entry = form.save(commit=False)
             miv_entry.irr_no_id = pk
+            
             prods = miv_entry.irr_no.product
             for prod in prods:
                 p = Product.objects.get(id=(prod['Product']))
                 p.quantity = int(p.quantity) - int(prod['quantity_accepted'])
                 if p.quantity < 0:
                     error = 'No stock for such item(s).'
+            
+            #To check if there is no error message
             if error == '':
+
+                #Generation of MIV number
                 if len(MIV.objects.all()) != 0:
                     no = int((MIV.objects.latest('id')).miv_no) + 1
                     miv_entry.miv_no = str(no)
@@ -247,8 +300,11 @@ def miv_entry_S(request, pk):
                             miv_entry.miv_no = '0' + miv_entry.miv_no
                 else:
                     miv_entry.miv_no = '000000'
+
                 miv_entry.doc_date = time.strftime("%Y-%m-%d")
                 miv_entry.irr_no_id = pk
+
+                #Deducting the number of quantities to be pulled out by the user
                 for prod in prods:
                     p = Product.objects.get(id=(prod['Product']))
                     p.quantity = int(p.quantity) - int(prod['quantity_accepted'])
@@ -256,15 +312,22 @@ def miv_entry_S(request, pk):
                     p.average_amount = p.amount
                     #p.remarks = p.remarks + ', Product has a MIV Record (MIV No: ' + miv_entry.miv_no + ')'
                     p.save()
+
                 miv_entry.save()
+
+                #Success message
                 msg = 'MIV record (MIV No. - ' + miv_entry.miv_no + ') was successfully added.'
+
+                #Exit message
                 exit = 'Exit'
+
+                #Displaying of blank forms.
                 form = MIV_entryForm()
-            #if error == '':
-            #    msg = ''
-            #return redirect('WISH.views.index')
+    
     else:
         form = MIV_entryForm()
+
+    #Rendering of forms and/or messages and/or errors
     try:
         if error != '':
             return render(request, 'WISH/miv_entry.html', {'form': form, 'error': error})
@@ -394,7 +457,11 @@ def par(request, inv):
                 return redirect('WISH.views.index')
             irr.save()
             par_entry.save()
-            return redirect('WISH.views.par_entry', pk=par_entry.par_no, inv=inv)
+            if form.has_changed():
+                msg = 0
+            else:
+                msg = 1
+            return redirect('WISH.views.par_entry', pk=par_entry.par_no, inv=inv, msg=msg)
     else:
         form = PAR_Form()
         iform = Product_to_PARForm()
@@ -412,7 +479,7 @@ def par(request, inv):
             [Product.objects.get(id=p).id for p in prod_list]), label='Product *')
     return render(request, 'WISH/par_entry.html', {'form': form, 'iform': iform})
 
-def par_entry(request, pk, inv):
+def par_entry(request, pk, inv, msg):
     prod_list = []
     if request.method == "POST":
         form = PAR_Form(request.POST)
@@ -443,10 +510,16 @@ def par_entry(request, pk, inv):
                     prod_list.append(int(prod['Product']))
             if len(prod_list) == 0:
                 irr.is_par = True
-                return redirect ('WISH.views.index')
+                form = PAR_Form()
+                iform = Product_to_PARForm1()
+                return render(request, 'WISH/par_entry.html', {'form': form, 'iform': iform, 'msg': 'PAR Record (PAR No. - ' + pk + ') is successfully added.'})
             irr.save()
             par_entry.save()
-            return redirect('WISH.views.par_entry', pk=pk, inv=inv)
+            if form.has_changed():
+                msg = 0
+            else:
+                msg = 1
+            return redirect('WISH.views.par_entry', pk=pk, inv=inv, msg=msg)
     else:
         form = PAR_Form()
         iform = Product_to_PARForm1()
@@ -462,7 +535,10 @@ def par_entry(request, pk, inv):
                 prod_list.append(int(prod['Product']))
         iform.fields['product'] = forms.ModelChoiceField(Product.objects.all().filter(id__in=\
             [Product.objects.get(id=p).id for p in prod_list]))
-    return render(request, 'WISH/par_entry.html', {'form': form, 'iform': iform})
+    if int(msg) == 0:
+        return render(request, 'WISH/par_entry.html', {'form': form, 'iform': iform, 'msg': 'PAR Record (PAR No. - ' + pk + ') is successfully added.'})
+    else:
+        return render(request, 'WISH/par_entry.html', {'form': form, 'iform': iform, 'msg': 'Item is successfully added.'})
 
 def wrs_entry(request):
     if 'q' in request.GET and request.GET['q']:
