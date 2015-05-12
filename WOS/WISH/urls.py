@@ -24,6 +24,10 @@ urlpatterns = [
     url(r'^irr_form/(?P<pk>[0-9]+)/$', views.irr_form),
     url(r'^miv_form/(?P<pk>[0-9]+)/$', views.miv_form),
     #url(r'^irr_report/$', views.irr_report),
+    url(r'^inv_stat/$', views.inv_stat),
+    url(r'^cost_center/$', views.cost_center),
+    url(r'^supplier/$', views.supplier),
+    url(r'^employee/$', views.employee),
     #url(r'^miv_report/$', views.miv_report),
     #url(r'^par_report/$', views.par_report),
     #url(r'^garv_report/$', views.garv_report),
@@ -35,5 +39,6 @@ urlpatterns = [
     url(r'^garv_reports/$', views.garv_reports),
     url(r'^product_reports/$', views.product_reports),
     url(r'^file_entry/$', views.file_entry),
+    url(r'^libraries/$', views.libraries),
     url(r'^stat_lib/$', views.stat_lib, name='stat_lib'),
 ]

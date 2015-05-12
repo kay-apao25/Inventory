@@ -37,7 +37,7 @@ class ProductForm2(forms.Form):
         ('pad', 'pad'),
         ('ream', 'ream'),
     )
-    
+
     expiry_date = forms.DateField(widget=DateTimePicker(options={"format": "YYYY-MM-DD", "pickTime": False}), required=False)
     unit_cost = forms.DecimalField(label='Unit cost*', decimal_places=2)
     quantity = forms.IntegerField(initial='1', label='Quantity *')
@@ -219,3 +219,9 @@ class Product_to_GARVform1(forms.Form):
     """def __init__(self, var, *args, **kwargs):
        super(Product_to_GARVform, self).__init__(*args, **kwargs)
        self.fields['product'].queryset = var"""
+
+class Stat_lib(forms.ModelForm):
+
+    class Meta:
+        model = Inventory_stat
+        fields = ('inv_station_no', 'station_description', 'cost_center_no',)
