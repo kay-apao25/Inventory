@@ -1,4 +1,6 @@
+
 {% load staticfiles %}
+
 
 <html>
     <head>
@@ -10,7 +12,7 @@
 
     <body>
     <center>
-    <div style="width:826px;height:1169px;border:1px solid #000;">
+    <div id="border" style="width:826px;height:1169px;border:1px solid #000;">
     	<p align="left" class="left_marg">REPUBLIC OF THE PHILIPPINES<br>NATIONAL POWER CORPORATION</p>
 		<p align="right" class="right_marg">MINDANAO REGIONAL CENTER<br>MINDANAO GENERATION - CENTRAL WAREHOUSE</p>
 
@@ -98,7 +100,22 @@
 			<td>IRR<br>B->{{irs.irr_headkey.inv_station_no.inv_station_no}}<br>No.{{irs.pk}}</td>
 		</table>
 
+
 		</div>
+    <br><br>
+
+    <style type="text/css">
+        @page { margin: 0; }
+      </style>
+      <button id="printpagebutton" onclick="myFunction()">Print this Form</button>
+      <script>
+    function myFunction() {
+      var printButton = document.getElementById("printpagebutton");
+      printButton.style.visibility = 'hidden';
+      window.print();
+      printButton.style.visibility = 'visible';
+    }
+</script>
 		</center>
     </body>
 </html>
