@@ -87,7 +87,7 @@ class Product(models.Model):
     remarks = models.TextField(max_length=25, null=True, blank=True)
     history = HistoricalRecords()
     inv_station_no = models.ForeignKey(Inventory_stat, related_name="inv_iFK")
-    balance = models.IntegerField(default = 0)
+    balance = models.IntegerField(default = 0, null=True, blank=True)
 
 
     def __str__(self):

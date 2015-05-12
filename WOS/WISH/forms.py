@@ -13,7 +13,7 @@ class ProductForm(forms.ModelForm):
             'stock', 'block', 'unit_measure', 'unit_cost', 'quantity', \
             'average_amount', 'status', 'balance_limit', 'serial_number',\
             'model', 'description', 'remarks', 'purchased_from', 'inv_station_no', \
-            'slc_number', 'amount', )
+            'slc_number', 'amount', 'balance')
 
 class ProductForm1(forms.Form):
     nsn = forms.CharField(label='NSN *', max_length=10)
@@ -22,8 +22,9 @@ class ProductForm1(forms.Form):
     item_name = forms.CharField(label='Item name*', max_length=10)
     brand = forms.CharField(label='Brand *', max_length=25)
     part_number = forms.CharField(label='Part number *', max_length=8)
-    manufacture_date = forms.DateField(label='Manufacture date *',
-        widget=DateTimePicker(options={"format": "YYYY-MM-DD", "pickTime": False}))
+    manufacture_date = forms.DateField(label='Manufacture date *', widget=forms.TextInput(attrs={'placeholder': 'YYYY-MM-DD'}))
+    """manufacture_date = forms.DateField(label='Manufacture date *',
+        widget=DateTimePicker(options={"format": "YYYY-MM-DD", "pickTime": False}))"""
     inv_station_no = forms.ModelChoiceField(label='Inventory station *', queryset=Inventory_stat.objects.all())
 
 class ProductForm2(forms.Form):
@@ -35,7 +36,9 @@ class ProductForm2(forms.Form):
         ('pad', 'pad'),
         ('ream', 'ream'),
     )
-    expiry_date = forms.DateField(widget=DateTimePicker(options={"format": "YYYY-MM-DD", "pickTime": False}), required=False)
+
+    expiry_date = forms.DateField(label='Manufacture date *', widget=forms.TextInput(attrs={'placeholder': 'YYYY-MM-DD'}))
+    #expiry_date = forms.DateField(widget=DateTimePicker(options={"format": "YYYY-MM-DD", "pickTime": False}), required=False)
     unit_cost = forms.DecimalField(label='Unit cost*', decimal_places=2)
     quantity = forms.IntegerField(initial='1', label='Quantity *')
     classification = forms.CharField(label='Classification*', max_length=30)
