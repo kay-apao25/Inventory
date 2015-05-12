@@ -21,6 +21,11 @@
   {% endif %}
     <form method="POST" class="product-form">{% csrf_token %}
     <strong><p style="font-size:15px">Fields with asterisk are required.</p></strong>
+    {%if msg%}
+    <div class="alert alert-success" style="width:400px">
+        {{ msg }}
+    </div>
+    {% endif %}
   <table width="50%" >
     <tr>
     <td>

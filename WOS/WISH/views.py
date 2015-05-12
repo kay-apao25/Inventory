@@ -1,17 +1,26 @@
 from django.shortcuts import render, redirect, get_object_or_404, render_to_response
 from django.http import HttpResponseRedirect
+#from django.template import RequestContext
+from django.contrib import messages
 from django.db.models import Q
 #from random import randint
 from .models import *
 from .forms import *
 import time
 import json
+from fm.views import AjaxCreateView
 
 # Create your views here.
+#msg = ''
 def index(request):
     del prod_to_irr[:]
     del prod_to_par[:]
     del prod_to_garv[:]
+    #if msg != '':
+    #    messages.add_message(request, messages.SUCCESS, 'successful')
+    #    return render_to_response('WISH/index.html', context_instance=RequestContext(request))
+    #else:
+    #messages.success(request, "Huge success!")
     return render(request, 'WISH/index.html', {})
 
 def wrs_num(request):
@@ -83,14 +92,19 @@ def product_new(request):
             product.amount = int(form2.data['unit_cost']) * int(form2.data['quantity'])
 
             product.save()
-            return redirect('WISH.views.index')
+            msg = 'Product (' + form1.data['item_name'] + ') was added successfully.'
+            form1 = ProductForm1()
+            form2 = ProductForm2()
+            form3 = ProductForm3()
     else:
         form = ProductForm()
         form1 = ProductForm1()
         form2 = ProductForm2()
-        form3 = ProductForm3()
-    return render(request, 'WISH/product_add.html', {'form3': form3 , 'form1':form1, 'form2': form2})
-
+        form3 = ProductForm3()      
+    try:
+        return render(request, 'WISH/product_add.html', {'form3': form3 , 'form1':form1, 'form2': form2, 'msg': msg})
+    except:
+        return render(request, 'WISH/product_add.html', {'form3': form3 , 'form1':form1, 'form2': form2})
 
 def irr_entry(request):
     del prod_to_irr[:]
@@ -136,44 +150,63 @@ def product_to_irr(request, pk, irn, inv):
         if form.is_valid() and iform.is_valid():
             if int(form.data['quantity_balance']) == 0:
                 Product.objects.get(id=int(form.data['product'])).status = 'Complete'
-            if Product.objects.get(id=int(form.data['product'])).status != 'Pending':
+            
+            if Product.objects.get(id=int(form.data['product'])).quantity < int(form.data['quantity_accepted']):
+                error = 'Accepted quantity is greater than the number of stocked items.'
+
+            elif Product.objects.get(id=int(form.data['product'])).status == 'Pending':
+                error = 'Product -' + str(Product.objects.get(id=int(form.data['product'])).item_name) +  '- is still pending.'
+            
+            else:
                 prod_to_irr.append({'Product': form.data['product'], 'quantity_accepted': \
                     int(form.data['quantity_accepted']), 'quantity_rejected':int(form.data['quantity_rejected']), \
                     'quantity_balance': int(form.data['quantity_balance']), 'is_par':False})
-            else:
-                return render(request, 'WISH/product_to_irr.html',
-                        { 'error': 'Product -' + str(Product.objects.get(id=int(form.data['product'])).item_name) +  '- is still pending.',
-                        'form': form, 'iform': iform})
-            irr = iform.save(commit=False)
-            irr.irr_no = irn
-            irr.irr_headkey_id = pk
-            if len(IRR.objects.all()) != 0:
-                no = int((IRR.objects.latest('wrs_number')).wrs_number) + 1
-                irr.wrs_number = str(no)
-            else:
-                irr.wrs_number = irr.irr_headkey.inv_station_no.inv_station_no + '000000'
-            res = json.dumps(prod_to_irr)
-            irr.product = res
-            prods = irr.product
-            for prod in prods:
-                p = Product.objects.get(id=(prod['Product']))
-                if int(prod['quantity_accepted']) > p.quantity:
-                    form.fields['product'] = forms.ModelChoiceField(queryset=Product.objects.filter(inv_station_no=inv), label='Product *', required=True)
-                    return render(request, 'WISH/product_to_irr.html',
-                        { 'error': 'Accepted quantity is greater than the number of stocked items.',
-                        'form': form, 'iform': iform})
-                p.quantity = int(prod['quantity_accepted'])
-                p.balance = int(prod['quantity_balance'])
+                p = Product.objects.get(id=int(form.data['product']))
+                p.quantity = int(form.data['quantity_accepted'])
+                p.balance = int(form.data['quantity_balance'])
                 #p.remarks = 'Product has an IRR Record (IRR No: ' + irn + ')'
-            
-            p.save()
-            irr.save()
-            return redirect('WISH.views.product_to_irr', pk=pk, irn=irn, inv=int(inv))
+                p.save()
+                
+                irr = iform.save(commit=False)
+                irr.irr_no = irn
+                irr.irr_headkey_id = pk
+                if len(IRR.objects.all()) != 0:
+                    no = int((IRR.objects.latest('wrs_number')).wrs_number) + 1
+                    irr.wrs_number = str(no)
+                else:
+                    irr.wrs_number = irr.irr_headkey.inv_station_no.inv_station_no + '000000'
+                res = json.dumps(prod_to_irr)
+                irr.product = res
+                  
+                if iform.has_changed():
+                    msg = 'IRR record (IRR No. - ' + irn + ') was successfully added.'
+                    irr.save()
+                    exit = 'Exit'
+                else:
+                    msg = 'Item (' + str(Product.objects.get(id=int(form.data['product'])).item_name) + ') was successfully added'
+
+                    form = Product_to_IRRForm()
+                    iform = IRR_entry_cont_Form()
+                    form.fields['product'] = forms.ModelChoiceField(queryset=Product.objects.filter(inv_station_no=inv), \
+                        label='Product *', required=True)
+                
+                  
+            #return redirect('WISH.views.product_to_irr', pk=pk, irn=irn, inv=int(inv))
     else:
         form = Product_to_IRRForm()
         iform = IRR_entry_cont_Form()
         form.fields['product'] = forms.ModelChoiceField(queryset=Product.objects.filter(inv_station_no=inv), label='Product *', required=True)
-    return render(request, 'WISH/product_to_irr.html', {'form': form, 'iform': iform, 'pk': pk})
+    try:
+        try:
+            return render(request, 'WISH/product_to_irr.html', {'form': form, 'iform': iform, 'error': error})
+        except:
+            try:
+                return render(request, 'WISH/product_to_irr.html', {'msg': msg, 'exit': exit})
+            except:
+                return render(request, 'WISH/product_to_irr.html', {'form': form, 'iform': iform, 'msg': msg})
+    except:
+        return render(request, 'WISH/product_to_irr.html', {'form': form, 'iform': iform})
+            
 
 def miv_entry_S(request, pk):
     del prod_to_irr[:]
