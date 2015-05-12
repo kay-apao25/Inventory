@@ -8,8 +8,6 @@ from .models import *
 from .forms import *
 import time
 import json
-from fm.views import AjaxCreateView
-
 # Create your views here.
 #msg = ''
 def index(request):
@@ -103,7 +101,7 @@ def product_new(request):
         form = ProductForm()
         form1 = ProductForm1()
         form2 = ProductForm2()
-        form3 = ProductForm3()      
+        form3 = ProductForm3()
     try:
         return render(request, 'WISH/product_add.html', {'form3': form3 , 'form1':form1, 'form2': form2, 'msg': msg})
     except:
@@ -153,13 +151,13 @@ def product_to_irr(request, pk, irn, inv):
         if form.is_valid() and iform.is_valid():
             if int(form.data['quantity_balance']) == 0:
                 Product.objects.get(id=int(form.data['product'])).status = 'Complete'
-            
+
             if Product.objects.get(id=int(form.data['product'])).quantity < int(form.data['quantity_accepted']):
                 error = 'Accepted quantity is greater than the number of stocked items.'
 
             elif Product.objects.get(id=int(form.data['product'])).status == 'Pending':
                 error = 'Product -' + str(Product.objects.get(id=int(form.data['product'])).item_name) +  '- is still pending.'
-            
+
             else:
                 prod_to_irr.append({'Product': form.data['product'], 'quantity_accepted': \
                     int(form.data['quantity_accepted']), 'quantity_rejected':int(form.data['quantity_rejected']), \
@@ -168,14 +166,8 @@ def product_to_irr(request, pk, irn, inv):
                 p.quantity = int(form.data['quantity_accepted'])
                 p.balance = int(form.data['quantity_balance'])
                 #p.remarks = 'Product has an IRR Record (IRR No: ' + irn + ')'
-<<<<<<< HEAD
-
-            p.save()
-            irr.save()
-            return redirect('WISH.views.product_to_irr', pk=pk, irn=irn, inv=int(inv))
-=======
                 p.save()
-                
+
                 irr = iform.save(commit=False)
                 irr.irr_no = irn
                 irr.irr_headkey_id = pk
@@ -186,7 +178,7 @@ def product_to_irr(request, pk, irn, inv):
                     irr.wrs_number = irr.irr_headkey.inv_station_no.inv_station_no + '000000'
                 res = json.dumps(prod_to_irr)
                 irr.product = res
-                  
+
                 if iform.has_changed():
                     msg = 'IRR record (IRR No. - ' + irn + ') was successfully added.'
                     irr.save()
@@ -198,10 +190,9 @@ def product_to_irr(request, pk, irn, inv):
                     iform = IRR_entry_cont_Form()
                     form.fields['product'] = forms.ModelChoiceField(queryset=Product.objects.filter(inv_station_no=inv), \
                         label='Product *', required=True)
-                
-                  
+
+
             #return redirect('WISH.views.product_to_irr', pk=pk, irn=irn, inv=int(inv))
->>>>>>> 764356636102732a31c8d7eafada9a626ffcdbe5
     else:
         form = Product_to_IRRForm()
         iform = IRR_entry_cont_Form()
@@ -216,7 +207,7 @@ def product_to_irr(request, pk, irn, inv):
                 return render(request, 'WISH/product_to_irr.html', {'form': form, 'iform': iform, 'msg': msg})
     except:
         return render(request, 'WISH/product_to_irr.html', {'form': form, 'iform': iform})
-            
+
 
 def miv_entry_S(request, pk):
     del prod_to_irr[:]
