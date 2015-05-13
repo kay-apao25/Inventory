@@ -41,6 +41,12 @@ def supplier_del(request, pk):
     sup_del.save()
     return render(request, 'WISH/index.html', {})
 
+def employee_del(request, pk):
+    em_del = get_object_or_404(Employee, pk=pk)
+    em_del.is_delete = True
+    em_del.save()
+    return render(request, 'WISH/index.html', {})
+
 def file_report(request):
     del prod_to_irr[:]
     del prod_to_par[:]
@@ -66,7 +72,7 @@ def supplier(request):
     return render(request, 'WISH/supplier.html', {'sup': sup})
 
 def employee(request):
-    em = Employee.objects.all()
+    em = Employee.objects.filter(is_delete=False)
     return render(request, 'WISH/employee.html', {'em': em})
 
 

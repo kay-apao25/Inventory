@@ -80,7 +80,7 @@ class IRR_entryForm(forms.ModelForm):
 
 class IRR_entryForm1(forms.Form):
     inv_station_no = forms.ModelChoiceField(label='Inventory station *', queryset=Inventory_stat.objects.filter(is_delete=False))
-    supplier = forms.ModelChoiceField(label='Supplier *', queryset=Supplier.objects.all())
+    supplier = forms.ModelChoiceField(label='Supplier *', queryset=Supplier.objects.filter(is_delete=False))
     reference = forms.CharField(label='Reference *')
     invoice_number = forms.CharField(label='Invoice number *')
     po_number = forms.CharField(label='PO number *')
@@ -88,8 +88,8 @@ class IRR_entryForm1(forms.Form):
 
 
 class IRR_entryForm2(forms.Form):
-    dce_user = forms.ModelChoiceField(queryset=Employee.objects.all(), label='User *')
-    dce_approved = forms.ModelChoiceField(queryset=Employee.objects.all(), label='Approved by *')
+    dce_user = forms.ModelChoiceField(queryset=Employee.objects.filter(is_delete=False), label='User *')
+    dce_approved = forms.ModelChoiceField(queryset=Employee.objects.filter(is_delete=False), label='Approved by *')
     proc_date = forms.DateField(widget=DateTimePicker(options={"format": "YYYY-MM-DD", "pickTime": False}), label='Proc date *')
     approved_date = forms.DateField(widget=DateTimePicker(options={"format": "YYYY-MM-DD", "pickTime": False}), label='Approved date*')
     date_dlvrd = forms.DateField(widget=DateTimePicker(options={"format": "YYYY-MM-DD", "pickTime": False}), label='Delivery date *')
@@ -147,8 +147,8 @@ class PAR_Form(forms.ModelForm):
             cost_center_no=IRR.objects.get(irr_no=irn).irr_headkey.inv_station_no.cost_center_no.id))"""
 
     date_acquired = forms.DateField(widget=DateTimePicker(options={"format": "YYYY-MM-DD", "pickTime": False}), label='Date acquired*', required=False)
-    dce = forms.ModelChoiceField(queryset=Employee.objects.all(), label='Accountable Employee*')
-    approved_by = forms.ModelChoiceField(queryset=Employee.objects.all(), label='Approved by*')
+    dce = forms.ModelChoiceField(queryset=Employee.objects.filter(is_delete=False), label='Accountable Employee*')
+    approved_by = forms.ModelChoiceField(queryset=Employee.objects.filter(is_delete=False), label='Approved by*')
 
     class Meta:
         model = PAR
@@ -184,8 +184,8 @@ class GARV_entryForm(forms.ModelForm):
     date_inspected = forms.DateField(widget=DateTimePicker(options={"format": "YYYY-MM-DD", "pickTime": False}), label='Date inspected *')
     date_confirmed = forms.DateField(widget=DateTimePicker(options={"format": "YYYY-MM-DD", "pickTime": False}), label='Date confirmed *')
     cc_number = forms.CharField(label='CC number *')
-    inspected_by = forms.ModelChoiceField(queryset=Employee.objects.all(), label='Inspected by *')
-    confirmed_by = forms.ModelChoiceField(queryset=Employee.objects.all(), label='Confirmed by *')
+    inspected_by = forms.ModelChoiceField(queryset=Employee.objects.filter(is_delete=False), label='Inspected by *')
+    confirmed_by = forms.ModelChoiceField(queryset=Employee.objects.filter(is_delete=False), label='Confirmed by *')
     noted_by = forms.ModelChoiceField(queryset=Employee.objects.all(), label='Noted by *')
 
     class Meta:

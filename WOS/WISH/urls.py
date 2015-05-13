@@ -23,6 +23,7 @@ urlpatterns = [
     url(r'^inv_stat_del/(?P<pk>[0-9]+)/$', views.inv_stat_del),
     url(r'^cost_center_del/(?P<pk>[0-9]+)/$', views.cost_center_del),
     url(r'^supplier_del/(?P<pk>[0-9]+)/$', views.supplier_del),
+    url(r'^employee_del/(?P<pk>[0-9]+)/$', views.employee_del),
     url(r'^cost_center_details/(?P<pk>[0-9]+)/$', views.cost_center_details),
     url(r'^supplier_details/(?P<pk>[0-9]+)/$', views.supplier_details),
     url(r'^employee_details/(?P<dce>[0-9]+)/$', views.employee_details),
