@@ -630,6 +630,10 @@ def supplier_details(request, pk):
     sup = get_object_or_404(Supplier, supplier_number=pk)
     return render(request, 'WISH/supplier_details.html', {'sup': sup})
 
+def employee_details(request, dce):
+    em = get_object_or_404(Employee, dce=dce)
+    return render(request, 'WISH/employee_details.html', {'em': em})
+
 def product_form(request, pk):
     product = get_object_or_404(Product, pk=pk)
     if request.method == 'POST':
@@ -688,6 +692,22 @@ def cost_center_form(request, pk):
         form.save()
         return redirect('WISH.views.index')
     return render(request, 'WISH/cost_center_form.html', {'form': form})
+
+def supplier_form(request, pk):
+    sup = get_object_or_404(Supplier, supplier_number=pk)
+    form = Supplier_lib(request.POST or None, instance=sup)
+    if form.is_valid():
+        form.save()
+        return redirect('WISH.views.index')
+    return render(request, 'WISH/supplier_form.html', {'form': form})
+
+def employee_form(request, dce):
+    em = get_object_or_404(Employee, dce=dce)
+    form = Employee_lib(request.POST or None, instance=em)
+    if form.is_valid():
+        form.save()
+        return redirect('WISH.views.index')
+    return render(request, 'WISH/employee_form.html', {'form': form})
 
 def par_form(request, pk):
     parss = get_object_or_404(PAR, pk=pk)

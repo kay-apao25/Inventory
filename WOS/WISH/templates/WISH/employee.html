@@ -13,14 +13,14 @@
        <table class="table table-list-search5">
         <thead>
           <tr>
-    	      <th>dce.</th>
-            <th>name</th>
+    	      <th>DCE</th>
+            <th>Name</th>
           </tr>
         </thead>
    	{% for ems in em %}
      	<tr>
         <td>
-
+          <a href="{% url 'WISH.views.employee_details' dce=ems.dce %}">
             {{ems.dce}}
           </a>
         </td>
