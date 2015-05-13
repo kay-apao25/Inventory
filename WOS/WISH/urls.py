@@ -43,6 +43,7 @@ urlpatterns = [
     #url(r'^miv_report/$', views.miv_report),
     #url(r'^par_report/$', views.par_report),
     #url(r'^garv_report/$', views.garv_report),
+    url(r'^add_cost_center/$', views.add_cost_center, name='add_cost_center'),
     url(r'^file_reports/$', views.file_report),
     url(r'^irr_reports/$', views.irr_reports),
     url(r'^miv_reports/$', views.miv_reports),
