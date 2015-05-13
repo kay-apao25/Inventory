@@ -53,4 +53,5 @@ urlpatterns = [
     url(r'^file_entry/$', views.file_entry),
     url(r'^libraries/$', views.libraries),
     url(r'^stat_lib/$', views.stat_lib, name='stat_lib'),
+    url(r'^sup_lib/$', views.sup_lib, name='sup_lib'),
 ]

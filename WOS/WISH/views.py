@@ -117,6 +117,26 @@ def stat_lib(request):
         form = Stat_lib()
     return render(request, 'WISH/stat_lib.html', {'form': form })
 
+def sup_lib(request):
+    if request.method == 'POST':
+        form = Supplier_lib(request.POST)
+        form1 = Supplier_lib1(request.POST)
+        form2 = Supplier_lib2(request.POST)
+        if form1.is_valid() and form2.is_valid():
+            sup = form.save(commit=False)
+            for key in form.data.keys():
+                key1 = key
+                setattr(sup, key, form1.data[key1])
+                setattr(sup, key, form2.data[key1])
+            sup.save()
+            return redirect('WISH.views.index')
+    else:
+        form = Supplier_lib()
+        form1 = Supplier_lib1()
+        form2 = Supplier_lib2()
+    return render(request, 'WISH/sup_lib.html', {'form1': form1, 'form2': form2})
+
+
 def product_new(request):
     if request.method == "POST":
 
