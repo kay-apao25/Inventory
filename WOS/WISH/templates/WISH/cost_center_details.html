@@ -1,0 +1,42 @@
+{% extends 'WISH/index.html' %}
+ {% block content %}
+<html>
+    <head>
+        <title>Cost Center details</title>
+        <style type="text/css" >
+        	table, th, td{
+        		border: 1px solid black;
+        		border-collapse: collapse;
+        		text-align: left;
+            font-weight: italic;
+        	}
+        	th, td {
+        		padding: 5px
+        	}
+        </style>
+        <h1 align="center"><b>Cost Center Details</b></h1>
+    </head>
+<br><br>
+    <body>
+      <table style="width:30%;" align="center" bgcolor="#00FF00">
+        <tr>
+          <td >
+            <b>Cost Center Name :</b><br> <center>{{cc.cost_center_name}}</center>
+          </td>
+
+        </tr>
+        <tr>
+
+          <td>
+            <b>Functional Group : </b><br><center>{{cc.functional_group}}</center>
+          </td>
+
+      </table>
+      <br><br
+      <div align="center"><a href="{% url 'WISH.views.cost_center_form' pk=cc.pk %}" class="save btn btn-default">Edit</a>&nbsp;&nbsp;&nbsp;<a href="#" class="save btn btn-default">Delete</a></div>
+
+    </body>
+
+</html>
+
+{% endblock %}
