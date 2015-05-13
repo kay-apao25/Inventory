@@ -26,7 +26,7 @@ class ProductForm1(forms.Form):
     part_number = forms.CharField(label='Part number *', max_length=8)
     manufacture_date = forms.DateField(label='Manufacture date *',
         widget=DateTimePicker(options={"format": "YYYY-MM-DD", "pickTime": False}))
-    inv_station_no = forms.ModelChoiceField(label='Inventory station *', queryset=Inventory_stat.objects.all())
+    inv_station_no = forms.ModelChoiceField(label='Inventory station *', queryset=Inventory_stat.objects.filter(is_delete=False))
 
 class ProductForm2(forms.Form):
     UNIT_CHOICES = (
@@ -79,7 +79,7 @@ class IRR_entryForm(forms.ModelForm):
 
 
 class IRR_entryForm1(forms.Form):
-    inv_station_no = forms.ModelChoiceField(label='Inventory station *', queryset=Inventory_stat.objects.all())
+    inv_station_no = forms.ModelChoiceField(label='Inventory station *', queryset=Inventory_stat.objects.filter(is_delete=False))
     supplier = forms.ModelChoiceField(label='Supplier *', queryset=Supplier.objects.all())
     reference = forms.CharField(label='Reference *')
     invoice_number = forms.CharField(label='Invoice number *')
@@ -97,7 +97,7 @@ class IRR_entryForm2(forms.Form):
 class IRR_entry_cont_Form(forms.ModelForm):
 
     date_recv = forms.DateField(widget=DateTimePicker(options={"format": "YYYY-MM-DD", "pickTime": False}), label='Date received *', required=False)
-    cost_center_no = forms.ModelChoiceField(queryset=Cost_center.objects.all(), label='Cost center *', required=False)
+    cost_center_no = forms.ModelChoiceField(queryset=Cost_center.objects.filter(is_delete=False), label='Cost center *', required=False)
     wo_no = forms.CharField(label='WO number *', required=False)
 
     class Meta:
@@ -147,6 +147,8 @@ class PAR_Form(forms.ModelForm):
             cost_center_no=IRR.objects.get(irr_no=irn).irr_headkey.inv_station_no.cost_center_no.id))"""
 
     date_acquired = forms.DateField(widget=DateTimePicker(options={"format": "YYYY-MM-DD", "pickTime": False}), label='Date acquired*', required=False)
+    dce = forms.ModelChoiceField(queryset=Employee.objects.all(), label='Accountable Employee*')
+    approved_by = forms.ModelChoiceField(queryset=Employee.objects.all(), label='Approved by*')
 
     class Meta:
         model = PAR

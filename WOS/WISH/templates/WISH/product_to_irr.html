@@ -16,11 +16,9 @@
       </div>-->
     <form method="POST" class="irr_entry">{% csrf_token %}
     {% if exit %}
-      {%if msg%}
-        <div class="alert alert-success" style="width:400px">
-          {{ msg }}
-        </div>
-      {% endif %}
+      <div class="alert alert-warning" style="width:400px">
+        {{ exit }}
+      </div>
       <div align="center"><a href= "{% url 'WISH.views.index' %}"><i class="glyphicon glyphicon-share-alt"></i> {{ exit }}</a></div>
     {% else %}
       <strong><p style="font-size:15px">Fields with asterisk are required.</p></strong>

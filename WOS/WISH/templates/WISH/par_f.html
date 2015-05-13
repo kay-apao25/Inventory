@@ -1,6 +1,12 @@
 {% extends 'WISH/index.html' %}
 
 {% block content %}
+{% if exit %}
+  <div class="alert alert-warning" style="width:400px">
+    {{ exit }}
+  </div>
+  <div align="center"><a href= "{% url 'WISH.views.index' %}"><i class="glyphicon glyphicon-share-alt"></i> Exit </a></div>
+{% else %}
 <h2 align="center">Select the IRR record to be created with PAR report</h2>
   <table style="width:60%;" align="center" class="table">
     <thead>
@@ -29,4 +35,5 @@
         </tr>
       {% endfor %}
   </table>
+  {% endif %}
 {% endblock %}

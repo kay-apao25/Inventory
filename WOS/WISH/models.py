@@ -23,6 +23,7 @@ class Supplier(models.Model):
 class Cost_center(models.Model):
     cost_center_name = models.TextField(max_length=20)
     functional_group = models.CharField(max_length=20)
+    is_delete=models.BooleanField(default=False)
     history = HistoricalRecords()
 
     def __str__(self):
@@ -32,6 +33,7 @@ class Inventory_stat(models.Model):
     inv_station_no = models.CharField(max_length = 20)
     station_description = models.TextField()
     cost_center_no = models.ForeignKey(Cost_center, related_name="cc_iFK")
+    is_delete = models.BooleanField(default=False)
     history = HistoricalRecords()
 
     def __str__(self):
