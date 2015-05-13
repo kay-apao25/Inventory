@@ -136,6 +136,18 @@ def sup_lib(request):
         form2 = Supplier_lib2()
     return render(request, 'WISH/sup_lib.html', {'form1': form1, 'form2': form2})
 
+def employee_lib(request):
+    if request.method == "POST":
+        form = Employee_lib(request.POST)
+        if form.is_valid() :
+            employee = form.save(commit=False)
+            employee.save()
+            return redirect('WISH.views.index')
+
+    else:
+        form = Employee_lib()
+    return render(request, 'WISH/employee_lib.html', {'form': form })
+
 
 def product_new(request):
     if request.method == "POST":
