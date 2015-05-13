@@ -101,12 +101,12 @@ def product_new(request):
         form1 = ProductForm1(request.POST)
         form2 = ProductForm2(request.POST)
         form3 = ProductForm3(request.POST)
-        
+
         #Non-empty forms are to be validated.
         if form.is_valid() and form1.is_valid() and form2.is_valid() :
-            
+
             product = form.save(commit=False)
-            
+
             #Generation of SLC number
             if len(Product.objects.all()) != 0:
                 no = int((Product.objects.latest('id')).slc_number) + 1
@@ -124,7 +124,7 @@ def product_new(request):
                 setattr(product, key, form1.data[key1])
                 setattr(product, key, form2.data[key1])
                 setattr(product, key, form3.data[key1])
-            
+
             if form2.data['expiry_date'] == '':
                 product.expiry_date = None
             if int(form2.data['quantity']) > 1:
@@ -132,14 +132,14 @@ def product_new(request):
                     product.unit_measure = str(product.unit_measure) + 'es'
                 else:
                     product.unit_measure = str(product.unit_measure) + 's'
-            
+
             product.amount = int(form2.data['unit_cost']) * int(form2.data['quantity'])
 
             product.save()
-            
+
             #Message to be returned if adding of the new product entry.
             msg = 'Product (' + form1.data['item_name'] + ') was added successfully.'
-            
+
             #Displaying of blank forms
             form1 = ProductForm1()
             form2 = ProductForm2()
@@ -150,7 +150,7 @@ def product_new(request):
         form1 = ProductForm1()
         form2 = ProductForm2()
         form3 = ProductForm3()
-    
+
     #Rendering of forms and/or messages
     try:
         return render(request, 'WISH/product_add.html', {'form3': form3 , 'form1':form1, 'form2': form2, 'msg': msg})
@@ -212,7 +212,7 @@ def product_to_irr(request, pk, inv):
                 p.balance = 0
                 p.status = 'Complete'
                 p.save()
-            
+
             #To check if quantity accepted entered is less than the present stocked items.
             if Product.objects.get(id=int(form.data['product'])).quantity < int(form.data['quantity_accepted']):
                 error = 'Accepted quantity is greater than the number of stocked items.'
@@ -235,7 +235,7 @@ def product_to_irr(request, pk, inv):
                 p.save()
 
                 irr = iform.save(commit=False)
-                
+
                 #Generation of IRR number
                 if len(IRR.objects.all()) != 0:
                     no = int((IRR.objects.latest('wrs_number')).irr_no) + 1
@@ -254,7 +254,9 @@ def product_to_irr(request, pk, inv):
                     irr.wrs_number = str(no)
                 else:
                     irr.wrs_number = irr.irr_headkey.inv_station_no.inv_station_no + '000000'
-                
+
+                irr.irr_headkey_id = pk
+
                 res = json.dumps(prod_to_irr)
                 irr.product = res
 
@@ -303,8 +305,8 @@ def miv_entry_S(request, pk):
         #Non-empty forms are to be validated.
         if form.is_valid():
 
-            error = ''
-            
+            #error = ''
+
             miv_entry = form.save(commit=False)
             miv_entry.irr_no_id = pk
             
@@ -320,6 +322,7 @@ def miv_entry_S(request, pk):
 
             miv_entry.doc_date = time.strftime("%Y-%m-%d")
             miv_entry.irr_no_id = pk
+
             prods = miv_entry.irr_no.product
 
             #Deducting the number of quantities to be pulled out by the user
@@ -347,9 +350,6 @@ def miv_entry_S(request, pk):
                     irr.is_miv = True
                     irr.save()
 
-            #Displaying of blank forms.
-            #form = MIV_entryForm()
-    
     else:
         form = MIV_entryForm()
 
@@ -618,6 +618,10 @@ def product_details(request, pk):
     prod = get_object_or_404(Product, pk=pk)
     return render(request, 'WISH/product_details.html', {'prod': prod})
 
+def inv_stat_details(request, pk):
+    invs = get_object_or_404(Inventory_stat, inv_station_no=pk)
+    return render(request, 'WISH/inv_stat_details.html', {'invs': invs})
+
 def product_form(request, pk):
     product = get_object_or_404(Product, pk=pk)
     if request.method == 'POST':
@@ -660,6 +664,14 @@ def product_form(request, pk):
                     form3.fields[key].initial = getattr(product, key)
     return render(request, 'WISH/product_form.html', {'form1': form1, 'form2': form2, 'form3': form3 })
 
+
+def inv_stat_form(request, pk):
+    inv = get_object_or_404(Inventory_stat, pk=pk)
+    form = Stat_lib(request.POST or None, instance=inv)
+    if form.is_valid():
+        form.save()
+        return redirect('WISH.views.index')
+    return render(request, 'WISH/inv_stat_form.html', {'form': form})
 
 def par_form(request, pk):
     parss = get_object_or_404(PAR, pk=pk)
