@@ -15,6 +15,7 @@ class Supplier(models.Model):
     balance_amount = models.FloatField()
     contact_person = models.TextField(max_length=20)
     remarks = models.TextField(max_length=20)
+    is_delete=models.BooleanField(default=False)
     history = HistoricalRecords()
 
     def __str__(self):

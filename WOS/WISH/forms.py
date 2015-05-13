@@ -52,7 +52,7 @@ class ProductForm2(forms.Form):
     status = forms.ChoiceField(label='Status *', choices=STATUS_CHOICES)
 
 class ProductForm3(forms.Form):
-    purchased_from = forms.ModelChoiceField(queryset=Supplier.objects.all(), label='Purchased from *')
+    purchased_from = forms.ModelChoiceField(queryset=Supplier.objects.filter(is_delete=False), label='Purchased from *')
     average_amount = forms.FloatField(label='Average amount *')
     balance_limit = forms.FloatField(label='Balance limit *')
     serial_number = forms.CharField(max_length=15, required=False)

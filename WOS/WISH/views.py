@@ -35,6 +35,12 @@ def cost_center_del(request, pk):
     cos_del.save()
     return render(request, 'WISH/index.html', {})
 
+def supplier_del(request, pk):
+    sup_del = get_object_or_404(Supplier, pk=pk)
+    sup_del.is_delete = True
+    sup_del.save()
+    return render(request, 'WISH/index.html', {})
+
 def file_report(request):
     del prod_to_irr[:]
     del prod_to_par[:]
@@ -56,7 +62,7 @@ def cost_center(request):
     return render(request, 'WISH/cost_center.html', {'cos': cos})
 
 def supplier(request):
-    sup = Supplier.objects.all()
+    sup = Supplier.objects.filter(is_delete=False)
     return render(request, 'WISH/supplier.html', {'sup': sup})
 
 def employee(request):
