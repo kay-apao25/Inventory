@@ -117,6 +117,20 @@ def stat_lib(request):
         form = Stat_lib()
     return render(request, 'WISH/stat_lib.html', {'form': form })
 
+def add_cost_center(request):
+    if request.method == "POST":
+        form = CC_lib(request.POST)
+        if form.is_valid() :
+            product = form.save(commit=False)
+
+
+            product.save()
+            return redirect('WISH.views.index')
+
+    else:
+        form = CC_lib()
+    return render(request, 'WISH/add_cost_center.html', {'form': form })
+
 def product_new(request):
     if request.method == "POST":
 
