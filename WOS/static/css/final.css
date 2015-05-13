@@ -1,0 +1,38 @@
+.body img {
+  width: 100%;
+  height: 300px;
+  margin-top: 0px; 
+}
+
+.font p{
+  font-size: 20px;
+}
+
+
+.col-md-12 img{
+  float: left;
+  width: 150px;
+  height: 150px;
+  margin: 25px 25px 25px 25px;
+  
+  border-radius: 100%;
+  -webkit-box-shadow: 0px 0px 3px 5px gray;
+  -moz-box-shadow: 0px 0px 3px 5px gray;
+  box-shadow: 0px 0px 3px 5px gray;
+}
+
+.footer{
+	background: #333;
+	width: 100%;
+	padding: 1% 1% 1% 1%;
+	margin-top: 2%;
+	height: 40px;
+	float: left;
+}
+
+.footer .container p{
+	width: 92%;
+	margin-bottom: 0%;
+	font-size: 10px;
+
+}
