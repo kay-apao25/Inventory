@@ -23,6 +23,12 @@ def aboutus(request):
 def wrs_num(request):
     return render(request, 'WISH/wrs_num.html', {})
 
+def inv_stat_del(request, pk):
+    inv_del = get_object_or_404(Inventory_stat, pk=pk)
+    inv_del.is_delete = True
+    inv_del.save()
+    return render(request, 'WISH/index.html', {})
+
 def file_report(request):
     del prod_to_irr[:]
     del prod_to_par[:]
