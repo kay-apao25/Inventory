@@ -23,6 +23,30 @@ def aboutus(request):
 def wrs_num(request):
     return render(request, 'WISH/wrs_num.html', {})
 
+def inv_stat_del(request, pk):
+    inv_del = get_object_or_404(Inventory_stat, pk=pk)
+    inv_del.is_delete = True
+    inv_del.save()
+    return render(request, 'WISH/index.html', {})
+
+def cost_center_del(request, pk):
+    cos_del = get_object_or_404(Cost_center, pk=pk)
+    cos_del.is_delete = True
+    cos_del.save()
+    return render(request, 'WISH/index.html', {})
+
+def supplier_del(request, pk):
+    sup_del = get_object_or_404(Supplier, pk=pk)
+    sup_del.is_delete = True
+    sup_del.save()
+    return render(request, 'WISH/index.html', {})
+
+def employee_del(request, pk):
+    em_del = get_object_or_404(Employee, pk=pk)
+    em_del.is_delete = True
+    em_del.save()
+    return render(request, 'WISH/index.html', {})
+
 def file_report(request):
     del prod_to_irr[:]
     del prod_to_par[:]
@@ -36,19 +60,19 @@ def libraries(request):
     return render(request, 'WISH/libraries.html', {})
 
 def inv_stat(request):
-    inv = Inventory_stat.objects.all()
+    inv = Inventory_stat.objects.filter(is_delete=False)
     return render(request, 'WISH/inv_stat.html', {'inv': inv})
 
 def cost_center(request):
-    cos = Cost_center.objects.all()
+    cos = Cost_center.objects.filter(is_delete=False)
     return render(request, 'WISH/cost_center.html', {'cos': cos})
 
 def supplier(request):
-    sup = Supplier.objects.all()
+    sup = Supplier.objects.filter(is_delete=False)
     return render(request, 'WISH/supplier.html', {'sup': sup})
 
 def employee(request):
-    em = Employee.objects.all()
+    em = Employee.objects.filter(is_delete=False)
     return render(request, 'WISH/employee.html', {'em': em})
 
 
@@ -92,6 +116,51 @@ def stat_lib(request):
     else:
         form = Stat_lib()
     return render(request, 'WISH/stat_lib.html', {'form': form })
+
+def sup_lib(request):
+    if request.method == 'POST':
+        form = Supplier_lib(request.POST)
+        form1 = Supplier_lib1(request.POST)
+        form2 = Supplier_lib2(request.POST)
+        if form1.is_valid() and form2.is_valid():
+            sup = form.save(commit=False)
+            for key in form.data.keys():
+                key1 = key
+                setattr(sup, key, form1.data[key1])
+                setattr(sup, key, form2.data[key1])
+            sup.save()
+            return redirect('WISH.views.index')
+    else:
+        form = Supplier_lib()
+        form1 = Supplier_lib1()
+        form2 = Supplier_lib2()
+    return render(request, 'WISH/sup_lib.html', {'form1': form1, 'form2': form2})
+
+def employee_lib(request):
+    if request.method == "POST":
+        form = Employee_lib(request.POST)
+        if form.is_valid() :
+            employee = form.save(commit=False)
+            employee.save()
+            return redirect('WISH.views.index')
+
+    else:
+        form = Employee_lib()
+    return render(request, 'WISH/employee_lib.html', {'form': form })
+
+def add_cost_center(request):
+    if request.method == "POST":
+        form = CC_lib(request.POST)
+        if form.is_valid() :
+            product = form.save(commit=False)
+
+
+            product.save()
+            return redirect('WISH.views.index')
+
+    else:
+        form = CC_lib()
+    return render(request, 'WISH/add_cost_center.html', {'form': form })
 
 def product_new(request):
     if request.method == "POST":
@@ -194,7 +263,7 @@ def irr_entry(request):
         #To check if there are no available products to be made with IRR record
         if len(pform.fields['product'].queryset) == 0:
             #If true return this exit message
-            exit = 'No available products to be made with IRR record.' 
+            exit = 'No available products to be made with IRR record.'
         else:
             #else display blank forms.
             form = IRR_entryForm()
@@ -284,10 +353,10 @@ def product_to_irr(request, pk, inv):
 
                 if len(form.fields['product'].queryset) == 0:
                     #If true return this exit message
-                    exit = 'No available products to be made with IRR record.' 
+                    exit = 'No available products to be made with IRR record.'
                 else:
                     #else display blank forms.
-                    form = Product_to_IRRForm()        
+                    form = Product_to_IRRForm()
                     iform = IRR_entry_cont_Form()
 
     else:
@@ -295,7 +364,7 @@ def product_to_irr(request, pk, inv):
         form.fields['product'].queryset = Product.objects.filter(inv_station_no=inv).filter(is_irr=False)
         if len(form.fields['product'].queryset) == 0:
             #If true return this exit message
-            exit = 'No available products to be made with IRR record.' 
+            exit = 'No available products to be made with IRR record.'
         else:
             #else display blank forms.
             iform = IRR_entry_cont_Form()
@@ -559,9 +628,6 @@ def par(request, inv):
                 msg = 2
                 #par_no = 0
                 form = PAR_Form()
-                #iform = Product_to_PARForm()
-
-            #return redirect('WISH.views.par_entry', pk=par_entry.par_no, inv=inv, msg=msg)
     else:
 
         form = PAR_Form()
@@ -570,6 +636,7 @@ def par(request, inv):
         cost_center_no=IRR.objects.get(irr_no=inv).irr_headkey.inv_station_no.cost_center_no.id)
     form.fields['approved_by'].queryset = Employee.objects.filter(\
         cost_center_no=IRR.objects.get(irr_no=inv).irr_headkey.inv_station_no.cost_center_no.id) 
+
     products = IRR.objects.get(irr_no=inv).product
     for prod in products:
         if prod['is_par'] == False:
@@ -606,6 +673,18 @@ def product_details(request, pk):
 def inv_stat_details(request, pk):
     invs = get_object_or_404(Inventory_stat, inv_station_no=pk)
     return render(request, 'WISH/inv_stat_details.html', {'invs': invs})
+
+def cost_center_details(request, pk):
+    cc = get_object_or_404(Cost_center, pk=pk)
+    return render(request, 'WISH/cost_center_details.html', {'cc': cc})
+
+def supplier_details(request, pk):
+    sup = get_object_or_404(Supplier, supplier_number=pk)
+    return render(request, 'WISH/supplier_details.html', {'sup': sup})
+
+def employee_details(request, dce):
+    em = get_object_or_404(Employee, dce=dce)
+    return render(request, 'WISH/employee_details.html', {'em': em})
 
 def product_form(request, pk):
     product = get_object_or_404(Product, pk=pk)
@@ -657,6 +736,48 @@ def inv_stat_form(request, pk):
         form.save()
         return redirect('WISH.views.index')
     return render(request, 'WISH/inv_stat_form.html', {'form': form})
+
+def cost_center_form(request, pk):
+    cc = get_object_or_404(Cost_center, pk=pk)
+    form = CC_lib(request.POST or None, instance=cc)
+    if form.is_valid():
+        form.save()
+        return redirect('WISH.views.index')
+    return render(request, 'WISH/cost_center_form.html', {'form': form})
+
+def supplier_form(request, pk):
+    sup = get_object_or_404(Supplier, supplier_number=pk)
+    if request.method == 'POST':
+        form = Supplier_lib(request.POST)
+        form1 = Supplier_lib1(request.POST)
+        form2 = Supplier_lib2(request.POST)
+        if form1.is_valid() and form2.is_valid():
+            for key in form.data.keys():
+                key1 = key
+                setattr(sup, key, form1.data[key1])
+                setattr(sup, key, form2.data[key1])
+            sup.save()
+            return redirect('WISH.views.index')
+    else:
+        form = Supplier_lib(instance=sup)
+        form1 = Supplier_lib1()
+        form2 = Supplier_lib2()
+        for key in form.fields.keys():
+            for key1 in form1.fields.keys():
+                if key == key1:
+                    form1.fields[key].initial = getattr(sup, key)
+            for key2 in form2.fields.keys():
+                if key == key2:
+                    form2.fields[key].initial = getattr(sup, key)
+    return render(request, 'WISH/supplier_form.html', {'form1': form1, 'form2': form2})
+
+def employee_form(request, dce):
+    em = get_object_or_404(Employee, dce=dce)
+    form = Employee_lib(request.POST or None, instance=em)
+    if form.is_valid():
+        form.save()
+        return redirect('WISH.views.index')
+    return render(request, 'WISH/employee_form.html', {'form': form})
 
 def par_form(request, pk):
     parss = get_object_or_404(PAR, pk=pk)

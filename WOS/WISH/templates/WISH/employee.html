@@ -1,6 +1,6 @@
 {% block content %}
 <br>
-<div align="right"><a href="#" class="save btn btn-default">Add Employee</a></div><br>
+<div align="right"><a href="{% url 'WISH.views.employee_lib' %}" class="save btn btn-default">Add Employee</a></div><br>
 <div class="col-md-3">
             <form action="#" method="get">
                 <div class="input-group">
@@ -13,14 +13,14 @@
        <table class="table table-list-search5">
         <thead>
           <tr>
-    	      <th>dce.</th>
-            <th>name</th>
+    	      <th>DCE</th>
+            <th>Name</th>
           </tr>
         </thead>
    	{% for ems in em %}
      	<tr>
         <td>
-
+          <a href="{% url 'WISH.views.employee_details' dce=ems.dce %}">
             {{ems.dce}}
           </a>
         </td>

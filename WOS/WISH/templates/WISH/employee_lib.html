@@ -1,0 +1,32 @@
+{% extends 'WISH/index.html' %}
+{% load bootstrap %}
+
+{% block content %}
+	<style type="text/css">
+        .form-group{
+          width:400px;
+        }
+      </style>
+    <div class="page-header">
+      <h2 align="center">Add another station</h2>
+    </div>
+    <br>
+    <form method="POST" class="irr_entry">{% csrf_token %}
+    <table width="10%">
+    <tr>
+    <td colspan="2">
+
+     <td style="padding:20px">
+     {% for field in form %}
+
+   		&nbsp;&nbsp;{{field | bootstrap_horizontal:'col-lg-4'}}&nbsp;&nbsp;&nbsp;
+
+     {%endfor%}
+     <br>
+     <br>
+     </td>
+     </tr>
+     </table>
+		<div align="center"><button type="submit" class="save btn btn-default">Save</button></div>
+   </form>
+{% endblock %}

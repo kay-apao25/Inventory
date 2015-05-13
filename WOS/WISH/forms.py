@@ -26,7 +26,7 @@ class ProductForm1(forms.Form):
     part_number = forms.CharField(label='Part number *', max_length=8)
     manufacture_date = forms.DateField(label='Manufacture date *',
         widget=DateTimePicker(options={"format": "YYYY-MM-DD", "pickTime": False}))
-    inv_station_no = forms.ModelChoiceField(label='Inventory station *', queryset=Inventory_stat.objects.all())
+    inv_station_no = forms.ModelChoiceField(label='Inventory station *', queryset=Inventory_stat.objects.filter(is_delete=False))
 
 class ProductForm2(forms.Form):
     UNIT_CHOICES = (
@@ -52,7 +52,7 @@ class ProductForm2(forms.Form):
     status = forms.ChoiceField(label='Status *', choices=STATUS_CHOICES)
 
 class ProductForm3(forms.Form):
-    purchased_from = forms.ModelChoiceField(queryset=Supplier.objects.all(), label='Purchased from *')
+    purchased_from = forms.ModelChoiceField(queryset=Supplier.objects.filter(is_delete=False), label='Purchased from *')
     average_amount = forms.FloatField(label='Average amount *')
     balance_limit = forms.FloatField(label='Balance limit *')
     serial_number = forms.CharField(max_length=15, required=False)
@@ -79,8 +79,8 @@ class IRR_entryForm(forms.ModelForm):
 
 
 class IRR_entryForm1(forms.Form):
-    inv_station_no = forms.ModelChoiceField(label='Inventory station *', queryset=Inventory_stat.objects.all())
-    supplier = forms.ModelChoiceField(label='Supplier *', queryset=Supplier.objects.all())
+    inv_station_no = forms.ModelChoiceField(label='Inventory station *', queryset=Inventory_stat.objects.filter(is_delete=False))
+    supplier = forms.ModelChoiceField(label='Supplier *', queryset=Supplier.objects.filter(is_delete=False))
     reference = forms.CharField(label='Reference *')
     invoice_number = forms.CharField(label='Invoice number *')
     po_number = forms.CharField(label='PO number *')
@@ -88,8 +88,8 @@ class IRR_entryForm1(forms.Form):
 
 
 class IRR_entryForm2(forms.Form):
-    dce_user = forms.ModelChoiceField(queryset=Employee.objects.all(), label='User *')
-    dce_approved = forms.ModelChoiceField(queryset=Employee.objects.all(), label='Approved by *')
+    dce_user = forms.ModelChoiceField(queryset=Employee.objects.filter(is_delete=False), label='User *')
+    dce_approved = forms.ModelChoiceField(queryset=Employee.objects.filter(is_delete=False), label='Approved by *')
     proc_date = forms.DateField(widget=DateTimePicker(options={"format": "YYYY-MM-DD", "pickTime": False}), label='Proc date *')
     approved_date = forms.DateField(widget=DateTimePicker(options={"format": "YYYY-MM-DD", "pickTime": False}), label='Approved date*')
     date_dlvrd = forms.DateField(widget=DateTimePicker(options={"format": "YYYY-MM-DD", "pickTime": False}), label='Delivery date *')
@@ -97,7 +97,7 @@ class IRR_entryForm2(forms.Form):
 class IRR_entry_cont_Form(forms.ModelForm):
 
     date_recv = forms.DateField(widget=DateTimePicker(options={"format": "YYYY-MM-DD", "pickTime": False}), label='Date received *', required=False)
-    cost_center_no = forms.ModelChoiceField(queryset=Cost_center.objects.all(), label='Cost center *', required=False)
+    cost_center_no = forms.ModelChoiceField(queryset=Cost_center.objects.filter(is_delete=False), label='Cost center *', required=False)
     wo_no = forms.CharField(label='WO number *', required=False)
 
     class Meta:
@@ -147,8 +147,8 @@ class PAR_Form(forms.ModelForm):
             cost_center_no=IRR.objects.get(irr_no=irn).irr_headkey.inv_station_no.cost_center_no.id))"""
 
     date_acquired = forms.DateField(widget=DateTimePicker(options={"format": "YYYY-MM-DD", "pickTime": False}), label='Date acquired*', required=False)
-    dce = forms.ModelChoiceField(queryset=Employee.objects.all(), label='Accountable Employee*', required=False)
-    approved_by = forms.ModelChoiceField(queryset=Employee.objects.all(), label='Approved by*', required=False)
+    dce = forms.ModelChoiceField(queryset=Employee.objects.filter(is_delete=False), label='Accountable Employee*', required=False)
+    approved_by = forms.ModelChoiceField(queryset=Employee.objects.filter(is_delete=False), label='Approved by*', required=False)
 
     class Meta:
         model = PAR
@@ -184,8 +184,8 @@ class GARV_entryForm(forms.ModelForm):
     date_inspected = forms.DateField(widget=DateTimePicker(options={"format": "YYYY-MM-DD", "pickTime": False}), label='Date inspected *')
     date_confirmed = forms.DateField(widget=DateTimePicker(options={"format": "YYYY-MM-DD", "pickTime": False}), label='Date confirmed *')
     cc_number = forms.CharField(label='CC number *')
-    inspected_by = forms.ModelChoiceField(queryset=Employee.objects.all(), label='Inspected by *')
-    confirmed_by = forms.ModelChoiceField(queryset=Employee.objects.all(), label='Confirmed by *')
+    inspected_by = forms.ModelChoiceField(queryset=Employee.objects.filter(is_delete=False), label='Inspected by *')
+    confirmed_by = forms.ModelChoiceField(queryset=Employee.objects.filter(is_delete=False), label='Confirmed by *')
     noted_by = forms.ModelChoiceField(queryset=Employee.objects.all(), label='Noted by *')
 
     class Meta:
@@ -237,3 +237,31 @@ class CC_lib(forms.ModelForm):
     class Meta:
         model = Cost_center
         fields = ('cost_center_name', 'functional_group',)
+
+class Supplier_lib(forms.ModelForm):
+
+    class Meta:
+        model = Supplier
+        fields = ('supplier_number', 'supplier_name', 'supplier_address', 'telephone_number',
+        'credit_limit', 'debit_amount', 'credit_amount', 'balance_amount', 'contact_person',
+        'remarks',)
+
+class Supplier_lib1(forms.ModelForm):
+
+    class Meta:
+        model = Supplier
+        fields = ('supplier_number', 'telephone_number',
+        'credit_limit', 'supplier_name', 'supplier_address', )
+
+class Supplier_lib2(forms.ModelForm):
+
+    class Meta:
+        model = Supplier
+        fields = ('debit_amount', 'credit_amount', 'balance_amount', 'contact_person',
+        'remarks',)
+
+class Employee_lib(forms.ModelForm):
+
+    class Meta:
+        model = Employee
+        fields = ('dce', 'cost_center_no', 'charging_cc_no', 'name', 'position',)

@@ -5,16 +5,17 @@ from json_field import JSONField
 
 # Create your models here.
 class Supplier(models.Model):
-    supplier_number = models.CharField(max_length=15)
+    supplier_number = models.CharField(max_length=8)
     supplier_name = models.TextField(max_length=20)
     supplier_address = models.TextField(max_length=20)
-    telephone_number = models.CharField(max_length=20)
+    telephone_number = models.CharField(max_length=11)
     credit_limit = models.FloatField()
     debit_amount = models.FloatField()
     credit_amount = models.FloatField()
     balance_amount = models.FloatField()
     contact_person = models.TextField(max_length=20)
     remarks = models.TextField(max_length=20)
+    is_delete=models.BooleanField(default=False)
     history = HistoricalRecords()
 
     def __str__(self):
@@ -23,6 +24,7 @@ class Supplier(models.Model):
 class Cost_center(models.Model):
     cost_center_name = models.TextField(max_length=20)
     functional_group = models.CharField(max_length=20)
+    is_delete=models.BooleanField(default=False)
     history = HistoricalRecords()
 
     def __str__(self):
@@ -32,6 +34,7 @@ class Inventory_stat(models.Model):
     inv_station_no = models.CharField(max_length = 20)
     station_description = models.TextField()
     cost_center_no = models.ForeignKey(Cost_center, related_name="cc_iFK")
+    is_delete = models.BooleanField(default=False)
     history = HistoricalRecords()
 
     def __str__(self):
@@ -45,6 +48,7 @@ class Employee(models.Model):
     charging_cc_no = models.CharField(max_length=20)
     position = models.TextField()
     history = HistoricalRecords()
+    is_delete = models.BooleanField(default=False)
 
     def __str__(self):
         return self.name

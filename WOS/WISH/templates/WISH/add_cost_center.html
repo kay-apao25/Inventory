@@ -1,0 +1,33 @@
+{% extends 'WISH/index.html' %}
+{% load bootstrap %}
+
+{% block content %}
+	<style type="text/css">
+        .form-group{
+          width:400px;
+        }
+      </style>
+    <div class="page-header">
+      <h2 align="center">Add another Cost Center</h2>
+    </div>
+    <br>
+    <form method="POST" class="irr_entry">{% csrf_token %}
+    <table width="10%">
+			{% for field in form %}
+    <tr>
+
+     <td style="padding:20px">
+
+
+   		&nbsp;&nbsp;{{field | bootstrap_horizontal:'col-lg-4'}}&nbsp;&nbsp;&nbsp;
+
+
+     <br>
+     <br>
+     </td>
+     </tr>
+		{%endfor%}
+     </table>
+		<div align="center"><button type="submit" class="save btn btn-default">Save</button></div>
+   </form>
+{% endblock %}
