@@ -589,6 +589,10 @@ def inv_stat_details(request, pk):
     invs = get_object_or_404(Inventory_stat, inv_station_no=pk)
     return render(request, 'WISH/inv_stat_details.html', {'invs': invs})
 
+def cost_center_details(request, pk):
+    cc = get_object_or_404(Cost_center, pk=pk)
+    return render(request, 'WISH/cost_center_details.html', {'cc': cc})
+
 def product_form(request, pk):
     product = get_object_or_404(Product, pk=pk)
     if request.method == 'POST':
@@ -639,6 +643,14 @@ def inv_stat_form(request, pk):
         form.save()
         return redirect('WISH.views.index')
     return render(request, 'WISH/inv_stat_form.html', {'form': form})
+
+def cost_center_form(request, pk):
+    cc = get_object_or_404(Cost_center, pk=pk)
+    form = CC_lib(request.POST or None, instance=cc)
+    if form.is_valid():
+        form.save()
+        return redirect('WISH.views.index')
+    return render(request, 'WISH/cost_center_form.html', {'form': form})
 
 def par_form(request, pk):
     parss = get_object_or_404(PAR, pk=pk)

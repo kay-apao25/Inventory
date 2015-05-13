@@ -1,5 +1,6 @@
 {% block content %}
 <br>
+<div align="right"><a href="#" class="save btn btn-default">Add Cost Center</a></div><br>
 <div class="col-md-3">
             <form action="#" method="get">
                 <div class="input-group">
@@ -12,14 +13,14 @@
        <table class="table table-list-search2">
 
     <thead>
-    	<th><center>cost_center_name</center></th>
-      <th><center>functional_group</center></th>
+    	<th><center>Cost Center Name</center></th>
+      <th><center>Functional Group</center></th>
     </thead>
     	{% for coss in cos %}
      	<tr>
         <td>
 
-          <center>{{coss.cost_center_name}}</center>
+          <center><a href="{% url 'WISH.views.cost_center_details' pk=coss.pk %}">{{coss.cost_center_name}}</a></center>
           </a>
         </td>
 
