@@ -18,7 +18,7 @@
       	{% for sups in sup %}
       		<tr>
       			<td>
-
+              <a href="{% url 'WISH.views.supplier_details' pk=sups.supplier_number %}">
                 {{sups.supplier_number}}
               </a>
             </td>

@@ -150,7 +150,7 @@ class PAR_Form(forms.ModelForm):
 
     class Meta:
         model = PAR
-        fields = ('dce', 'approved_by','issued_by', 'date_acquired', 'remarks',)
+        fields = ('dce', 'approved_by', 'date_acquired', 'remarks',)
 
 
 class Product_to_PARForm(forms.Form):

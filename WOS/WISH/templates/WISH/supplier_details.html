@@ -1,0 +1,79 @@
+{% extends 'WISH/index.html' %}
+ {% block content %}
+<html>
+    <head>
+        <title>Supplier details</title>
+        <style type="text/css" >
+        	table, th, td{
+        		border: 1px solid black;
+        		border-collapse: collapse;
+        		text-align: left;
+            font-weight: italic;
+        	}
+        	th, td {
+        		padding: 5px
+        	}
+        </style>
+        <h1 align="center"><b>Supplier Details</b></h1>
+    </head>
+<br><br>
+    <body>
+      <table style="width:50%;" align="center" bgcolor="#00FF00">
+        <tr>
+          <td >
+            <b>supplier number :</b><br><center> {{sup.supplier_number}}</center>
+          </td>
+          <td >
+            <b>supplier name :</b><br> <center>{{sup.supplier_name}}</center>
+          </td>
+
+        </tr>
+        <tr>
+
+          <td>
+            <b>supplier address: </b><br><center>{{sup.supplier_address}}</center>
+          </td>
+          <td >
+            <b>telephone number :</b><br> <center>{{sup.telephone_number}}</center>
+          </td>
+        </tr>
+
+        <tr>
+          <td>
+            <b>credit limit:</b> <br><center>{{sup.credit_limit}}</center>
+          </td>
+          <td >
+            <b>debit amount :</b><br> <center>{{sup.debit_amount}}</center>
+          </td>
+
+        </tr>
+        <tr>
+          <td>
+            <b>credit amount:</b> <br><center>{{sup.credit_amount}}</center>
+          </td>
+          <td >
+            <b>balance amount :</b><br> <center>{{sup.balance_amount}}</center>
+          </td>
+
+        </tr>
+        <tr>
+          <td>
+            <b>contact person:</b> <br><center>{{sup.contact_person}}</center>
+          </td>
+          <td >
+            <b>remark :</b><br> <center>{{sup.remarks}}</center>
+          </td>
+
+        </tr>
+
+
+
+      </table>
+      <br><br
+      <div align="center"><a href="#" class="save btn btn-default">Edit</a>&nbsp;&nbsp;&nbsp;<a href="#" class="save btn btn-default">Delete</a></div>
+
+    </body>
+
+</html>
+
+{% endblock %}

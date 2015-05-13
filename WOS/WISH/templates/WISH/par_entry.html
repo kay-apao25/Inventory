@@ -15,6 +15,11 @@
     {{ msg }}
         </div>
     {% endif %}
+    {%if error%}
+        <div class="alert alert-danger" style="width:400px">
+    {{ error }}
+        </div>
+    {% endif %}
       <table width="50%">
     <tr>
     <td style="padding:20px">
