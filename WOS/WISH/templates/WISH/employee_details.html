@@ -1,0 +1,66 @@
+{% extends 'WISH/index.html' %}
+ {% block content %}
+<html>
+    <head>
+        <title>Inventory station details</title>
+        <style type="text/css" >
+        	table, th, td{
+        		border: 1px solid black;
+        		border-collapse: collapse;
+        		text-align: left;
+            font-weight: italic;
+        	}
+        	th, td {
+        		padding: 5px
+        	}
+        </style>
+        <h1 align="center"><b>Inventory Station Details</b></h1>
+    </head>
+<br><br>
+    <body>
+      <table style="width:30%;" align="center" bgcolor="#00FF00">
+        <tr>
+          <td >
+            <b>DCE :</b><br> <center>{{em.dce}}</center>
+          </td>
+
+
+        </tr>
+        <tr>
+
+          <td>
+            <b>Name : </b><br><center>{{em.name}}</center>
+          </td>
+
+        <tr>
+          <td>
+            <b>Charging CC No.:</b> <br><center>{{em.charging_cc_no}}</center>
+          </td>
+
+        </tr>
+
+        <tr>
+          <td>
+            <b>Position:</b> <br><center>{{em.position}}</center>
+          </td>
+
+        </tr>
+
+        <tr>
+          <td>
+            <b>Cost center number:</b> <br><center>{{em.cost_center_no}}</center>
+          </td>
+
+        </tr>
+
+
+
+      </table>
+      <br><br
+      <div align="center"><a href="{% url 'WISH.views.employee_form' dce=em.dce %}" class="save btn btn-default">Edit</a>&nbsp;&nbsp;&nbsp;<a href="#" class="save btn btn-default">Delete</a></div>
+
+    </body>
+
+</html>
+
+{% endblock %}

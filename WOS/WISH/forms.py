@@ -237,3 +237,17 @@ class CC_lib(forms.ModelForm):
     class Meta:
         model = Cost_center
         fields = ('cost_center_name', 'functional_group',)
+
+class Supplier_lib(forms.ModelForm):
+
+    class Meta:
+        model = Supplier
+        fields = ('supplier_number', 'supplier_name', 'supplier_address', 'telephone_number',
+        'credit_limit', 'debit_amount', 'credit_amount', 'balance_amount', 'contact_person',
+        'remarks',)
+
+class Employee_lib(forms.ModelForm):
+
+    class Meta:
+        model = Employee
+        fields = ('dce', 'name', 'position', 'cost_center_no', 'charging_cc_no',)

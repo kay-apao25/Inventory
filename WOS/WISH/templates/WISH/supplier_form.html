@@ -1,0 +1,28 @@
+<!--style="font-family: 'Cinzel', serif;"-->
+{% extends 'WISH/index.html' %}
+{% block content %}
+{% load bootstrap %}
+
+<style type="text/css">
+        .form-group{
+          width:300px;
+        }
+      </style>
+    <div class="page-header">
+        	<!--<img src=""></img>-->
+       	<h2 align="center">Supplier Record</h2>
+	</div>
+
+    <form method="POST" class="product-form">{% csrf_token %}
+
+  <table width="50%" align="center" >
+
+     {% for field in form %}
+      {{field | bootstrap}}&nbsp;&nbsp;&nbsp;
+     {%endfor%}
+
+
+  </table>
+     <div align="center"><button type="submit" class="save btn btn-default">Save</button></div>
+    </form>
+{% endblock %}
