@@ -781,11 +781,29 @@ def cost_center_form(request, pk):
 
 def supplier_form(request, pk):
     sup = get_object_or_404(Supplier, supplier_number=pk)
-    form = Supplier_lib(request.POST or None, instance=sup)
-    if form.is_valid():
-        form.save()
-        return redirect('WISH.views.index')
-    return render(request, 'WISH/supplier_form.html', {'form': form})
+    if request.method == 'POST':
+        form = Supplier_lib(request.POST)
+        form1 = Supplier_lib1(request.POST)
+        form2 = Supplier_lib2(request.POST)
+        if form1.is_valid() and form2.is_valid():
+            for key in form.data.keys():
+                key1 = key
+                setattr(sup, key, form1.data[key1])
+                setattr(sup, key, form2.data[key1])
+            sup.save()
+            return redirect('WISH.views.index')
+    else:
+        form = Supplier_lib(instance=sup)
+        form1 = Supplier_lib1()
+        form2 = Supplier_lib2()
+        for key in form.fields.keys():
+            for key1 in form1.fields.keys():
+                if key == key1:
+                    form1.fields[key].initial = getattr(sup, key)
+            for key2 in form2.fields.keys():
+                if key == key2:
+                    form2.fields[key].initial = getattr(sup, key)
+    return render(request, 'WISH/supplier_form.html', {'form1': form1, 'form2': form2})
 
 def employee_form(request, dce):
     em = get_object_or_404(Employee, dce=dce)
