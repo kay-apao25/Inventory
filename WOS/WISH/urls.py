@@ -11,7 +11,7 @@ urlpatterns = [
     url(r'^irr_entry/$', views.irr_entry, name='irr_entry'),
     url(r'^miv_entry/$', views.miv_entry, name='miv_entry'),
     url(r'^miv_entry_S/(?P<pk>[0-9]+)/$', views.miv_entry_S),
-    url(r'^par_entry/(?P<pk>[0-9]+)/(?P<inv>[0-9]+)/(?P<msg>[0-9]+)/$', views.par_entry, name='par_entry'),
+    #url(r'^par_entry/(?P<pk>[0-9]+)/(?P<inv>[0-9]+)/(?P<msg>[0-9]+)/$', views.par_entry, name='par_entry'),
     url(r'^par_form/(?P<pk>[0-9]+)/$', views.par_form),
     url(r'^product_form/(?P<pk>[0-9]+)/$', views.product_form),
     url(r'^inv_stat_form/(?P<pk>[0-9]+)/$', views.inv_stat_form),
