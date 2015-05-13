@@ -332,7 +332,7 @@ def miv_entry_S(request, pk):
 
             miv_entry = form.save(commit=False)
             miv_entry.irr_no_id = pk
-            
+
             #Generation of MIV number
             if len(MIV.objects.all()) != 0:
                 no = int((MIV.objects.latest('id')).miv_no) + 1
@@ -364,7 +364,7 @@ def miv_entry_S(request, pk):
 
             #Exit message
             exit = 'Exit'
-            
+
             for prod in prods:
                 p = Product.objects.get(id=(prod['Product']))
                 p.quantity = int(p.quantity) - int(prod['quantity_accepted'])
@@ -670,6 +670,14 @@ def inv_stat_details(request, pk):
     invs = get_object_or_404(Inventory_stat, inv_station_no=pk)
     return render(request, 'WISH/inv_stat_details.html', {'invs': invs})
 
+def cost_center_details(request, pk):
+    cc = get_object_or_404(Cost_center, pk=pk)
+    return render(request, 'WISH/cost_center_details.html', {'cc': cc})
+
+def supplier_details(request, pk):
+    sup = get_object_or_404(Supplier, supplier_number=pk)
+    return render(request, 'WISH/supplier_details.html', {'sup': sup})
+
 def product_form(request, pk):
     product = get_object_or_404(Product, pk=pk)
     if request.method == 'POST':
@@ -720,6 +728,14 @@ def inv_stat_form(request, pk):
         form.save()
         return redirect('WISH.views.index')
     return render(request, 'WISH/inv_stat_form.html', {'form': form})
+
+def cost_center_form(request, pk):
+    cc = get_object_or_404(Cost_center, pk=pk)
+    form = CC_lib(request.POST or None, instance=cc)
+    if form.is_valid():
+        form.save()
+        return redirect('WISH.views.index')
+    return render(request, 'WISH/cost_center_form.html', {'form': form})
 
 def par_form(request, pk):
     parss = get_object_or_404(PAR, pk=pk)

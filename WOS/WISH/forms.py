@@ -231,3 +231,9 @@ class Stat_lib(forms.ModelForm):
     class Meta:
         model = Inventory_stat
         fields = ('inv_station_no', 'station_description', 'cost_center_no',)
+
+class CC_lib(forms.ModelForm):
+
+    class Meta:
+        model = Cost_center
+        fields = ('cost_center_name', 'functional_group',)

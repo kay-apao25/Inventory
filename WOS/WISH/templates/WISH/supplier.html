@@ -1,5 +1,6 @@
 {% block content %}
 <br>
+<div align="right"><a href="#" class="save btn btn-default">Add Supplier</a></div><br>
 <div class="col-md-3">
             <form action="#" method="get">
                 <div class="input-group">
@@ -17,7 +18,7 @@
       	{% for sups in sup %}
       		<tr>
       			<td>
-
+              <a href="{% url 'WISH.views.supplier_details' pk=sups.supplier_number %}">
                 {{sups.supplier_number}}
               </a>
             </td>
