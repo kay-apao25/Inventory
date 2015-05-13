@@ -332,7 +332,7 @@ def miv_entry_S(request, pk):
 
             miv_entry = form.save(commit=False)
             miv_entry.irr_no_id = pk
-
+            
             #Generation of MIV number
             if len(MIV.objects.all()) != 0:
                 no = int((MIV.objects.latest('id')).miv_no) + 1
@@ -364,7 +364,7 @@ def miv_entry_S(request, pk):
 
             #Exit message
             exit = 'Exit'
-
+            
             for prod in prods:
                 p = Product.objects.get(id=(prod['Product']))
                 p.quantity = int(p.quantity) - int(prod['quantity_accepted'])
@@ -479,35 +479,34 @@ prod_to_garv = []
 def par(request, inv):
     prod_list = []
     error = ''
-    par_no = 0
     msg = 3
+    try:
+        par_no = int(PAR.objects.latest('date_acquired').par_no)
+    except:
+        par_no = 0
     if request.method == "POST":
         form = PAR_Form(request.POST)
-        iform = Product_to_PARForm(request.POST)
+        if form.has_changed():
+            iform = Product_to_PARForm1(request.POST)
+        else:
+            iform = Product_to_PARForm(request.POST)
+
         if form.is_valid() and iform.is_valid():
             par_entry = form.save(commit=False)
-            par_entry.par_date = time.strftime("%Y-%m-%d")
-            prod_to_par.append({'Product': iform.data['product'],\
-                                'Quantity': iform.data['quantity']})
-            par_entry.amt_cost = 0
-            for product in prod_to_par:
-                pro = Product.objects.get(id=product['Product'])
-                amount = float(product['Quantity']) * int(pro.unit_cost)
-                par_entry.amt_cost = par_entry.amt_cost + amount
-            
-            res = json.dumps(prod_to_par)
-            par_entry.product = prod_to_par
-            par_entry.inv_stat_no_id = IRR.objects.get(irr_no=inv).irr_headkey.inv_station_no.id
-            par_entry.par_no = iform.data['par_no']
-            par_entry.issued_by = Employee.objects.get(name=(str(request.user.first_name) + ' ' + str(request.user.last_name)))
-            #par_entry.PO_number_id = str(IRR.objects.get(irr_no=inv).irr_headkey.po_number)
+
+            try:
+                par_entry.par_no = iform.data['par_no']
+                par_no = par_entry.par_no
+            except:
+                par_entry.par_no = par_no
+
             irr = IRR.objects.get(irr_no=inv)
             for prod in irr.product:
                 if prod['Product'] == str(iform.data['product']):
                     prod['quantity_par'] = int(prod['quantity_par']) - int(iform.data['quantity'])
-                    if prod['quantity_par'] < 0:
+                    if int(prod['quantity_par']) < 0:
                         error = 'Entered quantity is greater than stocked items.'
-                    elif prod['quantity_par'] == 0:
+                    elif int(prod['quantity_par']) == 0:
                         prod['quantity_par'] = 0
                         prod['is_par'] = True
                         irr.save()
@@ -517,45 +516,61 @@ def par(request, inv):
                         irr.save()
                 if prod['is_par'] == False:
                     prod_list.append(int(prod['Product']))
-
-            if par_no == 0:
-                par_no = par_entry.par_no
-            else:
-                par_entry.par_no = par_no
-
-            par_entry.save()
-            if len(prod_list) == 0:
-                irr.is_par = True
-                irr.save()
-                exit = 'Exit'
-                return render(request, 'WISH/par_entry.html', {'exit': exit, 'msg': 'PAR Record (PAR No. - ' + str(par_no) + ') is successfully added.'})
-                        
-            if form.has_changed():
-                msg = 0
-                par_no = 0
-                form = PAR_Form()
-                iform = Product_to_PARForm()
-    
-            else:
-                if error == '':
-                    msg = 1
+                    #par_entry.save()
+            
+            if error == '':
+                par_entry.par_date = time.strftime("%Y-%m-%d")
+                prod_to_par.append({'Product': iform.data['product'],\
+                                'Quantity': iform.data['quantity']})
+                par_entry.amt_cost = 0
+                for product in prod_to_par:
+                    pro = Product.objects.get(id=product['Product'])
+                    amount = float(product['Quantity']) * int(pro.unit_cost)
+                    par_entry.amt_cost = par_entry.amt_cost + amount
+            #par_entry.amt_cost = amt_cost
+                res = json.dumps(prod_to_par)
+                par_entry.product = prod_to_par
+                par_entry.inv_stat_no_id = IRR.objects.get(irr_no=inv).irr_headkey.inv_station_no.id
+            
+                par_entry.issued_by = Employee.objects.get(name=(str(request.user.first_name) + ' ' + str(request.user.last_name)))
+            #par_entry.PO_number_id = str(IRR.objects.get(irr_no=inv).irr_headkey.po_number)
+            
+                par_entry.save()
+                if len(prod_list) == 0:
+                    irr.is_par = True
+                    irr.save()
+                    del prod_to_par[:]
+                    exit = 'Exit'
+                    return render(request, 'WISH/par_entry.html', {'exit': exit, 'msg': 'PAR Record (PAR No. - ' + str(par_entry.par_no) + ') is successfully added.'})
+            
+                if form.has_changed():
+                    msg = 0
+                    del prod_to_par[:]
+                    form = PAR_Form()
+                    iform = Product_to_PARForm()
                 else:
-                    msg = 2
+                    msg = 1
+                    form = PAR_Form()
+                    if par_no == 0:
+                        iform = Product_to_PARForm()
+                    else:
+                        iform = Product_to_PARForm1()
+            else:
+                msg = 2
+                #par_no = 0
+                form = PAR_Form()
+                #iform = Product_to_PARForm()
+
             #return redirect('WISH.views.par_entry', pk=par_entry.par_no, inv=inv, msg=msg)
     else:
-        form = PAR_Form()
-        if par_no == 0:
-            iform = Product_to_PARForm()
-        else:
-            iform = Product_to_PARForm1()
 
+        form = PAR_Form()
+        iform = Product_to_PARForm()
     form.fields['dce'].queryset = Employee.objects.filter(\
         cost_center_no=IRR.objects.get(irr_no=inv).irr_headkey.inv_station_no.cost_center_no.id)
     form.fields['approved_by'].queryset = Employee.objects.filter(\
         cost_center_no=IRR.objects.get(irr_no=inv).irr_headkey.inv_station_no.cost_center_no.id) 
-
     products = IRR.objects.get(irr_no=inv).product
-
     for prod in products:
         if prod['is_par'] == False:
             prod_list.append(int(prod['Product']))
@@ -563,91 +578,13 @@ def par(request, inv):
         [Product.objects.get(id=p).id for p in prod_list])
 
     if int(msg) == 0:
-        return render(request, 'WISH/par_entry.html', {'form': form, 'iform': iform, 'msg': 'PAR Record (PAR No. - ' + str(par_entry.par_no) + ') is successfully added.'})
+        return render(request, 'WISH/par_entry.html', {'form': form, 'iform': iform, 'msg': 'PAR Record (PAR No. - ' + str(par_no) + ') is successfully added.'})
     elif int(msg) == 1:
         return render(request, 'WISH/par_entry.html', {'form': form, 'iform': iform, 'msg': 'Item is successfully added.'})
     elif int(msg) == 2:
         return render(request, 'WISH/par_entry.html', {'form': form, 'iform': iform, 'error': 'Entered product quantity to be assigned to this employee is greater than stocked items.'})
     else:
         return render(request, 'WISH/par_entry.html', {'form': form, 'iform': iform})
-
-
-"""def par_entry(request, pk, inv, msg):
-    prod_list = []
-    error = ''
-    if request.method == "POST":
-        form = PAR_Form(request.POST)
-        iform = Product_to_PARForm1(request.POST)
-        if form.is_valid() and iform.is_valid():
-            par_entry = form.save(commit=False)
-            par_entry.par_date = time.strftime("%Y-%m-%d")
-            prod_to_par.append({'Product': iform.data['product'],\
-                                'Quantity': iform.data['quantity']})
-            amt_cost = 0
-            for product in prod_to_par:
-                pro = Product.objects.get(id=product['Product'])
-                amount = float(product['Quantity']) * int(pro.unit_cost)
-                amt_cost = amt_cost + amount
-            res = json.dumps(prod_to_par)
-            par_entry.product = res
-            par_entry.inv_stat_no_id = IRR.objects.get(irr_no=inv).irr_headkey.inv_station_no.id
-            par_entry.amt_cost = amt_cost
-            par_entry.par_date = time.strftime("%Y-%m-%d")
-            par_entry.issued_by = Employee.objects.get(name=(str(request.user.first_name) + ' ' + str(request.user.last_name)))
-            par_entry.par_no = pk
-            #par_entry.PO_number = str(IRR.objects.get(irr_no=inv).irr_headkey.po_number)
-            irr = IRR.objects.get(irr_no=inv)
-            for prod in irr.product:
-                if prod['Product'] == str(iform.data['product']):
-                    prod['quantity_par'] = int(prod['quantity_par']) - int(iform.data['quantity'])
-                    if prod['quantity_par'] < 0:
-                        error = 'Entered quantity is greater than stocked items.'
-                    elif prod['quantity_par'] == 0:
-                        prod['quantity_par'] = 0
-                        prod['is_par'] = True
-                        irr.save()
-                    else:
-                        prod['quantity_par'] = prod['quantity_par']
-                        prod_list.append(int(prod['Product']))
-                        irr.save()
-                if prod['is_par'] == False:
-                    prod_list.append(int(prod['Product']))
-
-            par_entry.save()
-            if len(prod_list) == 0:
-                irr.is_par = True
-                irr.save()
-                exit = 'Exit'
-                return render(request, 'WISH/par_entry.html', {'exit': exit, 'msg': 'PAR Record (PAR No. - ' + par_entry.par_no + ') is successfully added.'})
-            
-            if form.has_changed():
-                msg = 0
-            else:
-                if error == '':
-                    msg = 1
-                else:
-                    msg = 2
-            return redirect('WISH.views.par_entry', pk=pk, inv=inv, msg=msg)
-    else:
-        form = PAR_Form()
-        iform = Product_to_PARForm1()
-        form.fields['dce'] = forms.ModelChoiceField(Employee.objects.filter(\
-            cost_center_no=IRR.objects.get(irr_no=inv).irr_headkey.inv_station_no.cost_center_no.id))
-        form.fields['approved_by'] = forms.ModelChoiceField(Employee.objects.filter(\
-            cost_center_no=IRR.objects.get(irr_no=inv).irr_headkey.inv_station_no.cost_center_no.id))
-        products = IRR.objects.get(irr_no=inv).product
-        for prod in products:
-            if prod['is_par'] == False:
-                prod_list.append(int(prod['Product']))
-        iform.fields['product'] = forms.ModelChoiceField(Product.objects.all().filter(id__in=\
-            [Product.objects.get(id=p).id for p in prod_list]))
-    if int(msg) == 0:
-        return render(request, 'WISH/par_entry.html', {'form': form, 'iform': iform, 'msg': 'PAR Record (PAR No. - ' + pk + ') is successfully added.'})
-    elif int(msg) == 1 :
-        return render(request, 'WISH/par_entry.html', {'form': form, 'iform': iform, 'msg': 'Item is successfully added.'})
-    else:
-        return render(request, 'WISH/par_entry.html', {'form': form, 'iform': iform, 'error': 'Entered product quantity to be assigned to this employee is greater than stocked items.'})
-"""
 
 def wrs_entry(request):
     if 'q' in request.GET and request.GET['q']:
@@ -669,14 +606,6 @@ def product_details(request, pk):
 def inv_stat_details(request, pk):
     invs = get_object_or_404(Inventory_stat, inv_station_no=pk)
     return render(request, 'WISH/inv_stat_details.html', {'invs': invs})
-
-def cost_center_details(request, pk):
-    cc = get_object_or_404(Cost_center, pk=pk)
-    return render(request, 'WISH/cost_center_details.html', {'cc': cc})
-
-def supplier_details(request, pk):
-    sup = get_object_or_404(Supplier, supplier_number=pk)
-    return render(request, 'WISH/supplier_details.html', {'sup': sup})
 
 def product_form(request, pk):
     product = get_object_or_404(Product, pk=pk)
@@ -728,14 +657,6 @@ def inv_stat_form(request, pk):
         form.save()
         return redirect('WISH.views.index')
     return render(request, 'WISH/inv_stat_form.html', {'form': form})
-
-def cost_center_form(request, pk):
-    cc = get_object_or_404(Cost_center, pk=pk)
-    form = CC_lib(request.POST or None, instance=cc)
-    if form.is_valid():
-        form.save()
-        return redirect('WISH.views.index')
-    return render(request, 'WISH/cost_center_form.html', {'form': form})
 
 def par_form(request, pk):
     parss = get_object_or_404(PAR, pk=pk)

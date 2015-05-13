@@ -147,8 +147,8 @@ class PAR_Form(forms.ModelForm):
             cost_center_no=IRR.objects.get(irr_no=irn).irr_headkey.inv_station_no.cost_center_no.id))"""
 
     date_acquired = forms.DateField(widget=DateTimePicker(options={"format": "YYYY-MM-DD", "pickTime": False}), label='Date acquired*', required=False)
-    dce = forms.ModelChoiceField(queryset=Employee.objects.all(), label='Accountable Employee*')
-    approved_by = forms.ModelChoiceField(queryset=Employee.objects.all(), label='Approved by*')
+    dce = forms.ModelChoiceField(queryset=Employee.objects.all(), label='Accountable Employee*', required=False)
+    approved_by = forms.ModelChoiceField(queryset=Employee.objects.all(), label='Approved by*', required=False)
 
     class Meta:
         model = PAR
