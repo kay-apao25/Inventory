@@ -1,14 +1,17 @@
 {% block content %}
 <br>
+<div align="right"><a href="{% url 'WISH.views.stat_lib' %}" class="save btn btn-default">Add Inventory station</a></div><br>
 <div class="col-md-3">
             <form action="#" method="get">
                 <div class="input-group">
                     <!-- USE TWITTER TYPEAHEAD JSON WITH API TO SEARCH -->
                     <input class="form-control" id="system-search" name="q" placeholder="Search for" required>
                 </div>
-            </form>
+              </form>
+
 </div>
 <div class="col-md-9">
+
        <table class="table table-list-search">
 
     <thead>
@@ -19,6 +22,7 @@
      	{% for invs in inv %}
       	<tr>
           <td>
+            <a href="{% url 'WISH.views.inv_stat_details' pk=invs.inv_station_no %}">
             <center>{{ invs.inv_station_no }}</center>
             </a>
           </td>
