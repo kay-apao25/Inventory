@@ -7,10 +7,13 @@
           width:400px;
         }
       </style>
-    <div class="page-header" style="margin-bottom: 0px;">
-      <h2 align="center">Fill for IRR Record</h2>
-    </div>
     <form method="POST" class="irr_entry">{% csrf_token %}
+    {% if exit %}
+      <div class="alert alert-warning" style="width:400px">
+        {{ exit }}
+      </div>
+      <div align="center"><a href= "{% url 'WISH.views.index' %}"><i class="glyphicon glyphicon-share-alt"></i> Exit </a></div>
+    {% else %}
     <strong><p style="font-size:15px">Fields with asterisk are required.</p></strong>
      <table width="50%">
     <tr>
@@ -32,4 +35,5 @@
      </table>
     <div align="center"><button type="submit" class="save btn btn-default" id="save">Save</button></div>
     </form>
+    {% endif %}
 {% endblock %}
