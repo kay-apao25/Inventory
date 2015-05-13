@@ -1,0 +1,51 @@
+{% extends 'WISH/index.html' %}
+ {% block content %}
+<html>
+    <head>
+        <title>Supplier details</title>
+        <style type="text/css" >
+        	table, th, td{
+        		border: 1px solid black;
+        		border-collapse: collapse;
+        		text-align: left;
+            font-weight: italic;
+        	}
+        	th, td {
+        		padding: 5px
+        	}
+        </style>
+        <h1 align="center"><b>Supplier Details</b></h1>
+    </head>
+<br><br>
+    <body>
+      <table style="width:30%;" align="center" bgcolor="#00FF00">
+        <tr>
+          <td >
+            <b>Inventory station no. :</b><br> <center></center>
+          </td>
+
+        </tr>
+        <tr>
+
+          <td>
+            <b>Inventory station name : </b><br><center></center>
+          </td>
+
+        <tr>
+          <td>
+            <b>Cost center:</b> <br><center></center>
+          </td>
+
+        </tr>
+
+
+
+      </table>
+      <br><br
+      <div align="center"><a href="#" class="save btn btn-default">Edit</a>&nbsp;&nbsp;&nbsp;<a href="#" class="save btn btn-default">Delete</a></div>
+
+    </body>
+
+</html>
+
+{% endblock %}

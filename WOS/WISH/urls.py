@@ -17,6 +17,7 @@ urlpatterns = [
     url(r'^inv_stat_form/(?P<pk>[0-9]+)/$', views.inv_stat_form),
     url(r'^product_details/(?P<pk>[0-9]+)/$', views.product_details),
     url(r'^inv_stat_details/(?P<pk>[0-9]+)/$', views.inv_stat_details),
+    url(r'^supplier_details/(?P<pk>[0-9]+)/$', views.supplier_details),
     url(r'^garv_entry_f/$', views.garv_entry_f),
     url(r'^garv_entry/(?P<g>[0-9]+)/(?P<pk>[0-9]+)/$', views.garv_entry),
     url(r'^product_to_garv/(?P<pk>[0-9]+)/$', views.product_to_garv),

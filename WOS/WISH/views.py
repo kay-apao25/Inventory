@@ -309,7 +309,7 @@ def miv_entry_S(request, pk):
 
             miv_entry = form.save(commit=False)
             miv_entry.irr_no_id = pk
-            
+
             #Generation of MIV number
             if len(MIV.objects.all()) != 0:
                 no = int((MIV.objects.latest('id')).miv_no) + 1
@@ -341,7 +341,7 @@ def miv_entry_S(request, pk):
 
             #Exit message
             exit = 'Exit'
-            
+
             for prod in prods:
                 p = Product.objects.get(id=(prod['Product']))
                 p.quantity = int(p.quantity) - int(prod['quantity_accepted'])
@@ -499,7 +499,7 @@ def par(request, inv):
                 form = PAR_Form()
                 iform = Product_to_PARForm()
                 return render(request, 'WISH/par_entry.html', {'form': form, 'iform': iform, 'msg': 'PAR Record (PAR No. - ' + par_entry.par_no + ') is successfully added.'})
-            
+
             if form.has_changed():
                 msg = 0
             else:
@@ -571,7 +571,7 @@ def par_entry(request, pk, inv, msg):
                 form = PAR_Form()
                 iform = Product_to_PARForm()
                 return render(request, 'WISH/par_entry.html', {'form': form, 'iform': iform, 'msg': 'PAR Record (PAR No. - ' + pk + ') is successfully added.'})
-            
+
             if form.has_changed():
                 msg = 0
             else:
@@ -621,6 +621,10 @@ def product_details(request, pk):
 def inv_stat_details(request, pk):
     invs = get_object_or_404(Inventory_stat, inv_station_no=pk)
     return render(request, 'WISH/inv_stat_details.html', {'invs': invs})
+
+def supplier_details(request, pk):
+    sup = get_object_or_404(Supplier, supplier_number=pk)
+    return render(request, 'WISH/supplier_details.html', {'sup': sup})
 
 def product_form(request, pk):
     product = get_object_or_404(Product, pk=pk)
