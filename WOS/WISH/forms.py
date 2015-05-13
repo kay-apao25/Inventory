@@ -13,7 +13,7 @@ class ProductForm(forms.ModelForm):
             'stock', 'block', 'unit_measure', 'unit_cost', 'quantity', \
             'average_amount', 'status', 'balance_limit', 'serial_number',\
             'model', 'description', 'remarks', 'purchased_from', 'inv_station_no', \
-            'slc_number', 'amount', 'balance')
+            'slc_number', 'amount', 'balance', 'is_irr')
 
 
 
@@ -49,7 +49,7 @@ class ProductForm2(forms.Form):
     stock = forms.CharField(label='Stock *', max_length=10)
     block = forms.CharField(label='Block *', max_length=10)
     unit_measure = forms.ChoiceField(label='Unit measure *', choices=UNIT_CHOICES)
-    status = forms.CharField(label='Status *', max_length=10, choices=STATUS_CHOICES)
+    status = forms.ChoiceField(label='Status *', choices=STATUS_CHOICES)
 
 class ProductForm3(forms.Form):
     purchased_from = forms.ModelChoiceField(queryset=Supplier.objects.all(), label='Purchased from *')

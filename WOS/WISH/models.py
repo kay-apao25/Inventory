@@ -88,7 +88,7 @@ class Product(models.Model):
     history = HistoricalRecords()
     inv_station_no = models.ForeignKey(Inventory_stat, related_name="inv_iFK")
     balance = models.IntegerField(default = 0, null=True, blank=True)
-
+    is_irr = models.BooleanField(default=False)
 
     def __str__(self):
         return self.item_name + " , " + self.description
@@ -123,6 +123,7 @@ class IRR(models.Model):
     wrs_number = models.CharField(max_length = 8)
     remarks = models.TextField(max_length = 30, null=True, blank=True)
     is_par = models.BooleanField(default=False)
+    is_miv = models.BooleanField(default=False)
     history = HistoricalRecords()
 
     def __unicode__(self):

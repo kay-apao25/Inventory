@@ -209,6 +209,7 @@ def product_to_irr(request, pk, inv):
             #To check if the desired quantity of products to be delivered are delivered already.
             if int(form.data['quantity_balance']) == 0:
                 p = Product.objects.get(id=int(form.data['product']))
+                p.balance = 0
                 p.status = 'Complete'
                 p.save()
             
@@ -228,6 +229,7 @@ def product_to_irr(request, pk, inv):
                 p = Product.objects.get(id=int(form.data['product']))
                 p.quantity = int(form.data['quantity_accepted'])
                 p.balance = int(form.data['quantity_balance'])
+                p.is_irr = True
                 #p.remarks = 'Product has an IRR Record (IRR No: ' + irn + ')'
                 p.save()
 
@@ -265,13 +267,13 @@ def product_to_irr(request, pk, inv):
                 iform = IRR_entry_cont_Form()
 
                 #Assigning the specific choices of products to be displayed
-                form.fields['product'] = forms.ModelChoiceField(queryset=Product.objects.filter(inv_station_no=inv).filter(quantity__gt=0), \
+                form.fields['product'] = forms.ModelChoiceField(queryset=Product.objects.filter(inv_station_no=inv).filter(quantity__gt=0).filter(is_irr=False),#.filter(status='Complete'), \
                     label='Product *', required=True)
 
     else:
         form = Product_to_IRRForm()
         iform = IRR_entry_cont_Form()
-        form.fields['product'] = forms.ModelChoiceField(queryset=Product.objects.filter(inv_station_no=inv).filter(quantity__gt=0), \
+        form.fields['product'] = forms.ModelChoiceField(queryset=Product.objects.filter(inv_station_no=inv).filter(quantity__gt=0).filter(is_irr=False), #.filter(status='Complete'), \
             label='Product *', required=True)
 
     #Rendering of forms and/or messages and/or errors
@@ -309,7 +311,10 @@ def miv_entry_S(request, pk):
                 p = Product.objects.get(id=(prod['Product']))
                 p.quantity = int(p.quantity) - int(prod['quantity_accepted'])
                 if p.quantity < 0:
-                    error = 'No stock for such item(s).'
+                    irr = IRR.objects.get(irr_no=pk)
+                    irr.is_miv = True
+                    irr.save()
+                    #error = 'No stock for such item(s).'
             
             #To check if there is no error message
             if error == '':
@@ -363,7 +368,7 @@ def miv_entry(request):
     del prod_to_irr[:]
     del prod_to_par[:]
     del prod_to_garv[:]
-    irrs = IRR.objects.all()
+    irrs = IRR.objects.filter(is_miv=False)
     return render(request, 'WISH/miv_entry_f.html', {'irrs':irrs})
 
 def par_f(request):
