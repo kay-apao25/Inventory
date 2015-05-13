@@ -42,7 +42,8 @@
 
       </table>
       <br><br
-      <div align="center"><a href="{% url 'WISH.views.inv_stat_form' pk=invs.pk %}" class="save btn btn-default">Edit</a>&nbsp;&nbsp;&nbsp;<a href="#" class="save btn btn-default">Delete</a></div>
+      <div align="center"><a href="{% url 'WISH.views.inv_stat_form' pk=invs.pk %}" class="save btn btn-default">Edit</a>&nbsp;&nbsp;&nbsp;
+        <a href="{% url 'WISH.views.inv_stat_del' pk=invs.pk %}" class="save btn btn-default">Delete</a></div>
 
     </body>
 

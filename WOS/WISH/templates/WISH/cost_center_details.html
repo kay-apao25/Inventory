@@ -33,7 +33,8 @@
 
       </table>
       <br><br
-      <div align="center"><a href="{% url 'WISH.views.cost_center_form' pk=cc.pk %}" class="save btn btn-default">Edit</a>&nbsp;&nbsp;&nbsp;<a href="#" class="save btn btn-default">Delete</a></div>
+      <div align="center"><a href="{% url 'WISH.views.cost_center_form' pk=cc.pk %}" class="save btn btn-default">Edit</a>&nbsp;&nbsp;&nbsp;
+        <a href="{% url 'WISH.views.cost_center_del' pk=cc.pk %}" class="save btn btn-default">Delete</a></div>
 
     </body>
 

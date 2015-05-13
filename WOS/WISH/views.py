@@ -29,6 +29,12 @@ def inv_stat_del(request, pk):
     inv_del.save()
     return render(request, 'WISH/index.html', {})
 
+def cost_center_del(request, pk):
+    cos_del = get_object_or_404(Cost_center, pk=pk)
+    cos_del.is_delete = True
+    cos_del.save()
+    return render(request, 'WISH/index.html', {})
+
 def file_report(request):
     del prod_to_irr[:]
     del prod_to_par[:]
@@ -42,11 +48,11 @@ def libraries(request):
     return render(request, 'WISH/libraries.html', {})
 
 def inv_stat(request):
-    inv = Inventory_stat.objects.all()
+    inv = Inventory_stat.objects.filter(is_delete=False)
     return render(request, 'WISH/inv_stat.html', {'inv': inv})
 
 def cost_center(request):
-    cos = Cost_center.objects.all()
+    cos = Cost_center.objects.filter(is_delete=False)
     return render(request, 'WISH/cost_center.html', {'cos': cos})
 
 def supplier(request):
@@ -200,7 +206,7 @@ def irr_entry(request):
         #To check if there are no available products to be made with IRR record
         if len(pform.fields['product'].queryset) == 0:
             #If true return this exit message
-            exit = 'No available products to be made with IRR record.' 
+            exit = 'No available products to be made with IRR record.'
         else:
             #else display blank forms.
             form = IRR_entryForm()
@@ -290,10 +296,10 @@ def product_to_irr(request, pk, inv):
 
                 if len(form.fields['product'].queryset) == 0:
                     #If true return this exit message
-                    exit = 'No available products to be made with IRR record.' 
+                    exit = 'No available products to be made with IRR record.'
                 else:
                     #else display blank forms.
-                    form = Product_to_IRRForm()        
+                    form = Product_to_IRRForm()
                     iform = IRR_entry_cont_Form()
 
     else:
@@ -301,7 +307,7 @@ def product_to_irr(request, pk, inv):
         form.fields['product'].queryset = Product.objects.filter(inv_station_no=inv).filter(is_irr=False)
         if len(form.fields['product'].queryset) == 0:
             #If true return this exit message
-            exit = 'No available products to be made with IRR record.' 
+            exit = 'No available products to be made with IRR record.'
         else:
             #else display blank forms.
             iform = IRR_entry_cont_Form()
@@ -500,7 +506,7 @@ def par(request, inv):
                 pro = Product.objects.get(id=product['Product'])
                 amount = float(product['Quantity']) * int(pro.unit_cost)
                 par_entry.amt_cost = par_entry.amt_cost + amount
-            
+
             res = json.dumps(prod_to_par)
             par_entry.product = prod_to_par
             par_entry.inv_stat_no_id = IRR.objects.get(irr_no=inv).irr_headkey.inv_station_no.id
@@ -535,13 +541,13 @@ def par(request, inv):
                 irr.save()
                 exit = 'Exit'
                 return render(request, 'WISH/par_entry.html', {'exit': exit, 'msg': 'PAR Record (PAR No. - ' + str(par_no) + ') is successfully added.'})
-                        
+
             if form.has_changed():
                 msg = 0
                 par_no = 0
                 form = PAR_Form()
                 iform = Product_to_PARForm()
-    
+
             else:
                 if error == '':
                     msg = 1
@@ -558,7 +564,7 @@ def par(request, inv):
     form.fields['dce'].queryset = Employee.objects.filter(\
         cost_center_no=IRR.objects.get(irr_no=inv).irr_headkey.inv_station_no.cost_center_no.id)
     form.fields['approved_by'].queryset = Employee.objects.filter(\
-        cost_center_no=IRR.objects.get(irr_no=inv).irr_headkey.inv_station_no.cost_center_no.id) 
+        cost_center_no=IRR.objects.get(irr_no=inv).irr_headkey.inv_station_no.cost_center_no.id)
 
     products = IRR.objects.get(irr_no=inv).product
 
@@ -625,7 +631,7 @@ def par(request, inv):
                 irr.save()
                 exit = 'Exit'
                 return render(request, 'WISH/par_entry.html', {'exit': exit, 'msg': 'PAR Record (PAR No. - ' + par_entry.par_no + ') is successfully added.'})
-            
+
             if form.has_changed():
                 msg = 0
             else:

@@ -19,6 +19,7 @@ urlpatterns = [
     url(r'^product_details/(?P<pk>[0-9]+)/$', views.product_details),
     url(r'^inv_stat_details/(?P<pk>[0-9]+)/$', views.inv_stat_details),
     url(r'^inv_stat_del/(?P<pk>[0-9]+)/$', views.inv_stat_del),
+    url(r'^cost_center_del/(?P<pk>[0-9]+)/$', views.cost_center_del),
     url(r'^cost_center_details/(?P<pk>[0-9]+)/$', views.cost_center_details),
     url(r'^supplier_details/(?P<pk>[0-9]+)/$', views.supplier_details),
     url(r'^garv_entry_f/$', views.garv_entry_f),
