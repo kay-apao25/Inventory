@@ -193,18 +193,6 @@ class GARV_entryForm(forms.ModelForm):
         fields = ('cc_number', 'inspected_by', 'confirmed_by', 'noted_by',\
                     'date_confirmed','date_inspected', )
 
-#class GARV_Form(forms.ModelForm):
-
-#    class Meta:
-#        model = GARV
-#        fields = ('cc_number', 'inspected_by', 'date_inspected', \
-#        'confirmed_by', 'date_confirmed', 'noted_by', )
-
-    """def __init__(self, pk, *args, **kwargs):
-       super(GARV_Form, self).__init__(*args, **kwargs)
-       self.fields['product'].queryset = PAR.objects.all().filter(par_no=pk)"""
-
-
 class Product_to_GARVform(forms.Form):
 
     product = forms.ModelChoiceField(queryset=PAR.objects.all(), label='Product *')

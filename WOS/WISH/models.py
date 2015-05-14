@@ -179,23 +179,4 @@ class GARV(models.Model):
     history = HistoricalRecords()
 
     def __str__(self):
-        return str(self.dce)
-
-"""class Pending(models.Model):
-    item_name = models.TextField()
-    supplier_number = models.ForeignKey(Supplier, related_name="sn_penFK")
-    serial_number = models.CharField(max_length=10)
-    model = models.TextField()
-    amount = models.FloatField()
-    description = models.TextField()
-    history = HistoricalRecords()
-
-    class Meta:
-        unique_together = ('supplier_number', 'serial_number', 'model')
-
-    def __str__(self):
-        return self.supplier_number + "," + self.serial_number + "," + self.model
-
-class Try(models.Model):
-    text = models.ManyToManyField(PAR)
-    history = HistoricalRecords()"""
+        return str(self.garv_no)
