@@ -130,7 +130,7 @@ def sup_lib(request):
                 setattr(sup, key, form1.data[key1])
                 setattr(sup, key, form2.data[key1])
             sup.save()
-            msg = 'Inventory Station was added successfully.'
+            msg = 'Supplier was added successfully.'
     else:
         form = Supplier_lib()
         form1 = Supplier_lib1()
@@ -149,11 +149,14 @@ def employee_lib(request):
         if form.is_valid() :
             employee = form.save(commit=False)
             employee.save()
-            return redirect('WISH.views.index')
+            msg = 'Employee was added successfully.'
 
     else:
         form = Employee_lib()
-    return render(request, 'WISH/employee_lib.html', {'form': form })
+    try:
+        return render(request, 'WISH/employee_lib.html', {'form': form , 'msg':msg})
+    except:
+        return render(request, 'WISH/employee_lib.html', {'form': form })
 
 def add_cost_center(request):
     if request.method == "POST":
@@ -163,13 +166,16 @@ def add_cost_center(request):
 
 
             product.save()
-            return redirect('WISH.views.index')
+            msg = 'Cost center was added successfully.'
 
     else:
         form = CC_lib()
 
-
-    return render(request, 'WISH/add_cost_center.html', {'form': form })
+    try:
+        form = CC_lib()
+        return render(request, 'WISH/add_cost_center.html', {'form': form , 'msg':msg })
+    except:
+        return render(request, 'WISH/add_cost_center.html', {'form': form })
 
 def product_new(request):
     if request.method == "POST":

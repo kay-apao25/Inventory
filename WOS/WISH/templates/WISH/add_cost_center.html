@@ -10,6 +10,11 @@
     <div class="page-header">
       <h2 align="center">Add another Cost Center</h2>
     </div>
+		{%if msg%}
+    <div class="alert alert-success" style="width:400px">
+        {{ msg }}
+    </div>
+    {% endif %}
     <br>
     <form method="POST" class="irr_entry">{% csrf_token %}
     <table width="10%">
