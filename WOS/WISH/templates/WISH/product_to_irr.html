@@ -41,21 +41,17 @@
               {% for field in form %}
                 &nbsp;&nbsp;{{field | bootstrap_horizontal:'col-lg-4'}}&nbsp;&nbsp;&nbsp;
               {%endfor%}
-     <br>
         <div align="center"><button type="submit" class="save btn btn-default">Add Another Item</button></div>
-     
-    <br><br><br><br><br><br><br><br>
-     
             </td>
             <td style="padding:20px">
               {% for field in iform %}
                  &nbsp;&nbsp;{{field | bootstrap_horizontal:'col-lg-4'}}&nbsp;&nbsp;&nbsp;
               {%endfor%}
-     <br>
             </td>
           </tr>
         </table>
         <div align="center"><button type="submit" class="save btn btn-default">Save</button></div>
+        
      
     </form>
     {% endif %}

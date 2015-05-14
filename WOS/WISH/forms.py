@@ -112,12 +112,20 @@ class IRR_entryForm2(forms.Form):
             "format": "YYYY-MM-DD", "pickTime": False}), label='Approved date*')
         self.fields['date_dlvrd'] = forms.DateField(widget=DateTimePicker(options={\
             "format": "YYYY-MM-DD", "pickTime": False}), label='Delivery date *')
+
     pr_number = forms.CharField(label='PR number *')
 
 class IRR_entry_cont_Form(forms.ModelForm):
 
+    def __init__(self, *args, **kwargs):
+        inv = kwargs.pop('inv')
+        super(IRR_entry_cont_Form, self).__init__(*args, **kwargs)
+
+        self.fields['cost_center_no'] = forms.ModelChoiceField(queryset=Cost_center.objects.filter(\
+            is_delete=False).filter(cost_center_no__in=[i.cost_center_no.id for i in (Inventory_stat.objects.filter(inv_station_no=inv))]),\
+            label='Cost center *', required=False)
+        
     date_recv = forms.DateField(widget=DateTimePicker(options={"format": "YYYY-MM-DD", "pickTime": False}), label='Date received *', required=False)
-    cost_center_no = forms.ModelChoiceField(queryset=Cost_center.objects.filter(is_delete=False), label='Cost center *', required=False)
     wo_no = forms.CharField(label='WO number *', required=False)
 
     class Meta:
@@ -131,50 +139,34 @@ class Product_to_IRRForm(forms.Form):
         super(Product_to_IRRForm, self).__init__(*args, **kwargs)
 
         self.fields['product'] = forms.ModelChoiceField(queryset=Product.objects.filter(\
-            inv_station_no=inv).filter(is_irr=False), label='Product *')
-        self.fields['quantity_accepted'] = forms.IntegerField(label='Quantity accepted *')
-        self.fields['quantity_rejected'] = forms.IntegerField(label='Quantity rejected *')
-        self.fields['quantity_balance'] = forms.IntegerField(label='Quantity balance *')
+            inv_station_no=inv).filter(is_irr=False), label='Product *', required=True)
+        self.fields['quantity_accepted'] = forms.IntegerField(label='Quantity accepted *', required=True)
+        self.fields['quantity_rejected'] = forms.IntegerField(label='Quantity rejected *', required=True)
+        self.fields['quantity_balance'] = forms.IntegerField(label='Quantity balance *', required=True)
 
 class MIV_entryForm(forms.ModelForm):
 
-    date_issued = forms.DateField(widget=DateTimePicker(options={"format": "YYYY-MM-DD", "pickTime": False}), label='Date issued *')
+    date_issued = forms.DateField(widget=DateTimePicker(options={"format": "YYYY-MM-DD", "pickTime": False}), \
+        label='Date issued *', required=True)
 
     class Meta:
         model = MIV
         fields = ( 'date_issued', 'remarks')
 
-#class PAR_entryForm(forms.ModelForm):
-
-    """def __init__(self, irn, *args, **kwargs):
-        super(PAR_entryForm, self).__init__(*args, **kwargs)
-        self.fields['dce'] = forms.ModelChoiceField(Employee.objects.filter(\
-            cost_center_no=IRR.objects.get(irr_no=irn).irr_headkey.inv_station_no.cost_center_no.id))
-        self.fields['approved_by'] = forms.ModelChoiceField(Employee.objects.filter(\
-            cost_center_no=IRR.objects.get(irr_no=irn).irr_headkey.inv_station_no.cost_center_no.id))
-        self.fields['issued_by'] = forms.ModelChoiceField(Employee.objects.filter(\
-            cost_center_no=IRR.objects.get(irr_no=irn).irr_headkey.inv_station_no.cost_center_no.id))"""
-
-
-#    class Meta:
-#        model = PAR
-#        fields = ('dce', 'par_no', 'approved_by', \
-#        'issued_by', 'PO_number', 'date_acquired', 'remark', )
-
 class PAR_Form(forms.ModelForm):
 
-    """def __init__(self, irn, *args, **kwargs):
+    def __init__(self, *args, **kwargs):
+        inv = kwargs.pop('inv')
         super(PAR_Form, self).__init__(*args, **kwargs)
-        self.fields['dce'] = forms.ModelChoiceField(Employee.objects.filter(\
-            cost_center_no=IRR.objechttp://localhost:8000/irr_entry/ts.get(irr_no=irn).irr_headkey.inv_station_no.cost_center_no.id))
-        self.fields['approved_by'] = forms.ModelChoiceField(Employee.objects.filter(\
-            cost_center_no=IRR.objects.get(irr_no=irn).irr_headkey.inv_station_no.cost_center_no.id))
-        self.fields['issued_by'] = forms.ModelChoiceField(Employee.objects.filter(\
-            cost_center_no=IRR.objects.get(irr_no=irn).irr_headkey.inv_station_no.cost_center_no.id))"""
+
+        self.fields['dce'] = forms.ModelChoiceField(queryset=Employee.objects.filter(\
+            cost_center_no=IRR.objects.get(irr_no=inv).irr_headkey.inv_station_no.cost_center_no.id),\
+            label='Accountable Employee*', required=False)
+        self.fields['approved_by'] = forms.ModelChoiceField(queryset=Employee.objects.filter(\
+        cost_center_no=IRR.objects.get(irr_no=inv).irr_headkey.inv_station_no.cost_center_no.id), label='Approved by*',\
+            required=False)
 
     date_acquired = forms.DateField(widget=DateTimePicker(options={"format": "YYYY-MM-DD", "pickTime": False}), label='Date acquired*', required=False)
-    dce = forms.ModelChoiceField(queryset=Employee.objects.filter(is_delete=False), label='Accountable Employee*')
-    approved_by = forms.ModelChoiceField(queryset=Employee.objects.filter(is_delete=False), label='Approved by*')
 
     class Meta:
         model = PAR
@@ -183,30 +175,51 @@ class PAR_Form(forms.ModelForm):
 
 class Product_to_PARForm(forms.Form):
 
-    product = forms.ModelChoiceField(queryset=Product.objects.all(), required=True, label='Product *')
-    quantity = forms.IntegerField(required=True, label='Quantity *')
-    par_no = forms.CharField(required=True, label='PAR number *')
+     def __init__(self, *args, **kwargs):
+        prodlist = kwargs.pop('prodlist')
+        super(Product_to_PARForm, self).__init__(*args, **kwargs)
 
+        self.fields['product'] = forms.ModelChoiceField(queryset=Product.objects.all().filter(id__in=\
+        [Product.objects.get(id=p).id for p in prodlist]), label='Product *', required=True)
+        self.fields['quantity'] = forms.IntegerField(required=True, label='Quantity *')
+        self.fields['par_no'] = forms.CharField(required=True, label='PAR number *')
 
 class Product_to_PARForm1(forms.Form):
 
-    """def __init__(self, irn, *args, **kwargs):
-        super(Product_to_PARForm, self).__init__(*args, **kwargs)
-        products = IRR.objects.get(irr_no=irn).product
-        self.fields['product'] = forms.ModelChoiceField(Product.objects.all().filter(id__in=\"
-            [Product.objects.get(id=p['Product']).id for p in products]))"""
+    def __init__(self, *args, **kwargs):
+        prodlist = kwargs.pop('prodlist')
+        super(Product_to_PARForm1, self).__init__(*args, **kwargs)
 
-    product = forms.ModelChoiceField(queryset=Product.objects.all(), required=True, label='Product *')
-    quantity = forms.IntegerField(required=True, label='Quantity *')
-
+        self.fields['product'] = forms.ModelChoiceField(queryset=Product.objects.all().filter(id__in=\
+        [Product.objects.get(id=p).id for p in prodlist]), label='Product *')
+        self.fields['quantity'] = forms.IntegerField(required=True, label='Quantity *')
+        
+    
 class GARV_entryForm(forms.ModelForm):
 
-    date_inspected = forms.DateField(widget=DateTimePicker(options={"format": "YYYY-MM-DD", "pickTime": False}), label='Date inspected*')
-    date_confirmed = forms.DateField(widget=DateTimePicker(options={"format": "YYYY-MM-DD", "pickTime": False}), label='Date confirmed *')
-    cc_number = forms.ModelChoiceField(queryset=Cost_center.objects.filter(is_delete=False), label='CC number *')
-    inspected_by = forms.ModelChoiceField(queryset=Employee.objects.filter(is_delete=False), label='Inspected by *')
-    confirmed_by = forms.ModelChoiceField(queryset=Employee.objects.filter(is_delete=False), label='Confirmed by *')
-    noted_by = forms.ModelChoiceField(queryset=Employee.objects.all(), label='Noted by *')
+    def __init__(self, *args, **kwargs):
+        pk = kwargs.pop('pk')
+        super(GARV_entryForm, self).__init__(*args, **kwargs)
+
+        self.fields['cc_number'] = forms.ModelChoiceField(queryset=Cost_center.objects.filter(\
+            id=PAR.objects.get(par_no=pk).inv_stat_no.cost_center_no.id), label='CC number *', required=False)
+
+        self.fields['inspected_by'] = forms.ModelChoiceField(queryset=Employee.objects.filter(\
+                cost_center_no=IRR.objects.get(irr_no=PAR.objects.get(\
+            par_no=pk).wo_number).irr_headkey.inv_station_no.cost_center_no.id), required=False, label='Inspected by *')
+
+        self.fields['confirmed_by'] = forms.ModelChoiceField(queryset=Employee.objects.filter(\
+                cost_center_no=IRR.objects.get(irr_no=PAR.objects.get(\
+            par_no=pk).wo_number).irr_headkey.inv_station_no.cost_center_no.id), required=False, label='Confirmed by *')
+
+        self.fields['noted_by'] = forms.ModelChoiceField(queryset=Employee.objects.filter(\
+                cost_center_no=IRR.objects.get(irr_no=PAR.objects.get(\
+            par_no=pk).wo_number).irr_headkey.inv_station_no.cost_center_no.id), required=False, label='Noted by *')
+
+    date_inspected = forms.DateField(widget=DateTimePicker(options={"format": "YYYY-MM-DD", "pickTime": False}), \
+        label='Date inspected*', required=False)
+    date_confirmed = forms.DateField(widget=DateTimePicker(options={"format": "YYYY-MM-DD", "pickTime": False}), \
+        label='Date confirmed *', required=False)
 
     class Meta:
         model = GARV
@@ -215,24 +228,27 @@ class GARV_entryForm(forms.ModelForm):
 
 class Product_to_GARVform(forms.Form):
 
-    product = forms.ModelChoiceField(queryset=PAR.objects.all(), label='Product *')
-    quantity = forms.IntegerField(label='Quantity *')
-    remarks = forms.CharField(required=False)
-    garv_no = forms.CharField(required=True, label='GARV number*')
+    def __init__(self, *args, **kwargs):
+        prodlist = kwargs.pop('prodlist')
+        super(Product_to_GARVform, self).__init__(*args, **kwargs)
 
-    """def __init__(self, var, *args, **kwargs):
-       super(Product_to_GARVform, self).__init__(*args, **kwargs)
-       self.fields['product'].queryset = var"""
+        self.fields['product'] = forms.ModelChoiceField(queryset=Product.objects.all().filter(id__in=\
+        [Product.objects.get(id=p).id for p in prodlist]), label='Product *', required=True)
+        self.fields['quantity'] = forms.IntegerField(required=True, label='Quantity *')
+        self.fields['remarks'] = forms.CharField(required=False)
+        self.fields['garv_no'] = forms.CharField(required=True, label='GARV number*')
+
 
 class Product_to_GARVform1(forms.Form):
 
-    product = forms.ModelChoiceField(queryset=PAR.objects.all(), label='Product *')
-    quantity = forms.IntegerField(label='Quantity *')
-    remarks = forms.CharField(required=False)
+    def __init__(self, *args, **kwargs):
+        prodlist = kwargs.pop('prodlist')
+        super(Product_to_GARVform1, self).__init__(*args, **kwargs)
 
-    """def __init__(self, var, *args, **kwargs):
-       super(Product_to_GARVform, self).__init__(*args, **kwargs)
-       self.fields['product'].queryset = var"""
+        self.fields['product'] = forms.ModelChoiceField(queryset=Product.objects.all().filter(id__in=\
+        [Product.objects.get(id=p).id for p in prodlist]), label='Product *', required=True)
+        self.fields['quantity'] = forms.IntegerField(required=True, label='Quantity *')
+        self.fields['remarks'] = forms.CharField(required=False)
 
 class Stat_lib(forms.ModelForm):
 
