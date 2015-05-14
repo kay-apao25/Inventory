@@ -73,9 +73,9 @@ def libraries(request):
     return render(request, 'WISH/libraries.html', {})
 
 def inv_stat(request):
-    inv = (Inventory_stat.objects.filter(is_delete=False)).items(20)
+    inv = Inventory_stat.objects.filter(is_delete=False)
 
-    return render(request, 'WISH/inv_stat.html', {'inv': list(inv)})
+    return render(request, 'WISH/inv_stat.html', {'inv': inv})
 
 def cost_center(request):
     cos = Cost_center.objects.filter(is_delete=False)
