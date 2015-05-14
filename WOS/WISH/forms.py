@@ -79,6 +79,7 @@ class IRR_entryForm(forms.ModelForm):
 
 
 class IRR_entryForm1(forms.Form):
+    inv_station_no = forms.ModelChoiceField(label='Inventory Station *', queryset=Inventory_stat.objects.filter(is_delete=False))
     supplier = forms.ModelChoiceField(label='Supplier *', queryset=Supplier.objects.filter(is_delete=False))
     reference = forms.CharField(label='Reference *')
     invoice_number = forms.CharField(label='Invoice number *')

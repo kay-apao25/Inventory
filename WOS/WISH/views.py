@@ -230,6 +230,8 @@ def irr_entry(request):
     del prod_to_par[:]
     del prod_to_garv[:]
 
+    name = str(request.user.first_name) + ' ' + str(request.user.last_name)
+
     if request.method == "POST":
 
         #Forms containing the entries entered by the user
@@ -238,7 +240,7 @@ def irr_entry(request):
         form2 = IRR_entryForm2(request.POST)
 
         #Non-empty forms are to be validated.
-        if form.is_valid() and form1.is_valid():
+        if form1.is_valid() and form2.is_valid():
             irr_entry = form.save(commit=False)
 
             #Assignment of values in IRR header model
@@ -248,10 +250,6 @@ def irr_entry(request):
                     key = key + '_id'
                 setattr(irr_entry, key, form1.data[key1])
                 setattr(irr_entry, key, form2.data[key1])
-
-            name = str(request.user.first_name) + ' ' + str(request.user.last_name)
-
-            irr_entry.inv_station_no = Inventory_stat.objects.get(id=int(Employee.objects.get(name=name)))
 
             irr_entry.dce_custodian = Employee.objects.get(name=name)
             irr_entry.save()
@@ -267,15 +265,17 @@ def irr_entry(request):
             exit = 'No available products to be made with IRR record.'
         else:
             #else display blank forms.
-            form = IRR_entryForm()
             form1 = IRR_entryForm1()
             form2 = IRR_entryForm2()
+
+    form2.fields['dce_user'].queryset = Employee.objects.filter(is_delete=False).filter(cost_center_no=Employee.objects.get(name=name).cost_center_no)
+    form2.fields['dce_approved'].queryset = Employee.objects.filter(is_delete=False).filter(cost_center_no=Employee.objects.get(name=name).cost_center_no)
 
     #Rendering of forms
     try:
         return render(request, 'WISH/irr_entry.html', {'exit': exit})
     except:
-        return render(request, 'WISH/irr_entry.html', {'form': form, 'form1': form1, 'form2': form2})
+        return render(request, 'WISH/irr_entry.html', {'form1': form1, 'form2': form2})
 
 
 prod_to_irr = [] #Product_to_IRR list: List for storing products to be added in a specific IRR form
