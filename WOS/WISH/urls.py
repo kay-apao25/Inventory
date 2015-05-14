@@ -9,6 +9,7 @@ urlpatterns = [
     url(r'^par/(?P<inv>[0-9]+)/$', views.par),
     url(r'^par_f/$', views.par_f),
     url(r'^irr_entry/$', views.irr_entry, name='irr_entry'),
+    url(r'^(?P<msg>\w+)/irr_entry/$', views.irr_entry, name='irr_entry'),
     url(r'^miv_entry/$', views.miv_entry, name='miv_entry'),
     url(r'^miv_entry_S/(?P<pk>[0-9]+)/$', views.miv_entry_S),
     url(r'^par_form/(?P<pk>[0-9]+)/$', views.par_form),

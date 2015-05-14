@@ -270,8 +270,8 @@ def irr_entry(request):
 
         #Forms containing the entries entered by the user
         form = IRR_entryForm(request.POST)
-        form1 = IRR_entryForm1(request.POST)
-        form2 = IRR_entryForm2(request.POST)
+        form1 = IRR_entryForm1(request.POST, name=name)
+        form2 = IRR_entryForm2(request.POST, name=name)
 
         #Non-empty forms are to be validated.
         if form1.is_valid() and form2.is_valid():
@@ -290,20 +290,16 @@ def irr_entry(request):
 
             return redirect('WISH.views.product_to_irr', pk=irr_entry.pk, inv=int(irr_entry.inv_station_no_id))
     else:
-        pform = Product_to_IRRForm()
-        pform.fields['product'].queryset = Product.objects.filter(is_irr=False)
+        prodlist = Product.objects.filter(is_irr=False)
 
         #To check if there are no available products to be made with IRR record
-        if len(pform.fields['product'].queryset) == 0:
+        if len(prodlist) == 0:
             #If true return this exit message
             exit = 'No available products to be made with IRR record.'
         else:
             #else display blank forms.
-            form1 = IRR_entryForm1()
-            form2 = IRR_entryForm2()
-
-    form2.fields['dce_user'].queryset = Employee.objects.filter(is_delete=False).filter(cost_center_no=Employee.objects.get(name=name).cost_center_no)
-    form2.fields['dce_approved'].queryset = Employee.objects.filter(is_delete=False).filter(cost_center_no=Employee.objects.get(name=name).cost_center_no)
+            form1 = IRR_entryForm1(name=name)
+            form2 = IRR_entryForm2(name=name)
 
     #Rendering of forms
     try:
@@ -317,7 +313,7 @@ def product_to_irr(request, pk, inv):
     if request.method == "POST":
 
         #Forms containing the entries entered by the user
-        form = Product_to_IRRForm(request.POST)
+        form = Product_to_IRRForm(request.POST, inv=inv)
         iform = IRR_entry_cont_Form(request.POST)
 
         #Non-empty forms are to be validated.
@@ -384,23 +380,20 @@ def product_to_irr(request, pk, inv):
                 else:
                     msg = 'Item (' + str(Product.objects.get(id=int(form.data['product'])).item_name) + ') was successfully added'
 
-    else:
-        form = Product_to_IRRForm()
-
-    form.fields['product'].queryset = Product.objects.filter(inv_station_no=inv).filter(is_irr=False)
-    if len(form.fields['product'].queryset) == 0:
+    prodlist = Product.objects.filter(inv_station_no=inv).filter(is_irr=False)
+    if len(prodlist) == 0:
         #If true return this exit message
-        exit = 'No available products to be made with IRR record.'
+        msg = 'IRR record (IRR No. - ' + str(IRR.objects.latest('wrs_number')) + ') was successfully added.'
+        exit = 'No available products to be made with IRR Record.'
     else:
         #else display blank forms.
-        form = Product_to_IRRForm()
-        form.fields['product'].queryset = Product.objects.filter(inv_station_no=inv).filter(is_irr=False)
+        form = Product_to_IRRForm(inv=inv)
         iform = IRR_entry_cont_Form()
 
     #Rendering of forms and/or messages and/or errors
     try:
         try:
-            return render(request, 'WISH/irr_entry.html', {'exit': exit})
+            return render(request, 'WISH/product_to_irr.html', {'exit': exit, 'msg':msg})
         except:
             return render(request, 'WISH/product_to_irr.html', {'form': form, 'iform': iform, 'error': error})
     except:
@@ -671,13 +664,12 @@ def par(request, inv):
                     pro = Product.objects.get(id=product['Product'])
                     amount = float(product['Quantity']) * int(pro.unit_cost)
                     par_entry.amt_cost = par_entry.amt_cost + amount
-            #par_entry.amt_cost = amt_cost
+            
                 res = json.dumps(prod_to_par)
                 par_entry.product = prod_to_par
                 par_entry.inv_stat_no_id = IRR.objects.get(irr_no=inv).irr_headkey.inv_station_no.id
 
                 par_entry.issued_by = Employee.objects.get(name=(str(request.user.first_name) + ' ' + str(request.user.last_name)))
-            #par_entry.PO_number_id = str(IRR.objects.get(irr_no=inv).irr_headkey.po_number)
 
                 par_entry.save()
                 if len(prod_list) == 0:

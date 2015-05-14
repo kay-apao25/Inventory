@@ -79,7 +79,14 @@ class IRR_entryForm(forms.ModelForm):
 
 
 class IRR_entryForm1(forms.Form):
-    inv_station_no = forms.ModelChoiceField(label='Inventory Station *', queryset=Inventory_stat.objects.filter(is_delete=False))
+    
+    def __init__(self, *args, **kwargs):
+        name = kwargs.pop('name')
+        super(IRR_entryForm1, self).__init__(*args, **kwargs)
+        self.fields['inv_station_no'] = forms.ModelChoiceField(queryset=Inventory_stat.objects.filter(\
+                cost_center_no=Employee.objects.get(name=name).cost_center_no).filter(\
+                id__in=[p.inv_station_no.id for p in Product.objects.filter(is_irr=False)]), label='Inventory Station *')
+    
     supplier = forms.ModelChoiceField(label='Supplier *', queryset=Supplier.objects.filter(is_delete=False))
     reference = forms.CharField(label='Reference *')
     invoice_number = forms.CharField(label='Invoice number *')
@@ -88,11 +95,23 @@ class IRR_entryForm1(forms.Form):
 
 
 class IRR_entryForm2(forms.Form):
-    dce_user = forms.ModelChoiceField(queryset=Employee.objects.filter(is_delete=False), label='User *')
-    dce_approved = forms.ModelChoiceField(queryset=Employee.objects.filter(is_delete=False), label='Approved by *')
-    proc_date = forms.DateField(widget=DateTimePicker(options={"format": "YYYY-MM-DD", "pickTime": False}), label='Proc date *')
-    approved_date = forms.DateField(widget=DateTimePicker(options={"format": "YYYY-MM-DD", "pickTime": False}), label='Approved date*')
-    date_dlvrd = forms.DateField(widget=DateTimePicker(options={"format": "YYYY-MM-DD", "pickTime": False}), label='Delivery date *')
+
+    def __init__(self, *args, **kwargs):
+        name = kwargs.pop('name')
+        super(IRR_entryForm2, self).__init__(*args, **kwargs)
+
+        self.fields['dce_user'] = forms.ModelChoiceField(queryset=Employee.objects.filter(\
+            is_delete=False).filter(cost_center_no=Employee.objects.get(\
+                name=name).cost_center_no), label='User *')
+        self.fields['dce_approved'] = forms.ModelChoiceField(queryset=Employee.objects.filter(\
+            is_delete=False).filter(cost_center_no=Employee.objects.get(\
+                name=name).cost_center_no), label='Approved by *')
+        self.fields['proc_date'] = forms.DateField(widget=DateTimePicker(\
+            options={"format": "YYYY-MM-DD", "pickTime": False}), label='Proc date *')
+        self.fields['approved_date'] = forms.DateField(widget=DateTimePicker(options={\
+            "format": "YYYY-MM-DD", "pickTime": False}), label='Approved date*')
+        self.fields['date_dlvrd'] = forms.DateField(widget=DateTimePicker(options={\
+            "format": "YYYY-MM-DD", "pickTime": False}), label='Delivery date *')
 
 class IRR_entry_cont_Form(forms.ModelForm):
 
@@ -105,10 +124,16 @@ class IRR_entry_cont_Form(forms.ModelForm):
         fields = ('cost_center_no', 'date_recv' , 'wo_no' , 'remarks',)
 
 class Product_to_IRRForm(forms.Form):
-    product = forms.ModelChoiceField(queryset=Product.objects.all())
-    quantity_accepted = forms.IntegerField(label='Quantity accepted *')
-    quantity_rejected = forms.IntegerField(label='Quantity rejected *')
-    quantity_balance = forms.IntegerField(label='Quantity balance *')
+
+    def __init__(self, *args, **kwargs):
+        inv = kwargs.pop('inv')
+        super(Product_to_IRRForm, self).__init__(*args, **kwargs)
+
+        self.fields['product'] = forms.ModelChoiceField(queryset=Product.objects.filter(\
+            inv_station_no=inv).filter(is_irr=False), label='Product *')
+        self.fields['quantity_accepted'] = forms.IntegerField(label='Quantity accepted *')
+        self.fields['quantity_rejected'] = forms.IntegerField(label='Quantity rejected *')
+        self.fields['quantity_balance'] = forms.IntegerField(label='Quantity balance *')
 
 class MIV_entryForm(forms.ModelForm):
 
