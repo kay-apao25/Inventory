@@ -6,15 +6,15 @@ from json_field import JSONField
 # Create your models here.
 class Supplier(models.Model):
     supplier_number = models.CharField(max_length=8)
-    supplier_name = models.TextField(max_length=20)
-    supplier_address = models.TextField(max_length=20)
+    supplier_name = models.CharField(max_length=40)
+    supplier_address = models.CharField(max_length=40)
     telephone_number = models.CharField(max_length=11)
     credit_limit = models.FloatField()
     debit_amount = models.FloatField()
     credit_amount = models.FloatField()
     balance_amount = models.FloatField()
-    contact_person = models.TextField(max_length=20)
-    remarks = models.TextField(max_length=20)
+    contact_person = models.CharField(max_length=20)
+    remarks = models.CharField(max_length=20)
     is_delete=models.BooleanField(default=False)
     history = HistoricalRecords()
 
@@ -22,8 +22,8 @@ class Supplier(models.Model):
         return self.supplier_name + ", " + self.supplier_address
 
 class Cost_center(models.Model):
-    cost_center_name = models.TextField(max_length=20)
-    functional_group = models.CharField(max_length=20)
+    cost_center_name = models.CharField(max_length=40)
+    functional_group = models.CharField(max_length=40)
     is_delete=models.BooleanField(default=False)
     history = HistoricalRecords()
 
@@ -31,8 +31,8 @@ class Cost_center(models.Model):
         return self.cost_center_name
 
 class Inventory_stat(models.Model):
-    inv_station_no = models.CharField(max_length = 20)
-    station_description = models.TextField()
+    inv_station_no = models.CharField(max_length = 40)
+    station_description = models.CharField(max_length=20)
     cost_center_no = models.ForeignKey(Cost_center, related_name="cc_iFK")
     is_delete = models.BooleanField(default=False)
     history = HistoricalRecords()
@@ -43,10 +43,10 @@ class Inventory_stat(models.Model):
 
 class Employee(models.Model):
     dce = models.CharField(max_length=8, primary_key = True)
-    name = models.TextField()
+    name = models.CharField(max_length=40)
     cost_center_no = models.ForeignKey(Cost_center, related_name="cc_eFK")
     charging_cc_no = models.CharField(max_length=20)
-    position = models.TextField()
+    position = models.CharField(max_length=20)
     history = HistoricalRecords()
     is_delete = models.BooleanField(default=False)
 
@@ -65,12 +65,12 @@ class Customer(models.Model):
         return self.dce
 
 class Product(models.Model):
-    nsn = models.CharField(max_length=10)
-    slc_number = models.CharField(max_length=10)
-    product_number = models.CharField(max_length=10)
-    generic_name = models.TextField(max_length=25)
-    item_name = models.CharField(max_length=10)
-    brand = models.TextField(max_length=25)
+    nsn = models.CharField(max_length=15)
+    slc_number = models.CharField(max_length=15)
+    product_number = models.CharField(max_length=15)
+    generic_name = models.CharField(max_length=40)
+    item_name = models.CharField(max_length=40)
+    brand = models.CharField(max_length=40)
     part_number = models.CharField(max_length=8)
     manufacture_date = models.DateField()
     expiry_date = models.DateField(null=True, blank=True)
@@ -80,15 +80,15 @@ class Product(models.Model):
     stock = models.CharField(max_length=10)
     block = models.CharField(max_length=10)
     unit_measure = models.CharField(max_length=10)
-    status = models.CharField(max_length=10)
+    status = models.CharField(max_length=20)
     purchased_from = models.ForeignKey(Supplier, related_name="s_pFK")
     average_amount = models.FloatField()
     balance_limit = models.FloatField()
-    serial_number = models.CharField(max_length=15, null=True, blank=True)
-    model = models.TextField(max_length=25)
+    serial_number = models.CharField(max_length=25, null=True, blank=True)
+    model = models.CharField(max_length=25)
     amount = models.FloatField()
-    description = models.TextField(max_length=25)
-    remarks = models.TextField(max_length=25, null=True, blank=True)
+    description = models.CharField(max_length=40)
+    remarks = models.CharField(max_length=40, null=True, blank=True)
     history = HistoricalRecords()
     inv_station_no = models.ForeignKey(Inventory_stat, related_name="inv_iFK")
     balance = models.IntegerField(default = 0, null=True, blank=True)
@@ -126,7 +126,7 @@ class IRR(models.Model):
     date_recv = models.DateField(null=True, blank=True)
     wo_no = models.CharField(max_length=7, null=True, blank=True)
     wrs_number = models.CharField(max_length = 8)
-    remarks = models.TextField(max_length = 30, null=True, blank=True)
+    remarks = models.CharField(max_length = 40, null=True, blank=True)
     is_par = models.BooleanField(default=False)
     is_miv = models.BooleanField(default=False)
     history = HistoricalRecords()
@@ -140,7 +140,7 @@ class MIV(models.Model):
     wrs_number = models.CharField(max_length = 10)
     date_issued = models.DateField()
     doc_date = models.DateField()
-    remarks = models.TextField(null=True, blank=True)
+    remarks = models.CharField(max_length=40,null=True, blank=True)
     history = HistoricalRecords()
 
     def __str__(self):
@@ -152,7 +152,7 @@ class PAR(models.Model):
     par_date = models.DateField()
     par_no = models.CharField(max_length=10, primary_key=True)
     amt_cost = models.FloatField(null=True, blank=True)
-    remarks = models.TextField(null=True, blank=True)
+    remarks = models.CharField(max_length=40, null=True, blank=True)
     approved_by = models.ForeignKey(Employee, related_name='dce_FK2', null=True, blank=True)
     issued_by = models.ForeignKey(Employee, related_name='dce_FK3', null=True, blank=True)
     inv_stat_no = models.ForeignKey(Inventory_stat, related_name="is_pFK", null=True, blank=True)

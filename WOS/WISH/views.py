@@ -148,14 +148,14 @@ def sup_lib(request):
                 setattr(sup, key, form2.data[key1])
             sup.save()
             msg = 'Supplier was added successfully.'
+            form = Sup_lib()
+            form1 = Sup_lib1()
+            form2 = Sup_lib2()
     else:
         form = Sup_lib()
         form1 = Sup_lib1()
         form2 = Sup_lib2()
     try:
-        form = Sup_lib()
-        form1 = Suplib1()
-        form2 = Sup_lib2()
         return render(request, 'WISH/sup_lib.html', {'form1': form1, 'form2': form2 , 'msg':msg})
     except:
         return render(request, 'WISH/sup_lib.html', {'form1': form1, 'form2': form2})
