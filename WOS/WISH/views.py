@@ -20,9 +20,6 @@ def index(request):
 def aboutus(request):
     return render(request, 'WISH/AboutUs.html', {})
 
-def wrs_num(request):
-    return render(request, 'WISH/wrs_num.html', {})
-
 def inv_stat_del(request, pk):
     inv_del = get_object_or_404(Inventory_stat, pk=pk)
     inv_del.is_delete = True
@@ -349,25 +346,18 @@ def product_to_irr(request, pk, inv):
                 else:
                     msg = 'Item (' + str(Product.objects.get(id=int(form.data['product'])).item_name) + ') was successfully added'
 
-                form.fields['product'].queryset = Product.objects.filter(inv_station_no=inv).filter(is_irr=False)
-
-                if len(form.fields['product'].queryset) == 0:
-                    #If true return this exit message
-                    exit = 'No available products to be made with IRR record.'
-                else:
-                    #else display blank forms.
-                    form = Product_to_IRRForm()
-                    iform = IRR_entry_cont_Form()
-
     else:
         form = Product_to_IRRForm()
+    
+    form.fields['product'].queryset = Product.objects.filter(inv_station_no=inv).filter(is_irr=False)
+    if len(form.fields['product'].queryset) == 0:
+        #If true return this exit message
+        exit = 'No available products to be made with IRR record.'
+    else:
+        #else display blank forms.
+        form = Product_to_IRRForm()
         form.fields['product'].queryset = Product.objects.filter(inv_station_no=inv).filter(is_irr=False)
-        if len(form.fields['product'].queryset) == 0:
-            #If true return this exit message
-            exit = 'No available products to be made with IRR record.'
-        else:
-            #else display blank forms.
-            iform = IRR_entry_cont_Form()
+        iform = IRR_entry_cont_Form()
 
     #Rendering of forms and/or messages and/or errors
     try:
