@@ -181,9 +181,9 @@ class Product_to_PARForm1(forms.Form):
 
 class GARV_entryForm(forms.ModelForm):
 
-    date_inspected = forms.DateField(widget=DateTimePicker(options={"format": "YYYY-MM-DD", "pickTime": False}), label='Date inspected *')
+    date_inspected = forms.DateField(widget=DateTimePicker(options={"format": "YYYY-MM-DD", "pickTime": False}), label='Date inspected*')
     date_confirmed = forms.DateField(widget=DateTimePicker(options={"format": "YYYY-MM-DD", "pickTime": False}), label='Date confirmed *')
-    cc_number = forms.CharField(label='CC number *')
+    cc_number = forms.ModelChoiceField(queryset=Cost_center.objects.filter(is_delete=False), label='CC number *')
     inspected_by = forms.ModelChoiceField(queryset=Employee.objects.filter(is_delete=False), label='Inspected by *')
     confirmed_by = forms.ModelChoiceField(queryset=Employee.objects.filter(is_delete=False), label='Confirmed by *')
     noted_by = forms.ModelChoiceField(queryset=Employee.objects.all(), label='Noted by *')
@@ -193,24 +193,12 @@ class GARV_entryForm(forms.ModelForm):
         fields = ('cc_number', 'inspected_by', 'confirmed_by', 'noted_by',\
                     'date_confirmed','date_inspected', )
 
-#class GARV_Form(forms.ModelForm):
-
-#    class Meta:
-#        model = GARV
-#        fields = ('cc_number', 'inspected_by', 'date_inspected', \
-#        'confirmed_by', 'date_confirmed', 'noted_by', )
-
-    """def __init__(self, pk, *args, **kwargs):
-       super(GARV_Form, self).__init__(*args, **kwargs)
-       self.fields['product'].queryset = PAR.objects.all().filter(par_no=pk)"""
-
-
 class Product_to_GARVform(forms.Form):
 
     product = forms.ModelChoiceField(queryset=PAR.objects.all(), label='Product *')
     quantity = forms.IntegerField(label='Quantity *')
     remarks = forms.CharField(required=False)
-    garv_no = forms.CharField(required=True, label='GARV number *')
+    garv_no = forms.CharField(required=True, label='GARV number*')
 
     """def __init__(self, var, *args, **kwargs):
        super(Product_to_GARVform, self).__init__(*args, **kwargs)
