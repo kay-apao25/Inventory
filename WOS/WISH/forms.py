@@ -147,8 +147,8 @@ class PAR_Form(forms.ModelForm):
             cost_center_no=IRR.objects.get(irr_no=irn).irr_headkey.inv_station_no.cost_center_no.id))"""
 
     date_acquired = forms.DateField(widget=DateTimePicker(options={"format": "YYYY-MM-DD", "pickTime": False}), label='Date acquired*', required=False)
-    dce = forms.ModelChoiceField(queryset=Employee.objects.filter(is_delete=False), label='Accountable Employee*', required=False)
-    approved_by = forms.ModelChoiceField(queryset=Employee.objects.filter(is_delete=False), label='Approved by*', required=False)
+    dce = forms.ModelChoiceField(queryset=Employee.objects.filter(is_delete=False), label='Accountable Employee*')
+    approved_by = forms.ModelChoiceField(queryset=Employee.objects.filter(is_delete=False), label='Approved by*')
 
     class Meta:
         model = PAR
@@ -181,12 +181,12 @@ class Product_to_PARForm1(forms.Form):
 
 class GARV_entryForm(forms.ModelForm):
 
-    date_inspected = forms.DateField(widget=DateTimePicker(options={"format": "YYYY-MM-DD", "pickTime": False}), label='Date inspected *', required=False)
-    date_confirmed = forms.DateField(widget=DateTimePicker(options={"format": "YYYY-MM-DD", "pickTime": False}), label='Date confirmed *', required=False)
-    cc_number = forms.ModelChoiceField(Cost_center.objects.all(), label='CC number *', required=False)
-    inspected_by = forms.ModelChoiceField(queryset=Employee.objects.filter(is_delete=False), label='Inspected by *', required=False)
-    confirmed_by = forms.ModelChoiceField(queryset=Employee.objects.filter(is_delete=False), label='Confirmed by *', required=False)
-    noted_by = forms.ModelChoiceField(queryset=Employee.objects.all(), label='Noted by *', required=False)
+    date_inspected = forms.DateField(widget=DateTimePicker(options={"format": "YYYY-MM-DD", "pickTime": False}), label='Date inspected *')
+    date_confirmed = forms.DateField(widget=DateTimePicker(options={"format": "YYYY-MM-DD", "pickTime": False}), label='Date confirmed *')
+    cc_number = forms.CharField(label='CC number *')
+    inspected_by = forms.ModelChoiceField(queryset=Employee.objects.filter(is_delete=False), label='Inspected by *')
+    confirmed_by = forms.ModelChoiceField(queryset=Employee.objects.filter(is_delete=False), label='Confirmed by *')
+    noted_by = forms.ModelChoiceField(queryset=Employee.objects.all(), label='Noted by *')
 
     class Meta:
         model = GARV
@@ -210,7 +210,7 @@ class Product_to_GARVform(forms.Form):
     product = forms.ModelChoiceField(queryset=PAR.objects.all(), label='Product *')
     quantity = forms.IntegerField(label='Quantity *')
     remarks = forms.CharField(required=False)
-    garv_no = forms.CharField(required=True, label='GARV number*')
+    garv_no = forms.CharField(required=True, label='GARV number *')
 
     """def __init__(self, var, *args, **kwargs):
        super(Product_to_GARVform, self).__init__(*args, **kwargs)
@@ -228,9 +228,13 @@ class Product_to_GARVform1(forms.Form):
 
 class Stat_lib(forms.ModelForm):
 
+    cost_center_no = forms.ModelChoiceField(queryset=Cost_center.objects.filter(is_delete=False))
+
     class Meta:
         model = Inventory_stat
         fields = ('inv_station_no', 'station_description', 'cost_center_no',)
+
+
 
 class CC_lib(forms.ModelForm):
 
@@ -246,22 +250,8 @@ class Supplier_lib(forms.ModelForm):
         'credit_limit', 'debit_amount', 'credit_amount', 'balance_amount', 'contact_person',
         'remarks',)
 
-class Supplier_lib1(forms.ModelForm):
-
-    class Meta:
-        model = Supplier
-        fields = ('supplier_number', 'telephone_number',
-        'credit_limit', 'supplier_name', 'supplier_address', )
-
-class Supplier_lib2(forms.ModelForm):
-
-    class Meta:
-        model = Supplier
-        fields = ('debit_amount', 'credit_amount', 'balance_amount', 'contact_person',
-        'remarks',)
-
 class Employee_lib(forms.ModelForm):
 
     class Meta:
         model = Employee
-        fields = ('dce', 'cost_center_no', 'charging_cc_no', 'name', 'position',)
+        fields = ('dce', 'name', 'position', 'cost_center_no', 'charging_cc_no',)
