@@ -586,6 +586,12 @@ def product_to_garv(request, pk):
     iform.fields['product'] = forms.ModelChoiceField(Product.objects.all().filter(id__in=\
         [Product.objects.get(id=p).id for p in prod_list]))
     form.fields['cc_number'].queryset = Cost_center.objects.filter(id=PAR.objects.get(par_no=pk).inv_stat_no.cost_center_no.id)
+    form.fields['inspected_by'].queryset = Employee.objects.filter(\
+        cost_center_no=IRR.objects.get(irr_no=PAR.objects.get(par_no=pk).wo_number).irr_headkey.inv_station_no.cost_center_no.id)
+    form.fields['confirmed_by'].queryset = Employee.objects.filter(\
+        cost_center_no=IRR.objects.get(irr_no=PAR.objects.get(par_no=pk).wo_number).irr_headkey.inv_station_no.cost_center_no.id)
+    form.fields['noted_by'].queryset = Employee.objects.filter(\
+        cost_center_no=IRR.objects.get(irr_no=PAR.objects.get(par_no=pk).wo_number).irr_headkey.inv_station_no.cost_center_no.id)
     if int(msg) == 0:
         return render(request, 'WISH/garv_entry.html', {'form': form, 'iform': iform, 'msg': 'PAR Record (PAR No. - ' + str(par_no) + ') is successfully added.'})
     elif int(msg) == 1:
@@ -639,6 +645,7 @@ def par(request, inv):
                     #par_entry.save()
 
             if error == '':
+                par_entry.wo_number = IRR.objects.get(irr_no=inv)
                 par_entry.par_date = time.strftime("%Y-%m-%d")
                 prod_to_par.append({'Product': iform.data['product'],\
                                 'Quantity': iform.data['quantity'], 'quantity_garv': iform.data['quantity'],\

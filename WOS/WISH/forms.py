@@ -181,9 +181,9 @@ class Product_to_PARForm1(forms.Form):
 
 class GARV_entryForm(forms.ModelForm):
 
-    date_inspected = forms.DateField(widget=DateTimePicker(options={"format": "YYYY-MM-DD", "pickTime": False}), label='Date inspected *')
+    date_inspected = forms.DateField(widget=DateTimePicker(options={"format": "YYYY-MM-DD", "pickTime": False}), label='Date inspected*')
     date_confirmed = forms.DateField(widget=DateTimePicker(options={"format": "YYYY-MM-DD", "pickTime": False}), label='Date confirmed *')
-    cc_number = forms.CharField(label='CC number *')
+    cc_number = forms.ModelChoiceField(queryset=Cost_center.objects.filter(is_delete=False), label='CC number *')
     inspected_by = forms.ModelChoiceField(queryset=Employee.objects.filter(is_delete=False), label='Inspected by *')
     confirmed_by = forms.ModelChoiceField(queryset=Employee.objects.filter(is_delete=False), label='Confirmed by *')
     noted_by = forms.ModelChoiceField(queryset=Employee.objects.all(), label='Noted by *')
@@ -210,7 +210,7 @@ class Product_to_GARVform(forms.Form):
     product = forms.ModelChoiceField(queryset=PAR.objects.all(), label='Product *')
     quantity = forms.IntegerField(label='Quantity *')
     remarks = forms.CharField(required=False)
-    garv_no = forms.CharField(required=True, label='GARV number *')
+    garv_no = forms.CharField(required=True, label='GARV number*')
 
     """def __init__(self, var, *args, **kwargs):
        super(Product_to_GARVform, self).__init__(*args, **kwargs)
