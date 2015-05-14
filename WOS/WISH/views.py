@@ -475,76 +475,117 @@ def garv_entry_f(request):
     del prod_to_irr[:]
     del prod_to_par[:]
     del prod_to_garv[:]
-    pars = PAR.objects.all()
-    garvs = GARV.objects.all()
-    return render(request, 'WISH/garv_entry_f.html', {'pars':pars, 'garvs':garvs})
+    pars = PAR.objects.filter(is_garv=False)
+    if len(pars) == 0:
+        return render(request, 'WISH/garv_entry_f.html', {'exit': 'No PAR records to be made with GARV record.'})
+    else:
+        return render(request, 'WISH/garv_entry_f.html', {'pars':pars})
 
 prod_to_garv = []
 def product_to_garv(request, pk):
+    prod_list = []
+    error = ''
+    msg = 3
+    try:
+        garv_no = int(GARV.objects.latest('garv_date').garv_no)
+    except:
+        garv_no = 0
     if request.method == "POST":
         form = GARV_entryForm(request.POST)
-        iform = Product_to_GARVform(request.POST)
+        if form.has_changed():
+            iform = Product_to_GARVform1(request.POST)
+        else:
+            iform = Product_to_GARVform(request.POST)
+
         if form.is_valid():
-            prod_to_garv.append({'Product': iform.data['product'], 'Quantity': \
-            iform.data['quantity'], 'PAR_number': pk, 'Remarks': \
-            iform.data['remarks']})
             garv = form.save(commit=False)
-            garv.garv_date = time.strftime("%Y-%m-%d")
-            garv.dce = (PAR.objects.get(par_no=pk)).dce
-            garv.garv_no = iform.data['garv_no']
-            garv.wo_number = (PAR.objects.get(par_no=pk)).wo_number
-            res = json.dumps(prod_to_garv)
-            garv.product_to_GARV = res
-            prods = garv.product_to_GARV
-            for prod in prods:
-                p = Product.objects.get(id=(prod['Product']))
+
+            try:
+                garv.garv_no = iform.data['garv_no']
+                garv_no = garv.garv_no
+            except:
+                garv.garv_no = garv_no
+
+            par = PAR.objects.get(par_no=int(pk))
+            for prod in par.product:
+                if prod['Product'] == str(iform.data['product']):
+                    prod['quantity_garv'] = int(prod['quantity_garv']) - int(iform.data['quantity'])
+                    if int(prod['quantity_garv']) < 0:
+                        error = 'Entered quantity is greater than accepted items.'
+                    elif int(prod['quantity_garv']) == 0:
+                        prod['quantity_garv'] = 0
+                        prod['is_garv'] = True
+                        par.save()
+                    else:
+                        prod['quantity_garv'] = prod['quantity_garv']
+                        prod_list.append(int(prod['Product']))
+                        par.save()
+                if prod['is_garv'] == False:
+                    prod_list.append(int(prod['Product']))
+
+            if error == '':
+                prod_to_garv.append({'Product': iform.data['product'], 'Quantity': \
+                    iform.data['quantity'], 'PAR_number': pk, 'Remarks': \
+                    iform.data['remarks']})
+
+                p = Product.objects.get(id=int(iform.data['product']))
                 p.quantity = int(p.quantity) + int(prod['Quantity'])
-                #p.remarks = 'Product has a GARV Record (GARV No: ' + garv.garv_no + ')'
-            p.save()
-            garv.save()
-            return redirect('WISH.views.garv_entry', g=garv.garv_no, pk=pk)
+                p.save()
+
+                garv.garv_date = time.strftime("%Y-%m-%d")
+                garv.dce = (PAR.objects.get(par_no=pk)).dce
+                garv.wo_number = (PAR.objects.get(par_no=pk)).wo_number
+                res = json.dumps(prod_to_garv)
+                garv.product_to_GARV = res
+
+                garv.save()
+
+                if len(prod_list) == 0:
+                    par.is_garv = True
+                    par.save()
+                    del prod_to_garv[:]
+                    exit = 'Exit'
+                    return render(request, 'WISH/par_entry.html', {'exit': exit, 'msg': 'GARV Record (GARV No. - ' + str(garv.garv_no) + ') is successfully added.'})
+            
+                if form.has_changed():
+                    msg = 0
+                    del prod_to_par[:]
+                    form = GARV_entryForm()
+                    iform = Product_to_GARVform()
+                else:
+                    msg = 1
+                    form = GARV_entryForm()
+                    if garv_no == 0:
+                        iform = Product_to_GARVform()
+                    else:
+                        iform = Product_to_GARVform1()
+            else:
+                msg = 2
+                #par_no = 0
+                form = GARV_entryForm()
+            #return redirect('WISH.views.garv_entry', g=garv.garv_no, pk=pk)
     else:
         form = GARV_entryForm()
         iform = Product_to_GARVform()
-        products = PAR.objects.get(par_no=pk).product
-        iform.fields['product'] = forms.ModelChoiceField(Product.objects.all().filter(id__in=\
-            [Product.objects.get(id=p['Product']).id for p in products]), label='Product *')
-        form.fields['cc_number'] = forms.ModelChoiceField(Cost_center.objects.filter(id=PAR.objects.get(par_no=pk).inv_stat_no.cost_center_no.id), label='CC number*')
-    return render(request, 'WISH/garv_entry.html', {'form': form, 'iform': iform})
-
-def garv_entry(request, g, pk):
-    if request.method == "POST":
-        form = GARV_entryForm(request.POST)
-        iform = Product_to_GARVform1(request.POST)
-        if form.is_valid():
-            prod_to_garv.append({'Product': iform.data['product'], 'Quantity': \
-            iform.data['quantity'], 'PAR_number':pk, 'Remarks': iform.data['remarks']})
-            garv = form.save(commit=False)
-            garv.garv_date = time.strftime("%Y-%m-%d")
-            garv.dce = (PAR.objects.get(par_no=pk)).dce
-            garv.wo_number = (PAR.objects.get(par_no=pk)).wo_number
-            garv.garv_no = g
-            res = json.dumps(prod_to_garv)
-            garv.product_to_GARV = res
-            prods = garv.product_to_GARV
-            for prod in prods:
-                p = Product.objects.get(id=(prod['Product']))
-                p.quantity = int(p.quantity) + int(prod['Quantity'])
-                #p.remarks = 'Product has a GARV Record (GARV No: ' + garv.garv_no + ')'
-            p.save()
-            garv.save()
-            return redirect('WISH.views.garv_entry', g=g, pk=pk)
+    
+    products = PAR.objects.get(par_no=pk).product
+    for prod in products:
+        if prod['is_garv'] == False:
+            prod_list.append(int(prod['Product']))
+    
+    iform.fields['product'] = forms.ModelChoiceField(Product.objects.all().filter(id__in=\
+        [Product.objects.get(id=p).id for p in prod_list]))
+    form.fields['cc_number'].queryset = Cost_center.objects.filter(id=PAR.objects.get(par_no=pk).inv_stat_no.cost_center_no.id)
+    if int(msg) == 0:
+        return render(request, 'WISH/garv_entry.html', {'form': form, 'iform': iform, 'msg': 'PAR Record (PAR No. - ' + str(par_no) + ') is successfully added.'})
+    elif int(msg) == 1:
+        return render(request, 'WISH/garv_entry.html', {'form': form, 'iform': iform, 'msg': 'Item is successfully added.'})
+    elif int(msg) == 2:
+        return render(request, 'WISH/garv_entry.html', {'form': form, 'iform': iform, 'error': 'Entered product quantity to be assigned to this employee is greater than stocked items.'})
     else:
-        form = GARV_entryForm()
-        iform = Product_to_GARVform1()
-        products = PAR.objects.get(par_no=pk).product
-        iform.fields['product'] = forms.ModelChoiceField(Product.objects.all().filter(id__in=\
-            [Product.objects.get(id=p['Product']).id for p in products]), label='Product*')
-        form.fields['cc_number'] = forms.ModelChoiceField(Cost_center.objects.filter(id=PAR.objects.get(par_no=pk).inv_stat_no.cost_center_no.id), label='CC number*')
-    return render(request, 'WISH/garv_entry.html', {'form': form, 'iform': iform})
+        return render(request, 'WISH/garv_entry.html', {'form': form, 'iform': iform})
 
 prod_to_par = []
-prod_to_garv = []
 def par(request, inv):
     prod_list = []
     error = ''
@@ -590,7 +631,8 @@ def par(request, inv):
             if error == '':
                 par_entry.par_date = time.strftime("%Y-%m-%d")
                 prod_to_par.append({'Product': iform.data['product'],\
-                                'Quantity': iform.data['quantity']})
+                                'Quantity': iform.data['quantity'], 'quantity_garv': iform.data['quantity'],\
+                                'is_garv': False})
                 par_entry.amt_cost = 0
                 for product in prod_to_par:
                     pro = Product.objects.get(id=product['Product'])

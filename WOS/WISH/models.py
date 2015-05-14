@@ -158,6 +158,7 @@ class PAR(models.Model):
     #PO_number = models.CharField(null=True, blank=True)
     date_acquired = models.DateField(null=True, blank=True)
     wo_number = models.ForeignKey(IRR, related_name="wo_pFK", null=True, blank=True)
+    is_garv = models.BooleanField(default=False)
     history = HistoricalRecords()
 
     def __str__(self):

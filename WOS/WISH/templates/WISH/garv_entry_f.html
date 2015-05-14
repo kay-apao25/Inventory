@@ -1,9 +1,14 @@
 {% extends 'WISH/index.html' %}
 
 {% block content %}
-<h2 align="center"> Select the PAR Record to be created with GARV Report </h2>
-<br>
-<br>
+{% if exit %}
+  <div class="alert alert-warning" style="width:400px">
+    {{ exit }}
+  </div>
+  <div align="center"><a href= "{% url 'WISH.views.index' %}"><i class="glyphicon glyphicon-share-alt"></i> Exit </a></div>
+{% else %}
+  <h2 align="center"> Select the PAR Record to be created with GARV Report </h2>
+  <br><br>
    <table style="width:60%;" align="center" class="table">
       <thead>
       	<th>PAR No.</th>
@@ -40,4 +45,5 @@
 
       	{% endfor %}
    </table>
+   {% endif %}
 {% endblock %}

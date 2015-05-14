@@ -11,30 +11,49 @@
       <h2 align="center">Fill for GARV Record</h2>
     </div>
     <br>
-    <form method="POST" class="irr_entry">{% csrf_token %}
+    <form method="POST" class="post-form">{% csrf_token %}
+    {% if exit %}
+      {%if msg%}
+        <div class="alert alert-success" style="width:400px">
+          {{ msg }}
+        </div>
+        <div align="center"><a href= "{% url 'WISH.views.index' %}"><i class="glyphicon glyphicon-share-alt"></i> {{ exit }}</a></div>
+      {% endif %}
+    {% else %}
     <strong><p style="font-size:15px">Fields with asterisk are required.</p></strong>
-    <table width="10%">
+    {%if msg%}
+        <div class="alert alert-success" style="width:400px">
+    {{ msg }}
+        </div>
+    {% endif %}
+    {%if error%}
+        <div class="alert alert-danger" style="width:400px">
+    {{ error }}
+        </div>
+    {% endif %}
+      <table width="50%">
     <tr>
-    <td colspan="2">
+    <td style="padding:20px">
      {% for field in iform %}
-   		&nbsp;&nbsp;{{field | bootstrap_horizontal:'col-lg-4'}}&nbsp;&nbsp;&nbsp;
-   	 {%endfor%}
+      &nbsp;&nbsp;{{field | bootstrap_horizontal:'col-lg-4'}} &nbsp;&nbsp;&nbsp;
+     {%endfor%}
      <br>
      <div align="center"><button type="submit" class="save btn btn-default">Add Another Item</button>
-     	<br><br><br><br><br>
+      <br><br><br>
      </div>
      </td>
      <td style="padding:20px">
      {% for field in form %}
 
-   		&nbsp;&nbsp;{{field | bootstrap_horizontal:'col-lg-4'}}&nbsp;&nbsp;&nbsp;
+      &nbsp;&nbsp;{{field | bootstrap_horizontal:'col-lg-4'}} &nbsp;&nbsp;&nbsp;
 
      {%endfor%}
-     <br>
      <br>
      </td>
      </tr>
      </table>
-		<div align="center"><button type="submit" class="save btn btn-default">Save</button></div>
-   </form>
+     <div align="center"><button type="submit" class="save btn btn-default">Save</button></div>
+     </form>
+     {% endif %}
+
 {% endblock %}
