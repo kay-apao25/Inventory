@@ -79,7 +79,15 @@
 	    </nav>
 			<div align="center">
 				{% block content %}
+
 	    <h1 align="center">Welcome</h1>
+
+			<br>
+			{%if msg%}
+			<div class="alert alert-success" style="width:400px">
+					{{ msg }}
+			</div>
+			{% endif %}
 	  		{% endblock %}
 
 
