@@ -75,7 +75,7 @@ class IRR_entryForm(forms.ModelForm):
     class Meta:
         model = IRR_header
         exclude = ('inv_station_no', 'supplier', 'reference', 'invoice_number', 'po_number', 'dr_number',\
-                    'dce_custodian', 'dce_user', 'dce_approved','proc_date', 'approved_date','type_n', 'date_dlvrd',)
+                    'pr_number', 'dce_custodian', 'dce_user', 'dce_approved','proc_date', 'approved_date','type_n', 'date_dlvrd',)
 
 
 class IRR_entryForm1(forms.Form):
@@ -112,6 +112,7 @@ class IRR_entryForm2(forms.Form):
             "format": "YYYY-MM-DD", "pickTime": False}), label='Approved date*')
         self.fields['date_dlvrd'] = forms.DateField(widget=DateTimePicker(options={\
             "format": "YYYY-MM-DD", "pickTime": False}), label='Delivery date *')
+    pr_number = forms.CharField(label='PR number *')
 
 class IRR_entry_cont_Form(forms.ModelForm):
 
@@ -165,7 +166,7 @@ class PAR_Form(forms.ModelForm):
     """def __init__(self, irn, *args, **kwargs):
         super(PAR_Form, self).__init__(*args, **kwargs)
         self.fields['dce'] = forms.ModelChoiceField(Employee.objects.filter(\
-            cost_center_no=IRR.objects.get(irr_no=irn).irr_headkey.inv_station_no.cost_center_no.id))
+            cost_center_no=IRR.objechttp://localhost:8000/irr_entry/ts.get(irr_no=irn).irr_headkey.inv_station_no.cost_center_no.id))
         self.fields['approved_by'] = forms.ModelChoiceField(Employee.objects.filter(\
             cost_center_no=IRR.objects.get(irr_no=irn).irr_headkey.inv_station_no.cost_center_no.id))
         self.fields['issued_by'] = forms.ModelChoiceField(Employee.objects.filter(\
@@ -181,12 +182,6 @@ class PAR_Form(forms.ModelForm):
 
 
 class Product_to_PARForm(forms.Form):
-
-    """def __init__(self, irn, *args, **kwargs):
-        super(Product_to_PARForm, self).__init__(*args, **kwargs)
-        products = IRR.objects.get(irr_no=irn).product
-        self.fields['product'] = forms.ModelChoiceField(Product.objects.all().filter(id__in=\"
-            [Product.objects.get(id=p['Product']).id for p in products]))"""
 
     product = forms.ModelChoiceField(queryset=Product.objects.all(), required=True, label='Product *')
     quantity = forms.IntegerField(required=True, label='Quantity *')
@@ -274,9 +269,35 @@ class Supplier_lib2(forms.ModelForm):
         model = Supplier
         fields = ('debit_amount', 'credit_amount', 'balance_amount', 'contact_person', 'remarks',)
 
+class Sup_lib(forms.ModelForm):
+
+    class Meta:
+        model = Supplier
+        fields = ( 'supplier_number','supplier_name', 'supplier_address', 'telephone_number',
+        'credit_limit', 'debit_amount', 'credit_amount', 'balance_amount', 'contact_person',
+        'remarks',)
+
+class Sup_lib1(forms.ModelForm):
+
+    class Meta:
+        model = Supplier
+        fields = ('supplier_number', 'telephone_number', 'credit_limit', 'supplier_name', 'supplier_address', )
+class Sup_lib2(forms.ModelForm):
+
+    class Meta:
+        model = Supplier
+        fields = ('debit_amount', 'credit_amount', 'balance_amount', 'contact_person', 'remarks',)
+
 class Employee_lib(forms.ModelForm):
 
     cost_center_no = forms.ModelChoiceField(queryset=Cost_center.objects.filter(is_delete=False))
     class Meta:
         model = Employee
         fields = ( 'name', 'position', 'cost_center_no', 'charging_cc_no',)
+
+class Em_lib(forms.ModelForm):
+
+    cost_center_no = forms.ModelChoiceField(queryset=Cost_center.objects.filter(is_delete=False))
+    class Meta:
+        model = Employee
+        fields = ( 'dce', 'name', 'position', 'cost_center_no', 'charging_cc_no',)
