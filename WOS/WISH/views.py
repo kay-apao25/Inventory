@@ -108,11 +108,15 @@ def stat_lib(request):
 
 
             product.save()
-            return redirect('WISH.views.index')
+            msg = 'Inventory Station was added successfully.'
 
     else:
         form = Stat_lib()
-    return render(request, 'WISH/stat_lib.html', {'form': form })
+    try:
+        form = Stat_lib()
+        return render(request, 'WISH/stat_lib.html', {'form': form , 'msg':msg})
+    except:
+        return render(request, 'WISH/stat_lib.html', {'form': form})
 
 def sup_lib(request):
     if request.method == 'POST':
@@ -126,12 +130,18 @@ def sup_lib(request):
                 setattr(sup, key, form1.data[key1])
                 setattr(sup, key, form2.data[key1])
             sup.save()
-            return redirect('WISH.views.index')
+            msg = 'Inventory Station was added successfully.'
     else:
         form = Supplier_lib()
         form1 = Supplier_lib1()
         form2 = Supplier_lib2()
-    return render(request, 'WISH/sup_lib.html', {'form1': form1, 'form2': form2})
+    try:
+        form = Supplier_lib()
+        form1 = Supplier_lib1()
+        form2 = Supplier_lib2()
+        return render(request, 'WISH/sup_lib.html', {'form1': form1, 'form2': form2 , 'msg':msg})
+    except:
+        return render(request, 'WISH/sup_lib.html', {'form1': form1, 'form2': form2})
 
 def employee_lib(request):
     if request.method == "POST":
@@ -157,6 +167,8 @@ def add_cost_center(request):
 
     else:
         form = CC_lib()
+
+
     return render(request, 'WISH/add_cost_center.html', {'form': form })
 
 def product_new(request):
@@ -348,7 +360,7 @@ def product_to_irr(request, pk, inv):
 
     else:
         form = Product_to_IRRForm()
-    
+
     form.fields['product'].queryset = Product.objects.filter(inv_station_no=inv).filter(is_irr=False)
     if len(form.fields['product'].queryset) == 0:
         #If true return this exit message
@@ -391,7 +403,7 @@ def miv_entry_S(request, pk):
 
             miv_entry = form.save(commit=False)
             miv_entry.irr_no_id = pk
-            
+
             #Generation of MIV number
             if len(MIV.objects.all()) != 0:
                 no = int((MIV.objects.latest('id')).miv_no) + 1
@@ -423,7 +435,7 @@ def miv_entry_S(request, pk):
 
             #Exit message
             exit = 'Exit'
-            
+
             for prod in prods:
                 p = Product.objects.get(id=(prod['Product']))
                 p.quantity = int(p.quantity) - int(prod['quantity_accepted'])
@@ -536,7 +548,7 @@ def product_to_garv(request, pk):
                     del prod_to_garv[:]
                     exit = 'Exit'
                     return render(request, 'WISH/par_entry.html', {'exit': exit, 'msg': 'GARV Record (GARV No. - ' + str(garv.garv_no) + ') is successfully added.'})
-            
+
                 if form.has_changed():
                     msg = 0
                     del prod_to_par[:]
@@ -557,12 +569,12 @@ def product_to_garv(request, pk):
     else:
         form = GARV_entryForm()
         iform = Product_to_GARVform()
-    
+
     products = PAR.objects.get(par_no=pk).product
     for prod in products:
         if prod['is_garv'] == False:
             prod_list.append(int(prod['Product']))
-    
+
     iform.fields['product'] = forms.ModelChoiceField(Product.objects.all().filter(id__in=\
         [Product.objects.get(id=p).id for p in prod_list]))
     form.fields['cc_number'].queryset = Cost_center.objects.filter(id=PAR.objects.get(par_no=pk).inv_stat_no.cost_center_no.id)
@@ -617,7 +629,7 @@ def par(request, inv):
                 if prod['is_par'] == False:
                     prod_list.append(int(prod['Product']))
                     #par_entry.save()
-            
+
             if error == '':
                 par_entry.par_date = time.strftime("%Y-%m-%d")
                 prod_to_par.append({'Product': iform.data['product'],\
@@ -632,10 +644,10 @@ def par(request, inv):
                 res = json.dumps(prod_to_par)
                 par_entry.product = prod_to_par
                 par_entry.inv_stat_no_id = IRR.objects.get(irr_no=inv).irr_headkey.inv_station_no.id
-            
+
                 par_entry.issued_by = Employee.objects.get(name=(str(request.user.first_name) + ' ' + str(request.user.last_name)))
             #par_entry.PO_number_id = str(IRR.objects.get(irr_no=inv).irr_headkey.po_number)
-            
+
                 par_entry.save()
                 if len(prod_list) == 0:
                     irr.is_par = True
@@ -643,7 +655,7 @@ def par(request, inv):
                     del prod_to_par[:]
                     exit = 'Exit'
                     return render(request, 'WISH/par_entry.html', {'exit': exit, 'msg': 'PAR Record (PAR No. - ' + str(par_entry.par_no) + ') is successfully added.'})
-            
+
                 if form.has_changed():
                     msg = 0
                     del prod_to_par[:]
@@ -667,7 +679,7 @@ def par(request, inv):
     form.fields['dce'].queryset = Employee.objects.filter(\
         cost_center_no=IRR.objects.get(irr_no=inv).irr_headkey.inv_station_no.cost_center_no.id)
     form.fields['approved_by'].queryset = Employee.objects.filter(\
-        cost_center_no=IRR.objects.get(irr_no=inv).irr_headkey.inv_station_no.cost_center_no.id) 
+        cost_center_no=IRR.objects.get(irr_no=inv).irr_headkey.inv_station_no.cost_center_no.id)
 
     products = IRR.objects.get(irr_no=inv).product
     for prod in products:
