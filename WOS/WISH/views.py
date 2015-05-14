@@ -249,7 +249,11 @@ def irr_entry(request):
                 setattr(irr_entry, key, form1.data[key1])
                 setattr(irr_entry, key, form2.data[key1])
 
-            irr_entry.dce_custodian = Employee.objects.get(name=(str(request.user.first_name) + ' ' + str(request.user.last_name)))
+            name = str(request.user.first_name) + ' ' + str(request.user.last_name)
+
+            irr_entry.inv_station_no = Inventory_stat.objects.get(id=int(Employee.objects.get(name=name)))
+
+            irr_entry.dce_custodian = Employee.objects.get(name=name)
             irr_entry.save()
 
             return redirect('WISH.views.product_to_irr', pk=irr_entry.pk, inv=int(irr_entry.inv_station_no_id))
