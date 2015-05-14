@@ -245,7 +245,7 @@ class Supplier_lib(forms.ModelForm):
 
     class Meta:
         model = Supplier
-        fields = ('supplier_number', 'supplier_name', 'supplier_address', 'telephone_number',
+        fields = ( 'supplier_name', 'supplier_address', 'telephone_number',
         'credit_limit', 'debit_amount', 'credit_amount', 'balance_amount', 'contact_person',
         'remarks',)
 
@@ -253,7 +253,7 @@ class Supplier_lib1(forms.ModelForm):
 
     class Meta:
         model = Supplier
-        fields = ('supplier_number', 'telephone_number', 'credit_limit', 'supplier_name', 'supplier_address', )
+        fields = ( 'telephone_number', 'credit_limit', 'supplier_name', 'supplier_address', )
 class Supplier_lib2(forms.ModelForm):
 
     class Meta:

@@ -24,25 +24,41 @@ def inv_stat_del(request, pk):
     inv_del = get_object_or_404(Inventory_stat, pk=pk)
     inv_del.is_delete = True
     inv_del.save()
-    return render(request, 'WISH/index.html', {})
+    msg = 'Inventory Station was deleted successfully.'
+    try:
+        return render(request, 'WISH/index.html', {'msg':msg})
+    except:
+        return render(request, 'WISH/index.html', {})
 
 def cost_center_del(request, pk):
     cos_del = get_object_or_404(Cost_center, pk=pk)
     cos_del.is_delete = True
     cos_del.save()
-    return render(request, 'WISH/index.html', {})
+    msg = 'Cost center was deleted successfully.'
+    try:
+        return render(request, 'WISH/index.html', {'msg':msg})
+    except:
+        return render(request, 'WISH/index.html', {})
 
 def supplier_del(request, pk):
     sup_del = get_object_or_404(Supplier, pk=pk)
     sup_del.is_delete = True
     sup_del.save()
-    return render(request, 'WISH/index.html', {})
+    msg = 'Supplier was deleted successfully.'
+    try:
+        return render(request, 'WISH/index.html', {'msg':msg})
+    except:
+        return render(request, 'WISH/index.html', {})
 
 def employee_del(request, pk):
     em_del = get_object_or_404(Employee, pk=pk)
     em_del.is_delete = True
     em_del.save()
-    return render(request, 'WISH/index.html', {})
+    msg = 'Employee was deleted successfully.'
+    try:
+        return render(request, 'WISH/index.html', {'msg':msg})
+    except:
+        return render(request, 'WISH/index.html', {})
 
 def file_report(request):
     del prod_to_irr[:]
