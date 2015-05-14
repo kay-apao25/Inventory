@@ -447,7 +447,7 @@ def miv_entry(request):
     del prod_to_garv[:]
     irrs = IRR.objects.filter(is_miv=False)
     if len(irrs) == 0:
-        return render(request, 'WISH/miv_entry_f.html', {'exit':'No IRR records to be made with MIV record.'})
+        return render(request, 'WISH/miv_entry_f.html', {'exit':'No IRR Record(s) to be made with MIV Record.'})
     else:
         return render(request, 'WISH/miv_entry_f.html', {'irrs':irrs})
 
@@ -457,7 +457,7 @@ def par_f(request):
     del prod_to_garv[:]
     irrs = IRR.objects.filter(is_par=False)
     if len(irrs) == 0:
-        return render(request, 'WISH/par_f.html', {'exit': 'No IRR records to be made with PAR record.'})
+        return render(request, 'WISH/par_f.html', {'exit': 'No IRR Record(s) to be made with PAR Record.'})
     else:
         return render(request, 'WISH/par_f.html', {'irrs':irrs})
 
@@ -467,7 +467,7 @@ def garv_entry_f(request):
     del prod_to_garv[:]
     pars = PAR.objects.filter(is_garv=False)
     if len(pars) == 0:
-        return render(request, 'WISH/garv_entry_f.html', {'exit': 'No PAR records to be made with GARV record.'})
+        return render(request, 'WISH/garv_entry_f.html', {'exit': 'No PAR Record(s) to be made with GARV Record.'})
     else:
         return render(request, 'WISH/garv_entry_f.html', {'pars':pars})
 
@@ -551,9 +551,7 @@ def product_to_garv(request, pk):
                         iform = Product_to_GARVform1()
             else:
                 msg = 2
-                #par_no = 0
                 form = GARV_entryForm()
-            #return redirect('WISH.views.garv_entry', g=garv.garv_no, pk=pk)
     else:
         form = GARV_entryForm()
         iform = Product_to_GARVform()
