@@ -265,4 +265,4 @@ class Employee_lib(forms.ModelForm):
     cost_center_no = forms.ModelChoiceField(queryset=Cost_center.objects.filter(is_delete=False))
     class Meta:
         model = Employee
-        fields = ('dce', 'name', 'position', 'cost_center_no', 'charging_cc_no',)
+        fields = ( 'name', 'position', 'cost_center_no', 'charging_cc_no',)

@@ -786,16 +786,24 @@ def inv_stat_form(request, pk):
     form = Stat_lib(request.POST or None, instance=inv)
     if form.is_valid():
         form.save()
-        return redirect('WISH.views.index')
-    return render(request, 'WISH/inv_stat_form.html', {'form': form})
+        msg = 'Inventory Station was editted successfully.'
+    try:
+        form = Stat_lib(request.POST or None, instance=inv)
+        return render(request, 'WISH/inv_stat_form.html', {'form': form, 'msg':msg})
+    except:
+        return render(request, 'WISH/inv_stat_form.html', {'form': form})
 
 def cost_center_form(request, pk):
     cc = get_object_or_404(Cost_center, pk=pk)
     form = CC_lib(request.POST or None, instance=cc)
     if form.is_valid():
         form.save()
-        return redirect('WISH.views.index')
-    return render(request, 'WISH/cost_center_form.html', {'form': form})
+        msg = 'Cost center was editted successfully.'
+    try:
+        form = CC_lib(request.POST or None, instance=cc)
+        return render(request, 'WISH/cost_center_form.html', {'form': form, 'msg':msg})
+    except:
+        return render(request, 'WISH/cost_center_form.html', {'form': form})
 
 def supplier_form(request, pk):
     sup = get_object_or_404(Supplier, supplier_number=pk)
@@ -809,7 +817,7 @@ def supplier_form(request, pk):
                 setattr(sup, key, form1.data[key1])
                 setattr(sup, key, form2.data[key1])
             sup.save()
-            return redirect('WISH.views.index')
+            msg = 'Supplier information was editted successfully.'
     else:
         form = Supplier_lib(instance=sup)
         form1 = Supplier_lib1()
@@ -821,15 +829,32 @@ def supplier_form(request, pk):
             for key2 in form2.fields.keys():
                 if key == key2:
                     form2.fields[key].initial = getattr(sup, key)
-    return render(request, 'WISH/supplier_form.html', {'form1': form1, 'form2': form2})
+    try:
+        form = Supplier_lib(instance=sup)
+        form1 = Supplier_lib1()
+        form2 = Supplier_lib2()
+        for key in form.fields.keys():
+            for key1 in form1.fields.keys():
+                if key == key1:
+                    form1.fields[key].initial = getattr(sup, key)
+            for key2 in form2.fields.keys():
+                if key == key2:
+                    form2.fields[key].initial = getattr(sup, key)
+        return render(request, 'WISH/supplier_form.html', {'form1': form1, 'form2': form2, 'msg':msg})
+    except:
+        return render(request, 'WISH/supplier_form.html', {'form1': form1, 'form2': form2})
 
 def employee_form(request, dce):
     em = get_object_or_404(Employee, dce=dce)
     form = Employee_lib(request.POST or None, instance=em)
     if form.is_valid():
         form.save()
-        return redirect('WISH.views.index')
-    return render(request, 'WISH/employee_form.html', {'form': form})
+        msg = 'Employee information was editted successfully.'
+    try:
+        form = Employee_lib(request.POST or None, instance=em)
+        return render(request, 'WISH/employee_form.html', {'form': form, 'msg':msg})
+    except:
+        return render(request, 'WISH/employee_form.html', {'form': form})
 
 def par_form(request, pk):
     parss = get_object_or_404(PAR, pk=pk)
