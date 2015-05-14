@@ -103,6 +103,7 @@ class IRR_header(models.Model):
     reference = models.CharField(max_length=20)
     invoice_number = models.CharField(max_length=20)
     po_number = models.CharField(max_length=20)
+    pr_number = models.CharField(max_length=20)
     dr_number = models.CharField(max_length=20)
     dce_custodian = models.ForeignKey(Employee, related_name='dce1')
     dce_user = models.ForeignKey(Employee, related_name='dce2')

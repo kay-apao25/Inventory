@@ -137,9 +137,9 @@ def stat_lib(request):
 
 def sup_lib(request):
     if request.method == 'POST':
-        form = Supplier_lib(request.POST)
-        form1 = Supplier_lib1(request.POST)
-        form2 = Supplier_lib2(request.POST)
+        form = Sup_lib(request.POST)
+        form1 = Sup_lib1(request.POST)
+        form2 = Sup_lib2(request.POST)
         if form1.is_valid() and form2.is_valid():
             sup = form.save(commit=False)
             for key in form.data.keys():
@@ -149,28 +149,29 @@ def sup_lib(request):
             sup.save()
             msg = 'Supplier was added successfully.'
     else:
-        form = Supplier_lib()
-        form1 = Supplier_lib1()
-        form2 = Supplier_lib2()
+        form = Sup_lib()
+        form1 = Sup_lib1()
+        form2 = Sup_lib2()
     try:
-        form = Supplier_lib()
-        form1 = Supplier_lib1()
-        form2 = Supplier_lib2()
+        form = Sup_lib()
+        form1 = Suplib1()
+        form2 = Sup_lib2()
         return render(request, 'WISH/sup_lib.html', {'form1': form1, 'form2': form2 , 'msg':msg})
     except:
         return render(request, 'WISH/sup_lib.html', {'form1': form1, 'form2': form2})
 
 def employee_lib(request):
     if request.method == "POST":
-        form = Employee_lib(request.POST)
+        form = Em_lib(request.POST)
         if form.is_valid() :
             employee = form.save(commit=False)
             employee.save()
             msg = 'Employee was added successfully.'
 
     else:
-        form = Employee_lib()
+        form = Em_lib()
     try:
+        form = Em_lib()
         return render(request, 'WISH/employee_lib.html', {'form': form , 'msg':msg})
     except:
         return render(request, 'WISH/employee_lib.html', {'form': form })
@@ -303,8 +304,8 @@ def irr_entry(request):
             form1 = IRR_entryForm1()
             form2 = IRR_entryForm2()
 
-    form2.fields['dce_user'].queryset = Employee.objects.filter(is_delete=False).filter(cost_center_no=Employee.objects.get(name=name).cost_center_no)
-    form2.fields['dce_approved'].queryset = Employee.objects.filter(is_delete=False).filter(cost_center_no=Employee.objects.get(name=name).cost_center_no)
+            form2.fields['dce_user'].queryset = Employee.objects.filter(is_delete=False).filter(cost_center_no=Employee.objects.get(name=name).cost_center_no)
+            form2.fields['dce_approved'].queryset = Employee.objects.filter(is_delete=False).filter(cost_center_no=Employee.objects.get(name=name).cost_center_no)
 
     #Rendering of forms
     try:
