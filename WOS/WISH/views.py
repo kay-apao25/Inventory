@@ -13,9 +13,6 @@ import json
 # Create your views here.
 #msg = ''
 def index(request):
-    del prod_to_irr[:]
-    del prod_to_par[:]
-    del prod_to_garv[:]
     return render(request, 'WISH/index.html', {})
 
 def aboutus(request):
@@ -62,15 +59,9 @@ def employee_del(request, pk):
         return render(request, 'WISH/index.html', {})
 
 def file_report(request):
-    del prod_to_irr[:]
-    del prod_to_par[:]
-    del prod_to_garv[:]
     return render(request, 'WISH/file_report.html', {})
 
 def libraries(request):
-    del prod_to_irr[:]
-    del prod_to_par[:]
-    del prod_to_garv[:]
     return render(request, 'WISH/libraries.html', {})
 
 def inv_stat(request):
@@ -290,11 +281,6 @@ def product_new(request):
 
 def irr_entry(request):
 
-    #Cleaning of Product_to_IRR, Product_to_PAR and Product_to_GARV lists
-    del prod_to_irr[:]
-    del prod_to_par[:]
-    del prod_to_garv[:]
-
     name = str(request.user.first_name) + ' ' + str(request.user.last_name)
 
     if request.method == "POST":
@@ -406,13 +392,14 @@ def product_to_irr(request, pk, inv):
                 irr.product = res
 
                 #To check if all entries for the IRR form is filled.
-                if iform.has_changed():
+                if 'save' in request.POST:
                     msg = 'IRR record (IRR No. - ' + irr.irr_no + ') was successfully added.'
+                    iform = IRR_entry_cont_Form(inv=inv)
+                    del prod_to_irr[:]
                     irr.save()
                 else:
-                    msg = 'Item (' + str(Product.objects.get(id=int(form.data['product'])).item_name) + ') was successfully added'
+                    msg = 'Item (' + str(Product.objects.get(id=int(form.data['product'])).item_name) + ') was successfully added.'
             form = Product_to_IRRForm(inv=inv)
-            iform = IRR_entry_cont_Form(inv=inv)
     else:
         form = Product_to_IRRForm(inv=inv)
         iform = IRR_entry_cont_Form(inv=inv)
@@ -433,16 +420,11 @@ def product_to_irr(request, pk, inv):
             return render(request, 'WISH/product_to_irr.html', {'form': form, 'iform': iform, 'remove_add': remove_add, 'error': error})
     except:
         try:
-            return render(request, 'WISH/product_to_irr.html', {'form': form, 'iform': iform, 'msg': msg, 'remove_add': remove_add})
+            return render(request, 'WISH/product_to_irr.html', {'form': form, 'iform': iform, 'msg': msg, 'remove_add': remove_add, 'pk':pk, 'inv': inv})
         except:
-            return render(request, 'WISH/product_to_irr.html', {'form': form, 'iform': iform, 'remove_add': remove_add})
+            return render(request, 'WISH/product_to_irr.html', {'form': form, 'iform': iform, 'remove_add': remove_add, 'pk':pk, 'inv': inv})
 
 def miv_entry_S(request, pk):
-
-    #Cleaning of Product_to_IRR, Product_to_PAR and Product_to_GARV lists
-    del prod_to_irr[:]
-    del prod_to_par[:]
-    del prod_to_garv[:]
 
     if request.method == "POST":
 
@@ -507,9 +489,6 @@ def miv_entry_S(request, pk):
         return render(request, 'WISH/miv_entry.html', {'form': form})
 
 def miv_entry(request):
-    del prod_to_irr[:]
-    del prod_to_par[:]
-    del prod_to_garv[:]
     irrs = IRR.objects.filter(is_miv=False)
     if len(irrs) == 0:
         return render(request, 'WISH/miv_entry_f.html', {'exit':'No IRR Record(s) to be made with MIV Record.'})
@@ -517,9 +496,6 @@ def miv_entry(request):
         return render(request, 'WISH/miv_entry_f.html', {'irrs':irrs})
 
 def par_f(request):
-    del prod_to_irr[:]
-    del prod_to_par[:]
-    del prod_to_garv[:]
     irrs = IRR.objects.filter(is_par=False)
     if len(irrs) == 0:
         return render(request, 'WISH/par_f.html', {'exit': 'No IRR Record(s) to be made with PAR Record.'})
@@ -527,9 +503,6 @@ def par_f(request):
         return render(request, 'WISH/par_f.html', {'irrs':irrs})
 
 def garv_entry_f(request):
-    del prod_to_irr[:]
-    del prod_to_par[:]
-    del prod_to_garv[:]
     pars = PAR.objects.filter(is_garv=False)
     if len(pars) == 0:
         return render(request, 'WISH/garv_entry_f.html', {'exit': 'No PAR Record(s) to be made with GARV Record.'})
@@ -552,10 +525,10 @@ def product_to_garv(request, pk):
         garv_no = 0
     if request.method == "POST":
         form = GARV_entryForm(request.POST, pk=pk)
-        if form.has_changed():
-            iform = Product_to_GARVform1(request.POST, prodlist=prod_list)
-        else:
+        if garv_no == 0:
             iform = Product_to_GARVform(request.POST, prodlist=prod_list)
+        else:
+            iform = Product_to_GARVform1(request.POST, prodlist=prod_list)
 
         if form.is_valid():
             garv = form.save(commit=False)
@@ -599,7 +572,6 @@ def product_to_garv(request, pk):
                 garv.product_to_GARV = res
 
                 garv.save()
-
                 if len(prod_list) == 0:
                     products.is_garv = True
                     products.save()
@@ -607,10 +579,10 @@ def product_to_garv(request, pk):
                     exit = 'Exit'
                     return render(request, 'WISH/par_entry.html', {'exit': exit, 'msg': 'GARV Record (GARV No. - ' + str(garv.garv_no) + ') is successfully added.'})
 
-
-                if form.has_changed():
+                if 'save' in request.POST:
                     msg = 0
                     del prod_to_par[:]
+                    form = GARV_entryForm(pk=pk)
                     iform = Product_to_GARVform(prodlist=prod_list)
                 else:
                     msg = 1
@@ -626,9 +598,9 @@ def product_to_garv(request, pk):
                 msg = 2
 
     else:
+        form = GARV_entryForm(pk=pk)
         iform = Product_to_GARVform(prodlist=prod_list)
 
-    form = GARV_entryForm(pk=pk)
     if len(prod_list) == 1:
         remove_add = 1
 
@@ -657,10 +629,10 @@ def par(request, inv):
         par_no = 0
     if request.method == "POST":
         form = PAR_Form(request.POST, inv=inv)
-        if form.has_changed():
-            iform = Product_to_PARForm1(request.POST, prodlist=prod_list)
-        else:
+        if par_no == 0:
             iform = Product_to_PARForm(request.POST, prodlist=prod_list)
+        else:
+            iform = Product_to_PARForm1(request.POST, prodlist=prod_list)
 
         if form.is_valid() and iform.is_valid():
             par_entry = form.save(commit=False)
@@ -711,9 +683,10 @@ def par(request, inv):
                     exit = 'Exit'
                     return render(request, 'WISH/par_entry.html', {'exit': exit, 'msg': 'PAR Record (PAR No. - ' + str(par_entry.par_no) + ') is successfully added.'})
 
-                if form.has_changed():
+                if 'save' in request.POST:
                     msg = 0
                     del prod_to_par[:]
+                    form = PAR_Form(inv=inv)
                     iform = Product_to_PARForm(prodlist=prod_list)
                 else:
                     msg = 1
@@ -724,9 +697,9 @@ def par(request, inv):
             else:
                 msg = 2
     else:
+        form = PAR_Form(inv=inv)
         iform = Product_to_PARForm(prodlist=prod_list)
 
-    form = PAR_Form(inv=inv)
     if len(prod_list) == 1:
         remove_add = 1
 

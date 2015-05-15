@@ -123,10 +123,10 @@ class IRR_entry_cont_Form(forms.ModelForm):
 
         self.fields['cost_center_no'] = forms.ModelChoiceField(queryset=Cost_center.objects.filter(\
             is_delete=False).filter(cc_iFK__in=[i.cost_center_no.id for i in (Inventory_stat.objects.filter(inv_station_no=inv))]),\
-            label='Cost center *', required=False)
+            label='Cost center *')
         
-    date_recv = forms.DateField(widget=DateTimePicker(options={"format": "YYYY-MM-DD", "pickTime": False}), label='Date received *', required=False)
-    wo_no = forms.CharField(label='WO number *', required=False)
+    date_recv = forms.DateField(widget=DateTimePicker(options={"format": "YYYY-MM-DD", "pickTime": False}), label='Date received *')
+    wo_no = forms.CharField(label='WO number *')
 
     class Meta:
         model = IRR
@@ -161,12 +161,11 @@ class PAR_Form(forms.ModelForm):
 
         self.fields['dce'] = forms.ModelChoiceField(queryset=Employee.objects.filter(\
             cost_center_no=IRR.objects.get(irr_no=inv).irr_headkey.inv_station_no.cost_center_no.id),\
-            label='Accountable Employee*', required=False)
+            label='Accountable Employee*')
         self.fields['approved_by'] = forms.ModelChoiceField(queryset=Employee.objects.filter(\
-        cost_center_no=IRR.objects.get(irr_no=inv).irr_headkey.inv_station_no.cost_center_no.id), label='Approved by*',\
-            required=False)
+        cost_center_no=IRR.objects.get(irr_no=inv).irr_headkey.inv_station_no.cost_center_no.id), label='Approved by*')
 
-    date_acquired = forms.DateField(widget=DateTimePicker(options={"format": "YYYY-MM-DD", "pickTime": False}), label='Date acquired*', required=False)
+    date_acquired = forms.DateField(widget=DateTimePicker(options={"format": "YYYY-MM-DD", "pickTime": False}), label='Date acquired*')
 
     class Meta:
         model = PAR
@@ -202,24 +201,24 @@ class GARV_entryForm(forms.ModelForm):
         super(GARV_entryForm, self).__init__(*args, **kwargs)
 
         self.fields['cc_number'] = forms.ModelChoiceField(queryset=Cost_center.objects.filter(\
-            id=PAR.objects.get(par_no=pk).inv_stat_no.cost_center_no.id), label='CC number *', required=False)
+            id=PAR.objects.get(par_no=pk).inv_stat_no.cost_center_no.id), label='CC number *')
 
         self.fields['inspected_by'] = forms.ModelChoiceField(queryset=Employee.objects.filter(\
                 cost_center_no=IRR.objects.get(irr_no=PAR.objects.get(\
-            par_no=pk).wo_number).irr_headkey.inv_station_no.cost_center_no.id), required=False, label='Inspected by *')
+            par_no=pk).wo_number).irr_headkey.inv_station_no.cost_center_no.id), label='Inspected by *')
 
         self.fields['confirmed_by'] = forms.ModelChoiceField(queryset=Employee.objects.filter(\
                 cost_center_no=IRR.objects.get(irr_no=PAR.objects.get(\
-            par_no=pk).wo_number).irr_headkey.inv_station_no.cost_center_no.id), required=False, label='Confirmed by *')
+            par_no=pk).wo_number).irr_headkey.inv_station_no.cost_center_no.id), label='Confirmed by *')
 
         self.fields['noted_by'] = forms.ModelChoiceField(queryset=Employee.objects.filter(\
                 cost_center_no=IRR.objects.get(irr_no=PAR.objects.get(\
-            par_no=pk).wo_number).irr_headkey.inv_station_no.cost_center_no.id), required=False, label='Noted by *')
+            par_no=pk).wo_number).irr_headkey.inv_station_no.cost_center_no.id), label='Noted by *')
 
     date_inspected = forms.DateField(widget=DateTimePicker(options={"format": "YYYY-MM-DD", "pickTime": False}), \
-        label='Date inspected*', required=False)
+        label='Date inspected*')
     date_confirmed = forms.DateField(widget=DateTimePicker(options={"format": "YYYY-MM-DD", "pickTime": False}), \
-        label='Date confirmed *', required=False)
+        label='Date confirmed *')
 
     class Meta:
         model = GARV
