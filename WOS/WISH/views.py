@@ -411,9 +411,11 @@ def product_to_irr(request, pk, inv):
                     irr.save()
                 else:
                     msg = 'Item (' + str(Product.objects.get(id=int(form.data['product'])).item_name) + ') was successfully added'
-
-    form = Product_to_IRRForm(inv=inv)
-    iform = IRR_entry_cont_Form(inv=inv)
+            form = Product_to_IRRForm(inv=inv)
+            iform = IRR_entry_cont_Form(inv=inv)
+    else:
+        form = Product_to_IRRForm(inv=inv)
+        iform = IRR_entry_cont_Form(inv=inv)
 
     prodlist = Product.objects.filter(inv_station_no=inv).filter(is_irr=False)
     if len(prodlist) == 0:
