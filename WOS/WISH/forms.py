@@ -122,7 +122,7 @@ class IRR_entry_cont_Form(forms.ModelForm):
         super(IRR_entry_cont_Form, self).__init__(*args, **kwargs)
 
         self.fields['cost_center_no'] = forms.ModelChoiceField(queryset=Cost_center.objects.filter(\
-            is_delete=False).filter(cost_center_no__in=[i.cost_center_no.id for i in (Inventory_stat.objects.filter(inv_station_no=inv))]),\
+            is_delete=False).filter(cc_iFK__in=[i.cost_center_no.id for i in (Inventory_stat.objects.filter(inv_station_no=inv))]),\
             label='Cost center *', required=False)
         
     date_recv = forms.DateField(widget=DateTimePicker(options={"format": "YYYY-MM-DD", "pickTime": False}), label='Date received *', required=False)

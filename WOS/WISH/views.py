@@ -312,6 +312,7 @@ def irr_entry(request):
 
 prod_to_irr = [] #Product_to_IRR list: List for storing products to be added in a specific IRR form
 def product_to_irr(request, pk, inv):
+    remove_add = 0
     if request.method == "POST":
 
         #Forms containing the entries entered by the user
@@ -381,29 +382,29 @@ def product_to_irr(request, pk, inv):
                     irr.save()
                 else:
                     msg = 'Item (' + str(Product.objects.get(id=int(form.data['product'])).item_name) + ') was successfully added'
+    
+    form = Product_to_IRRForm(inv=inv)
+    iform = IRR_entry_cont_Form(inv=inv)
 
     prodlist = Product.objects.filter(inv_station_no=inv).filter(is_irr=False)
     if len(prodlist) == 0:
         #If true return this exit message
         msg = 'IRR record (IRR No. - ' + str(IRR.objects.latest('wrs_number')) + ') was successfully added.'
         exit = 'No available products to be made with IRR Record.'
-    else:
-        #else display blank forms.
-        form = Product_to_IRRForm(inv=inv)
-        iform = IRR_entry_cont_Form(inv=inv)
+    elif len(prodlist) == 1:
+        remove_add = 1
 
     #Rendering of forms and/or messages and/or errors
     try:
         try:
-            return render(request, 'WISH/product_to_irr.html', {'exit': exit, 'msg':msg})
+            return render(request, 'WISH/product_to_irr.html', {'exit': exit, 'remove_add': remove_add, 'msg': msg})
         except:
-            return render(request, 'WISH/product_to_irr.html', {'form': form, 'iform': iform, 'error': error})
+            return render(request, 'WISH/product_to_irr.html', {'form': form, 'iform': iform, 'remove_add': remove_add, 'error': error})
     except:
         try:
-            return render(request, 'WISH/product_to_irr.html', {'form': form, 'iform': iform, 'msg': msg})
+            return render(request, 'WISH/product_to_irr.html', {'form': form, 'iform': iform, 'msg': msg, 'remove_add': remove_add})
         except:
-            return render(request, 'WISH/product_to_irr.html', {'form': form, 'iform': iform})
-
+            return render(request, 'WISH/product_to_irr.html', {'form': form, 'iform': iform, 'remove_add': remove_add})
 
 def miv_entry_S(request, pk):
 
@@ -509,6 +510,7 @@ def product_to_garv(request, pk):
     prod_list = []
     error = ''
     msg = 3
+    remove_add = 0
     products = PAR.objects.get(par_no=pk)
     for prod in products.product:
         if prod['is_garv'] == False:
@@ -573,6 +575,7 @@ def product_to_garv(request, pk):
                     del prod_to_garv[:]
                     exit = 'Exit'
                     return render(request, 'WISH/par_entry.html', {'exit': exit, 'msg': 'GARV Record (GARV No. - ' + str(garv.garv_no) + ') is successfully added.'})
+                
 
                 if form.has_changed():
                     msg = 0
@@ -581,30 +584,38 @@ def product_to_garv(request, pk):
                 else:
                     msg = 1
                     if garv_no == 0:
+                        if len(prod_list) == 1:
+                            remove_add = 1
                         iform = Product_to_GARVform(prodlist=prod_list)
                     else:
+                        if len(prod_list) == 1:
+                            remove_add = 1
                         iform = Product_to_GARVform1(prodlist=prod_list)
             else:
                 msg = 2
+
     else:
         iform = Product_to_GARVform(prodlist=prod_list)
 
     form = GARV_entryForm(pk=pk)
+    if len(prod_list) == 1:
+        remove_add = 1
 
     if int(msg) == 0:
-        return render(request, 'WISH/garv_entry.html', {'form': form, 'iform': iform, 'msg': 'PAR Record (PAR No. - ' + str(par_no) + ') is successfully added.'})
+        return render(request, 'WISH/garv_entry.html', {'form': form, 'iform': iform, 'remove_add': remove_add, 'msg': 'PAR Record (PAR No. - ' + str(par_no) + ') is successfully added.'})
     elif int(msg) == 1:
-        return render(request, 'WISH/garv_entry.html', {'form': form, 'iform': iform, 'msg': 'Item is successfully added.'})
+        return render(request, 'WISH/garv_entry.html', {'form': form, 'iform': iform, 'remove_add': remove_add, 'msg': 'Item is successfully added.'})
     elif int(msg) == 2:
-        return render(request, 'WISH/garv_entry.html', {'form': form, 'iform': iform, 'error': 'Entered product quantity to be assigned to this employee is greater than stocked items.'})
+        return render(request, 'WISH/garv_entry.html', {'form': form, 'iform': iform, 'remove_add': remove_add, 'error': 'Entered product quantity to be assigned to this employee is greater than stocked items.'})
     else:
-        return render(request, 'WISH/garv_entry.html', {'form': form, 'iform': iform})
-
+        return render(request, 'WISH/garv_entry.html', {'form': form, 'iform': iform, 'remove_add': remove_add})
+        
 prod_to_par = []
 def par(request, inv):
     prod_list = []
     error = ''
     msg = 3
+    remove_add = 0
     products = IRR.objects.get(irr_no=inv)
     for prod in products.product:
         if prod['is_par'] == False:
@@ -685,15 +696,18 @@ def par(request, inv):
         iform = Product_to_PARForm(prodlist=prod_list)
 
     form = PAR_Form(inv=inv)
+    if len(prod_list) == 1:
+        remove_add = 1
     
     if int(msg) == 0:
-        return render(request, 'WISH/par_entry.html', {'form': form, 'iform': iform, 'msg': 'PAR Record (PAR No. - ' + str(par_no) + ') is successfully added.'})
+        return render(request, 'WISH/par_entry.html', {'form': form, 'iform': iform, 'remove_add': remove_add, 'msg': 'PAR Record (PAR No. - ' + str(par_no) + ') is successfully added.'})
     elif int(msg) == 1:
-        return render(request, 'WISH/par_entry.html', {'form': form, 'iform': iform, 'msg': 'Item is successfully added.'})
+        return render(request, 'WISH/par_entry.html', {'form': form, 'iform': iform, 'remove_add': remove_add, 'msg': 'Item is successfully added.'})
     elif int(msg) == 2:
-        return render(request, 'WISH/par_entry.html', {'form': form, 'iform': iform, 'error': 'Entered product quantity to be assigned to this employee is greater than stocked items.'})
+        return render(request, 'WISH/par_entry.html', {'form': form, 'iform': iform, 'remove_add': remove_add, 'error': 'Entered product quantity to be assigned to this employee is greater than stocked items.'})
     else:
-        return render(request, 'WISH/par_entry.html', {'form': form, 'iform': iform})
+        return render(request, 'WISH/par_entry.html', {'form': form, 'iform': iform, 'remove_add': remove_add})
+
 
 def wrs_entry(request):
     if 'q' in request.GET and request.GET['q']:

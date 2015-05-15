@@ -41,7 +41,10 @@
               {% for field in form %}
                 &nbsp;&nbsp;{{field | bootstrap_horizontal:'col-lg-4'}}&nbsp;&nbsp;&nbsp;
               {%endfor%}
-        <div align="center"><button type="submit" class="save btn btn-default">Add Another Item</button></div>
+          {% if remove_add == 1%}
+          {% else %}
+              <div align="center"><button type="submit" class="save btn btn-default">Add Another Item</button></div>
+          {% endif %}
             </td>
             <td style="padding:20px">
               {% for field in iform %}
