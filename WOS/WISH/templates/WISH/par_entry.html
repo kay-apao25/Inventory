@@ -35,8 +35,10 @@
       &nbsp;&nbsp;{{field | bootstrap_horizontal:'col-lg-4'}} &nbsp;&nbsp;&nbsp;
      {%endfor%}
      <br>
-     <div align="center"><button type="submit" class="save btn btn-default">Add Another Item</button>
-      <br><br><br><br><br><br><br><br>
+     {% if remove_add == 1%}
+     {% else %}
+        <div align="center"><button type="submit" class="save btn btn-default">Add Another Item</button></div>
+     {% endif %}
      </div>
      </td>
      <td style="padding:20px">
@@ -45,7 +47,6 @@
       &nbsp;&nbsp;{{field | bootstrap_horizontal:'col-lg-4'}} &nbsp;&nbsp;&nbsp;
 
      {%endfor%}
-     <br>
      </td>
      </tr>
      </table>
