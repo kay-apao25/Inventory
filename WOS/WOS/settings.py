@@ -50,7 +50,6 @@ PAGINATION_SETTINGS = {
 INSTALLED_APPS = (
     'suit',
     'json_field',
-    'django_admin_bootstrapped',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -75,7 +74,6 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.locale.LocaleMiddleware',
     #'audit_log.middleware.UserLoggingMiddleware',
     'simple_history.middleware.HistoryRequestMiddleware',
-    'pagination.middleware.PaginationMiddleware',
 )
 
 ROOT_URLCONF = 'WOS.urls'
