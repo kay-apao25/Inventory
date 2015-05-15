@@ -41,7 +41,8 @@ urlpatterns = [
     url(r'^employee/$', views.employee),
     url(r'^add_cost_center/$', views.add_cost_center, name='add_cost_center'),
     url(r'^file_reports/$', views.file_report),
-    url(r'^irr_reports/$', views.irr_reports),
+    url(r'^irr_reports/$', ListView.as_view(model=models.IRR, paginate_by=2, context_object_name='irr_list',\
+        template_name='WISH/irr_reports.html'), name='irr_reports'),
     url(r'^miv_reports/$', views.miv_reports),
     url(r'^wrs_reports/$', views.wrs_reports),
     url(r'^par_reports/$', views.par_reports),

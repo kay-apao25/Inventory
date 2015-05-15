@@ -42,7 +42,7 @@
               IRR Reports
           </a>
       </li>
-      <li><a id='mivb' href="#miv" role="tab" data-toggle="tab">
+      <li><a id='mivb' href="{% url 'WISH.views.miv_reports' %}" >
               MIV Reports
           </a>
       </li>
@@ -67,9 +67,9 @@
     <div class="tab-content" >
       <div class="tab-pane fade active in" id="irr">
           <script>
-          $(function(){
-            $("#irr").load("{% url 'WISH.views.irr_reports' %}");
-          });
+            $(function(){
+              $("#irr").load("{% url 'WISH.views.irr_reports' %}");
+            });
           </script>
       </div>
       <div class="tab-pane fade" id="miv">
