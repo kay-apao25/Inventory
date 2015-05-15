@@ -1,10 +1,10 @@
 {% extends 'WISH/index.html' %}
 {% block content %}
-{% if exit %}
+{% if product_list|length == 0 %}
 <br>
 <br>
   <div class="alert alert-warning" style="width:400px">
-    {{ exit }}
+     No Product Record(s) found.
   </div>
 {% else %}
    <div class="page-header">
@@ -73,11 +73,7 @@
                 {% endif %}
             </span>
         </div>
-    {% else %}
-    <div class="alert alert-warning" style="width:400px">
-      No Product Record(s) found.
-    </div>
-    {% endif %}
+   {% endif %}
   </div>
   {% endif %}
   <script type="text/javascript">
