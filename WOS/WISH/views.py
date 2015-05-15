@@ -96,6 +96,8 @@ def irr_reports(request):
     irrs = IRR.objects.all()
     if len(irrs) == 0:
         return render(request, 'WISH/irr_reports.html', {'exit': 'No IRR Record(s) found.'})
+    elif len(irrs) <= 10:
+        return render(request, 'WISH/irr_reports.html',  {'irrs': irrs, 'small_entry': 1})
     else:
         return render(request, 'WISH/irr_reports.html', {'irrs': irrs})
 
@@ -103,6 +105,8 @@ def miv_reports(request):
     mivs = MIV.objects.all()
     if len(mivs) == 0:
         return render(request, 'WISH/miv_reports.html', {'exit': 'No MIV Record(s) found.'})
+    elif len(mivs) <= 10:
+        return render(request, 'WISH/miv_reports.html',  {'mivs': mivs, 'small_entry': 1})
     else:
         return render(request, 'WISH/miv_reports.html', {'mivs': mivs})
 
@@ -110,6 +114,8 @@ def wrs_reports(request):
     wrss = IRR.objects.all()
     if len(wrss) == 0:
         return render(request, 'WISH/wrs_reports.html', {'exit': 'No WRS Record(s) found.'})
+    elif len(wrss) <= 10:
+        return render(request, 'WISH/wrs_reports.html',  {'wrss': wrss, 'small_entry': 1})
     else:
         return render(request, 'WISH/wrs_reports.html', {'wrss': wrss})
 
@@ -117,6 +123,8 @@ def par_reports(request):
     pars = PAR.objects.all()
     if len(pars) == 0:
         return render(request, 'WISH/par_reports.html', {'exit': 'No PAR Record(s) found.'})
+    elif len(pars) <= 10:
+        return render(request, 'WISH/par_reports.html',  {'pars': pars, 'small_entry': 1})
     else:
         return render(request, 'WISH/par_reports.html', {'pars': pars})
 
@@ -124,6 +132,8 @@ def garv_reports(request):
     garvs = GARV.objects.all()
     if len(garvs) == 0:
         return render(request, 'WISH/garv_reports.html', {'exit': 'No GARV Record(s) found.'})
+    elif len(garvs) <= 10:
+        return render(request, 'WISH/garv_reports.html',  {'garvs': garvs, 'small_entry': 1})
     else:
         return render(request, 'WISH/garv_reports.html', {'garvs': garvs})
 
@@ -131,6 +141,8 @@ def product_reports(request):
     prods = Product.objects.all()
     if len(prods) == 0:
         return render(request, 'WISH/product_reports.html', {'exit': 'No Product Record(s) found.'})
+    elif len(prods) <= 10:
+        return render(request, 'WISH/product_reports.html',  {'prods': prods, 'small_entry': 1})
     else:
         return render(request, 'WISH/product_reports.html', {'prods': prods})
 
@@ -492,6 +504,8 @@ def miv_entry(request):
     irrs = IRR.objects.filter(is_miv=False)
     if len(irrs) == 0:
         return render(request, 'WISH/miv_entry_f.html', {'exit':'No IRR Record(s) to be made with MIV Record.'})
+    elif len(irrs) <= 10:
+        return render(request, 'WISH/miv_entry_f.html',  {'irrs': irrs, 'small_entry': 1})
     else:
         return render(request, 'WISH/miv_entry_f.html', {'irrs':irrs})
 
@@ -499,6 +513,8 @@ def par_f(request):
     irrs = IRR.objects.filter(is_par=False)
     if len(irrs) == 0:
         return render(request, 'WISH/par_f.html', {'exit': 'No IRR Record(s) to be made with PAR Record.'})
+    elif len(irrs) <= 10:
+        return render(request, 'WISH/par_f.html',  {'irrs': irrs, 'small_entry': 1})
     else:
         return render(request, 'WISH/par_f.html', {'irrs':irrs})
 
@@ -506,6 +522,8 @@ def garv_entry_f(request):
     pars = PAR.objects.filter(is_garv=False)
     if len(pars) == 0:
         return render(request, 'WISH/garv_entry_f.html', {'exit': 'No PAR Record(s) to be made with GARV Record.'})
+    elif len(pars) <= 10:
+        return render(request, 'WISH/garv_entry_f.html',  {'pars': pars, 'small_entry': 1})
     else:
         return render(request, 'WISH/garv_entry_f.html', {'pars':pars})
 

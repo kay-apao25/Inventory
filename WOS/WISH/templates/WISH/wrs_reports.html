@@ -7,15 +7,19 @@
   </div>
 {% else %}
 <br>
-<div class="col-md-3">
-            <form action="#" method="get">
-                <div class="input-group">
-                    <!-- USE TWITTER TYPEAHEAD JSON WITH API TO SEARCH -->
-                    <input class="form-control" id="system-search3" name="q" placeholder="Search for" required>
-                </div>
-            </form>
-</div>
-<div class="col-md-9">
+  {% if small_entry %}
+  <div class="col-md-2"></div>
+  {% else %}
+  <div class="col-md-4">
+    <form action="#" method="get">
+      <div class="input-group">
+        <!-- USE TWITTER TYPEAHEAD JSON WITH API TO SEARCH -->
+          <input class="form-control" id="system-search3" name="q" placeholder="Search for" required>
+      </div>
+    </form>
+  </div>
+  {% endif %}
+<div class="col-md-8">
        <table class="table table-list-search3">
   
     <thead>
@@ -47,6 +51,7 @@
       </tr>
     {% endfor %}
   </table>
+  </div>
   {% endif %}
     <script type="text/javascript">
   $(document).ready(function() {

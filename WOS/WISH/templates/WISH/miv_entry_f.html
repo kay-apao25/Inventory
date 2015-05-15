@@ -10,16 +10,20 @@
   <div class="page-header">
     <h2 align="center">Select IRR Record to be created with MIV Report</h2>
   </div>
-  <div class="col-md-2" style="padding-right: 0px; margin-left: 300px; padding-left: 0px;">
-            <form action="#" method="get">
-                <div class="input-group">
-                    <!-- USE TWITTER TYPEAHEAD JSON WITH API TO SEARCH -->
-                    <input class="form-control" id="system-search" name="q" placeholder="Search for" required>
-                </div>
-            </form>
+  {% if small_entry %}
+    <div class="col-md-2" style="margin-left: 130px"></div>
+   {% else %}
+    <div class="col-md-2" style="padding-right: 0px; margin-left: 300px; padding-left: 0px;">
+    <form action="#" method="get">
+      <div class="input-group">
+        <!-- USE TWITTER TYPEAHEAD JSON WITH API TO SEARCH -->
+        <input class="form-control" id="system-search" name="q" placeholder="Search for" required>
+      </div>
+    </form>
   </div>
+   {% endif %}
   <div class="col-md-5" style="padding-left: 10px;">
-   <table class="table table-list-search" width="50px">    
+   <table class="table table-list-search" width="50px" style="text-align:center">    
    <thead>
      	<th>IRR No.</th>
        <th>Cost Center Name</th>
