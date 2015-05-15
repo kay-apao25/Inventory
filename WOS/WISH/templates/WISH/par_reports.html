@@ -41,36 +41,36 @@
           </a>
       </li>
       <li>
-          <a id='mivb' href="{% url 'WISH.views.miv_reports' %}" >
+          <a id='mivb' href="{% url 'miv_reports' %}" >
               MIV Reports
           </a>
       </li>
        <li>
-          <a id='wrsb' href="{% url 'WISH.views.wrs_reports' %}">
+          <a id='wrsb' href="{% url 'wrs_reports' %}">
               WRS Reports
           </a>
       </li>
       <li class="active">
-          <a id='parb' href="{% url 'WISH.views.par_reports' %}">
+          <a id='parb' href="{% url 'par_reports' %}">
               PAR Reports
           </a>
       </li>
       <li>
-          <a id='garvb' href="{% url 'WISH.views.garv_reports' %}">
+          <a id='garvb' href="{% url 'garv_reports' %}">
               GARV Reports
           </a>
       </li>
     </ul>
 <div id="par">
-{% if exit %}
+{% if par_list|length == 0 %}
 <br>
 <br>
   <div class="alert alert-warning" style="width:400px">
-    {{ exit }}
+    No PAR Record(s) found.
   </div>
 {% else %}
 <br>
-{% if small_entry %}
+{% if par_list|length <= 6  %}
   <div class="col-md-2"></div>
   {% else %}
   <div class="col-md-4">
@@ -90,7 +90,7 @@
         <th>PAR DATE</th>
         <th>APPROVED BY:</th>
       </thead>
-      	{% for par in pars %}
+      	{% for par in par_list %}
       		<tr>
       			<td>
               <a href="{% url 'WISH.views.par_form' pk=par.pk %}">
@@ -114,6 +114,21 @@
 
       	{% endfor %}
    </table>
+   {% if is_paginated %}
+        <div class="pagination">
+            <span class="page-links">
+                {% if page_obj.has_previous %}
+                    <a href="/par_reports?page={{ page_obj.previous_page_number }}">previous</a>
+                {% endif %}
+                <span class="page-current">
+                    Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+                </span>
+                {% if page_obj.has_next %}
+                    <a href="/par_reports?page={{ page_obj.next_page_number }}">next</a>
+                {% endif %}
+            </span>
+        </div>
+   {% endif %}
    </div>
    {% endif %}
    <script type="text/javascript">

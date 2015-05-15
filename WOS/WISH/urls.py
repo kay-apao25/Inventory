@@ -41,15 +41,18 @@ urlpatterns = [
     url(r'^employee/$', views.employee),
     url(r'^add_cost_center/$', views.add_cost_center, name='add_cost_center'),
     url(r'^file_reports/$', views.file_report),
-    url(r'^irr_reports/$', ListView.as_view(model=models.IRR, paginate_by=2, context_object_name='irr_list',\
+    url(r'^irr_reports/$', ListView.as_view(model=models.IRR, paginate_by=10, context_object_name='irr_list',\
         template_name='WISH/irr_reports.html'), name='irr_reports'),
-    url(r'^miv_reports/$', views.miv_reports),
-    url(r'^wrs_reports/$', views.wrs_reports),
-    url(r'^par_reports/$', views.par_reports),
-    url(r'^garv_reports/$', views.garv_reports),
+    url(r'^miv_reports/$', ListView.as_view(model=models.MIV, paginate_by=10, context_object_name='miv_list',\
+        template_name='WISH/miv_reports.html'), name='miv_reports'),
+    url(r'^wrs_reports/$', ListView.as_view(model=models.IRR, paginate_by=10, context_object_name='wrs_list',\
+        template_name='WISH/wrs_reports.html'), name='wrs_reports'),
+    url(r'^par_reports/$', ListView.as_view(model=models.PAR, paginate_by=10, context_object_name='par_list',\
+        template_name='WISH/par_reports.html'), name='par_reports'),
+    url(r'^garv_reports/$', ListView.as_view(model=models.GARV, paginate_by=10, context_object_name='garv_list',\
+        template_name='WISH/garv_reports.html'), name='garv_reports'),
     url(r'^product_reports/$', ListView.as_view(model=models.Product, paginate_by=10, context_object_name='product_list',\
         template_name='WISH/product_reports.html'), name='product_reports'),
-    url(r'^file_entry/$', views.file_entry),
     url(r'^libraries/$', views.libraries),
     url(r'^stat_lib/$', views.stat_lib, name='stat_lib'),
     url(r'^sup_lib/$', views.sup_lib, name='sup_lib'),
