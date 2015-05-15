@@ -103,27 +103,45 @@ def employee(request):
 
 def irr_reports(request):
     irrs = IRR.objects.all()
-    return render(request, 'WISH/irr_reports.html', {'irrs': irrs})
+    if len(irrs) == 0:
+        return render(request, 'WISH/irr_reports.html', {'exit': 'No IRR Record(s) found.'})
+    else:
+        return render(request, 'WISH/irr_reports.html', {'irrs': irrs})
 
 def miv_reports(request):
     mivs = MIV.objects.all()
-    return render(request, 'WISH/miv_reports.html', {'mivs': mivs})
+    if len(mivs) == 0:
+        return render(request, 'WISH/miv_reports.html', {'exit': 'No MIV Record(s) found.'})
+    else:
+        return render(request, 'WISH/miv_reports.html', {'mivs': mivs})
 
 def wrs_reports(request):
     wrss = IRR.objects.all()
-    return render(request, 'WISH/wrs_reports.html', {'wrss': wrss})
+    if len(wrss) == 0:
+        return render(request, 'WISH/wrs_reports.html', {'exit': 'No WRS Record(s) found.'})
+    else:
+        return render(request, 'WISH/wrs_reports.html', {'wrss': wrss})
 
 def par_reports(request):
     pars = PAR.objects.all()
-    return render(request, 'WISH/par_reports.html', {'pars': pars})
+    if len(pars) == 0:
+        return render(request, 'WISH/par_reports.html', {'exit': 'No PAR Record(s) found.'})
+    else:
+        return render(request, 'WISH/par_reports.html', {'pars': pars})
 
 def garv_reports(request):
     garvs = GARV.objects.all()
-    return render(request, 'WISH/garv_reports.html', {'garvs': garvs})
+    if len(garvs) == 0:
+        return render(request, 'WISH/garv_reports.html', {'exit': 'No GARV Record(s) found.'})
+    else:
+        return render(request, 'WISH/garv_reports.html', {'garvs': garvs})
 
 def product_reports(request):
     prods = Product.objects.all()
-    return render(request, 'WISH/product_reports.html', {'prods': prods})
+    if len(prods) == 0:
+        return render(request, 'WISH/product_reports.html', {'exit': 'No Product Record(s) found.'})
+    else:
+        return render(request, 'WISH/product_reports.html', {'prods': prods})
 
 def file_entry(request):
     return render(request, 'WISH/file_entry.html', {})

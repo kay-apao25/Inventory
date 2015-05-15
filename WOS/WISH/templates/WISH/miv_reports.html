@@ -1,4 +1,11 @@
 {% block content %}
+{% if exit %}
+<br>
+<br>
+  <div class="alert alert-warning" style="width:400px">
+    {{ exit }}
+  </div>
+{% else %}
 <br>
 <div class="col-md-3">
             <form action="#" method="get">
@@ -40,6 +47,7 @@
       </tr>
       {% endfor %}
   </table>
+  {% endif %}
   <script type="text/javascript">
   $(document).ready(function() {
     var activeSystemClass = $('.list-group-item.active');
