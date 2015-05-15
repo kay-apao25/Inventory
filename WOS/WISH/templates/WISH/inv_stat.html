@@ -1,4 +1,12 @@
 {% block content %}
+{% load staticfiles %}
+{% load endless %}
+{% paginate inv %}
+
+<script src="http://code.jquery.com/jquery-latest.js"></script>
+<script src="{% static 'endless/js/endless-pagination.js' %}"></script>
+<script>$.endlessPaginate({pageSelector: 'div#entries'});</script>
+
 <br>
 <div align="right"><a href="{% url 'WISH.views.stat_lib' %}" class="save btn btn-default">Add Inventory station</a></div><br>
 <div class="col-md-3">
@@ -16,22 +24,18 @@
 
     <thead>
      	<th><center>Inventory station no</center></th>
-       <th><center>Inventory station name</center></th>
-
+      <th><center>Inventory station name</center></th>
     </thead>
-     	{% for invs in inv %}
-      	<tr>
-          <td>
-            <a href="{% url 'WISH.views.inv_stat_details' pk=invs.inv_station_no %}">
-            <center>{{ invs.inv_station_no }}</center>
-            </a>
-          </td>
-          <td>
-            <center>{{ invs.station_description }}</center>
-            </a>
-          </td>
-        	</tr>
-      {% endfor %}
+
+    <div id="entries"class="endless_page_template">
+      {% include 'WISH/inv_stat_page.html' %}
+    </div>
+
+    {% get_pages %}
+    {% if pages.paginated %}
+        {{ pages }}
+    {% endif %}
+
   </table>
   <script type="text/javascript">
   $(document).ready(function() {

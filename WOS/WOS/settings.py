@@ -13,7 +13,6 @@ import os
 from django.conf.global_settings import TEMPLATE_CONTEXT_PROCESSORS as TCP
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.7/howto/deployment/checklist/
 
@@ -31,18 +30,27 @@ TEMPLATE_CONTEXT_PROCESSORS = TCP + (
     'django.core.context_processors.request',
 )
 
+DAB_FIELD_RENDERER = 'django_admin_bootstrapped.renderers.BootstrapFieldRenderer'
+
 SUIT_CONFIG = {
     'ADMIN_NAME': 'Administrator',
     'MENU_EXCLUDE': ('auth.group', 'auth'),
     'SHOW_REQUIRED_ASTERISK': True,
     'LIST_PER_PAGE': 20,
 }
+
+# for pagination
+PAGINATION_SETTINGS = {
+    'PAGE_RANGE_DISPLAYED': 10,
+    'MARGIN_PAGES_DISPLAYED': 2,
+}
+
 # Application definition
 
 INSTALLED_APPS = (
     'suit',
     'json_field',
-    #'django_admin_bootstrapped',
+    'django_admin_bootstrapped',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -53,6 +61,7 @@ INSTALLED_APPS = (
     'WISH',
     'bootstrapform',
     'bootstrap3_datetime',
+    'endless_pagination',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -66,6 +75,7 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.locale.LocaleMiddleware',
     #'audit_log.middleware.UserLoggingMiddleware',
     'simple_history.middleware.HistoryRequestMiddleware',
+    'pagination.middleware.PaginationMiddleware',
 )
 
 ROOT_URLCONF = 'WOS.urls'

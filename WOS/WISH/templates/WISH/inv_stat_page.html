@@ -1,0 +1,19 @@
+{% extends 'WISH/index.html' %}
+{% block content %}
+    {% load endless %}
+
+    {% for invs in inv %}
+    <tr>
+      <td>
+        <a href="{% url 'WISH.views.inv_stat_details' pk=invs.inv_station_no %}">
+        <center>{{ invs.inv_station_no }}</center>
+        </a>
+      </td>
+      <td>
+        <center>{{ invs.station_description }}</center>
+        </a>
+      </td>
+      </tr>
+    {% endfor %}
+
+{% endblock %}

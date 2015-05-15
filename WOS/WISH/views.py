@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404, render_to_response
 from django.http import HttpResponseRedirect
+from endless_pagination.decorators import page_template
 #from django.template import RequestContext
 from django.contrib import messages
 from django.db.models import Q
@@ -74,7 +75,18 @@ def libraries(request):
 
 def inv_stat(request):
     inv = Inventory_stat.objects.filter(is_delete=False)
-    return render(request, 'WISH/inv_stat.html', {'inv': inv})
+    return render(request, 'WISH/inv_stat.html', {'inv':inv})
+
+"""@page_template('WISH/inv_stat_page.html')  # just add this decorator
+def inv_stat(
+        request, template='WISH/inv_stat.html', extra_context=None):
+    context = {
+        'inv': Inventory_stat.objects.filter(is_delete=False),
+    }
+    if extra_context is not None:
+        context.update(extra_context)
+    return render_to_response(
+        template, context, context_instance=RequestContext(request))"""
 
 def cost_center(request):
     cos = Cost_center.objects.filter(is_delete=False)
