@@ -1,5 +1,7 @@
 from django.conf.urls import include, url
+from django.views.generic import ListView
 from . import views
+from . import models
 
 urlpatterns = [
     url(r'^wrs_form/(?P<pk>[0-9]+)/$', views.wrs_form),
@@ -44,10 +46,12 @@ urlpatterns = [
     url(r'^wrs_reports/$', views.wrs_reports),
     url(r'^par_reports/$', views.par_reports),
     url(r'^garv_reports/$', views.garv_reports),
-    url(r'^product_reports/$', views.product_reports),
+    url(r'^product_reports/$', ListView.as_view(model=models.Product, paginate_by=10, context_object_name='product_list',\
+        template_name='WISH/product_reports.html'), name='product_reports'),
     url(r'^file_entry/$', views.file_entry),
     url(r'^libraries/$', views.libraries),
     url(r'^stat_lib/$', views.stat_lib, name='stat_lib'),
     url(r'^sup_lib/$', views.sup_lib, name='sup_lib'),
     url(r'^employee_lib/$', views.employee_lib, name='employee_lib'),
 ]
+

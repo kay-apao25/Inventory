@@ -10,7 +10,7 @@
    <div class="page-header">
       <h2 align="center">Product Reports</h2>
    </div>
-   {% if small_entry %}
+   {% if product_list|length <= 6  %}
     <div class="col-md-2" style="margin-left: 130px"></div>
    {% else %}
     <div class="col-md-2" style="padding-right: 0px; margin-left: 300px; padding-left: 0px;">
@@ -33,32 +33,51 @@
         <th><center>Puchased from</center></th>
 
       </thead>
-      	{% for prod in prods %}
+      	{% for product in product_list %}
       		<tr>
             <td>
-              <a href="{% url 'WISH.views.product_details' pk=prod.pk %}">
-              <center>{{ prod.item_name}}-{{prod.description}}</center></a>
+              <a href="{% url 'WISH.views.product_details' pk=product.pk %}">
+              <center>{{ product.item_name}}-{{product.description}}</center></a>
             </td>
             <td>
-              <center>{{ prod.product_number }}</center>
+              <center>{{ product.product_number }}</center>
             </a>
           </td>
           <td>
-            <center>{{ prod.model}}-{{prod.brand}}</center>
+            <center>{{ product.model}}-{{product.brand}}</center>
           </td>
           <td>
-            <center>{{ prod.serial_number}}</center>
+            <center>{{ product.serial_number}}</center>
           </td>
           <td>
-            <center>{{ prod.nsn}}</center>
+            <center>{{ product.nsn}}</center>
           </td>
           <td>
-            <center>{{ prod.purchased_from}}</center>
+            <center>{{ product.purchased_from}}</center>
           </td>
 
       		</tr>
       	{% endfor %}
    </table>
+   {% if is_paginated %}
+        <div class="pagination">
+            <span class="page-links">
+                {% if page_obj.has_previous %}
+                    <a href="/product_reports?page={{ page_obj.previous_page_number }}">previous</a>
+                {% endif %}
+                <span class="page-current">
+                    Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+                </span>
+                {% if page_obj.has_next %}
+                    <a href="/product_reports?page={{ page_obj.next_page_number }}">next</a>
+                {% endif %}
+            </span>
+        </div>
+    {% else %}
+    <div class="alert alert-warning" style="width:400px">
+      No Product Record(s) found.
+    </div>
+    {% endif %}
   </div>
   {% endif %}
   <script type="text/javascript">

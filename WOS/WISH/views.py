@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404, render_to_response
 from django.http import HttpResponseRedirect
 from endless_pagination.decorators import page_template
-#from django.template import RequestContext
+from django.views.generic import ListView
 from django.contrib import messages
 from django.db.models import Q
 #from random import randint
@@ -11,7 +11,13 @@ import time
 import json
 
 # Create your views here.
-#msg = ''
+class IRRListView(ListView):
+    queryset = IRR.objects.all() 
+    context_object_name = "irr_list"    #default is object_list as well as model's_verbose_name_list and/or model's_verbose_name_plural_list, if defined in the model's inner Meta class
+    paginate_by = 10 
+
+#myview = IRRListView.as_view()
+
 def index(request):
     return render(request, 'WISH/index.html', {})
 
@@ -136,15 +142,6 @@ def garv_reports(request):
         return render(request, 'WISH/garv_reports.html',  {'garvs': garvs, 'small_entry': 1})
     else:
         return render(request, 'WISH/garv_reports.html', {'garvs': garvs})
-
-def product_reports(request):
-    prods = Product.objects.all()
-    if len(prods) == 0:
-        return render(request, 'WISH/product_reports.html', {'exit': 'No Product Record(s) found.'})
-    elif len(prods) <= 10:
-        return render(request, 'WISH/product_reports.html',  {'prods': prods, 'small_entry': 1})
-    else:
-        return render(request, 'WISH/product_reports.html', {'prods': prods})
 
 def file_entry(request):
     return render(request, 'WISH/file_entry.html', {})
