@@ -1,6 +1,8 @@
 from django.shortcuts import render, redirect, get_object_or_404, render_to_response
 from django.http import HttpResponseRedirect
-from endless_pagination.decorators import page_template
+from django.contrib.auth.decorators import login_required
+from django.utils.decorators import method_decorator
+from django.contrib.auth.models import User
 from django.contrib import messages
 from django.db.models import Q
 #from random import randint
@@ -10,6 +12,7 @@ import time
 import json
 
 # Create your views here.
+
 def index(request):
     product = Product.objects.order_by('id')[:3]
     try:
@@ -37,7 +40,10 @@ def index(request):
     except:
         cc = None
 
-    return render(request, 'WISH/index.html', {'product': product, 'irr': irr, 'par': par, 'garv': garv, 'inv': inv, 'sup': sup, 'cc': cc})
+    if request.user.is_authenticated():
+        return render(request, 'WISH/index.html', {'product': product, 'irr': irr, 'par': par, 'garv': garv, 'inv': inv, 'sup': sup, 'cc': cc})
+    else:
+        return render(request, 'registration/login1.html')
 
 def aboutus(request):
     return render(request, 'WISH/AboutUs.html', {})

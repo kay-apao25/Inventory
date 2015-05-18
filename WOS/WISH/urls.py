@@ -4,6 +4,8 @@ from . import views
 from . import models
 
 urlpatterns = [
+    url(r'^login/$', 'django.contrib.auth.views.login', name='login'),
+    url(r'^logout/$', 'django.contrib.auth.views.logout',  {'next_page': '/'}),
     url(r'^wrs_form/(?P<pk>[0-9]+)/$', views.wrs_form),
     url(r'^$', views.index),
     url(r'^Aboutus/$', views.aboutus),
