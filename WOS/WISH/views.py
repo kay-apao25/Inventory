@@ -854,33 +854,3 @@ def miv_form(request, pk):
         total = total + amount
     return render(request, 'WISH/miv_form.html', {'mivs':mivs, 'products':products, \
                     'amt_list': amt_list, 'total': total})
-
-"""def irr_report(request):
-    if 'q' in request.GET and request.GET['q']:
-        q = request.GET['q']
-        return redirect('WISH.views.irr_form', pk=q)
-    return render(request, 'WISH/irr_report.html', {})
-
-def gatepass_form(request):
-    return render(request, 'WISH/gatepass_form.html', {})
-
-def cme_form(request):
-    return render(request, 'WISH/cme_form.html', {})
-
-def miv_report(request):
-    if 'q' in request.GET and request.GET['q']:
-        q = request.GET['q']
-        return redirect('WISH.views.miv_form', pk=q)
-    return render(request, 'WISH/miv_report.html', {})
-
-def par_report(request):
-    if 'q' in request.GET and request.GET['q']:
-        q = request.GET['q']
-        return redirect('WISH.views.par_form', pk=q)
-    return render(request, 'WISH/par_report.html', {})
-
-def garv_report(request):
-    if 'q' in request.GET and request.GET['q']:
-        q = request.GET['q']
-        return redirect('WISH.views.garv_form', pk=q)
-    return render(request, 'WISH/garv_report.html', {})"""
