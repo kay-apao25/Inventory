@@ -1,36 +1,5 @@
 {% extends 'WISH/index.html' %}
-<style type="text/css">
-  body {
-    margin: 5px;
-    background: #A6A6A6
-}
-/* Tab Navigation */
-.nav-tabs {
-    margin: 0;
-    padding: 0;
-    border: 0;
-}
-.nav-tabs > li > a {
-    background: #DADADA;
-    border-radius: 0;
-    box-shadow: inset 0 -8px 7px -9px rgba(0,0,0,.4),-2px -2px 5px -2px rgba(0,0,0,.4);
-}
-.nav-tabs > li.active > a,
-.nav-tabs > li.active > a:hover {
-    background: #F5F5F5;
-    box-shadow: inset 0 0 0 0 rgba(0,0,0,.4),-2px -3px 5px -2px rgba(0,0,0,.4);
-}
 
-/* Tab Content */
-.tab-pane {
-    background: #F5F5F5;
-    box-shadow: 0 0 4px rgba(0,0,0,.4);
-    border-radius: 0;
-    text-align: center;
-    padding: 10px;
-}
-
-</style>
 {% block content %}
 <div class="container" style="width:50%;">
 
@@ -77,7 +46,7 @@
     <form action="#" method="get">
       <div class="input-group">
         <!-- USE TWITTER TYPEAHEAD JSON WITH API TO SEARCH -->
-          <input class="form-control" id="search" value="" placeholder="Search for" type="text">
+          <input class="form-control" id="system-search" name="q" placeholder="Search for" required>
       </div>
     </form>
   </div>
@@ -113,19 +82,10 @@
       {% endfor %}
       </tbody>
   </table>
-  <div class="col-md-12 text-center">
-      <ul class="pagination" id="myPager"></ul>
-      </div>
-  {% if is_paginated %}
-        <div class="col-md-12 text-center">
-            <ul class="pagination" id="myPager"></ul>
-        </div>
-   {% endif %}
-  </div>
   {% endif %}
   </div>
   </div>
- <!-- <script type="text/javascript">
+ <script type="text/javascript">
   $(document).ready(function() {
     var activeSystemClass = $('.list-group-item.active');
 
@@ -172,199 +132,5 @@
         }
     });
 });
-  </script>-->
-  <script type="text/javascript">
-    $.fn.pageMe = function(opts){
-var $this = this,
-    defaults = {
-        perPage: 7,
-        showPrevNext: false,
-        numbersPerPage: 5,
-        hidePageNumbers: false,
-        showFirstLast: true
-    },
-    settings = $.extend(defaults, opts);
-
-var listElement = $this;
-var perPage = settings.perPage; 
-var children = listElement.children();
-var pager = $('.pagination');
-
-if (typeof settings.childSelector!="undefined") {
-    children = listElement.find(settings.childSelector);
-}
-
-if (typeof settings.pagerSelector!="undefined") {
-    pager = $(settings.pagerSelector);
-}
-
-var numItems = children.size();
-var numPages = Math.ceil(numItems/perPage);
-
-pager.data("curr",0);
-
-if (settings.showFirstLast){
-    $('<li><a href="#" class="first_link"><</a></li>').appendTo(pager);
-}     
-if (settings.showPrevNext){
-    $('<li><a href="#" class="prev_link">«</a></li>').appendTo(pager);
-}
-
-var curr = 0;
-while(numPages > curr && (settings.hidePageNumbers==false)){
-    $('<li><a href="#" class="page_link">'+(curr+1)+'</a></li>').appendTo(pager);
-    curr++;
-}
-
-if (settings.numbersPerPage>1) {
-   $('.page_link').hide();
-   $('.page_link').slice(pager.data("curr"), settings.numbersPerPage).show();
-}
-
-if (settings.showPrevNext){
-    $('<li><a href="#" class="next_link">»</a></li>').appendTo(pager);
-}
-if (settings.showFirstLast){
-    $('<li><a href="#" class="last_link">></a></li>').appendTo(pager);
-}  
-
-pager.find('.page_link:first').addClass('active');
-pager.find('.prev_link').hide();
-if (numPages<=1) {
-    pager.find('.next_link').hide();
-}
-pager.children().eq(2).addClass("active");
-
-children.hide();
-children.slice(0, perPage).show();
-
-pager.find('li .page_link').click(function(){
-    var clickedPage = $(this).html().valueOf()-1;
-    goTo(clickedPage,perPage);
-    return false;
-});
-pager.find('li .first_link').click(function(){
-    first();
-    return false;
-});  
-
-pager.find('li .prev_link').click(function(){
-    previous();
-    return false;
-});
-pager.find('li .next_link').click(function(){
-    next();
-    return false;
-});
-pager.find('li .last_link').click(function(){
-    last();
-    return false;
-});    
-function previous(){
-    var goToPage = parseInt(pager.data("curr")) - 1;
-    goTo(goToPage);
-}
-
-function next(){
-    goToPage = parseInt(pager.data("curr")) + 1;
-    goTo(goToPage);
-}
-
-function first(){
-    var goToPage = 0;
-    goTo(goToPage);
-} 
-
-function last(){
-    var goToPage = numPages-1;
-    goTo(goToPage);
-} 
-
-function goTo(page){
-    var startAt = page * perPage,
-        endOn = startAt + perPage;
-
-    children.css('display','none').slice(startAt, endOn).show();
-
-    if (page>=1) {
-        pager.find('.prev_link').show();
-    }
-    else {
-        pager.find('.prev_link').hide();
-    }
-
-if (page < (numPages - settings.numbersPerPage)) {
-        pager.find('.next_link').show();
-    }
-    else {
-        pager.find('.next_link').hide();
-    }
-
-    pager.data("curr",page);
-
-if (settings.numbersPerPage > 1) {
-    $('.page_link').hide();
-
-    if (page < (numPages - settings.numbersPerPage)) {
-        $('.page_link').slice(page, settings.numbersPerPage + page).show();
-    }
-    else {
-        $('.page_link').slice(numPages-settings.numbersPerPage).show();
-    }
-}
-
-    pager.children().removeClass("active");
-    pager.children().eq(page+2).addClass("active");
-
-}
-};
-
-$(document).ready(function(){
-  
-  $('#myTable').pageMe({pagerSelector:'#myPager',showPrevNext:true,hidePageNumbers:false,perPage:4});
-  
-  $('#search').keyup(function () {
-
-        var rows = $('#myTable').find('tr').hide();
-        var data = this.value.split(" ");
-        $.each(data, function (i, v) {
-            rows.filter(":contains('" + v + "')").show();            
-        });
-
-    
-    });
-
-});
   </script>
 {% endblock %}
-    
-<br>
-<br>
-<div class="container">
-  <div class="row">
-    <input id="search" value="" type="text">
-  </div>
-  <div class="row">
-      <div class="table-responsive">
-        <table class="table table-hover">
-          <thead>
-            <tr>
-              <th>#</th>
-              <th>Table heading</th>
-              <th>Table heading</th>
-              <th>Table heading</th>
-              <th>Table heading</th>
-              <th>Table heading</th>
-              <th>Table heading</th>
-            </tr>
-          </thead>
-          <tbody id="myTable">
-           
-          </tbody>
-        </table>   
-      </div>
-      <div class="col-md-12 text-center">
-      <ul class="pagination" id="myPager"></ul>
-      </div>
-  </div>
-</div>
