@@ -42,6 +42,113 @@
     		padding: 10px;
 		}
 	  </style>
+	  <style type="text/css">
+	  /*
+Code snippet by maridlcrmn for Bootsnipp.com
+Follow me on Twitter @maridlcrmn
+Image credits: unsplash.com, uifaces.com/authorized
+Image placeholders: placemi.com
+*/
+
+
+#t-cards {
+    padding-top: 80px;
+    padding-bottom: 80px; 
+}
+
+/********************************/
+/*          Panel cards         */
+/********************************/
+.panel.panel-card {
+    position: relative;
+    height: 241px;
+    border: none;
+    overflow: hidden;
+}
+.panel.panel-card .panel-heading {
+    position: relative;
+    z-index: 2;
+    height: 120px;
+    border-bottom-color: #fff;
+    overflow: hidden;
+    
+    -webkit-transition: height 600ms ease-in-out;
+            transition: height 600ms ease-in-out;
+}
+.panel.panel-card .panel-heading img {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    z-index: 1;
+    width: 120%;
+    
+    -webkit-transform: translate3d(-50%,-50%,0);
+            transform: translate3d(-50%,-50%,0);
+}
+.panel.panel-card .panel-heading button {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    z-index: 3;
+}
+.panel.panel-card .panel-figure {
+    position: absolute;
+    top: auto;
+    left: 50%;
+    z-index: 3;
+    width: 70px;
+    height: 70px;
+    background-color: #fff;
+    border-radius: 50%;
+    opacity: 1;
+    -webkit-box-shadow: 0 0 0 3px #fff;
+            box-shadow: 0 0 0 3px #fff;
+    
+    -webkit-transform: translate3d(-50%,-50%,0);
+            transform: translate3d(-50%,-50%,0);
+    
+    -webkit-transition: opacity 400ms ease-in-out;
+            transition: opacity 400ms ease-in-out;
+}
+
+.panel.panel-card .panel-body {
+    padding-top: 40px;
+    padding-bottom: 20px;
+
+    -webkit-transition: padding 400ms ease-in-out;
+            transition: padding 400ms ease-in-out;
+} 
+
+.panel.panel-card .panel-thumbnails {
+    padding: 0 15px 20px;
+}
+.panel-thumbnails .thumbnail {
+    width: 80px;
+    max-width: 100%;
+    margin: 0 auto;
+    background-color: #fff;
+} 
+
+
+.panel.panel-card:hover .panel-heading {
+    height: 55px;
+    
+    -webkit-transition: height 400ms ease-in-out;
+            transition: height 400ms ease-in-out;
+}
+.panel.panel-card:hover .panel-figure {
+    opacity: 0;
+    
+    -webkit-transition: opacity 400ms ease-in-out;
+            transition: opacity 400ms ease-in-out;
+}
+.panel.panel-card:hover .panel-body {
+    padding-top: 20px;
+    
+    -webkit-transition: padding 400ms ease-in-out;
+            transition: padding 400ms ease-in-out;
+}
+	  </style>
 
 
 	</head>
@@ -111,11 +218,105 @@
 	    <h1 align="center">Welcome</h1>
 
 			<br>
-			{%if msg%}
-			<div class="alert alert-success" style="width:400px">
-					{{ msg }}
-			</div>
-			{% endif %}
+			<section id="t-cards">
+    <div class="container" align="center">
+        <div class="row" align="center">
+             <div class="col-sm-6 col-md-4">
+                <div class="panel panel-default panel-card">
+                    <div class="panel-heading">
+                        <img src="{% static 'css/product.jpg' %}" />
+                    </div>
+                    <div class="panel-figure">
+                        <img class="img-responsive img-circle" src="{% static 'css/product1.jpeg' %}" />
+                    </div>
+                    <div class="panel-body text-center">
+                        <h4 class="panel-header"><a href="https://twitter.com/maridlcrmn">Latest Product Reports</a></h4>
+                        <small>A short description goes here.</small>
+                    </div>
+                    <div class="panel-thumbnails">
+                        <div class="row">
+                        	{% for prod in product%}
+                            <div class="col-xs-4">
+                                <div class="thumbnail" style="background:{% static 'css/prod.jpg' %}">
+                                    {{prod.item_name}} - {{ prod.description }}
+                                </div>
+                            </div>
+                            {% endfor %}
+                            
+                        </div>
+                    </div>
+                </div>   
+    		</div>
+		    <div class="col-sm-6 col-md-4">
+        	    <div class="panel panel-default panel-card">
+                    <div class="panel-heading">
+                        <img src="{% static 'css/file2.jpeg' %}" />
+                    </div>
+                    <div class="panel-figure">
+                        <img class="img-responsive img-circle" src="{% static 'css/file.jpg' %}" />
+                    </div>
+                    <div class="panel-body text-center">
+                        <h4 class="panel-header"><a href="https://twitter.com/maridlcrmn">Latest File Reports</a></h4>
+                        <small>A short description goes here.</small>
+                    </div>
+                    <div class="panel-thumbnails">
+                        <div class="row">
+                            <div class="col-xs-4">
+                                <div class="thumbnail">
+                                    <img src="http://placemi.com/dstb9/60x60" />
+                                </div>
+                            </div>
+                            <div class="col-xs-4">
+                                <div class="thumbnail">
+                                    <img src="http://placemi.com/2lsao/60x60" />
+                                </div>
+                            </div>
+                            <div class="col-xs-4">
+                                <div class="thumbnail">
+                                    <img src="http://placemi.com/urcon/60x60" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+            	</div>   
+    		</div>
+            <div class="col-sm-6 col-md-4">
+                <div class="panel panel-default panel-card">
+                    <div class="panel-heading">
+                        <img src="{% static 'css/lib3.jpeg' %}" />
+                    </div>
+                    <div class="panel-figure">
+                        <img class="img-responsive img-circle" src="{% static 'css/lib.jpg' %}" />
+                    </div>
+                    <div class="panel-body text-center">
+                        <h4 class="panel-header"><a href="https://twitter.com/maridlcrmn">Latest Added Libraries</a></h4>
+                        <small>A short description goes here.</small>
+                    </div>
+                    <div class="panel-thumbnails">
+                        <div class="row">
+                            <div class="col-xs-4">
+                                <div class="thumbnail">
+                                    <img src="http://placemi.com/7an8e/60x60" />
+                                </div>
+                            </div>
+                            <div class="col-xs-4">
+                                <div class="thumbnail">
+                                    <img src="http://placemi.com/wntpb/60x60" />
+                                </div>
+                            </div>
+                            <div class="col-xs-4">
+                                <div class="thumbnail">
+                                    <img src="http://placemi.com/jrzxa/60x60" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+            	</div>   
+    		</div>
+	    </div>
+    </div>
+</section>
+
 	  		{% endblock %}
 
 
