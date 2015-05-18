@@ -35,7 +35,6 @@ urlpatterns = [
     url(r'^product_to_irr/(?P<pk>[0-9]+)/(?P<inv>[0-9]+)/$', views.product_to_irr),
     url(r'^irr_form/(?P<pk>[0-9]+)/$', views.irr_form),
     url(r'^miv_form/(?P<pk>[0-9]+)/$', views.miv_form),
-    url(r'^inv_stat/$', views.inv_stat),
     url(r'^cost_center/$', views.cost_center),
     url(r'^supplier/$', views.supplier),
     url(r'^employee/$', views.employee),
@@ -53,7 +52,7 @@ urlpatterns = [
         template_name='WISH/garv_reports.html'), name='garv_reports'),
     url(r'^product_reports/$', ListView.as_view(model=models.Product, paginate_by=10, context_object_name='product_list',\
         template_name='WISH/product_reports.html'), name='product_reports'),
-    url(r'^inv_stat/$', ListView.as_view(model=models.Inventory_stat, paginate_by=2, context_object_name='inv_stat',\
+    url(r'^inv_stat/$', ListView.as_view(model=models.Inventory_stat, paginate_by=2, context_object_name='inv_list',\
         template_name='WISH/inv_stat.html'), name='inv_stat'),
     url(r'^libraries/$', views.libraries),
     url(r'^stat_lib/$', views.stat_lib, name='stat_lib'),

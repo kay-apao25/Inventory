@@ -70,14 +70,14 @@
   </div>
 {% else %}
 <br>
-{% if irr_list|length <= 6  %}
+{% if irr_list|length <= 1  %}
   <div class="col-md-2"></div>
   {% else %}
   <div class="col-md-4">
     <form action="#" method="get">
       <div class="input-group">
         <!-- USE TWITTER TYPEAHEAD JSON WITH API TO SEARCH -->
-          <input class="form-control" id="system-search" name="q" placeholder="Search for" required>
+          <input class="form-control" id="search" value="" placeholder="Search for" type="text">
       </div>
     </form>
   </div>
@@ -92,45 +92,40 @@
        <th><center>WORK ORDER NO.</center></th>
 
     </thead>
-     	{% for irr in irr_list %}
-      	<tr>
-          <td>
-            <a href="{% url 'WISH.views.irr_form' pk=irr.pk %}">
-            <center>{{ irr.pk }}</center>
-            </a>
-          </td>
-          <td>
-          <center>{{irr.cost_center_no}}</center>
-          </td>
-          <td>
-          <center>{{irr.date_recv}}</center>
-          </td>
-          <td>
-          <center>{{irr.wo_no}}</center>
-          </td>
-      	</tr>
+       <tbody id="myTable">
+     	  {% for irr in irr_list %}
+      	 <tr>
+           <td>
+              <a href="{% url 'WISH.views.irr_form' pk=irr.pk %}">
+              <center>{{ irr.pk }}</center>
+              </a>
+            </td>
+           <td>
+              <center>{{irr.cost_center_no}}</center>
+           </td>
+           <td>
+              <center>{{irr.date_recv}}</center>
+           </td>
+           <td>
+              <center>{{irr.wo_no}}</center>
+           </td>
+      	 </tr>
       {% endfor %}
+      </tbody>
   </table>
+  <div class="col-md-12 text-center">
+      <ul class="pagination" id="myPager"></ul>
+      </div>
   {% if is_paginated %}
-        <div class="pagination">
-            <span class="page-links">
-                {% if page_obj.has_previous %}
-                    <a href="/irr_reports?page={{ page_obj.previous_page_number }}">previous</a>
-                {% endif %}
-                <span class="page-current">
-                    Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
-                </span>
-                {% if page_obj.has_next %}
-                    <a href="/irr_reports?page={{ page_obj.next_page_number }}">next</a>
-                {% endif %}
-            </span>
+        <div class="col-md-12 text-center">
+            <ul class="pagination" id="myPager"></ul>
         </div>
    {% endif %}
   </div>
   {% endif %}
   </div>
   </div>
-  <script type="text/javascript">
+ <!-- <script type="text/javascript">
   $(document).ready(function() {
     var activeSystemClass = $('.list-group-item.active');
 
@@ -177,5 +172,199 @@
         }
     });
 });
+  </script>-->
+  <script type="text/javascript">
+    $.fn.pageMe = function(opts){
+var $this = this,
+    defaults = {
+        perPage: 7,
+        showPrevNext: false,
+        numbersPerPage: 5,
+        hidePageNumbers: false,
+        showFirstLast: true
+    },
+    settings = $.extend(defaults, opts);
+
+var listElement = $this;
+var perPage = settings.perPage; 
+var children = listElement.children();
+var pager = $('.pagination');
+
+if (typeof settings.childSelector!="undefined") {
+    children = listElement.find(settings.childSelector);
+}
+
+if (typeof settings.pagerSelector!="undefined") {
+    pager = $(settings.pagerSelector);
+}
+
+var numItems = children.size();
+var numPages = Math.ceil(numItems/perPage);
+
+pager.data("curr",0);
+
+if (settings.showFirstLast){
+    $('<li><a href="#" class="first_link"><</a></li>').appendTo(pager);
+}     
+if (settings.showPrevNext){
+    $('<li><a href="#" class="prev_link">«</a></li>').appendTo(pager);
+}
+
+var curr = 0;
+while(numPages > curr && (settings.hidePageNumbers==false)){
+    $('<li><a href="#" class="page_link">'+(curr+1)+'</a></li>').appendTo(pager);
+    curr++;
+}
+
+if (settings.numbersPerPage>1) {
+   $('.page_link').hide();
+   $('.page_link').slice(pager.data("curr"), settings.numbersPerPage).show();
+}
+
+if (settings.showPrevNext){
+    $('<li><a href="#" class="next_link">»</a></li>').appendTo(pager);
+}
+if (settings.showFirstLast){
+    $('<li><a href="#" class="last_link">></a></li>').appendTo(pager);
+}  
+
+pager.find('.page_link:first').addClass('active');
+pager.find('.prev_link').hide();
+if (numPages<=1) {
+    pager.find('.next_link').hide();
+}
+pager.children().eq(2).addClass("active");
+
+children.hide();
+children.slice(0, perPage).show();
+
+pager.find('li .page_link').click(function(){
+    var clickedPage = $(this).html().valueOf()-1;
+    goTo(clickedPage,perPage);
+    return false;
+});
+pager.find('li .first_link').click(function(){
+    first();
+    return false;
+});  
+
+pager.find('li .prev_link').click(function(){
+    previous();
+    return false;
+});
+pager.find('li .next_link').click(function(){
+    next();
+    return false;
+});
+pager.find('li .last_link').click(function(){
+    last();
+    return false;
+});    
+function previous(){
+    var goToPage = parseInt(pager.data("curr")) - 1;
+    goTo(goToPage);
+}
+
+function next(){
+    goToPage = parseInt(pager.data("curr")) + 1;
+    goTo(goToPage);
+}
+
+function first(){
+    var goToPage = 0;
+    goTo(goToPage);
+} 
+
+function last(){
+    var goToPage = numPages-1;
+    goTo(goToPage);
+} 
+
+function goTo(page){
+    var startAt = page * perPage,
+        endOn = startAt + perPage;
+
+    children.css('display','none').slice(startAt, endOn).show();
+
+    if (page>=1) {
+        pager.find('.prev_link').show();
+    }
+    else {
+        pager.find('.prev_link').hide();
+    }
+
+if (page < (numPages - settings.numbersPerPage)) {
+        pager.find('.next_link').show();
+    }
+    else {
+        pager.find('.next_link').hide();
+    }
+
+    pager.data("curr",page);
+
+if (settings.numbersPerPage > 1) {
+    $('.page_link').hide();
+
+    if (page < (numPages - settings.numbersPerPage)) {
+        $('.page_link').slice(page, settings.numbersPerPage + page).show();
+    }
+    else {
+        $('.page_link').slice(numPages-settings.numbersPerPage).show();
+    }
+}
+
+    pager.children().removeClass("active");
+    pager.children().eq(page+2).addClass("active");
+
+}
+};
+
+$(document).ready(function(){
+  
+  $('#myTable').pageMe({pagerSelector:'#myPager',showPrevNext:true,hidePageNumbers:false,perPage:4});
+  
+  $('#search').keyup(function () {
+
+        var rows = $('#myTable').find('tr').hide();
+        var data = this.value.split(" ");
+        $.each(data, function (i, v) {
+            rows.filter(":contains('" + v + "')").show();            
+        });
+
+    
+    });
+
+});
   </script>
 {% endblock %}
+    
+<br>
+<br>
+<div class="container">
+  <div class="row">
+    <input id="search" value="" type="text">
+  </div>
+  <div class="row">
+      <div class="table-responsive">
+        <table class="table table-hover">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Table heading</th>
+              <th>Table heading</th>
+              <th>Table heading</th>
+              <th>Table heading</th>
+              <th>Table heading</th>
+              <th>Table heading</th>
+            </tr>
+          </thead>
+          <tbody id="myTable">
+           
+          </tbody>
+        </table>   
+      </div>
+      <div class="col-md-12 text-center">
+      <ul class="pagination" id="myPager"></ul>
+      </div>
+  </div>
+</div>
