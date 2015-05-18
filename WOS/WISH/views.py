@@ -137,6 +137,16 @@ def employee_lib(request):
         form = Em_lib(request.POST)
         if form.is_valid() :
             employee = form.save(commit=False)
+            a = 0
+            for employee.name in employee:
+                if a <= len(employee.name):
+                    if employee.name[a] == "'":
+                        employee.name.replace("'", '-')
+                        a += 1
+                    else:
+                        a += 1
+
+
             employee.save()
             msg = 'Employee was added successfully.'
 
