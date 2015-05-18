@@ -11,7 +11,33 @@ import json
 
 # Create your views here.
 def index(request):
-    return render(request, 'WISH/index.html', {})
+    product = Product.objects.order_by('id')[:3]
+    try:
+        irr = IRR.objects.latest('wrs_number')
+    except:
+        irr = None
+    try:
+        par = PAR.objects.latest('par_no')
+    except:
+        par = None
+    try:
+        garv = GARV.objects.latest('garv_no')
+    except:
+        garv = None
+    try:
+        inv = Inventory_stat.objects.latest('id')
+    except:
+        inv = None
+    try:
+        sup = Supplier.objects.latest('id')
+    except:
+        sup = None
+    try:
+        cc = Cost_center.objects.latest('id')
+    except:
+        cc = None
+
+    return render(request, 'WISH/index.html', {'product': product, 'irr': irr, 'par': par, 'garv': garv, 'inv': inv, 'sup': sup, 'cc': cc})
 
 def aboutus(request):
     return render(request, 'WISH/AboutUs.html', {})
