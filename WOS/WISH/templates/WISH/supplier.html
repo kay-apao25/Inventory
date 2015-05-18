@@ -25,7 +25,8 @@
       </li>
     </ul>
 <br>
-<div align="right"><a href="{% url 'WISH.views.sup_lib' %}" class="save btn btn-default">Add Supplier</a></div><br>
+<div align="right"><a href="{% url 'WISH.views.sup_lib' %}" class="save btn btn-info">
+    <i class="glyphicon glyphicon-plus"></i> Add Supplier</a></div><br>
 <div id="supplier">
 {% if sup_list|length == 0 %}
 <br>
@@ -34,8 +35,6 @@
     No records found.
   </div>
 {% else %}
-<br>
-
 {% if sup_list|length <= 6  %}
   <div class="col-md-2"></div>
   {% else %}
@@ -51,8 +50,8 @@
 <div class="col-md-8">
   <table class="table table-list-search4">
  <thead>
-   <th>supplier dce</th>
-   <th>supplier name</th>
+   <th>Supplier Number</th>
+   <th>Supplier Name</th>
  </thead>
    {% for sups in sup_list %}
      <tr>

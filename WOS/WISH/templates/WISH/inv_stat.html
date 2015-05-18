@@ -25,7 +25,8 @@
       </li>
     </ul>
 <br>
-<div align="right"><a href="{% url 'WISH.views.stat_lib' %}" class="save btn btn-default">Add Inventory station</a></div><br>
+<div align="right"><a href="{% url 'WISH.views.stat_lib' %}" class="save btn btn-info">
+    <i class="glyphicon glyphicon-plus"></i> Add Inventory station</a></div><br>
 <div id="inv">
 {% if inv_list|length == 0 %}
 <br>
@@ -34,8 +35,6 @@
     No records found.
   </div>
 {% else %}
-<br>
-
 {% if inv_list|length <= 6  %}
   <div class="col-md-2"></div>
   {% else %}
@@ -50,30 +49,26 @@
   {% endif %}
 <div class="col-md-8">
        <table class="table table-list-search">
-
-    <thead>
-      <th><center>Inventory station no</center></th>
-     <th><center>Inventory station name</center></th>
-    </thead>
-    {% for invs in inv_list %}
-    <tr>
-      <td>
-        <a href="{% url 'WISH.views.inv_stat_details' pk=invs.inv_station_no %}">
-        <center>{{ invs.inv_station_no }}</center>
-        </a>
-      </td>
-      <td>
-        <center>{{ invs.station_description }}</center>
-        </a>
-      </td>
+        <thead>
+          <th><center>Inventory station no</center></th>
+          <th><center>Inventory station name</center></th>
+        </thead>
+      {% for invs in inv_list %}
+      <tr>
+        <td>
+          <a href="{% url 'WISH.views.inv_stat_details' pk=invs.inv_station_no %}">
+            <center>{{ invs.inv_station_no }}</center>
+          </a>
+        </td>
+        <td>
+          <center>{{ invs.station_description }}</center>
+        </td>
       </tr>
     {% endfor %}
   </table>
-  </div>
-  {% endif %}
-  </div>
-  </div>
-
+   {% endif %}
+</div>
+</div>
   <script type="text/javascript">
   $(document).ready(function() {
     var activeSystemClass = $('.list-group-item.active');

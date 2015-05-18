@@ -25,7 +25,8 @@
       </li>
     </ul>
 <br>
-<div align="right"><a href="{% url 'WISH.views.add_cost_center' %}" class="save btn btn-default">Add Cost Center</a></div><br>
+<div align="right"><a href="{% url 'WISH.views.add_cost_center' %}" class="save btn btn-info">
+    <i class="glyphicon glyphicon-plus"></i> Add Cost Center</a></div><br>
 <div id="cc">
 {% if cc_list|length == 0 %}
 <br>
@@ -34,8 +35,6 @@
     No records found.
   </div>
 {% else %}
-<br>
-
 {% if cc_list|length <= 6  %}
   <div class="col-md-2"></div>
   {% else %}

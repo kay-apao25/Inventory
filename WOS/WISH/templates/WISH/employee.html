@@ -25,7 +25,8 @@
       </li>
     </ul>
 <br>
-<div align="right"><a href="{% url 'WISH.views.employee_lib' %}" class="save btn btn-default">Add Employee</a></div><br>
+<div align="right"><a href="{% url 'WISH.views.employee_lib' %}" class="save btn btn-info">
+    <i class="glyphicon glyphicon-plus"></i> Add Employee</a></div><br>
 <div id="employee">
 {% if em_list|length == 0 %}
 <br>
@@ -34,8 +35,6 @@
     No records found.
   </div>
 {% else %}
-<br>
-
 {% if em_list|length <= 6  %}
   <div class="col-md-2"></div>
   {% else %}
@@ -72,7 +71,6 @@
  </tr>
 {% endfor %}
 </table>
-  </div>
   {% endif %}
   </div>
   </div>
