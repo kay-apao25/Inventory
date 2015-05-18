@@ -35,9 +35,6 @@ urlpatterns = [
     url(r'^product_to_irr/(?P<pk>[0-9]+)/(?P<inv>[0-9]+)/$', views.product_to_irr),
     url(r'^irr_form/(?P<pk>[0-9]+)/$', views.irr_form),
     url(r'^miv_form/(?P<pk>[0-9]+)/$', views.miv_form),
-    #url(r'^cost_center/$', views.cost_center),
-    #url(r'^supplier/$', views.supplier),
-    #url(r'^employee/$', views.employee),
     url(r'^add_cost_center/$', views.add_cost_center, name='add_cost_center'),
     url(r'^file_reports/$', views.file_report),
     url(r'^irr_reports/$', ListView.as_view(model=models.IRR, paginate_by=10, context_object_name='irr_list',\
