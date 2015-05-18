@@ -59,35 +59,6 @@ def employee_del(request, pk):
 def file_report(request):
     return render(request, 'WISH/file_report.html', {})
 
-def libraries(request):
-    return render(request, 'WISH/libraries.html', {})
-
-def inv_stat(request):
-    inv = Inventory_stat.objects.filter(is_delete=False)
-    return render(request, 'WISH/inv_stat.html', {'inv':inv})
-
-"""@page_template('WISH/inv_stat_page.html')  # just add this decorator
-def inv_stat(
-        request, template='WISH/inv_stat.html', extra_context=None):
-    context = {
-        'inv': Inventory_stat.objects.filter(is_delete=False),
-    }
-    if extra_context is not None:
-        context.update(extra_context)
-    return render_to_response(
-        template, context, context_instance=RequestContext(request))"""
-
-def cost_center(request):
-    cos = Cost_center.objects.filter(is_delete=False)
-    return render(request, 'WISH/cost_center.html', {'cos': cos})
-
-def supplier(request):
-    sup = Supplier.objects.filter(is_delete=False)
-    return render(request, 'WISH/supplier.html', {'sup': sup})
-
-def employee(request):
-    em = Employee.objects.filter(is_delete=False)
-    return render(request, 'WISH/employee.html', {'em': em})
 
 def stat_lib(request):
     if request.method == "POST":

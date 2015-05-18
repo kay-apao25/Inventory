@@ -35,10 +35,6 @@ urlpatterns = [
     url(r'^product_to_irr/(?P<pk>[0-9]+)/(?P<inv>[0-9]+)/$', views.product_to_irr),
     url(r'^irr_form/(?P<pk>[0-9]+)/$', views.irr_form),
     url(r'^miv_form/(?P<pk>[0-9]+)/$', views.miv_form),
-    url(r'^inv_stat/$', views.inv_stat),
-    url(r'^cost_center/$', views.cost_center),
-    url(r'^supplier/$', views.supplier),
-    url(r'^employee/$', views.employee),
     url(r'^add_cost_center/$', views.add_cost_center, name='add_cost_center'),
     url(r'^file_reports/$', views.file_report),
     url(r'^irr_reports/$', ListView.as_view(model=models.IRR, paginate_by=10, context_object_name='irr_list',\
@@ -53,9 +49,16 @@ urlpatterns = [
         template_name='WISH/garv_reports.html'), name='garv_reports'),
     url(r'^product_reports/$', ListView.as_view(model=models.Product, paginate_by=10, context_object_name='product_list',\
         template_name='WISH/product_reports.html'), name='product_reports'),
-    url(r'^libraries/$', views.libraries),
+    url(r'^inv_stat/$', ListView.as_view(model=models.Inventory_stat, paginate_by=10, context_object_name='inv_list',\
+        template_name='WISH/inv_stat.html'), name='inv_stat'),
+    url(r'^cost_center/$', ListView.as_view(model=models.Cost_center, paginate_by=10, context_object_name='cc_list',\
+        template_name='WISH/cost_center.html'), name='cost_center'),
+    url(r'^supplier/$', ListView.as_view(model=models.Supplier, paginate_by=10, context_object_name='sup_list',\
+        template_name='WISH/supplier.html'), name='supplier'),
+    url(r'^employee/$', ListView.as_view(model=models.Employee, paginate_by=10, context_object_name='em_list',\
+        template_name='WISH/employee.html'), name='employee'),
+    #url(r'^libraries/$', views.libraries),
     url(r'^stat_lib/$', views.stat_lib, name='stat_lib'),
     url(r'^sup_lib/$', views.sup_lib, name='sup_lib'),
     url(r'^employee_lib/$', views.employee_lib, name='employee_lib'),
 ]
-
