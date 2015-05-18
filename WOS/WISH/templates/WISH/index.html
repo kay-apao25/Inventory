@@ -231,13 +231,13 @@ Image placeholders: placemi.com
                     </div>
                     <div class="panel-body text-center">
                         <h4 class="panel-header"><a href="https://twitter.com/maridlcrmn">Latest Product Reports</a></h4>
-                        <small>A short description goes here.</small>
+                        <small>A short report goes here.</small>
                     </div>
                     <div class="panel-thumbnails">
                         <div class="row">
                         	{% for prod in product%}
                             <div class="col-xs-4">
-                                <div class="thumbnail" style="background:{% static 'css/prod.jpg' %}">
+                                <div class="thumbnail" style="background-image:url('{% static 'css/prod.jpg' %}')">
                                     {{prod.item_name}} - {{ prod.description }}
                                 </div>
                             </div>
@@ -257,23 +257,40 @@ Image placeholders: placemi.com
                     </div>
                     <div class="panel-body text-center">
                         <h4 class="panel-header"><a href="https://twitter.com/maridlcrmn">Latest File Reports</a></h4>
-                        <small>A short description goes here.</small>
+                        <small>A short report goes here.</small>
                     </div>
                     <div class="panel-thumbnails">
                         <div class="row">
                             <div class="col-xs-4">
-                                <div class="thumbnail">
-                                    <img src="http://placemi.com/dstb9/60x60" />
+                                <div class="thumbnail" style="background-image:url('http://placemi.com/urcon/60x60')">
+                                	{% if irr != null %}
+                                    	{{irr.irr_no}}
+                                    {%else%}
+                                    	None
+                                    	<br> 
+                                   	{% endif %}
                                 </div>
                             </div>
                             <div class="col-xs-4">
-                                <div class="thumbnail">
-                                    <img src="http://placemi.com/2lsao/60x60" />
+                            	<div class="thumbnail" style="background-image:url('http://placemi.com/urcon/60x60')">
+                                	{% if par != null %}
+                                    	{{par.par_no}}
+                                    	<br> 
+                                    {%else%}
+                                    	None
+                                    	<br> 
+                                   	{% endif %}
                                 </div>
                             </div>
                             <div class="col-xs-4">
-                                <div class="thumbnail">
-                                    <img src="http://placemi.com/urcon/60x60" />
+                           		<div class="thumbnail" style="background-image:url('http://placemi.com/urcon/60x60')">
+                                	{% if garv != null %}
+                                    	{{garv.garv_no}}
+                                    	<br> 
+                                    {%else%}
+                                    	None
+                                    	<br> 
+                                   	{% endif %}
                                 </div>
                             </div>
                         </div>
@@ -290,23 +307,35 @@ Image placeholders: placemi.com
                     </div>
                     <div class="panel-body text-center">
                         <h4 class="panel-header"><a href="https://twitter.com/maridlcrmn">Latest Added Libraries</a></h4>
-                        <small>A short description goes here.</small>
+                        <small>A short report goes here.</small>
                     </div>
                     <div class="panel-thumbnails">
                         <div class="row">
                             <div class="col-xs-4">
-                                <div class="thumbnail">
-                                    <img src="http://placemi.com/7an8e/60x60" />
+                                <div class="thumbnail" style="background-image:url('http://placemi.com/jrzxa/60x60')">
+                                	{% if inv != null %}
+                                    	{{inv.inv_station_no}} - {{inv.station_description}}
+                                    {%else%}
+                                    	None
+                                   	{% endif %}    
                                 </div>
                             </div>
                             <div class="col-xs-4">
-                                <div class="thumbnail">
-                                    <img src="http://placemi.com/wntpb/60x60" />
+                                <div class="thumbnail" style="background-image:url('http://placemi.com/jrzxa/60x60')">
+                                	{% if cc != null %}
+                                    	{{cc.id}} - <br> {{cc.functional_group}}
+                                    {%else%}
+                                    	None
+                                   	{% endif %}    
                                 </div>
                             </div>
                             <div class="col-xs-4">
-                                <div class="thumbnail">
-                                    <img src="http://placemi.com/jrzxa/60x60" />
+                                <div class="thumbnail"style="background-image:url('http://placemi.com/jrzxa/60x60')">
+                                	{% if sup != null %}
+                                    	{{sup.supplier_number}} - <br> {{sup.supplier_name}}
+                                    {%else%}
+                                    	None
+                                   	{% endif %}    
                                 </div>
                             </div>
                         </div>
