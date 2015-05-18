@@ -45,17 +45,17 @@
           </a>
       </li>
       <li>
-          <a id='cc' href="{% url 'WISH.views.cost_center' %}" >
+          <a id='cc' href="{% url 'cost_center' %}" >
               Cost Center
           </a>
       </li>
        <li>
-          <a id='supplier' href="{% url 'WISH.views.supplier' %}">
+          <a id='supplier' href="{% url 'supplier' %}">
               Supplier
           </a>
       </li>
       <li>
-          <a id='employee' href="{% url 'WISH.views.employee' %}">
+          <a id='employee' href="{% url 'employee' %}">
               Employee
           </a>
       </li>
@@ -91,7 +91,7 @@
       <th><center>Inventory station no</center></th>
      <th><center>Inventory station name</center></th>
     </thead>
-    {% for invs in inv %}
+    {% for invs in inv_list %}
     <tr>
       <td>
         <a href="{% url 'WISH.views.inv_stat_details' pk=invs.inv_station_no %}">
