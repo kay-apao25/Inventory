@@ -1,6 +1,8 @@
 from django.shortcuts import render, redirect, get_object_or_404, render_to_response
 from django.http import HttpResponseRedirect
-from endless_pagination.decorators import page_template
+from django.contrib.auth.decorators import login_required
+from django.utils.decorators import method_decorator
+from django.contrib.auth.models import User
 from django.contrib import messages
 from django.db.models import Q
 #from random import randint
@@ -10,8 +12,12 @@ import time
 import json
 
 # Create your views here.
+
 def index(request):
-    return render(request, 'WISH/index.html', {})
+    if request.user.is_authenticated():
+        return render(request, 'WISH/index.html', {})
+    else:
+        return render(request, 'registration/login1.html')
 
 def aboutus(request):
     return render(request, 'WISH/AboutUs.html', {})
@@ -108,6 +114,16 @@ def employee_lib(request):
         form = Em_lib(request.POST)
         if form.is_valid() :
             employee = form.save(commit=False)
+            res = ""
+            em_name = list(form.data['name'])
+            for name in em_name:
+
+                if name == "'":
+                    name = '-'
+                    res = res + name
+                else:
+                    res = res + name
+            employee.name = res
             employee.save()
             msg = 'Employee was added successfully.'
 
@@ -844,33 +860,3 @@ def miv_form(request, pk):
         total = total + amount
     return render(request, 'WISH/miv_form.html', {'mivs':mivs, 'products':products, \
                     'amt_list': amt_list, 'total': total})
-
-"""def irr_report(request):
-    if 'q' in request.GET and request.GET['q']:
-        q = request.GET['q']
-        return redirect('WISH.views.irr_form', pk=q)
-    return render(request, 'WISH/irr_report.html', {})
-
-def gatepass_form(request):
-    return render(request, 'WISH/gatepass_form.html', {})
-
-def cme_form(request):
-    return render(request, 'WISH/cme_form.html', {})
-
-def miv_report(request):
-    if 'q' in request.GET and request.GET['q']:
-        q = request.GET['q']
-        return redirect('WISH.views.miv_form', pk=q)
-    return render(request, 'WISH/miv_report.html', {})
-
-def par_report(request):
-    if 'q' in request.GET and request.GET['q']:
-        q = request.GET['q']
-        return redirect('WISH.views.par_form', pk=q)
-    return render(request, 'WISH/par_report.html', {})
-
-def garv_report(request):
-    if 'q' in request.GET and request.GET['q']:
-        q = request.GET['q']
-        return redirect('WISH.views.garv_form', pk=q)
-    return render(request, 'WISH/garv_report.html', {})"""
