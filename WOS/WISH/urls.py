@@ -53,9 +53,10 @@ urlpatterns = [
         template_name='WISH/garv_reports.html'), name='garv_reports'),
     url(r'^product_reports/$', ListView.as_view(model=models.Product, paginate_by=10, context_object_name='product_list',\
         template_name='WISH/product_reports.html'), name='product_reports'),
+    url(r'^inv_stat/$', ListView.as_view(model=models.Inventory_stat, paginate_by=2, context_object_name='inv_stat',\
+        template_name='WISH/inv_stat.html'), name='inv_stat'),
     url(r'^libraries/$', views.libraries),
     url(r'^stat_lib/$', views.stat_lib, name='stat_lib'),
     url(r'^sup_lib/$', views.sup_lib, name='sup_lib'),
     url(r'^employee_lib/$', views.employee_lib, name='employee_lib'),
 ]
-
