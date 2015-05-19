@@ -8,6 +8,7 @@ from django.db.models import Q
 #from random import randint
 from .models import *
 from .forms import *
+import itertools
 import time
 import json
 
@@ -710,13 +711,6 @@ def wrs_entry(request):
         return redirect('WISH.views.wrs_form', pk=q)
     return render(request, 'WISH/wrs_entry.html', {})
 
-def wrs_form(request, pk):
-    wrss = get_object_or_404(IRR, wrs_number=pk)
-    pros = wrss.product
-    for pro in pros:
-        pro['product'] = Product.objects.get(id=pro['Product'])
-    return render(request, 'WISH/wrs_form.html', {'wrss': wrss, 'pros': pros})
-
 def product_details(request, pk):
     prod = get_object_or_404(Product, pk=pk)
     return render(request, 'WISH/product_details.html', {'prod': prod})
@@ -858,7 +852,6 @@ def employee_form(request, dce):
 def par_form(request, pk):
     parss = get_object_or_404(PAR, pk=pk)
     products = parss.product
-    total = 0
     for product in products:
         pro = Product.objects.get(id=product['Product'])
         amount = float(product['Quantity']) * int(pro.unit_cost)
@@ -868,8 +861,16 @@ def par_form(request, pk):
         product['item_name'] = pro.item_name
         product['unit'] = pro.unit_measure
         product['from'] = pro.purchased_from
-        total = total + amount
-    return render(request, 'WISH/par_form.html', {'parss':parss, 'products': products, 'total': total})
+    remain = 0
+    if len(products) > 5:
+        loop = len(products) / 5
+        if len(products) % 5 != 0:
+            loop = loop + 1
+            remain = 5 - (len(products) % 5)
+        return render(request, 'WISH/par_form.html', {'parss':parss, 'products': products, \
+            'loop': range(loop),'remain': range(remain)})
+    else:
+        return render(request, 'WISH/par_form.html', {'parss':parss, 'products': products})
 
 def garv_form(request, pk):
     garvs = get_object_or_404(GARV, pk=pk)
@@ -878,7 +879,16 @@ def garv_form(request, pk):
     for product in products:
         pro = Product.objects.get(id=product['Product'])
         product['pros'] = pro
-    return render(request, 'WISH/garv_form.html', {'garvs': garvs, 'products': products})
+    remain = 0
+    if len(products) > 3:
+        loop = len(products) / 3
+        if len(products) % 3 != 0:
+            loop = loop + 1
+            remain = 3 - (len(products) % 3)
+        return render(request, 'WISH/garv_form.html', {'garvs':garvs, 'products': products, 'pro': pro,\
+            'loop': range(loop),'remain': range(remain)})
+    else:
+        return render(request, 'WISH/garv_form.html', {'garvs': garvs, 'products': products, 'pro':pro})
 
 def irr_form(request, pk):
     irs = get_object_or_404(IRR, pk=pk)
@@ -890,19 +900,49 @@ def irr_form(request, pk):
         product['amount'] = amount
         product['pros'] = pro
         total = total + amount
-    return render(request, 'WISH/irr_form.html', {'irs':irs, 'products': products, \
+    remain = 0
+    if len(products) > 6:
+        loop = len(products) / 6
+        if len(products) % 6 != 0:
+            loop = loop + 1
+            remain = 6 - (len(products) % 6)
+        return render(request, 'WISH/irr_form.html', {'irs':irs, 'products': products, \
+            'loop': range(loop), 'total': total, 'remain': range(remain)})
+    else:
+        return render(request, 'WISH/irr_form.html', {'irs':irs, 'products': products, \
                      'total': total})
 
 def miv_form(request, pk):
     mivs = get_object_or_404(MIV, miv_no=pk)
     products = mivs.irr_no.product
-    amt_list = {}
-    total = 0
     for product in products:
         pro = Product.objects.get(id=product['Product'])
         amount = float(product['quantity_accepted']) * int(pro.unit_cost)
         product['amount'] = amount
         product['pros'] = pro
-        total = total + amount
-    return render(request, 'WISH/miv_form.html', {'mivs':mivs, 'products':products, \
-                    'amt_list': amt_list, 'total': total})
+    remain = 0
+    if len(products) > 6:
+        loop = len(products) / 6
+        if len(products) % 6 != 0:
+            loop = loop + 1
+            remain = 6 - (len(products) % 6)
+        return render(request, 'WISH/miv_form.html', {'mivs':mivs, 'products': products, \
+            'loop': range(loop),'remain': range(remain)})
+    else:
+        return render(request, 'WISH/miv_form.html', {'mivs':mivs, 'products':products })
+
+def wrs_form(request, pk):
+    wrss = get_object_or_404(IRR, wrs_number=pk)
+    pros = wrss.product
+    for pro in pros:
+        pro['product'] = Product.objects.get(id=pro['Product'])
+    remain = 0
+    if len(pros) > 3:
+        loop = len(pros) / 3
+        if len(pros) % 3 != 0:
+            loop = loop + 1
+            remain = 3 - (len(pros) % 3)
+        return render(request, 'WISH/wrs_form.html', {'wrss':wrss, 'pros': pros, \
+            'loop': range(loop),'remain': range(remain)})
+    else:
+        return render(request, 'WISH/wrs_form.html', {'wrss': wrss, 'pros': pros})

@@ -235,7 +235,7 @@ Image placeholders: placemi.com
                         <img class="img-responsive img-circle" src="{% static 'css/product1.jpeg' %}" />
                     </div>
                     <div class="panel-body text-center">
-                        <h4 class="panel-header"><a href="https://twitter.com/maridlcrmn">Latest Product Reports</a></h4>
+                        <h4 class="panel-header">Latest Product Reports</h4>
                         <small>A short report goes here.</small>
                     </div>
                     <div class="panel-thumbnails">
@@ -243,7 +243,9 @@ Image placeholders: placemi.com
                         	{% for prod in product%}
                             <div class="col-xs-4">
                                 <div class="thumbnail" style="background-image:url('{% static 'css/prod.jpg' %}')">
-                                    {{prod.item_name}} - {{ prod.description }}
+                                    <a href="{% url 'WISH.views.product_details' pk=prod.pk%}">
+                                    	{{prod.item_name}} - {{ prod.description }}
+                                    </a>
                                 </div>
                             </div>
                             {% endfor %}
@@ -261,40 +263,42 @@ Image placeholders: placemi.com
                         <img class="img-responsive img-circle" src="{% static 'css/file.jpg' %}" />
                     </div>
                     <div class="panel-body text-center">
-                        <h4 class="panel-header"><a href="https://twitter.com/maridlcrmn">Latest File Reports</a></h4>
+                        <h4 class="panel-header">Latest File Reports</h4>
                         <small>A short report goes here.</small>
                     </div>
                     <div class="panel-thumbnails">
                         <div class="row">
                             <div class="col-xs-4">
-                                <div class="thumbnail" style="background-image:url('http://placemi.com/urcon/60x60')">
+                                <div class="thumbnail" style="background-image:url('{% static 'css/file6.jpeg' %}')">
                                 	{% if irr != null %}
-                                    	{{irr.irr_no}}
+                                		<a href="{% url 'WISH.views.irr_form' pk=irr.pk%}">
+                                    		{{irr.irr_no}} - <br> {{irr.date_recv}}
+                                    	</a>
                                     {%else%}
-                                    	None
-                                    	<br>
-                                   	{% endif %}
+                                    	<strong>No new <br> report recorded.</strong>
+                                    {% endif %}
                                 </div>
                             </div>
                             <div class="col-xs-4">
-                            	<div class="thumbnail" style="background-image:url('http://placemi.com/urcon/60x60')">
+                            	<div class="thumbnail" style="background-image:url('{% static 'css/file6.jpeg' %}')">
                                 	{% if par != null %}
-                                    	{{par.par_no}}
-                                    	<br>
+                                		<a href="{% url 'WISH.views.par_form' pk=par.pk%}">
+                                    		{{par.par_no}} - {{par.date_acquired}}
+                                    	</a>
+                                    	<br> 
                                     {%else%}
-                                    	None
-                                    	<br>
-                                   	{% endif %}
+                                    	<strong>No new <br> report recorded.</strong>
+                                    {% endif %}
                                 </div>
                             </div>
                             <div class="col-xs-4">
-                           		<div class="thumbnail" style="background-image:url('http://placemi.com/urcon/60x60')">
+                           		<div class="thumbnail" style="background-image:url('{% static 'css/file6.jpeg' %}')">
                                 	{% if garv != null %}
-                                    	{{garv.garv_no}}
-                                    	<br>
+                                		<a href="{% url 'WISH.views.garv_form' pk=garv.pk%}">
+                                    		{{garv.garv_no}} - {{garv.garv_date}}
+                                    	</a>
                                     {%else%}
-                                    	None
-                                    	<br>
+                                    	<strong>No new <br> report recorded.</strong>
                                    	{% endif %}
                                 </div>
                             </div>
@@ -305,39 +309,46 @@ Image placeholders: placemi.com
             <div class="col-sm-6 col-md-4">
                 <div class="panel panel-default panel-card">
                     <div class="panel-heading">
-                        <img src="{% static 'css/lib3.jpeg' %}" />
+                        <img src="{% static 'css/lib4.jpg' %}" />
                     </div>
                     <div class="panel-figure">
-                        <img class="img-responsive img-circle" src="{% static 'css/lib.jpg' %}" />
+                        <img class="img-responsive img-circle" style="height:72px;width:80px" src="{% static 'css/library2.jpg' %}" />
                     </div>
                     <div class="panel-body text-center">
-                        <h4 class="panel-header"><a href="https://twitter.com/maridlcrmn">Latest Added Libraries</a></h4>
+                        <h4 class="panel-header">Latest Added Libraries</h4>
                         <small>A short report goes here.</small>
                     </div>
                     <div class="panel-thumbnails">
                         <div class="row">
                             <div class="col-xs-4">
-                                <div class="thumbnail" style="background-image:url('http://placemi.com/jrzxa/60x60')">
+                                <div class="thumbnail" >
                                 	{% if inv != null %}
-                                    	{{inv.inv_station_no}} - {{inv.station_description}}
+                                		<a href="{% url 'WISH.views.inv_stat_details' pk=inv.pk%}">
+                                    		{{inv.inv_station_no}} - {{inv.station_description}}
+                                    	</a>
                                     {%else%}
                                     	None
                                    	{% endif %}
                                 </div>
                             </div>
                             <div class="col-xs-4">
-                                <div class="thumbnail" style="background-image:url('http://placemi.com/jrzxa/60x60')">
+                                <div class="thumbnail" >
                                 	{% if cc != null %}
-                                    	{{cc.id}} - <br> {{cc.functional_group}}
+                                		<a href="{% url 'WISH.views.cost_center_details' pk=cc.pk%}">
+                                    		{{cc.id}} - <br> {{cc.functional_group}}
+                                    	</a>
                                     {%else%}
                                     	None
                                    	{% endif %}
                                 </div>
                             </div>
                             <div class="col-xs-4">
-                                <div class="thumbnail"style="background-image:url('http://placemi.com/jrzxa/60x60')">
+                                <div class="thumbnail"r
+                                >
                                 	{% if sup != null %}
-                                    	{{sup.supplier_number}} - <br> {{sup.supplier_name}}
+                                		<a href="{% url 'WISH.views.supplier_details' pk=sup.pk%}">
+                                    		{{sup.supplier_number}} - <br> {{sup.supplier_name}}
+                                    	</a>
                                     {%else%}
                                     	None
                                    	{% endif %}

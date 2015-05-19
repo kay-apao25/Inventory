@@ -2,7 +2,7 @@
 
 
 {% load staticfiles %}
-
+{% for i in loop %}
 <html>
 	<head>
 		<meta name="viewport" content="width=device-width, initial-scale=1">
@@ -17,7 +17,7 @@
 
 				    	<img src="{% static 'css/npclogo.png' %}" class="left_marg_npclogo" align="left">
 				    	&nbsp;
-				    	<p align="left" class="left_marg_par">Republic of the Philippines<br>National Power Corporation<br>MINDANAO GENERATION<br>(MINGEN)<br>Maria Cristina, Iligan City</p> <br><br><br>
+				    	<p align="left" class="left_marg_par" style="margin-bottom: 0px;">Republic of the Philippines<br>National Power Corporation<br>MINDANAO GENERATION<br>(MINGEN)<br>Maria Cristina, Iligan City</p> <br>
 
 				    	<h1 align="center">GPE ACCOUNTABILITY RELIEF VOUCHER</h1>
 
@@ -49,7 +49,7 @@
 		    			<th style="text-align: center">NTR.</th>
 		    			<th style="text-align: center">REMARKS<br>(Findings/Observations)</th>
 		    		</tr>
-						{% for product in products%}
+						{% for product in products|slice:"-3:"%}
 		    		<tr>
 		    			<td>{{ product.pros.id }}</td> <!--PROPERTY NUMBER-->
 		    			<td>{{ product.pros.item_name }} - {{ product.pros.description }}</td> <!--DESCRIPTION-->
@@ -59,7 +59,17 @@
 		    			<td></td> <!--NTR-->
 		    			<td>{{ product.Remarks }}</td> <!--REMARKS-->
 		    		</tr>
-		    			{% endfor %}
+		    			{{products.pop.0}}
+      	  				{% endfor %}
+      	  				{% if forloop.last %}
+            				<tr>
+      							<td colspan="7">
+      			 					{% for i in remain %}
+										<br>
+      			 					{% endfor %}
+      							</td>
+      						</tr>
+      	  				{% endif %}
 		    	</table>
 		    	<table style="width: 95%" class="tbl3">
 		    		<tr>
@@ -100,16 +110,24 @@
 
 
 		    	<p align="left" class="left_marg_garv">"The accountable employee is responsible for the issued property items, subject to the provisions of the National Accounting and Auditing Laws."<br>
-		    	Purchased from: {{ pro.product.product.purchased_from.supplier_name }}<br>
-		    	P.O. No.: {{ garvs.wo_number.po_number }}<br>
-		    	CSI No.: {{ garvs.wo_number.invoice_number}}</p>
+		    	Purchased from: {{ pro.purchased_from.supplier_name }}<br>
+		    	P.O. No.: {{ garvs.wo_number.irr_headkey.po_number }}<br>
+		    	CSI No.: {{ garvs.wo_number.irr_headkey.invoice_number}}</p>
+		    	<br>
+		    	<br>
+		    	<br>
+		    	<br>
+		    	<br>
+		    	<br>
+					{% if forloop.last %}
+      					<div align="center"><button id="printpagebutton" onclick="myFunction()" >Print this Form</button></div>
+     				{% endif %}
 		    </div>
 				<br><br>
 
 		    <style type="text/css">
 		        @page { margin: 0; }
 		      </style>
-		      <button id="printpagebutton" onclick="myFunction()">Print this Form</button>
 		      <script>
 		    function myFunction() {
 		      var printButton = document.getElementById("printpagebutton");
@@ -121,3 +139,5 @@
 		</script>
 		</center>
 	</body>
+</html>
+{% endfor %}
