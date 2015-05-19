@@ -3,6 +3,8 @@ from .forms import *
 from .views import *
 from django.db.models import Q
 from bootstrap3_datetime.widgets import DateTimePicker
+from django.contrib import auth
+from django.contrib.auth import authenticate, login
 
 class ProductForm(forms.ModelForm):
 
@@ -79,14 +81,14 @@ class IRR_entryForm(forms.ModelForm):
 
 
 class IRR_entryForm1(forms.Form):
-    
+
     def __init__(self, *args, **kwargs):
         name = kwargs.pop('name')
         super(IRR_entryForm1, self).__init__(*args, **kwargs)
         self.fields['inv_station_no'] = forms.ModelChoiceField(queryset=Inventory_stat.objects.filter(\
                 cost_center_no=Employee.objects.get(name=name).cost_center_no).filter(\
                 id__in=[p.inv_station_no.id for p in Product.objects.filter(is_irr=False)]), label='Inventory Station *')
-    
+
     supplier = forms.ModelChoiceField(label='Supplier *', queryset=Supplier.objects.filter(is_delete=False))
     reference = forms.CharField(label='Reference *')
     invoice_number = forms.CharField(label='Invoice number *')
@@ -124,7 +126,7 @@ class IRR_entry_cont_Form(forms.ModelForm):
         self.fields['cost_center_no'] = forms.ModelChoiceField(queryset=Cost_center.objects.filter(\
             is_delete=False).filter(cc_iFK__in=[i.cost_center_no.id for i in (Inventory_stat.objects.filter(inv_station_no=inv))]),\
             label='Cost center *')
-        
+
     date_recv = forms.DateField(widget=DateTimePicker(options={"format": "YYYY-MM-DD", "pickTime": False}), label='Date received *')
     wo_no = forms.CharField(label='WO number *')
 
@@ -192,8 +194,8 @@ class Product_to_PARForm1(forms.Form):
         self.fields['product'] = forms.ModelChoiceField(queryset=Product.objects.all().filter(id__in=\
         [Product.objects.get(id=p).id for p in prodlist]), label='Product *')
         self.fields['quantity'] = forms.IntegerField(required=True, label='Quantity *')
-        
-    
+
+
 class GARV_entryForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
@@ -316,3 +318,21 @@ class Em_lib(forms.ModelForm):
     class Meta:
         model = Employee
         fields = ( 'dce', 'name', 'position', 'cost_center_no', 'charging_cc_no',)
+
+class LoginForm(forms.Form):
+    username = forms.CharField(max_length=255, required=True)
+    password = forms.CharField(widget=forms.PasswordInput, required=True)
+
+    def clean(self):
+        username = self.cleaned_data.get('username')
+        password = self.cleaned_data.get('password')
+        user = authenticate(username=username, password=password)
+        if not user or not user.is_active:
+            raise forms.ValidationError("Sorry, that login was invalid. Please try again.")
+        return self.cleaned_data
+
+    def login(self, request):
+        username = self.cleaned_data.get('username')
+        password = self.cleaned_data.get('password')
+        user = authenticate(username=username, password=password)
+        return user

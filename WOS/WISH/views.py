@@ -43,7 +43,15 @@ def index(request):
             cc = None
         return render(request, 'WISH/index.html', {'product': product, 'irr': irr, 'par': par, 'garv': garv, 'inv': inv, 'sup': sup, 'cc': cc})
     else:
-        return render(request, 'registration/login2.html')
+        form = LoginForm(request.POST or None)
+        if form.is_valid():
+            user = form.login(request)
+            if user:
+                login(request, user)
+                return HttpResponseRedirect('WISH/index.html')# Redirect to a success page.
+            else:
+                return HttpResponseRedirect('registration/login2.html')
+        return render(request, 'registration/login2.html', {'form': form })
 
 def aboutus(request):
     if request.user.is_authenticated():
