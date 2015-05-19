@@ -155,9 +155,6 @@ Image placeholders: placemi.com
 
 	<body style="padding-right:0px; padding-left:0px; padding-top: 0px">
 		<div>
-			<h4 style="text-align:right">Welcome, {{ user.username }}
-				<a href="{% url 'django.contrib.auth.views.logout' %}">Logout</a>
-			</h4>
     </div>
 		<header id="headerback">
       		<img src ="{% static 'css/header.png' %}" style="width:100%">
@@ -211,8 +208,10 @@ Image placeholders: placemi.com
 	          </ul>
 
 	          <ul class="nav navbar-nav navbar-right">
-							<li><a href="#"><span ></span> About Us</a></li>
-	           <li><a href="{% url 'django.contrib.auth.views.logout'%}"><span class="glyphicon glyphicon-log-out"></span> Log out</a></li>
+							<li><a href="#"><span></span> About Us</a></li>
+							<li><a>Hi, {{ user.username }}!</a></li>
+			
+			  <li><a href="{% url 'django.contrib.auth.views.logout'%}"><span class="glyphicon glyphicon-log-out"></span> Log out</a></li>
 	          </ul>
 	        </div>
 	      </div>

@@ -5,7 +5,6 @@ from django.db.models import Q
 from bootstrap3_datetime.widgets import DateTimePicker
 from django.contrib import auth
 
-
 class ProductForm(forms.ModelForm):
 
     class Meta:
