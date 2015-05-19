@@ -1,7 +1,6 @@
 
 {% load staticfiles %}
-
-
+{% for i in loop %}
 <html>
     <head>
     	<link rel="stylesheet" type="text/css" href= "{% static 'css/forms_style.css' %}">
@@ -69,7 +68,7 @@
 				<th>UNIT PRICE</th>
 				<th>AMOUNT</th>
 			</tr>
-      {% for product in products%}
+	  {% for product in products|slice:"-6:"%}
 			<tr>
 				<td>{{product.pros.id}}<br><br><br></td>
 				<td>{{product.pros.nsn}}<br><br><br></td>
@@ -80,10 +79,20 @@
 				<td>{{product.pros.unit_cost }}<br><br><br></td>
 				<td>{{ product.amount }}<br><br><br></td>
       </tr>
+      {{products.pop.0}}
       {% endfor %}
+      {% if forloop.last %}
       <tr>
-        <td colspan=8 style="text-align:right"><br>Total: {{ total }}<br></td>
+        <td colspan="9" style="text-align:right"><br>Total: {{ total }}<br></td>
       </tr>
+      <tr>
+      <td colspan="8">
+      	{% for i in remain %}
+			<br><br><br>
+      	{% endfor %}
+      </td>
+      </tr>
+      {% endif %}
 		</table>
 
 		<table style="width:90%" class="tbl3">
@@ -99,23 +108,28 @@
         IS Cost Center Head<br>DCE:{{irs.irr_headkey.dce_approved.dce}}<br>Date of inspection: {{irs.irr_headkey.approved_date}}</center></td>
 			<td>IRR<br>B->{{irs.irr_headkey.inv_station_no.inv_station_no}}<br>No.{{irs.pk}}</td>
 		</table>
+		<br><br>
+		{% if forloop.last %}
+      		<button id="printpagebutton" onclick="myFunction()" >Print this Form</button>
+     	{% endif %}
 
 
 		</div>
     <br><br>
 
     <style type="text/css">
-        @page { margin: 0; }
-      </style>
-      <button id="printpagebutton" onclick="myFunction()" >Print this Form</button>
-      <script>
-    function myFunction() {
-      var printButton = document.getElementById("printpagebutton");
-      printButton.style.visibility = 'hidden';
-      window.print();
-      printButton.style.visibility = 'visible';
-    }
+    	@page { margin: 0; }
+    </style>
+    
+    <script type="text/javascript">
+    	function myFunction() {
+      	var printButton = document.getElementById("printpagebutton");
+      	printButton.style.visibility = 'hidden';
+      	window.print();
+      	printButton.style.visibility = 'visible';
+    	}
     </script>
-		</center>
-    </body>
+	</center>
+  </body>
 </html>
+{% endfor %}

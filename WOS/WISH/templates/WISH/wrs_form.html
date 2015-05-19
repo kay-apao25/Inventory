@@ -1,5 +1,5 @@
 {% load staticfiles %}
-
+{% for i in loop %}
 <!DOCTYPE html>
 <html>
 	<head>
@@ -32,17 +32,40 @@
 					    			<th style="text-align: center" width="150px">QUANTITY</th>
 					    			<th style="text-align: center" width="100px">UNIT OF MEASURE</th>
 					    		</tr>
-									{% for pro in pros %}
+								{% for pro in pros|slice:"-3:" %}
+								{% if forloop.counter == 1%}
 					    		<tr>
 					    			<td>{{ pro.product.slc_number }} </td> <!--NSN-->
-					    			<td><b><u>&nbsp;&nbsp;&nbsp;&nbsp;PR # , PO #
+					    			<td><b><u>&nbsp;&nbsp;&nbsp;&nbsp;PR # {{ wrss.irr_headkey.pr_number }}, PO #
 						        {{ wrss.irr_headkey.po_number }}&nbsp;&nbsp;&nbsp;&nbsp;</u></b><br><br>
-										<center>{{ pro.product.item_name }}, {{ pro.product.description }}</center>
+						        	<center>{{ pro.product.item_name }}, {{ pro.product.description }}</center>
 										</td> <!--PARTICULARS-->
 					    			<td>{{ pro.quantity_accepted }}</td> <!--QUANTITY-->
 					    			<td>{{ pro.product.unit_measure }}</td> <!--UNIT OF MEASURE-->
 					    		</tr>
-									{% endfor %}
+						        {% else %}
+						        <tr>
+						        	<td>{{ pro.product.slc_number }} </td>
+						        	<td><br><br>
+						        	<center>{{ pro.product.item_name }}, {{ pro.product.description }}</center>
+										</td> <!--PARTICULARS-->
+					    			<td>{{ pro.quantity_accepted }}</td> <!--QUANTITY-->
+					    			<td>{{ pro.product.unit_measure }}</td> <!--UNIT OF MEASURE-->
+						        	
+						        </tr>
+										
+								{% endif %}
+								{{pros.pop.0}}
+      	  						{% endfor %}
+      	  						{% if forloop.last %}
+            					<tr>
+      								<td colspan="4">
+      			 						{% for i in remain %}
+											<br><br><br>
+      			 						{% endfor %}
+      								</td>
+      							</tr>
+      	  						{% endif %}
 					    	</table>
 
 					    	<table style="width: 90%" class="tbl3">
@@ -74,13 +97,16 @@
 					    			</td>
 					    		</tr>
 					    	</table>
+					    	<br>
+							{% if forloop.last %}
+      							<button id="printpagebutton" onclick="myFunction()" >Print this Form</button>
+     						{% endif %}
 		    </div>
 			<br><br>
 
 		    <style type="text/css">
 		        @page { margin: 0; }
 		      </style>
-		      <button id="printpagebutton" onclick="myFunction()">Print this Form</button>
 		      <script>
 		    function myFunction() {
 		      var printButton = document.getElementById("printpagebutton");
@@ -93,3 +119,4 @@
 		</center>
 	</body>
 </html>
+{%endfor%}
