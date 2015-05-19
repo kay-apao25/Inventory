@@ -11,6 +11,7 @@ from .forms import *
 import itertools
 import time
 import json
+from django.contrib.auth import authenticate, login
 
 # Create your views here.
 
@@ -45,13 +46,15 @@ def index(request):
     else:
         form = LoginForm(request.POST or None)
         if form.is_valid():
-            user = form.login(request)
-            if user:
+            user = authenticate(username=form.data['username'], password=form.data['password'])
+            if user is not None:
                 login(request, user)
-                return HttpResponseRedirect('WISH/index.html')# Redirect to a success page.
+                return render(request, 'WISH/index.html', {})# Redirect to a success page.
             else:
-                return HttpResponseRedirect('registration/login2.html')
-        return render(request, 'registration/login2.html', {'form': form })
+                return render(request, 'registration/login2.html', {'error': 'authentication failed!', 'form':form})
+        else:
+            return render(request, 'registration/login2.html', {'form': form })
+        form = LoginForm()
 
 def aboutus(request):
     return render(request, 'WISH/AboutUs.html', {})

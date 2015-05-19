@@ -56,7 +56,7 @@
         </div>
 
            <!--MODAL-->
-        <div class="modal fade" id="smallModal" tabindex="-1" role="dialog" aria-labelledby="smallModal" aria-hidden="true" style="margin-top: 100px; position: fixed; z-index:10000">
+        <div class="modal fade" id="smallModal" tabindex="-1" role="dialog" aria-labelledby="smallModal" aria-hidden="true" style="margin-top: 100px; position: fixed; z-index:10000 opacity:0.5">
           <div class="modal-dialog modal-sm">
             <div class="modal-content">
               <div class="modal-header">
@@ -65,30 +65,24 @@
               </div>
               <div class="modal-body" id="mycontent">
 
-                {% if form.errors %}
-                  {error}
-                {% endif %}
-
                 <form method="post" action="{% url 'WISH.views.index' %}">
                   <br>
+                {% for field in form %}
                 {% csrf_token %}
                 <table>
                 <tr>
-                    <td>{{ form.username | bootstrap_horizontal:'col-lg-4' }}</td>
+                    <td>{{ field | bootstrap_horizontal:'col-lg-4' }}</td>
                 </tr>
                 <tr>
                   <td> <br> </td>
                 </tr>
-                <tr>
-                    <td>{{ form.password | bootstrap_horizontal:'col-lg-4' }}</td>
-                </tr>
                 </table>
+                {% endfor %}
                 <br>
                 <div class="modal-footer">
-                  <input type="submit" class="save btn btn-info" value="Login" />
+                  <input id="loginbutton" type="submit" class="save btn btn-info" value="Login" />
                 </div>
                 <input type="hidden" name="next" value="{{ next }}" />
-                <br>
                 </form>
 
               </div>
