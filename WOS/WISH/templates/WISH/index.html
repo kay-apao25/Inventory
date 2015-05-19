@@ -15,7 +15,7 @@
       <script type="text/javascript" src="{% static 'js/moment.min.js' %}"></script>
       <script type="text/javascript" src="{% static 'js/bootstrap-datetimepicker.min.js' %}"></script>
       <style type="text/css">
-  
+
 		/* Tab Navigation */
 		.nav-tabs {
     		margin: 0;
@@ -53,7 +53,7 @@ Image placeholders: placemi.com
 
 #t-cards {
     padding-top: 80px;
-    padding-bottom: 80px; 
+    padding-bottom: 80px;
 }
 
 /********************************/
@@ -71,7 +71,7 @@ Image placeholders: placemi.com
     height: 120px;
     border-bottom-color: #fff;
     overflow: hidden;
-    
+
     -webkit-transition: height 600ms ease-in-out;
             transition: height 600ms ease-in-out;
 }
@@ -81,7 +81,7 @@ Image placeholders: placemi.com
     left: 50%;
     z-index: 1;
     width: 120%;
-    
+
     -webkit-transform: translate3d(-50%,-50%,0);
             transform: translate3d(-50%,-50%,0);
 }
@@ -103,10 +103,10 @@ Image placeholders: placemi.com
     opacity: 1;
     -webkit-box-shadow: 0 0 0 3px #fff;
             box-shadow: 0 0 0 3px #fff;
-    
+
     -webkit-transform: translate3d(-50%,-50%,0);
             transform: translate3d(-50%,-50%,0);
-    
+
     -webkit-transition: opacity 400ms ease-in-out;
             transition: opacity 400ms ease-in-out;
 }
@@ -117,7 +117,7 @@ Image placeholders: placemi.com
 
     -webkit-transition: padding 400ms ease-in-out;
             transition: padding 400ms ease-in-out;
-} 
+}
 
 .panel.panel-card .panel-thumbnails {
     padding: 0 15px 20px;
@@ -127,24 +127,24 @@ Image placeholders: placemi.com
     max-width: 100%;
     margin: 0 auto;
     background-color: #fff;
-} 
+}
 
 
 .panel.panel-card:hover .panel-heading {
     height: 55px;
-    
+
     -webkit-transition: height 400ms ease-in-out;
             transition: height 400ms ease-in-out;
 }
 .panel.panel-card:hover .panel-figure {
     opacity: 0;
-    
+
     -webkit-transition: opacity 400ms ease-in-out;
             transition: opacity 400ms ease-in-out;
 }
 .panel.panel-card:hover .panel-body {
     padding-top: 20px;
-    
+
     -webkit-transition: padding 400ms ease-in-out;
             transition: padding 400ms ease-in-out;
 }
@@ -207,7 +207,7 @@ Image placeholders: placemi.com
 
 	          <ul class="nav navbar-nav navbar-right">
 							<li><a href="#"><span ></span> About Us</a></li>
-	           <li><a href="#"><span class="glyphicon glyphicon-log-out"></span> Log out</a></li>
+	           <li><a href="{% url 'django.contrib.auth.views.logout'%}"><span class="glyphicon glyphicon-log-out"></span> Log out</a></li>
 	          </ul>
 	        </div>
 	      </div>
@@ -242,10 +242,10 @@ Image placeholders: placemi.com
                                 </div>
                             </div>
                             {% endfor %}
-                            
+
                         </div>
                     </div>
-                </div>   
+                </div>
     		</div>
 		    <div class="col-sm-6 col-md-4">
         	    <div class="panel panel-default panel-card">
@@ -267,7 +267,7 @@ Image placeholders: placemi.com
                                     	{{irr.irr_no}}
                                     {%else%}
                                     	None
-                                    	<br> 
+                                    	<br>
                                    	{% endif %}
                                 </div>
                             </div>
@@ -275,10 +275,10 @@ Image placeholders: placemi.com
                             	<div class="thumbnail" style="background-image:url('http://placemi.com/urcon/60x60')">
                                 	{% if par != null %}
                                     	{{par.par_no}}
-                                    	<br> 
+                                    	<br>
                                     {%else%}
                                     	None
-                                    	<br> 
+                                    	<br>
                                    	{% endif %}
                                 </div>
                             </div>
@@ -286,16 +286,16 @@ Image placeholders: placemi.com
                            		<div class="thumbnail" style="background-image:url('http://placemi.com/urcon/60x60')">
                                 	{% if garv != null %}
                                     	{{garv.garv_no}}
-                                    	<br> 
+                                    	<br>
                                     {%else%}
                                     	None
-                                    	<br> 
+                                    	<br>
                                    	{% endif %}
                                 </div>
                             </div>
                         </div>
                     </div>
-            	</div>   
+            	</div>
     		</div>
             <div class="col-sm-6 col-md-4">
                 <div class="panel panel-default panel-card">
@@ -317,7 +317,7 @@ Image placeholders: placemi.com
                                     	{{inv.inv_station_no}} - {{inv.station_description}}
                                     {%else%}
                                     	None
-                                   	{% endif %}    
+                                   	{% endif %}
                                 </div>
                             </div>
                             <div class="col-xs-4">
@@ -326,7 +326,7 @@ Image placeholders: placemi.com
                                     	{{cc.id}} - <br> {{cc.functional_group}}
                                     {%else%}
                                     	None
-                                   	{% endif %}    
+                                   	{% endif %}
                                 </div>
                             </div>
                             <div class="col-xs-4">
@@ -335,12 +335,12 @@ Image placeholders: placemi.com
                                     	{{sup.supplier_number}} - <br> {{sup.supplier_name}}
                                     {%else%}
                                     	None
-                                   	{% endif %}    
+                                   	{% endif %}
                                 </div>
                             </div>
                         </div>
                     </div>
-            	</div>   
+            	</div>
     		</div>
 	    </div>
     </div>
