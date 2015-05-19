@@ -48,7 +48,7 @@ def index(request):
             user = form.login(request)
             if user:
                 login(request, user)
-                return HttpResponseRedirect('WISH/index.html')# Redirect to a success page.
+                return render(request, 'WISH/index.html', {})# Redirect to a success page.
             else:
                 return HttpResponseRedirect('registration/login2.html')
         return render(request, 'registration/login2.html', {'form': form })

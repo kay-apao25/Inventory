@@ -3,7 +3,7 @@ from .forms import *
 from .views import *
 from django.db.models import Q
 from bootstrap3_datetime.widgets import DateTimePicker
-from django.contrib import auth
+#from django.contrib import auth
 from django.contrib.auth import authenticate, login
 
 class ProductForm(forms.ModelForm):
