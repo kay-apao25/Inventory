@@ -117,10 +117,23 @@ def sup_lib(request):
         form2 = Sup_lib2(request.POST)
         if form1.is_valid() and form2.is_valid():
             sup = form.save(commit=False)
+            
             for key in form.data.keys():
                 key1 = key
                 setattr(sup, key, form1.data[key1])
                 setattr(sup, key, form2.data[key1])
+                
+            res = ""
+            sup_name = list(form.data['supplier_name'])
+            for name in sup_name:
+
+                if name == "'":
+                    name = '-'
+                    res = res + name
+                else:
+                    res = res + name
+            sup.supplier_name = res
+
             sup.save()
             msg = 'Supplier was added successfully.'
             form = Sup_lib()
