@@ -154,6 +154,10 @@ Image placeholders: placemi.com
 	</head>
 
 	<body style="padding-right:0px; padding-left:0px; padding-top: 0px">
+		<div>
+      {{ user }}
+      <a href="{% url 'django.contrib.auth.views.logout' %}">logout</a>
+    </div>
 		<header id="headerback">
       		<img src ="{% static 'css/header.png' %}" style="width:100%">
     	</header>

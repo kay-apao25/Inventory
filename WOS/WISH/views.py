@@ -42,7 +42,7 @@ def index(request):
             cc = None
         return render(request, 'WISH/index.html', {'product': product, 'irr': irr, 'par': par, 'garv': garv, 'inv': inv, 'sup': sup, 'cc': cc})
     else:
-        return render(request, 'registration/login.html')
+        return render(request, 'registration/login2.html')
 
 def aboutus(request):
     return render(request, 'WISH/AboutUs.html', {})
@@ -116,12 +116,12 @@ def sup_lib(request):
         form2 = Sup_lib2(request.POST)
         if form1.is_valid() and form2.is_valid():
             sup = form.save(commit=False)
-            
+
             for key in form.data.keys():
                 key1 = key
                 setattr(sup, key, form1.data[key1])
                 setattr(sup, key, form2.data[key1])
-                
+
             res = ""
             sup_name = list(form.data['supplier_name'])
             for name in sup_name:
