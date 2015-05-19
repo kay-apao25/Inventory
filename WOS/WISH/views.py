@@ -238,7 +238,7 @@ def product_new(request):
                     no = int((Product.objects.latest('id')).slc_number) + 1
                     product.slc_number = str(no)
                     for i in range(6-len(product.slc_number)):
-                    product.slc_number = '0' + product.slc_number
+                        product.slc_number = '0' + product.slc_number
                 else:
                     product.slc_number = '000000'
 
