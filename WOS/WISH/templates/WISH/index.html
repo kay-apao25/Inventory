@@ -278,7 +278,7 @@ Image placeholders: placemi.com
                             	<div class="thumbnail" style="background-image:url('{% static 'css/file6.jpeg' %}')">
                                 	{% if par != null %}
                                 		<a href="{% url 'WISH.views.par_form' pk=par.pk%}">
-                                    		{{par.par_no}}
+                                    		{{par.par_no}} - {{par.date_acquired}}
                                     	</a>
                                     	<br> 
                                     {%else%}
@@ -290,7 +290,7 @@ Image placeholders: placemi.com
                            		<div class="thumbnail" style="background-image:url('{% static 'css/file6.jpeg' %}')">
                                 	{% if garv != null %}
                                 		<a href="{% url 'WISH.views.garv_form' pk=garv.pk%}">
-                                    		{{garv.garv_no}}
+                                    		{{garv.garv_no}} - {{garv.garv_date}}
                                     	</a>
                                     {%else%}
                                     	<strong>No new <br> report recorded.</strong>
@@ -338,7 +338,8 @@ Image placeholders: placemi.com
                                 </div>
                             </div>
                             <div class="col-xs-4">
-                                <div class="thumbnail">
+                                <div class="thumbnail"r
+                                >
                                 	{% if sup != null %}
                                 		<a href="{% url 'WISH.views.supplier_details' pk=sup.pk%}">
                                     		{{sup.supplier_number}} - <br> {{sup.supplier_name}}
