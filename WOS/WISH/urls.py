@@ -41,21 +41,37 @@ urlpatterns = [
     url(r'^miv_form/(?P<pk>[0-9]+)/$', views.miv_form),
     url(r'^add_cost_center/$', views.add_cost_center,\
      name='add_cost_center'),
-    url(r'^irr_reports/$', ListView.as_view(model=models.IRR,\
-        context_object_name='irr_list',\
-        template_name='WISH/irr_reports.html'), name='irr_reports'),
-    url(r'^miv_reports/$', ListView.as_view(model=models.MIV, \
-        context_object_name='miv_list',\
-        template_name='WISH/miv_reports.html'), name='miv_reports'),
-    url(r'^wrs_reports/$', ListView.as_view(model=models.IRR, \
-        context_object_name='wrs_list',\
-        template_name='WISH/wrs_reports.html'), name='wrs_reports'),
-    url(r'^par_reports/$', ListView.as_view(model=models.PAR, \
-        context_object_name='par_list',\
-        template_name='WISH/par_reports.html'), name='par_reports'),
-    url(r'^garv_reports/$', ListView.as_view(model=models.GARV, \
-        context_object_name='garv_list',\
-        template_name='WISH/garv_reports.html'), name='garv_reports'),
+    url(r'^irr_reports/$', lambda request: ListView.as_view(queryset=\
+        models.IRR.objects.filter(irr_headkey__in=[i.id for i in (\
+        models.IRRHeader.objects.filter(dce_custodian=(\
+        models.Employee.objects.get(name=str(request.user.\
+        first_name) + ' ' + str(request.user.last_name)))))]),
+        context_object_name='irr_list', template_name=\
+        'WISH/irr_reports.html')(request), name='irr_reports'),
+    url(r'^miv_reports/$',lambda request: ListView.as_view(queryset=\
+        models.MIV.objects.filter(irr_no=models.IRR.objects.filter(\
+        irr_headkey__in=[i.id for i in (models.IRRHeader.objects.filter(\
+        dce_custodian=(models.Employee.objects.get(name=str(request.user.\
+        first_name) + ' ' + str(request.user.last_name)))))])),
+        context_object_name='irr_list', template_name=\
+        'WISH/miv_reports.html')(request), name='miv_reports'),
+    url(r'^wrs_reports/$', lambda request: ListView.as_view(queryset=\
+        models.IRR.objects.filter(irr_headkey__in=[i.id for i in (\
+        models.IRRHeader.objects.filter(dce_custodian=(\
+        models.Employee.objects.get(name=str(request.user.\
+        first_name) + ' ' + str(request.user.last_name)))))]),
+        context_object_name='irr_list', template_name=\
+        'WISH/wrs_reports.html')(request), name='wrs_reports'),
+    url(r'^par_reports/$', lambda request: ListView.as_view(queryset=\
+        models.PAR.objects.filter(issued_by=(models.Employee.objects.get(\
+        name=str(request.user.first_name) + ' ' + str(request.user.last_name\
+        )))), context_object_name='irr_list', template_name=\
+        'WISH/par_reports.html')(request), name='par_reports'),
+    url(r'^garv_reports/$', lambda request: ListView.as_view(queryset=\
+        models.GARV.objects.filter(confirmed_by=(models.Employee.objects.get(\
+        name=str(request.user.first_name) + ' ' + str(request.user.last_name\
+        )))), context_object_name='irr_list', template_name=\
+        'WISH/garv_reports.html')(request), name='garv_reports'),
     url(r'^product_reports/$', ListView.as_view(model=models.Product, \
         context_object_name='product_list',\
         template_name='WISH/product_reports.html'), name='product_reports'),

@@ -748,6 +748,8 @@ def product_to_garv(request, pk):
                     res = json.dumps(prod_to_garv)
                     garv.product_to_GARV = res
 
+                    garv.confirmed_by = Employee.objects.get(name=(str(request.user.first_name) + ' ' + str(request.user.last_name)))
+
                     if len(prod_list) == 0:
                         products.is_garv = True
                         products.save()
