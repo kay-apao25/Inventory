@@ -1,13 +1,8 @@
-from django.shortcuts import render, redirect, get_object_or_404, render_to_response
-from django.http import HttpResponseRedirect
-from django.contrib.auth.decorators import login_required
-from django.utils.decorators import method_decorator
-from django.contrib.auth.models import User
-from django.contrib import messages
-from django.db.models import Q
-from .models import *
-from .forms import *
-import itertools
+"""views"""
+from django.shortcuts import render, redirect, get_object_or_404
+from WISH.models import Supplier, Product, PAR, GARV, CostCenter, \
+        InventoryStat, Employee, IRR, MIV
+from forms import *
 import time
 import json
 from django.contrib.auth import authenticate, login
@@ -30,7 +25,7 @@ def index(request):
         except:
             garv = None
         try:
-            inv = Inventory_stat.objects.latest('id')
+            inv = InventoryStat.objects.latest('id')
         except:
             inv = None
         try:
@@ -38,7 +33,7 @@ def index(request):
         except:
             sup = None
         try:
-            cc = Cost_center.objects.latest('id')
+            cc = CostCenter.objects.latest('id')
         except:
             cc = None
         return render(request, 'WISH/index.html', {'product': product, 'irr': irr, 'par': par, 'garv': garv, 'inv': inv, 'sup': sup, 'cc': cc})
@@ -63,7 +58,7 @@ def aboutus(request):
 
 def inv_stat_del(request, pk):
     if request.user.is_authenticated():
-        inv_del = get_object_or_404(Inventory_stat, pk=pk)
+        inv_del = get_object_or_404(InventoryStat, pk=pk)
         inv_del.is_delete = True
         inv_del.save()
         msg = 'Inventory Station was deleted successfully.'
@@ -76,7 +71,7 @@ def inv_stat_del(request, pk):
 
 def cost_center_del(request, pk):
     if request.user.is_authenticated():
-        cos_del = get_object_or_404(Cost_center, pk=pk)
+        cos_del = get_object_or_404(CostCenter, pk=pk)
         cos_del.is_delete = True
         cos_del.save()
         msg = 'Cost center was deleted successfully.'
@@ -116,15 +111,15 @@ def employee_del(request, pk):
 def stat_lib(request):
     if request.user.is_authenticated():
         if request.method == "POST":
-            form = Stat_lib(request.POST)
+            form = Statlib(request.POST)
             if form.is_valid() :
                 product = form.save(commit=False)
                 product.save()
                 msg = 'Inventory Station was added successfully.'
         else:
-            form = Stat_lib()
+            form = Statlib()
         try:
-            form = Stat_lib()
+            form = Statlib()
             return render(request, 'WISH/stat_lib.html', {'form': form , 'msg':msg})
         except:
             return render(request, 'WISH/stat_lib.html', {'form': form})
@@ -134,9 +129,9 @@ def stat_lib(request):
 def sup_lib(request):
     if request.user.is_authenticated():
         if request.method == 'POST':
-            form = Sup_lib(request.POST)
-            form1 = Sup_lib1(request.POST)
-            form2 = Sup_lib2(request.POST)
+            form = Suplib(request.POST)
+            form1 = Suplib1(request.POST)
+            form2 = Suplib2(request.POST)
             if form1.is_valid() and form2.is_valid():
                 sup = form.save(commit=False)
 
@@ -158,13 +153,13 @@ def sup_lib(request):
 
                 sup.save()
                 msg = 'Supplier was added successfully.'
-                form = Sup_lib()
-                form1 = Sup_lib1()
-                form2 = Sup_lib2()
+                form = Suplib()
+                form1 = Suplib1()
+                form2 = Suplib2()
         else:
-            form = Sup_lib()
-            form1 = Sup_lib1()
-            form2 = Sup_lib2()
+            form = Suplib()
+            form1 = Suplib1()
+            form2 = Suplib2()
         try:
             return render(request, 'WISH/sup_lib.html', {'form1': form1, 'form2': form2 , 'msg':msg})
         except:
@@ -175,7 +170,7 @@ def sup_lib(request):
 def employee_lib(request):
     if request.user.is_authenticated():
         if request.method == "POST":
-            form = Em_lib(request.POST)
+            form = Emlib(request.POST)
             if form.is_valid() :
                 employee = form.save(commit=False)
                 res = ""
@@ -192,9 +187,9 @@ def employee_lib(request):
                 employee.save()
                 msg = 'Employee was added successfully.'
         else:
-            form = Em_lib()
+            form = Emlib()
         try:
-            form = Em_lib()
+            form = Emlib()
             return render(request, 'WISH/employee_lib.html', {'form': form , 'msg':msg})
         except:
             return render(request, 'WISH/employee_lib.html', {'form': form })
@@ -204,16 +199,16 @@ def employee_lib(request):
 def add_cost_center(request):
     if request.user.is_authenticated():
         if request.method == "POST":
-            form = CC_lib(request.POST)
+            form = CClib(request.POST)
             if form.is_valid() :
                 product = form.save(commit=False)
 
                 product.save()
                 msg = 'Cost center was added successfully.'
         else:
-            form = CC_lib()
+            form = CClib()
         try:
-            form = CC_lib()
+            form = CClib()
             return render(request, 'WISH/add_cost_center.html', {'form': form , 'msg':msg })
         except:
             return render(request, 'WISH/add_cost_center.html', {'form': form })
@@ -295,9 +290,9 @@ def irr_entry(request):
         if request.method == "POST":
 
             #Forms containing the entries entered by the user
-            form = IRR_entryForm(request.POST)
-            form1 = IRR_entryForm1(request.POST, name=name)
-            form2 = IRR_entryForm2(request.POST, name=name)
+            form = IRRentryForm(request.POST)
+            form1 = IRRentryForm1(request.POST, name=name)
+            form2 = IRRentryForm2(request.POST, name=name)
 
             #Non-empty forms are to be validated.
             if form1.is_valid() and form2.is_valid():
@@ -324,8 +319,8 @@ def irr_entry(request):
                 exit = 'No available products to be made with IRR record.'
             else:
                 #else display blank forms.
-                form1 = IRR_entryForm1(name=name)
-                form2 = IRR_entryForm2(name=name)
+                form1 = IRRentryForm1(name=name)
+                form2 = IRRentryForm2(name=name)
 
         #Rendering of forms
         try:
@@ -343,8 +338,8 @@ def product_to_irr(request, pk, inv):
         if request.method == "POST":
 
             #Forms containing the entries entered by the user
-            form = Product_to_IRRForm(request.POST, inv=inv)
-            iform = IRR_entry_cont_Form(request.POST, inv=inv)
+            form = ProducttoIRRForm(request.POST, inv=inv)
+            iform = IRRentrycontForm(request.POST, inv=inv)
 
             #Non-empty forms are to be validated.
             if form.is_valid() and iform.is_valid():
@@ -406,15 +401,15 @@ def product_to_irr(request, pk, inv):
                     #To check if all entries for the IRR form is filled.
                     if 'save' in request.POST:
                         msg = 'IRR record (IRR No. - ' + irr.irr_no + ') was successfully added.'
-                        iform = IRR_entry_cont_Form(inv=inv)
+                        iform = IRRentrycontForm(inv=inv)
                         del prod_to_irr[:]
                         irr.save()
                     else:
                         msg = 'Item (' + str(Product.objects.get(id=int(form.data['product'])).item_name) + ') was successfully added.'
-                form = Product_to_IRRForm(inv=inv)
+                form = ProducttoIRRForm(inv=inv)
         else:
-            form = Product_to_IRRForm(inv=inv)
-            iform = IRR_entry_cont_Form(inv=inv)
+            form = ProducttoIRRForm(inv=inv)
+            iform = IRRentrycontForm(inv=inv)
 
         prodlist = Product.objects.filter(inv_station_no=inv).filter(is_irr=False)
         if len(prodlist) == 0:
@@ -443,7 +438,7 @@ def miv_entry_S(request, pk):
         if request.method == "POST":
 
             #Forms containing the entries entered by the user
-            form = MIV_entryForm(request.POST)
+            form = MIVentryForm(request.POST)
 
             #Non-empty forms are to be validated.
             if form.is_valid():
@@ -492,7 +487,7 @@ def miv_entry_S(request, pk):
                         irr.save()
 
         else:
-            form = MIV_entryForm()
+            form = MIVentryForm()
 
         #Rendering of forms and/or messages
         try:
@@ -550,8 +545,8 @@ def product_to_garv(request, pk):
             if prod['is_garv'] == False:
                 prod_list.append(int(prod['Product']))
         if request.method == "POST":
-            form = GARV_entryForm(request.POST, pk=pk)
-            iform = Product_to_GARVform(request.POST, prodlist=prod_list)
+            form = GARVentryForm(request.POST, pk=pk)
+            iform = ProducttoGARVform(request.POST, prodlist=prod_list)
             
             if form.is_valid() and iform.is_valid():
                 garv = form.save(commit=False)
@@ -603,17 +598,17 @@ def product_to_garv(request, pk):
                         msg = 0
                         garv.save()
                         del prod_to_par[:]
-                        form = GARV_entryForm(pk=pk)
-                        iform = Product_to_GARVform(prodlist=prod_list)
+                        form = GARVentryForm(pk=pk)
+                        iform = ProducttoGARVform(prodlist=prod_list)
                     else:
                         msg = 1
-                        iform = Product_to_GARVform(prodlist=prod_list)
+                        iform = ProducttoGARVform(prodlist=prod_list)
                 else:
                     msg = 2
 
         else:
-            form = GARV_entryForm(pk=pk)
-            iform = Product_to_GARVform(prodlist=prod_list)
+            form = GARVentryForm(pk=pk)
+            iform = ProducttoGARVform(prodlist=prod_list)
 
         if len(prod_list) == 1:
             remove_add = 1
@@ -646,8 +641,8 @@ def par(request, inv):
             if prod['is_par'] == False:
                 prod_list.append(int(prod['Product']))
         if request.method == "POST":
-            form = PAR_Form(request.POST, inv=inv)
-            iform = Product_to_PARForm(request.POST, prodlist=prod_list)
+            form = PARForm(request.POST, inv=inv)
+            iform = ProducttoPARForm(request.POST, prodlist=prod_list)
             
             if form.is_valid() and iform.is_valid():
                 par_entry = form.save(commit=False)
@@ -699,16 +694,16 @@ def par(request, inv):
                         msg = 0
                         par_entry.save()
                         del prod_to_par[:]
-                        form = PAR_Form(inv=inv)
-                        iform = Product_to_PARForm(prodlist=prod_list)
+                        form = PARForm(inv=inv)
+                        iform = ProducttoPARForm(prodlist=prod_list)
                     else:
                         msg = 1
-                        iform = Product_to_PARForm(prodlist=prod_list)
+                        iform = ProducttoPARForm(prodlist=prod_list)
                 else:
                     msg = 2
         else:
-            form = PAR_Form(inv=inv)
-            iform = Product_to_PARForm(prodlist=prod_list)
+            form = PARForm(inv=inv)
+            iform = ProducttoPARForm(prodlist=prod_list)
 
         if len(prod_list) == 1:
             remove_add = 1
@@ -821,12 +816,12 @@ def product_form(request, pk):
 def inv_stat_form(request, pk):
     if request.user.is_authenticated():
         inv = get_object_or_404(Inventory_stat, pk=pk)
-        form = Stat_lib(request.POST or None, instance=inv)
+        form = Statlib(request.POST or None, instance=inv)
         if form.is_valid():
             form.save()
             msg = 'Inventory Station was editted successfully.'
         try:
-            form = Stat_lib(request.POST or None, instance=inv)
+            form = Statlib(request.POST or None, instance=inv)
             return render(request, 'WISH/inv_stat_form.html', {'form': form, 'msg':msg})
         except:
             return render(request, 'WISH/inv_stat_form.html', {'form': form})
@@ -836,12 +831,12 @@ def inv_stat_form(request, pk):
 def cost_center_form(request, pk):
     if request.user.is_authenticated():
         cc = get_object_or_404(Cost_center, pk=pk)
-        form = CC_lib(request.POST or None, instance=cc)
+        form = CClib(request.POST or None, instance=cc)
         if form.is_valid():
             form.save()
             msg = 'Cost center was editted successfully.'
         try:
-            form = CC_lib(request.POST or None, instance=cc)
+            form = CClib(request.POST or None, instance=cc)
             return render(request, 'WISH/cost_center_form.html', {'form': form, 'msg':msg})
         except:
             return render(request, 'WISH/cost_center_form.html', {'form': form})
@@ -852,9 +847,9 @@ def supplier_form(request, pk):
     if request.user.is_authenticated():
         sup = get_object_or_404(Supplier, supplier_number=pk)
         if request.method == 'POST':
-            form = Supplier_lib(request.POST)
-            form1 = Supplier_lib1(request.POST)
-            form2 = Supplier_lib2(request.POST)
+            form = Supplierlib(request.POST)
+            form1 = Supplierlib1(request.POST)
+            form2 = Supplierlib2(request.POST)
             if form1.is_valid() and form2.is_valid():
                 for key in form.data.keys():
                     key1 = key
@@ -863,9 +858,9 @@ def supplier_form(request, pk):
                 sup.save()
                 msg = 'Supplier information was editted successfully.'
         else:
-            form = Supplier_lib(instance=sup)
-            form1 = Supplier_lib1()
-            form2 = Supplier_lib2()
+            form = Supplierlib(instance=sup)
+            form1 = Supplierlib1()
+            form2 = Supplierlib2()
             for key in form.fields.keys():
                 for key1 in form1.fields.keys():
                     if key == key1:
@@ -874,9 +869,9 @@ def supplier_form(request, pk):
                     if key == key2:
                         form2.fields[key].initial = getattr(sup, key)
         try:
-            form = Supplier_lib(instance=sup)
-            form1 = Supplier_lib1()
-            form2 = Supplier_lib2()
+            form = Supplierlib(instance=sup)
+            form1 = Supplierlib1()
+            form2 = Supplierlib2()
             for key in form.fields.keys():
                 for key1 in form1.fields.keys():
                     if key == key1:
@@ -893,12 +888,12 @@ def supplier_form(request, pk):
 def employee_form(request, dce):
     if request.user.is_authenticated():
         em = get_object_or_404(Employee, dce=dce)
-        form = Employee_lib(request.POST or None, instance=em)
+        form = Employeelib(request.POST or None, instance=em)
         if form.is_valid():
             form.save()
             msg = 'Employee information was editted successfully.'
         try:
-            form = Employee_lib(request.POST or None, instance=em)
+            form = Employeelib(request.POST or None, instance=em)
             return render(request, 'WISH/employee_form.html', {'form': form, 'msg':msg})
         except:
             return render(request, 'WISH/employee_form.html', {'form': form})
