@@ -255,12 +255,6 @@ class GARVentryForm(forms.ModelForm):
             par_no=pk).wo_number).irr_headkey.inv_station_no.cost_center_no.id\
                 ), label='Inspected by *')
 
-        self.fields['confirmed_by'] = forms.ModelChoiceField(\
-            queryset=Employee.objects.filter(\
-                cost_center_no=IRR.objects.get(irr_no=PAR.objects.get(\
-            par_no=pk).wo_number).irr_headkey.inv_station_no.cost_center_no.id\
-                ), label='Confirmed by *')
-
         self.fields['noted_by'] = forms.ModelChoiceField(\
             queryset=Employee.objects.filter(\
                 cost_center_no=IRR.objects.get(irr_no=PAR.objects.get(\
@@ -277,8 +271,8 @@ class GARVentryForm(forms.ModelForm):
     class Meta:
         """Meta"""
         model = GARV
-        fields = ('garv_no', 'cc_number', 'inspected_by', 'confirmed_by',\
-                     'noted_by', 'date_confirmed', 'date_inspected', )
+        fields = ('garv_no', 'cc_number', 'inspected_by', 'noted_by',\
+            'date_confirmed', 'date_inspected', )
 
 class ProducttoGARVform(forms.Form):
 
