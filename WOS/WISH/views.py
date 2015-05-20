@@ -50,7 +50,7 @@ def index(request):
                 login(request, user)
                 return redirect('WISH.views.index')# Redirect to a success page.
             else:
-                return render(request, 'registration/login3.html', {'error': 'authentication failed!', 'form':form})
+                return render(request, 'registration/login3.html', {'error': 'Username and password does not match.', 'form':form})
         else:
             return render(request, 'registration/login2.html', {'form': form })
         form = LoginForm()
