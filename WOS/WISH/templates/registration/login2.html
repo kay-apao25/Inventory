@@ -32,7 +32,7 @@
             <li><span>Image 05</span></li>
             <li><span>Image 06</span></li>
         </ul>
-        {% if form.errors %}
+        {% if form.errors or error %}
         <script type="text/javascript">
             $( document ).ready( function() {
                 $('#smallModal').modal({show:true});
@@ -61,7 +61,11 @@
                 <h4 class="modal-title" id="myModalLabel">Sign In</h4>
               </div>
               <div class="modal-body" id="mycontent">
-
+                {% if error %}
+                <div class="alert alert-danger" style="width:270px; height:50px">
+                    <strong><p style="font-size:12px; text-align:center;">{{ error }}</p></strong>
+                </div>
+                {% endif %}
                 <form method="post" action="{% url 'WISH.views.index' %}">
                   <br>
                 {% for field in form %}
