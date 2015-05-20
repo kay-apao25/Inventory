@@ -324,8 +324,8 @@ def irr_entry(request):
                 exit = 'No available products to be made with IRR record.'
             else:
                 #else display blank forms.
-                form1 = IRR_entryForm1(name=name)
-                form2 = IRR_entryForm2(name=name)
+                form1 = IRRentryForm1(name=name)
+                form2 = IRRentryForm2(name=name)
 
         #Rendering of forms
         try:
