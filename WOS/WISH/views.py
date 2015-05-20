@@ -5,7 +5,6 @@ from django.utils.decorators import method_decorator
 from django.contrib.auth.models import User
 from django.contrib import messages
 from django.db.models import Q
-#from random import randint
 from .models import *
 from .forms import *
 import itertools
@@ -49,9 +48,9 @@ def index(request):
             user = authenticate(username=form.data['username'], password=form.data['password'])
             if user is not None:
                 login(request, user)
-                return render(request, 'WISH/index.html', {})# Redirect to a success page.
+                return redirect('WISH.views.index')# Redirect to a success page.
             else:
-                return render(request, 'registration/login2.html', {'error': 'authentication failed!', 'form':form})
+                return render(request, 'registration/login3.html', {'error': 'authentication failed!', 'form':form})
         else:
             return render(request, 'registration/login2.html', {'form': form })
         form = LoginForm()
@@ -449,8 +448,6 @@ def miv_entry_S(request, pk):
             #Non-empty forms are to be validated.
             if form.is_valid():
 
-                #error = ''
-
                 miv_entry = form.save(commit=False)
                 miv_entry.irr_no_id = pk
 
@@ -552,26 +549,15 @@ def product_to_garv(request, pk):
         for prod in products.product:
             if prod['is_garv'] == False:
                 prod_list.append(int(prod['Product']))
-        try:
-            garv_no = int(GARV.objects.latest('garv_date').garv_no)
-        except:
-            garv_no = 0
         if request.method == "POST":
             form = GARV_entryForm(request.POST, pk=pk)
-            if garv_no == 0:
-                iform = Product_to_GARVform(request.POST, prodlist=prod_list)
-            else:
-                iform = Product_to_GARVform1(request.POST, prodlist=prod_list)
-
-            if form.is_valid():
+            iform = Product_to_GARVform(request.POST, prodlist=prod_list)
+            
+            if form.is_valid() and iform.is_valid():
                 garv = form.save(commit=False)
 
-                try:
-                    garv.garv_no = iform.data['garv_no']
-                    garv_no = garv.garv_no
-                except:
-                    garv.garv_no = garv_no
-
+                garv_no = form.data['garv_no']
+                
                 for prod in products.product:
                     if prod['Product'] == str(iform.data['product']):
                         prod['quantity_garv'] = int(prod['quantity_garv']) - int(iform.data['quantity'])
@@ -604,29 +590,24 @@ def product_to_garv(request, pk):
                     res = json.dumps(prod_to_garv)
                     garv.product_to_GARV = res
 
-                    garv.save()
                     if len(prod_list) == 0:
                         products.is_garv = True
                         products.save()
+                        garv.save()
                         del prod_to_garv[:]
                         exit = 'Exit'
-                        return render(request, 'WISH/par_entry.html', {'exit': exit, 'msg': 'GARV Record (GARV No. - ' + str(garv.garv_no) + ') is successfully added.'})
+                        return render(request, 'WISH/par_entry.html', {'exit': exit, 'msg': \
+                            'GARV Record (GARV No. - ' + str(garv_no) + ') is successfully added.'})
 
                     if 'save' in request.POST:
                         msg = 0
+                        garv.save()
                         del prod_to_par[:]
                         form = GARV_entryForm(pk=pk)
                         iform = Product_to_GARVform(prodlist=prod_list)
                     else:
                         msg = 1
-                        if garv_no == 0:
-                            if len(prod_list) == 1:
-                                remove_add = 1
-                            iform = Product_to_GARVform(prodlist=prod_list)
-                        else:
-                            if len(prod_list) == 1:
-                                remove_add = 1
-                            iform = Product_to_GARVform1(prodlist=prod_list)
+                        iform = Product_to_GARVform(prodlist=prod_list)
                 else:
                     msg = 2
 
@@ -638,13 +619,18 @@ def product_to_garv(request, pk):
             remove_add = 1
 
         if int(msg) == 0:
-            return render(request, 'WISH/garv_entry.html', {'form': form, 'iform': iform, 'remove_add': remove_add, 'msg': 'PAR Record (PAR No. - ' + str(par_no) + ') is successfully added.'})
+            return render(request, 'WISH/garv_entry.html', {'form': form, 'iform': iform, 'remove_add': \
+                remove_add, 'msg': 'GARV Record (GARV No. - ' + str(garv_no) + \
+                    ') is successfully added.'})
         elif int(msg) == 1:
-            return render(request, 'WISH/garv_entry.html', {'form': form, 'iform': iform, 'remove_add': remove_add, 'msg': 'Item is successfully added.'})
+            return render(request, 'WISH/garv_entry.html', {'form': form, 'iform': iform, 'remove_add': \
+                remove_add, 'msg': 'Item is successfully added.'})
         elif int(msg) == 2:
-            return render(request, 'WISH/garv_entry.html', {'form': form, 'iform': iform, 'remove_add': remove_add, 'error': 'Entered product quantity to be assigned to this employee is greater than stocked items.'})
+            return render(request, 'WISH/garv_entry.html', {'form': form, 'iform': iform, 'remove_add': \
+                remove_add, 'error': 'Entered product quantity to be assigned to this employee is greater than stocked items.'})
         else:
-            return render(request, 'WISH/garv_entry.html', {'form': form, 'iform': iform, 'remove_add': remove_add})
+            return render(request, 'WISH/garv_entry.html', {'form': form, 'iform': iform, 'remove_add': \
+                remove_add})
     else:
         return render(request, 'registration/login2.html')
 
@@ -659,26 +645,15 @@ def par(request, inv):
         for prod in products.product:
             if prod['is_par'] == False:
                 prod_list.append(int(prod['Product']))
-        try:
-            par_no = int(PAR.objects.latest('date_acquired').par_no)
-        except:
-            par_no = 0
         if request.method == "POST":
             form = PAR_Form(request.POST, inv=inv)
-            if par_no == 0:
-                iform = Product_to_PARForm(request.POST, prodlist=prod_list)
-            else:
-                iform = Product_to_PARForm1(request.POST, prodlist=prod_list)
-
+            iform = Product_to_PARForm(request.POST, prodlist=prod_list)
+            
             if form.is_valid() and iform.is_valid():
                 par_entry = form.save(commit=False)
 
-                try:
-                    par_entry.par_no = iform.data['par_no']
-                    par_no = par_entry.par_no
-                except:
-                    par_entry.par_no = par_no
-
+                par_no = form.data['par_no']
+                
                 for prod in products.product:
                     if prod['Product'] == str(iform.data['product']):
                         prod['quantity_par'] = int(prod['quantity_par']) - int(iform.data['quantity'])
@@ -711,25 +686,24 @@ def par(request, inv):
 
                     par_entry.issued_by = Employee.objects.get(name=(str(request.user.first_name) + ' ' + str(request.user.last_name)))
 
-                    par_entry.save()
                     if len(prod_list) == 0:
                         products.is_par = True
                         products.save()
+                        par_entry.save()
                         del prod_to_par[:]
                         exit = 'Exit'
-                        return render(request, 'WISH/par_entry.html', {'exit': exit, 'msg': 'PAR Record (PAR No. - ' + str(par_entry.par_no) + ') is successfully added.'})
+                        return render(request, 'WISH/par_entry.html', {'exit': exit, 'msg': 'PAR Record (PAR No. - '\
+                         + str(par_no) + ') is successfully added.'})
 
                     if 'save' in request.POST:
                         msg = 0
+                        par_entry.save()
                         del prod_to_par[:]
                         form = PAR_Form(inv=inv)
                         iform = Product_to_PARForm(prodlist=prod_list)
                     else:
                         msg = 1
-                        if par_no == 0:
-                            iform = Product_to_PARForm(prodlist=prod_list)
-                        else:
-                            iform = Product_to_PARForm1(prodlist=prod_list)
+                        iform = Product_to_PARForm(prodlist=prod_list)
                 else:
                     msg = 2
         else:
@@ -740,11 +714,14 @@ def par(request, inv):
             remove_add = 1
 
         if int(msg) == 0:
-            return render(request, 'WISH/par_entry.html', {'form': form, 'iform': iform, 'remove_add': remove_add, 'msg': 'PAR Record (PAR No. - ' + str(par_no) + ') is successfully added.'})
+            return render(request, 'WISH/par_entry.html', {'form': form, 'iform': iform, 'remove_add': remove_add, \
+                'msg': 'PAR Record (PAR No. - ' + str(par_no) + ') is successfully added.'})
         elif int(msg) == 1:
-            return render(request, 'WISH/par_entry.html', {'form': form, 'iform': iform, 'remove_add': remove_add, 'msg': 'Item is successfully added.'})
+            return render(request, 'WISH/par_entry.html', {'form': form, 'iform': iform, 'remove_add': remove_add, \
+                'msg': 'Item is successfully added.'})
         elif int(msg) == 2:
-            return render(request, 'WISH/par_entry.html', {'form': form, 'iform': iform, 'remove_add': remove_add, 'error': 'Entered product quantity to be assigned to this employee is greater than stocked items.'})
+            return render(request, 'WISH/par_entry.html', {'form': form, 'iform': iform, 'remove_add': remove_add, \
+                'error': 'Entered product quantity to be assigned to this employee is greater than stocked items.'})
         else:
             return render(request, 'WISH/par_entry.html', {'form': form, 'iform': iform, 'remove_add': remove_add})
     else:

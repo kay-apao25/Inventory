@@ -75,7 +75,7 @@ class Product(models.Model):
     manufacture_date = models.DateField()
     expiry_date = models.DateField(null=True, blank=True)
     unit_cost = models.FloatField()
-    quantity = models.IntegerField(default = 1)
+    quantity = models.PositiveIntegerField(default = 1)
     classification = models.CharField(max_length=30)
     stock = models.CharField(max_length=10)
     block = models.CharField(max_length=10)
@@ -91,7 +91,7 @@ class Product(models.Model):
     remarks = models.CharField(max_length=40, null=True, blank=True)
     history = HistoricalRecords()
     inv_station_no = models.ForeignKey(Inventory_stat, related_name="inv_iFK")
-    balance = models.IntegerField(default = 0, null=True, blank=True)
+    balance = models.PositiveIntegerField(default = 0, null=True, blank=True)
     is_irr = models.BooleanField(default=False)
 
     def __str__(self):
@@ -124,7 +124,7 @@ class IRR(models.Model):
     irr_no = models.CharField(max_length=10, primary_key=True)
     cost_center_no = models.ForeignKey(Cost_center, related_name="ccn_iFK")
     date_recv = models.DateField()
-    wo_no = models.CharField(max_length=7)
+    wo_no = models.CharField(max_length=10)
     wrs_number = models.CharField(max_length = 8)
     remarks = models.CharField(max_length = 40, null=True, blank=True)
     is_par = models.BooleanField(default=False)
