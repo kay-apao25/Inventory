@@ -45,7 +45,7 @@ class ProductForm2(forms.Form):
 
     expiry_date = forms.DateField(widget=DateTimePicker(options={"format": "YYYY-MM-DD", "pickTime": False}), required=False)
     unit_cost = forms.DecimalField(label='Unit cost*', decimal_places=2)
-    quantity = forms.IntegerField(initial='1', label='Quantity *')
+    quantity = forms.IntegerField(min_value=0, initial='1', label='Quantity *')
     classification = forms.CharField(label='Classification*', max_length=30)
     stock = forms.CharField(label='Stock *', max_length=10)
     block = forms.CharField(label='Block *', max_length=10)
@@ -141,9 +141,9 @@ class Product_to_IRRForm(forms.Form):
 
         self.fields['product'] = forms.ModelChoiceField(queryset=Product.objects.filter(\
             inv_station_no=inv).filter(is_irr=False), label='Product *', required=True)
-        self.fields['quantity_accepted'] = forms.IntegerField(label='Quantity accepted *', required=True)
-        self.fields['quantity_rejected'] = forms.IntegerField(label='Quantity rejected *', required=True)
-        self.fields['quantity_balance'] = forms.IntegerField(label='Quantity balance *', required=True)
+        self.fields['quantity_accepted'] = forms.IntegerField(min_value=0, label='Quantity accepted *', required=True)
+        self.fields['quantity_rejected'] = forms.IntegerField(min_value=0, label='Quantity rejected *', required=True)
+        self.fields['quantity_balance'] = forms.IntegerField(min_value=0, label='Quantity balance *', required=True)
 
 class MIV_entryForm(forms.ModelForm):
 
@@ -170,7 +170,7 @@ class PAR_Form(forms.ModelForm):
 
     class Meta:
         model = PAR
-        fields = ('dce', 'approved_by', 'date_acquired', 'remarks',)
+        fields = ('par_no', 'dce', 'approved_by', 'date_acquired', 'remarks',)
 
 
 class Product_to_PARForm(forms.Form):
@@ -181,19 +181,7 @@ class Product_to_PARForm(forms.Form):
 
         self.fields['product'] = forms.ModelChoiceField(queryset=Product.objects.all().filter(id__in=\
         [Product.objects.get(id=p).id for p in prodlist]), label='Product *', required=True)
-        self.fields['quantity'] = forms.IntegerField(required=True, label='Quantity *')
-        self.fields['par_no'] = forms.CharField(required=True, label='PAR number *')
-
-class Product_to_PARForm1(forms.Form):
-
-    def __init__(self, *args, **kwargs):
-        prodlist = kwargs.pop('prodlist')
-        super(Product_to_PARForm1, self).__init__(*args, **kwargs)
-
-        self.fields['product'] = forms.ModelChoiceField(queryset=Product.objects.all().filter(id__in=\
-        [Product.objects.get(id=p).id for p in prodlist]), label='Product *')
-        self.fields['quantity'] = forms.IntegerField(required=True, label='Quantity *')
-
+        self.fields['quantity'] = forms.IntegerField(min_value=0, required=True, label='Quantity *')
 
 class GARV_entryForm(forms.ModelForm):
 
@@ -223,7 +211,7 @@ class GARV_entryForm(forms.ModelForm):
 
     class Meta:
         model = GARV
-        fields = ('cc_number', 'inspected_by', 'confirmed_by', 'noted_by',\
+        fields = ('garv_no', 'cc_number', 'inspected_by', 'confirmed_by', 'noted_by',\
                     'date_confirmed','date_inspected', )
 
 class Product_to_GARVform(forms.Form):
@@ -234,20 +222,7 @@ class Product_to_GARVform(forms.Form):
 
         self.fields['product'] = forms.ModelChoiceField(queryset=Product.objects.all().filter(id__in=\
         [Product.objects.get(id=p).id for p in prodlist]), label='Product *', required=True)
-        self.fields['quantity'] = forms.IntegerField(required=True, label='Quantity *')
-        self.fields['remarks'] = forms.CharField(required=False)
-        self.fields['garv_no'] = forms.CharField(required=True, label='GARV number*')
-
-
-class Product_to_GARVform1(forms.Form):
-
-    def __init__(self, *args, **kwargs):
-        prodlist = kwargs.pop('prodlist')
-        super(Product_to_GARVform1, self).__init__(*args, **kwargs)
-
-        self.fields['product'] = forms.ModelChoiceField(queryset=Product.objects.all().filter(id__in=\
-        [Product.objects.get(id=p).id for p in prodlist]), label='Product *', required=True)
-        self.fields['quantity'] = forms.IntegerField(required=True, label='Quantity *')
+        self.fields['quantity'] = forms.IntegerField(min_value=0, required=True, label='Quantity *')
         self.fields['remarks'] = forms.CharField(required=False)
 
 class Stat_lib(forms.ModelForm):
@@ -257,8 +232,6 @@ class Stat_lib(forms.ModelForm):
     class Meta:
         model = Inventory_stat
         fields = ('inv_station_no', 'station_description', 'cost_center_no',)
-
-
 
 class CC_lib(forms.ModelForm):
 
@@ -298,6 +271,7 @@ class Sup_lib1(forms.ModelForm):
     class Meta:
         model = Supplier
         fields = ('supplier_number', 'telephone_number', 'credit_limit', 'supplier_name', 'supplier_address', )
+
 class Sup_lib2(forms.ModelForm):
 
     class Meta:
