@@ -47,7 +47,7 @@ def index(request):
                 login(request, user)
                 return redirect('WISH.views.index')# Redirect to a success page.
             else:
-                return render(request, 'registration/login3.html', {'error': 'Username and password does not match.', 'form':form})
+                return render(request, 'registration/login2.html', {'error': 'Username and password does not match.', 'form':form})
         elif form1.is_valid():
             employee = form1.data['firstname'] + ' ' + form1.data['lastname']
             employee1 = form1.data['lastname'] + ',' + form1.data['firstname']
@@ -57,7 +57,6 @@ def index(request):
             em = Employee.objects.get(name=employee)
 
             manager = UserManager()
-
 
         else:
             return render(request, 'registration/login2.html', {'form': form })
