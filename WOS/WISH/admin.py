@@ -1,10 +1,11 @@
+""" Register your models here."""
 from django.contrib import admin
 from simple_history.admin import SimpleHistoryAdmin
-from .models import *
-#import reversion
+from WISH.models import Supplier, Product, PAR, GARV, Cost_center, \
+		Inventory_stat, Employee, IRR_header, IRR, MIV
 
 
-# Register your models here.
+
 admin.site.register(Supplier, SimpleHistoryAdmin)
 admin.site.register(Product, SimpleHistoryAdmin)
 admin.site.register(PAR, SimpleHistoryAdmin)
