@@ -49,16 +49,16 @@ def index(request):
             else:
                 return render(request, 'registration/login2.html', {'error': 'Username and password does not match.', 'form':form, 'form1': form1 })
         elif form1.is_valid():
-            employee = form1.data['firstname'] + ' ' + form1.data['lastname']
-            employee1 = form1.data['lastname'] + ',' + form1.data['firstname']
-            employee2 = form1.data['lastname'] + '' + form1.data['middlename'] + form1.data['firstname']
-            midname = form1.data['middlename']
-            employee3 = form1.data['firstname'] + ' ' + midname[0] +' ' + form1.data['lastname']
-
-            em = Employee.objects.get(name=employee)
-
-            manager = UserManager()
-
+            dce = form1.data['dce']
+            emp = Employee.objects.get(dce=dce)
+            if emp.position == "Property Custodian":
+                manager = UserManager()
+                manager.create_superuser(form1.data['username'], form1.data['email'],\
+                                            form1.data['password'])
+                msg = "You've successfully created an account."
+                return render(request, 'registration/login2.html', {'form':form, 'form1': form1, 'msg': msg })
+            else:
+                return render(request, 'registration/login2.html', {'error': 'Does not match any custodian profile.', 'form':form, 'form1': form1 })
         else:
             return render(request, 'registration/login2.html', {'form': form , 'form1': form1, })
         form = LoginForm()
