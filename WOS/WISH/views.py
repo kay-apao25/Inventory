@@ -54,7 +54,17 @@ def aboutus(request):
     if request.user.is_authenticated():
         return render(request, 'WISH/AboutUs.html', {})
     else:
-        return render(request, 'registration/login2.html')
+        form = LoginForm(request.POST or None)
+        if form.is_valid():
+            user = authenticate(username=form.data['username'], password=form.data['password'])
+            if user is not None:
+                login(request, user)
+                return redirect('WISH.views.aboutus')# Redirect to a success page.
+            else:
+                return render(request, 'registration/login2.html', {'error': 'Username and password does not match.', 'form':form})
+        else:
+            return render(request, 'registration/login2.html', {'form': form })
+        form = LoginForm()
 
 def inv_stat_del(request, pk):
     if request.user.is_authenticated():
@@ -67,7 +77,17 @@ def inv_stat_del(request, pk):
         except:
             return render(request, 'WISH/index.html', {})
     else:
-        return render(request, 'registration/login2.html')
+        form = LoginForm(request.POST or None)
+        if form.is_valid():
+            user = authenticate(username=form.data['username'], password=form.data['password'])
+            if user is not None:
+                login(request, user)
+                return redirect('WISH.views.inv_stat_del')# Redirect to a success page.
+            else:
+                return render(request, 'registration/login2.html', {'error': 'Username and password does not match.', 'form':form})
+        else:
+            return render(request, 'registration/login2.html', {'form': form })
+        form = LoginForm()
 
 def cost_center_del(request, pk):
     if request.user.is_authenticated():
@@ -80,7 +100,17 @@ def cost_center_del(request, pk):
         except:
             return render(request, 'WISH/index.html', {})
     else:
-        return render(request, 'registration/login2.html')
+        form = LoginForm(request.POST or None)
+        if form.is_valid():
+            user = authenticate(username=form.data['username'], password=form.data['password'])
+            if user is not None:
+                login(request, user)
+                return redirect('WISH.views.cost_center_del')# Redirect to a success page.
+            else:
+                return render(request, 'registration/login2.html', {'error': 'Username and password does not match.', 'form':form})
+        else:
+            return render(request, 'registration/login2.html', {'form': form })
+        form = LoginForm()
 
 def supplier_del(request, pk):
     if request.user.is_authenticated():
@@ -93,7 +123,17 @@ def supplier_del(request, pk):
         except:
             return render(request, 'WISH/index.html', {})
     else:
-        return render(request, 'registration/login2.html')
+        form = LoginForm(request.POST or None)
+        if form.is_valid():
+            user = authenticate(username=form.data['username'], password=form.data['password'])
+            if user is not None:
+                login(request, user)
+                return redirect('WISH.views.supplier_del')# Redirect to a success page.
+            else:
+                return render(request, 'registration/login2.html', {'error': 'Username and password does not match.', 'form':form})
+        else:
+            return render(request, 'registration/login2.html', {'form': form })
+        form = LoginForm()
 
 def employee_del(request, pk):
     if request.user.is_authenticated():
@@ -106,7 +146,17 @@ def employee_del(request, pk):
         except:
             return render(request, 'WISH/index.html', {})
     else:
-        return render(request, 'registration/login2.html')
+        form = LoginForm(request.POST or None)
+        if form.is_valid():
+            user = authenticate(username=form.data['username'], password=form.data['password'])
+            if user is not None:
+                login(request, user)
+                return redirect('WISH.views.employee_del')# Redirect to a success page.
+            else:
+                return render(request, 'registration/login2.html', {'error': 'Username and password does not match.', 'form':form})
+        else:
+            return render(request, 'registration/login2.html', {'form': form })
+        form = LoginForm()
 
 def stat_lib(request):
     if request.user.is_authenticated():
@@ -124,7 +174,17 @@ def stat_lib(request):
         except:
             return render(request, 'WISH/stat_lib.html', {'form': form})
     else:
-        return render(request, 'registration/login2.html')
+        form = LoginForm(request.POST or None)
+        if form.is_valid():
+            user = authenticate(username=form.data['username'], password=form.data['password'])
+            if user is not None:
+                login(request, user)
+                return redirect('WISH.views.stat_lib')# Redirect to a success page.
+            else:
+                return render(request, 'registration/login2.html', {'error': 'Username and password does not match.', 'form':form})
+        else:
+            return render(request, 'registration/login2.html', {'form': form })
+        form = LoginForm()
 
 def sup_lib(request):
     if request.user.is_authenticated():
@@ -165,7 +225,17 @@ def sup_lib(request):
         except:
             return render(request, 'WISH/sup_lib.html', {'form1': form1, 'form2': form2})
     else:
-        return render(request, 'registration/login2.html')
+        form = LoginForm(request.POST or None)
+        if form.is_valid():
+            user = authenticate(username=form.data['username'], password=form.data['password'])
+            if user is not None:
+                login(request, user)
+                return redirect('WISH.views.sup_lib')# Redirect to a success page.
+            else:
+                return render(request, 'registration/login2.html', {'error': 'Username and password does not match.', 'form':form})
+        else:
+            return render(request, 'registration/login2.html', {'form': form })
+        form = LoginForm()
 
 def employee_lib(request):
     if request.user.is_authenticated():
@@ -194,7 +264,17 @@ def employee_lib(request):
         except:
             return render(request, 'WISH/employee_lib.html', {'form': form })
     else:
-        return render(request, 'registration/login2.html')
+        form = LoginForm(request.POST or None)
+        if form.is_valid():
+            user = authenticate(username=form.data['username'], password=form.data['password'])
+            if user is not None:
+                login(request, user)
+                return redirect('WISH.views.employee_lib')# Redirect to a success page.
+            else:
+                return render(request, 'registration/login2.html', {'error': 'Username and password does not match.', 'form':form})
+        else:
+            return render(request, 'registration/login2.html', {'form': form })
+        form = LoginForm()
 
 def add_cost_center(request):
     if request.user.is_authenticated():
@@ -213,7 +293,17 @@ def add_cost_center(request):
         except:
             return render(request, 'WISH/add_cost_center.html', {'form': form })
     else:
-        return render(request, 'registration/login2.html')
+        form = LoginForm(request.POST or None)
+        if form.is_valid():
+            user = authenticate(username=form.data['username'], password=form.data['password'])
+            if user is not None:
+                login(request, user)
+                return redirect('WISH.views.add_cost_center')# Redirect to a success page.
+            else:
+                return render(request, 'registration/login2.html', {'error': 'Username and password does not match.', 'form':form})
+        else:
+            return render(request, 'registration/login2.html', {'form': form })
+        form = LoginForm()
 
 def product_new(request):
     if request.user.is_authenticated():
@@ -280,7 +370,17 @@ def product_new(request):
         except:
             return render(request, 'WISH/product_add.html', {'form3': form3 , 'form1':form1, 'form2': form2})
     else:
-        return render(request, 'registration/login2.html')
+        form = LoginForm(request.POST or None)
+        if form.is_valid():
+            user = authenticate(username=form.data['username'], password=form.data['password'])
+            if user is not None:
+                login(request, user)
+                return redirect('WISH.views.product_new')# Redirect to a success page.
+            else:
+                return render(request, 'registration/login2.html', {'error': 'Username and password does not match.', 'form':form})
+        else:
+            return render(request, 'registration/login2.html', {'form': form })
+        form = LoginForm()
 
 def irr_entry(request):
     if request.user.is_authenticated():
@@ -328,7 +428,17 @@ def irr_entry(request):
         except:
             return render(request, 'WISH/irr_entry.html', {'form1': form1, 'form2': form2})
     else:
-        return render(request, 'registration/login2.html')
+        form = LoginForm(request.POST or None)
+        if form.is_valid():
+            user = authenticate(username=form.data['username'], password=form.data['password'])
+            if user is not None:
+                login(request, user)
+                return redirect('WISH.views.irr_entry')# Redirect to a success page.
+            else:
+                return render(request, 'registration/login2.html', {'error': 'Username and password does not match.', 'form':form})
+        else:
+            return render(request, 'registration/login2.html', {'form': form })
+        form = LoginForm()
 
 
 prod_to_irr = [] #Product_to_IRR list: List for storing products to be added in a specific IRR form
@@ -431,7 +541,17 @@ def product_to_irr(request, pk, inv):
             except:
                 return render(request, 'WISH/product_to_irr.html', {'form': form, 'iform': iform, 'remove_add': remove_add, 'pk':pk, 'inv': inv})
     else:
-        return render(request, 'registration/login2.html')
+        form = LoginForm(request.POST or None)
+        if form.is_valid():
+            user = authenticate(username=form.data['username'], password=form.data['password'])
+            if user is not None:
+                login(request, user)
+                return redirect('WISH.views.product_to_irr')# Redirect to a success page.
+            else:
+                return render(request, 'registration/login2.html', {'error': 'Username and password does not match.', 'form':form})
+        else:
+            return render(request, 'registration/login2.html', {'form': form })
+        form = LoginForm()
 
 def miv_entry_S(request, pk):
     if request.user.is_authenticated():
@@ -495,7 +615,17 @@ def miv_entry_S(request, pk):
         except:
             return render(request, 'WISH/miv_entry.html', {'form': form})
     else:
-        return render(request, 'registration/login2.html')
+        form = LoginForm(request.POST or None)
+        if form.is_valid():
+            user = authenticate(username=form.data['username'], password=form.data['password'])
+            if user is not None:
+                login(request, user)
+                return redirect('WISH.views.miv_entry_S')# Redirect to a success page.
+            else:
+                return render(request, 'registration/login2.html', {'error': 'Username and password does not match.', 'form':form})
+        else:
+            return render(request, 'registration/login2.html', {'form': form })
+        form = LoginForm()
 
 def miv_entry(request):
     if request.user.is_authenticated():
@@ -519,7 +649,17 @@ def par_f(request):
         else:
             return render(request, 'WISH/par_f.html', {'irrs':irrs})
     else:
-        return render(request, 'registration/login2.html')
+        form = LoginForm(request.POST or None)
+        if form.is_valid():
+            user = authenticate(username=form.data['username'], password=form.data['password'])
+            if user is not None:
+                login(request, user)
+                return redirect('WISH.views.miv_entry')# Redirect to a success page.
+            else:
+                return render(request, 'registration/login2.html', {'error': 'Username and password does not match.', 'form':form})
+        else:
+            return render(request, 'registration/login2.html', {'form': form })
+        form = LoginForm()
 
 def garv_entry_f(request):
     if request.user.is_authenticated():
@@ -531,7 +671,17 @@ def garv_entry_f(request):
         else:
             return render(request, 'WISH/garv_entry_f.html', {'pars':pars})
     else:
-        return render(request, 'registration/login2.html')
+        form = LoginForm(request.POST or None)
+        if form.is_valid():
+            user = authenticate(username=form.data['username'], password=form.data['password'])
+            if user is not None:
+                login(request, user)
+                return redirect('WISH.views.garv_entry_f')# Redirect to a success page.
+            else:
+                return render(request, 'registration/login2.html', {'error': 'Username and password does not match.', 'form':form})
+        else:
+            return render(request, 'registration/login2.html', {'form': form })
+        form = LoginForm()
 
 prod_to_garv = []
 def product_to_garv(request, pk):
@@ -627,7 +777,17 @@ def product_to_garv(request, pk):
             return render(request, 'WISH/garv_entry.html', {'form': form, 'iform': iform, 'remove_add': \
                 remove_add})
     else:
-        return render(request, 'registration/login2.html')
+        form = LoginForm(request.POST or None)
+        if form.is_valid():
+            user = authenticate(username=form.data['username'], password=form.data['password'])
+            if user is not None:
+                login(request, user)
+                return redirect('WISH.views.product_to_garv')# Redirect to a success page.
+            else:
+                return render(request, 'registration/login2.html', {'error': 'Username and password does not match.', 'form':form})
+        else:
+            return render(request, 'registration/login2.html', {'form': form })
+        form = LoginForm()
 
 prod_to_par = []
 def par(request, inv):
@@ -720,7 +880,17 @@ def par(request, inv):
         else:
             return render(request, 'WISH/par_entry.html', {'form': form, 'iform': iform, 'remove_add': remove_add})
     else:
-        return render(request, 'registration/login2.html')
+        form = LoginForm(request.POST or None)
+        if form.is_valid():
+            user = authenticate(username=form.data['username'], password=form.data['password'])
+            if user is not None:
+                login(request, user)
+                return redirect('WISH.views.par')# Redirect to a success page.
+            else:
+                return render(request, 'registration/login2.html', {'error': 'Username and password does not match.', 'form':form})
+        else:
+            return render(request, 'registration/login2.html', {'form': form })
+        form = LoginForm()
 
 
 def wrs_entry(request):
@@ -730,42 +900,102 @@ def wrs_entry(request):
             return redirect('WISH.views.wrs_form', pk=q)
         return render(request, 'WISH/wrs_entry.html', {})
     else:
-        return render(request, 'registration/login2.html')
+        form = LoginForm(request.POST or None)
+        if form.is_valid():
+            user = authenticate(username=form.data['username'], password=form.data['password'])
+            if user is not None:
+                login(request, user)
+                return redirect('WISH.views.wrs_entry')# Redirect to a success page.
+            else:
+                return render(request, 'registration/login2.html', {'error': 'Username and password does not match.', 'form':form})
+        else:
+            return render(request, 'registration/login2.html', {'form': form })
+        form = LoginForm()
 
 def product_details(request, pk):
     if request.user.is_authenticated():
         prod = get_object_or_404(Product, pk=pk)
         return render(request, 'WISH/product_details.html', {'prod': prod})
     else:
-        return render(request, 'registration/login2.html')
+        form = LoginForm(request.POST or None)
+        if form.is_valid():
+            user = authenticate(username=form.data['username'], password=form.data['password'])
+            if user is not None:
+                login(request, user)
+                return redirect('WISH.views.product_details')# Redirect to a success page.
+            else:
+                return render(request, 'registration/login2.html', {'error': 'Username and password does not match.', 'form':form})
+        else:
+            return render(request, 'registration/login2.html', {'form': form })
+        form = LoginForm()
 
 def inv_stat_details(request, pk):
     if request.user.is_authenticated():
         invs = get_object_or_404(Inventory_stat, inv_station_no=pk)
         return render(request, 'WISH/inv_stat_details.html', {'invs': invs})
     else:
-        return render(request, 'registration/login2.html')
+        form = LoginForm(request.POST or None)
+        if form.is_valid():
+            user = authenticate(username=form.data['username'], password=form.data['password'])
+            if user is not None:
+                login(request, user)
+                return redirect('WISH.views.inv_stat_details')# Redirect to a success page.
+            else:
+                return render(request, 'registration/login2.html', {'error': 'Username and password does not match.', 'form':form})
+        else:
+            return render(request, 'registration/login2.html', {'form': form })
+        form = LoginForm()
 
 def cost_center_details(request, pk):
     if request.user.is_authenticated():
         cc = get_object_or_404(Cost_center, pk=pk)
         return render(request, 'WISH/cost_center_details.html', {'cc': cc})
     else:
-        return render(request, 'registration/login2.html')
+        form = LoginForm(request.POST or None)
+        if form.is_valid():
+            user = authenticate(username=form.data['username'], password=form.data['password'])
+            if user is not None:
+                login(request, user)
+                return redirect('WISH.views.cost_center_details')# Redirect to a success page.
+            else:
+                return render(request, 'registration/login2.html', {'error': 'Username and password does not match.', 'form':form})
+        else:
+            return render(request, 'registration/login2.html', {'form': form })
+        form = LoginForm()
 
 def supplier_details(request, pk):
     if request.user.is_authenticated():
         sup = get_object_or_404(Supplier, supplier_number=pk)
         return render(request, 'WISH/supplier_details.html', {'sup': sup})
     else:
-        return render(request, 'registration/login2.html')
+        form = LoginForm(request.POST or None)
+        if form.is_valid():
+            user = authenticate(username=form.data['username'], password=form.data['password'])
+            if user is not None:
+                login(request, user)
+                return redirect('WISH.views.supplier_details')# Redirect to a success page.
+            else:
+                return render(request, 'registration/login2.html', {'error': 'Username and password does not match.', 'form':form})
+        else:
+            return render(request, 'registration/login2.html', {'form': form })
+        form = LoginForm()
 
 def employee_details(request, dce):
     if request.user.is_authenticated():
         em = get_object_or_404(Employee, dce=dce)
         return render(request, 'WISH/employee_details.html', {'em': em})
     else:
-        return render(request, 'registration/login2.html')
+        form = LoginForm(request.POST or None)
+        if form.is_valid():
+            user = authenticate(username=form.data['username'], password=form.data['password'])
+            if user is not None:
+                login(request, user)
+                return redirect('WISH.views.employee_details')# Redirect to a success page.
+            else:
+                return render(request, 'registration/login2.html', {'error': 'Username and password does not match.', 'form':form})
+        else:
+            return render(request, 'registration/login2.html', {'form': form })
+        form = LoginForm()
 
 def product_form(request, pk):
     if request.user.is_authenticated():
@@ -810,7 +1040,17 @@ def product_form(request, pk):
                         form3.fields[key].initial = getattr(product, key)
         return render(request, 'WISH/product_form.html', {'form1': form1, 'form2': form2, 'form3': form3 })
     else:
-        return render(request, 'registration/login2.html')
+        form = LoginForm(request.POST or None)
+        if form.is_valid():
+            user = authenticate(username=form.data['username'], password=form.data['password'])
+            if user is not None:
+                login(request, user)
+                return redirect('WISH.views.product_form')# Redirect to a success page.
+            else:
+                return render(request, 'registration/login2.html', {'error': 'Username and password does not match.', 'form':form})
+        else:
+            return render(request, 'registration/login2.html', {'form': form })
+        form = LoginForm()
 
 
 def inv_stat_form(request, pk):
@@ -826,7 +1066,17 @@ def inv_stat_form(request, pk):
         except:
             return render(request, 'WISH/inv_stat_form.html', {'form': form})
     else:
-        return render(request, 'registration/login2.html')
+        form = LoginForm(request.POST or None)
+        if form.is_valid():
+            user = authenticate(username=form.data['username'], password=form.data['password'])
+            if user is not None:
+                login(request, user)
+                return redirect('WISH.views.inv_stat_form')# Redirect to a success page.
+            else:
+                return render(request, 'registration/login2.html', {'error': 'Username and password does not match.', 'form':form})
+        else:
+            return render(request, 'registration/login2.html', {'form': form })
+        form = LoginForm()
 
 def cost_center_form(request, pk):
     if request.user.is_authenticated():
@@ -841,7 +1091,17 @@ def cost_center_form(request, pk):
         except:
             return render(request, 'WISH/cost_center_form.html', {'form': form})
     else:
-        return render(request, 'registration/login2.html')
+        form = LoginForm(request.POST or None)
+        if form.is_valid():
+            user = authenticate(username=form.data['username'], password=form.data['password'])
+            if user is not None:
+                login(request, user)
+                return redirect('WISH.views.cost_center_form')# Redirect to a success page.
+            else:
+                return render(request, 'registration/login2.html', {'error': 'Username and password does not match.', 'form':form})
+        else:
+            return render(request, 'registration/login2.html', {'form': form })
+        form = LoginForm()
 
 def supplier_form(request, pk):
     if request.user.is_authenticated():
@@ -883,7 +1143,17 @@ def supplier_form(request, pk):
         except:
             return render(request, 'WISH/supplier_form.html', {'form1': form1, 'form2': form2})
     else:
-        return render(request, 'registration/login2.html')
+        form = LoginForm(request.POST or None)
+        if form.is_valid():
+            user = authenticate(username=form.data['username'], password=form.data['password'])
+            if user is not None:
+                login(request, user)
+                return redirect('WISH.views.supplier_form')# Redirect to a success page.
+            else:
+                return render(request, 'registration/login2.html', {'error': 'Username and password does not match.', 'form':form})
+        else:
+            return render(request, 'registration/login2.html', {'form': form })
+        form = LoginForm()
 
 def employee_form(request, dce):
     if request.user.is_authenticated():
@@ -898,7 +1168,17 @@ def employee_form(request, dce):
         except:
             return render(request, 'WISH/employee_form.html', {'form': form})
     else:
-        return render(request, 'registration/login2.html')
+        form = LoginForm(request.POST or None)
+        if form.is_valid():
+            user = authenticate(username=form.data['username'], password=form.data['password'])
+            if user is not None:
+                login(request, user)
+                return redirect('WISH.views.employee_form')# Redirect to a success page.
+            else:
+                return render(request, 'registration/login2.html', {'error': 'Username and password does not match.', 'form':form})
+        else:
+            return render(request, 'registration/login2.html', {'form': form })
+        form = LoginForm()
 
 def par_form(request, pk):
     if request.user.is_authenticated():
@@ -924,7 +1204,17 @@ def par_form(request, pk):
         else:
             return render(request, 'WISH/par_form.html', {'parss':parss, 'products': products})
     else:
-        return render(request, 'registration/login2.html')
+        form = LoginForm(request.POST or None)
+        if form.is_valid():
+            user = authenticate(username=form.data['username'], password=form.data['password'])
+            if user is not None:
+                login(request, user)
+                return redirect('WISH.views.par_form')# Redirect to a success page.
+            else:
+                return render(request, 'registration/login2.html', {'error': 'Username and password does not match.', 'form':form})
+        else:
+            return render(request, 'registration/login2.html', {'form': form })
+        form = LoginForm()
 
 def garv_form(request, pk):
     if request.user.is_authenticated():
@@ -945,7 +1235,17 @@ def garv_form(request, pk):
         else:
             return render(request, 'WISH/garv_form.html', {'garvs': garvs, 'products': products, 'pro':pro})
     else:
-        return render(request, 'registration/login2.html')
+        form = LoginForm(request.POST or None)
+        if form.is_valid():
+            user = authenticate(username=form.data['username'], password=form.data['password'])
+            if user is not None:
+                login(request, user)
+                return redirect('WISH.views.garv_form')# Redirect to a success page.
+            else:
+                return render(request, 'registration/login2.html', {'error': 'Username and password does not match.', 'form':form})
+        else:
+            return render(request, 'registration/login2.html', {'form': form })
+        form = LoginForm()
 
 def irr_form(request, pk):
     if request.user.is_authenticated():
@@ -970,7 +1270,17 @@ def irr_form(request, pk):
             return render(request, 'WISH/irr_form.html', {'irs':irs, 'products': products, \
                          'total': total})
     else:
-        return render(request, 'registration/login2.html')
+        form = LoginForm(request.POST or None)
+        if form.is_valid():
+            user = authenticate(username=form.data['username'], password=form.data['password'])
+            if user is not None:
+                login(request, user)
+                return redirect('WISH.views.irr_form')# Redirect to a success page.
+            else:
+                return render(request, 'registration/login2.html', {'error': 'Username and password does not match.', 'form':form})
+        else:
+            return render(request, 'registration/login2.html', {'form': form })
+        form = LoginForm()
 
 def miv_form(request, pk):
     if request.user.is_authenticated():
@@ -992,7 +1302,17 @@ def miv_form(request, pk):
         else:
             return render(request, 'WISH/miv_form.html', {'mivs':mivs, 'products':products })
     else:
-        return render(request, 'registration/login2.html')
+        form = LoginForm(request.POST or None)
+        if form.is_valid():
+            user = authenticate(username=form.data['username'], password=form.data['password'])
+            if user is not None:
+                login(request, user)
+                return redirect('WISH.views.miv_form')# Redirect to a success page.
+            else:
+                return render(request, 'registration/login2.html', {'error': 'Username and password does not match.', 'form':form})
+        else:
+            return render(request, 'registration/login2.html', {'form': form })
+        form = LoginForm()
 
 def wrs_form(request, pk):
     if request.user.is_authenticated():
@@ -1011,4 +1331,14 @@ def wrs_form(request, pk):
         else:
             return render(request, 'WISH/wrs_form.html', {'wrss': wrss, 'pros': pros})
     else:
-        return render(request, 'registration/login2.html')
+        form = LoginForm(request.POST or None)
+        if form.is_valid():
+            user = authenticate(username=form.data['username'], password=form.data['password'])
+            if user is not None:
+                login(request, user)
+                return redirect('WISH.views.wrs_form')# Redirect to a success page.
+            else:
+                return render(request, 'registration/login2.html', {'error': 'Username and password does not match.', 'form':form})
+        else:
+            return render(request, 'registration/login2.html', {'form': form })
+        form = LoginForm()
