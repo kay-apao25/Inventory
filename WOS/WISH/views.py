@@ -6,6 +6,7 @@ from forms import *
 import time
 import json
 from django.contrib.auth import authenticate, login
+from django.contrib.auth.models import UserManager
 
 # Create your views here.
 
@@ -39,6 +40,7 @@ def index(request):
         return render(request, 'WISH/index.html', {'product': product, 'irr': irr, 'par': par, 'garv': garv, 'inv': inv, 'sup': sup, 'cc': cc})
     else:
         form = LoginForm(request.POST or None)
+        form1 = SignUpForm(request.POST or None)
         if form.is_valid():
             user = authenticate(username=form.data['username'], password=form.data['password'])
             if user is not None:
@@ -46,9 +48,20 @@ def index(request):
                 return redirect('WISH.views.index')# Redirect to a success page.
             else:
                 return render(request, 'registration/login2.html', {'error': 'Username and password does not match.', 'form':form})
+        elif form1.is_valid():
+            employee = form1.data['firstname'] + ' ' + form1.data['lastname']
+            employee1 = form1.data['lastname'] + ',' + form1.data['firstname']
+            employee2 = form1.data['lastname'] + '' + form1.data['middlename'] + form1.data['firstname']
+            midname = form1.data['middlename']
+            employee3 = form1.data['lastname'] + '' + midname[1] + form1.data['firstname']
+            em = Employee.objects.get(name=employee)
+
+            manager = UserManager()
+
         else:
             return render(request, 'registration/login2.html', {'form': form })
         form = LoginForm()
+        form1 = SignUpForm()
 
 def aboutus(request):
     if request.user.is_authenticated():
@@ -697,12 +710,12 @@ def product_to_garv(request, pk):
         if request.method == "POST":
             form = GARVentryForm(request.POST, pk=pk)
             iform = ProducttoGARVform(request.POST, prodlist=prod_list)
-            
+
             if form.is_valid() and iform.is_valid():
                 garv = form.save(commit=False)
 
                 garv_no = form.data['garv_no']
-                
+
                 for prod in products.product:
                     if prod['Product'] == str(iform.data['product']):
                         prod['quantity_garv'] = int(prod['quantity_garv']) - int(iform.data['quantity'])
@@ -803,12 +816,12 @@ def par(request, inv):
         if request.method == "POST":
             form = PARForm(request.POST, inv=inv)
             iform = ProducttoPARForm(request.POST, prodlist=prod_list)
-            
+
             if form.is_valid() and iform.is_valid():
                 par_entry = form.save(commit=False)
 
                 par_no = form.data['par_no']
-                
+
                 for prod in products.product:
                     if prod['Product'] == str(iform.data['product']):
                         prod['quantity_par'] = int(prod['quantity_par']) - int(iform.data['quantity'])

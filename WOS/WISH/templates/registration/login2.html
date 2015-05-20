@@ -45,6 +45,7 @@
                 <img src={% static 'images/header1.png' %}></img>
 
                 <span class="right">
+                        <a href="#popup" class="login" data-toggle="modal" data-target="#anotherModal" style="text-decoration:none;">Sign Up</a>
                         <a href="#popup" class="login" data-toggle="modal" data-target="#smallModal" style="text-decoration:none;"><span class="glyphicon glyphicon-log-in"></span>&nbsp; Log In</a>
                 </span>
 
@@ -90,6 +91,46 @@
           </div>
         </div>
             <!--END OF MODAL-->
+
+            <!--start of anothermodal-->
+            <div class="modal fade" id="anotherModal" tabindex="-1" role="dialog" aria-labelledby="smallModal" aria-hidden="true" style="margin-top: 100px; position: fixed; z-index:10000 opacity:0.5">
+              <div class="modal-dialog modal-sm">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="myModalLabel">Sign Up</h4>
+                  </div>
+                  <div class="modal-body" id="mycontent">
+
+                    <form method="post" action="{% url 'WISH.views.index' %}">
+                      <br>
+                    {% for field in form1 %}
+                    {% csrf_token %}
+                    <table>
+                    <tr>
+                        <td>{{ field | bootstrap_horizontal:'col-lg-4' }}</td>
+                    </tr>
+                    <tr>
+                      <td> <br> </td>
+                    </tr>
+                    </table>
+                    {% endfor %}
+                    <br>
+                    <div class="modal-footer">
+                      <input id="loginbutton" type="submit" class="save btn btn-info" value="Login" />
+                    </div>
+                    <input type="hidden" name="next" value="{{ next }}" />
+                    </form>
+
+                  </div>
+                </div>
+              </div>
+            </div>
+                <!--END OF MODAL-->
+
+        <script src="{% static 'js/jquery.js' %}"></script>
+        <script src="js/bootstrap.min.js"></script>
+
         <p style="text-align: center; margin-top: 470px; position: relative; z-index: 10000; ">All Rights Reserved &copy; 2015 NPC-MinGen</p>
     </body>
 </html>
