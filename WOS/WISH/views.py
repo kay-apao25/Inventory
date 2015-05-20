@@ -1,13 +1,8 @@
-from django.shortcuts import render, redirect, get_object_or_404, render_to_response
-from django.http import HttpResponseRedirect
-from django.contrib.auth.decorators import login_required
-from django.utils.decorators import method_decorator
-from django.contrib.auth.models import User
-from django.contrib import messages
-from django.db.models import Q
-from .models import *
-from .forms import *
-import itertools
+"""views"""
+from django.shortcuts import render, redirect, get_object_or_404
+from WISH.models import Supplier, Product, PAR, GARV, CostCenter, \
+        InventoryStat, Employee, IRR, MIV
+from forms import *
 import time
 import json
 from django.contrib.auth import authenticate, login
