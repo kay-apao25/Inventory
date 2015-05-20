@@ -37,6 +37,12 @@
             $( document ).ready( function() {
                 $('#smallModal').modal({show:true});
             });
+            $('#s_in').click(function(){
+                $('#smallModal').modal({show:false});
+            });
+            $('#l_in').click(function(){
+                $('#anotherModal').modal({show:false});
+            });
         </script>
         {% endif %}
         <div class="container1">
@@ -45,8 +51,11 @@
                 <img src={% static 'images/header1.png' %}></img>
 
                 <span class="right">
-                        <a href="#popup" class="login" data-toggle="modal" data-target="#anotherModal" style="text-decoration:none;">Sign Up</a>
-                        <a href="#popup" class="login" data-toggle="modal" data-target="#smallModal" style="text-decoration:none;"><span class="glyphicon glyphicon-log-in"></span>&nbsp; Log In</a>
+                        <a href="#popup" id="s_in" class="login" data-toggle="modal" data-target="#anotherModal" style="text-decoration:none;">
+                            Sign Up
+                        </a>
+                        <a href="#popup" id="l_in" class="login" data-toggle="modal" data-target="#smallModal" style="text-decoration:none;">
+                        <span class="glyphicon glyphicon-log-in"></span>&nbsp; Log In</a>
                 </span>
 
                 <div class="clr"></div>
@@ -129,6 +138,7 @@
 
         <script src="{% static 'js/jquery.js' %}"></script>
         <script src="js/bootstrap.min.js"></script>
+
 
         <p style="text-align: center; margin-top: 250px; position: relative; z-index: 10000; ">All Rights Reserved &copy; 2015 NPC-MinGen</p>
         <p style="text-align: center; margin-top: 250px; position: relative; z-index: 10000; ">All Rights Reserved &copy; 2015 NPC-MinGen</p>
