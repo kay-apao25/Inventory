@@ -41,13 +41,7 @@ def index(request):
     else:
         form = LoginForm(request.POST or None)
         form1 = SignUpForm(request.POST or None)
-        if form.is_valid():
-            user = authenticate(username=form.data['username'], password=form.data['password'])
-            if user is not None:
-                login(request, user)
-                return redirect('WISH.views.index')# Redirect to a success page.
-            else:
-                return render(request, 'registration/login2.html', {'error': 'Username and password does not match.', 'form':form, 'form1': form1 })
+
         if form1.is_valid():
             dce = form1.data['dce']
             emp = Employee.objects.get(dce=dce)
@@ -58,6 +52,15 @@ def index(request):
                 return render(request, 'registration/login2.html', {'form':form, 'form1': form1, 'msg': msg })
             else:
                 return render(request, 'registration/login2.html', {'error': 'Does not match any custodian profile.', 'form':form, 'form1': form1 })
+
+        elif form.is_valid():
+            user = authenticate(username=form.data['username'], password=form.data['password'])
+            if user is not None:
+                login(request, user)
+                return redirect('WISH.views.index')# Redirect to a success page.
+            else:
+                return render(request, 'registration/login2.html', {'error': 'Username and password does not match.', 'form':form, 'form1': form1 })
+
         else:
             return render(request, 'registration/login2.html', {'form': form , 'form1': form1, })
         form = LoginForm()
