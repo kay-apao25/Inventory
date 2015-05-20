@@ -6,7 +6,7 @@ from forms import *
 import time
 import json
 from django.contrib.auth import authenticate, login
-from django.contrib.auth.models import UserManager
+from django.contrib.auth.models import User
 
 # Create your views here.
 
@@ -48,13 +48,12 @@ def index(request):
                 return redirect('WISH.views.index')# Redirect to a success page.
             else:
                 return render(request, 'registration/login2.html', {'error': 'Username and password does not match.', 'form':form, 'form1': form1 })
-        elif form1.is_valid():
+        if form1.is_valid():
             dce = form1.data['dce']
             emp = Employee.objects.get(dce=dce)
             if emp.position == "Property Custodian":
-                manager = UserManager()
-                manager.create_superuser(form1.data['username'], form1.data['email'],\
-                                            form1.data['password'])
+                user = User.objects.create_superuser(username=form1.data['username'], email=form1.data['email'],\
+                                            password=form1.data['password'])
                 msg = "You've successfully created an account."
                 return render(request, 'registration/login2.html', {'form':form, 'form1': form1, 'msg': msg })
             else:
