@@ -944,7 +944,7 @@ def product_details(request, pk):
 
 def inv_stat_details(request, pk):
     if request.user.is_authenticated():
-        invs = get_object_or_404(Inventory_stat, inv_station_no=pk)
+        invs = get_object_or_404(InventoryStat, inv_station_no=pk)
         return render(request, 'WISH/inv_stat_details.html', {'invs': invs})
     else:
         form = LoginForm(request.POST or None)
@@ -961,7 +961,7 @@ def inv_stat_details(request, pk):
 
 def cost_center_details(request, pk):
     if request.user.is_authenticated():
-        cc = get_object_or_404(Cost_center, pk=pk)
+        cc = get_object_or_404(CostCenter, pk=pk)
         return render(request, 'WISH/cost_center_details.html', {'cc': cc})
     else:
         form = LoginForm(request.POST or None)
@@ -1068,7 +1068,7 @@ def product_form(request, pk):
 
 def inv_stat_form(request, pk):
     if request.user.is_authenticated():
-        inv = get_object_or_404(Inventory_stat, pk=pk)
+        inv = get_object_or_404(InventoryStat, pk=pk)
         form = Statlib(request.POST or None, instance=inv)
         if form.is_valid():
             form.save()
@@ -1093,7 +1093,7 @@ def inv_stat_form(request, pk):
 
 def cost_center_form(request, pk):
     if request.user.is_authenticated():
-        cc = get_object_or_404(Cost_center, pk=pk)
+        cc = get_object_or_404(CostCenter, pk=pk)
         form = CClib(request.POST or None, instance=cc)
         if form.is_valid():
             form.save()
@@ -1232,7 +1232,7 @@ def par_form(request, pk):
 def garv_form(request, pk):
     if request.user.is_authenticated():
         garvs = get_object_or_404(GARV, pk=pk)
-        products = garvs.product_to_GARV
+        products = garvs.producttoGARV
         total = 0
         for product in products:
             pro = Product.objects.get(id=product['Product'])
