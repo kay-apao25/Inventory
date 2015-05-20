@@ -27,7 +27,7 @@ class ProductForm1(forms.Form):
     part_number = forms.CharField(label='Part number *', max_length=8)
     manufacture_date = forms.DateField(label='Manufacture date *',
         widget=DateTimePicker(options={"format": "YYYY-MM-DD", "pickTime": False}))
-    inv_station_no = forms.ModelChoiceField(label='Inventory station *', queryset=Inventory_stat.objects.filter(is_delete=False))
+    inv_station_no = forms.ModelChoiceField(label='Inventory station *', queryset=InventoryStat.objects.filter(is_delete=False))
 
 class ProductForm2(forms.Form):
     UNIT_CHOICES = (
@@ -74,7 +74,7 @@ class ProductForm5(forms.ModelForm):
 
 class IRR_entryForm(forms.ModelForm):
     class Meta:
-        model = IRR_header
+        model = IRRHeader
         exclude = ('inv_station_no', 'supplier', 'reference', 'invoice_number', 'po_number', 'dr_number',\
                     'pr_number', 'dce_custodian', 'dce_user', 'dce_approved','proc_date', 'approved_date','type_n', 'date_dlvrd',)
 
@@ -84,7 +84,7 @@ class IRR_entryForm1(forms.Form):
     def __init__(self, *args, **kwargs):
         name = kwargs.pop('name')
         super(IRR_entryForm1, self).__init__(*args, **kwargs)
-        self.fields['inv_station_no'] = forms.ModelChoiceField(queryset=Inventory_stat.objects.filter(\
+        self.fields['inv_station_no'] = forms.ModelChoiceField(queryset=InventoryStat.objects.filter(\
                 cost_center_no=Employee.objects.get(name=name).cost_center_no).filter(\
                 id__in=[p.inv_station_no.id for p in Product.objects.filter(is_irr=False)]), label='Inventory Station *')
 
@@ -122,8 +122,8 @@ class IRR_entry_cont_Form(forms.ModelForm):
         inv = kwargs.pop('inv')
         super(IRR_entry_cont_Form, self).__init__(*args, **kwargs)
 
-        self.fields['cost_center_no'] = forms.ModelChoiceField(queryset=Cost_center.objects.filter(\
-            is_delete=False).filter(cc_iFK__in=[i.cost_center_no.id for i in (Inventory_stat.objects.filter(inv_station_no=inv))]),\
+        self.fields['cost_center_no'] = forms.ModelChoiceField(queryset=CostCenter.objects.filter(\
+            is_delete=False).filter(cc_iFK__in=[i.cost_center_no.id for i in (InventoryStat.objects.filter(inv_station_no=inv))]),\
             label='Cost center *')
 
     date_recv = forms.DateField(widget=DateTimePicker(options={"format": "YYYY-MM-DD", "pickTime": False}), label='Date received *')
@@ -189,7 +189,7 @@ class GARV_entryForm(forms.ModelForm):
         pk = kwargs.pop('pk')
         super(GARV_entryForm, self).__init__(*args, **kwargs)
 
-        self.fields['cc_number'] = forms.ModelChoiceField(queryset=Cost_center.objects.filter(\
+        self.fields['cc_number'] = forms.ModelChoiceField(queryset=CostCenter.objects.filter(\
             id=PAR.objects.get(par_no=pk).inv_stat_no.cost_center_no.id), label='CC number *')
 
         self.fields['inspected_by'] = forms.ModelChoiceField(queryset=Employee.objects.filter(\
@@ -227,16 +227,16 @@ class Product_to_GARVform(forms.Form):
 
 class Stat_lib(forms.ModelForm):
 
-    cost_center_no = forms.ModelChoiceField(queryset=Cost_center.objects.filter(is_delete=False))
+    cost_center_no = forms.ModelChoiceField(queryset=CostCenter.objects.filter(is_delete=False))
 
     class Meta:
-        model = Inventory_stat
+        model = InventoryStat
         fields = ('inv_station_no', 'station_description', 'cost_center_no',)
 
 class CC_lib(forms.ModelForm):
 
     class Meta:
-        model = Cost_center
+        model = CostCenter
         fields = ('cost_center_name', 'functional_group',)
 
 class Supplier_lib(forms.ModelForm):
@@ -280,14 +280,14 @@ class Sup_lib2(forms.ModelForm):
 
 class Employee_lib(forms.ModelForm):
 
-    cost_center_no = forms.ModelChoiceField(queryset=Cost_center.objects.filter(is_delete=False))
+    cost_center_no = forms.ModelChoiceField(queryset=CostCenter.objects.filter(is_delete=False))
     class Meta:
         model = Employee
         fields = ( 'name', 'position', 'cost_center_no', 'charging_cc_no',)
 
 class Em_lib(forms.ModelForm):
 
-    cost_center_no = forms.ModelChoiceField(queryset=Cost_center.objects.filter(is_delete=False))
+    cost_center_no = forms.ModelChoiceField(queryset=CostCenter.objects.filter(is_delete=False))
     class Meta:
         model = Employee
         fields = ( 'dce', 'name', 'position', 'cost_center_no', 'charging_cc_no',)

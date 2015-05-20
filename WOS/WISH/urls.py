@@ -50,9 +50,9 @@ urlpatterns = [
         template_name='WISH/garv_reports.html'), name='garv_reports'),
     url(r'^product_reports/$', ListView.as_view(model=models.Product, context_object_name='product_list',\
         template_name='WISH/product_reports.html'), name='product_reports'),
-    url(r'^inv_stat/$', ListView.as_view(model=models.Inventory_stat, context_object_name='inv_list',\
+    url(r'^inv_stat/$', ListView.as_view(model=models.InventoryStat, context_object_name='inv_list',\
         template_name='WISH/inv_stat.html'), name='inv_stat'),
-    url(r'^cost_center/$', ListView.as_view(model=models.Cost_center, context_object_name='cc_list',\
+    url(r'^cost_center/$', ListView.as_view(model=models.CostCenter, context_object_name='cc_list',\
         template_name='WISH/cost_center.html'), name='cost_center'),
     url(r'^supplier/$', ListView.as_view(model=models.Supplier, context_object_name='sup_list',\
         template_name='WISH/supplier.html'), name='supplier'),

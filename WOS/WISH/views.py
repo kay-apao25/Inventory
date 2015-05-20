@@ -30,7 +30,7 @@ def index(request):
         except:
             garv = None
         try:
-            inv = Inventory_stat.objects.latest('id')
+            inv = InventoryStat.objects.latest('id')
         except:
             inv = None
         try:
@@ -38,7 +38,7 @@ def index(request):
         except:
             sup = None
         try:
-            cc = Cost_center.objects.latest('id')
+            cc = CostCenter.objects.latest('id')
         except:
             cc = None
         return render(request, 'WISH/index.html', {'product': product, 'irr': irr, 'par': par, 'garv': garv, 'inv': inv, 'sup': sup, 'cc': cc})
@@ -63,7 +63,7 @@ def aboutus(request):
 
 def inv_stat_del(request, pk):
     if request.user.is_authenticated():
-        inv_del = get_object_or_404(Inventory_stat, pk=pk)
+        inv_del = get_object_or_404(InventoryStat, pk=pk)
         inv_del.is_delete = True
         inv_del.save()
         msg = 'Inventory Station was deleted successfully.'
@@ -76,7 +76,7 @@ def inv_stat_del(request, pk):
 
 def cost_center_del(request, pk):
     if request.user.is_authenticated():
-        cos_del = get_object_or_404(Cost_center, pk=pk)
+        cos_del = get_object_or_404(CostCenter, pk=pk)
         cos_del.is_delete = True
         cos_del.save()
         msg = 'Cost center was deleted successfully.'
