@@ -74,6 +74,9 @@ def index(request):
             form1 = SignUpForm()
             return render(request, 'registration/login2.html', {'form': form , 'form1': form1})
 
+def guest(request):
+    return render(request, 'WISH/index.html', {})
+
 def aboutus(request):
     if request.user.is_authenticated():
         return render(request, 'WISH/AboutUs.html', {})

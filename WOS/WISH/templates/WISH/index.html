@@ -178,7 +178,7 @@ Image placeholders: placemi.com
 
 	            <li><a href="{% url 'WISH.views.index' %}">Dashboard</a></li>
 
-	            <li class="dropdown">
+							<li id="addrec" class="dropdown">
 	              <a class="dropdown-toggle" data-toggle="dropdown" href="#">Add Records<span class="caret"></span></a>
 	              <ul class="dropdown-menu">
 	                <li><a href="{% url 'WISH.views.product_new' %}">Add Product Record</a></li>
@@ -192,6 +192,8 @@ Image placeholders: placemi.com
 	                </li>
 	              </ul>
 	            </li>
+
+
 
 	            <li class="dropdown">
 	              <a class="dropdown-toggle" data-toggle="dropdown" href="#">Reports<span class="caret"></span></a>
@@ -209,9 +211,16 @@ Image placeholders: placemi.com
 
 	          <ul class="nav navbar-nav navbar-right">
 							<li><a href="#"><span></span> About Us</a></li>
-							<li><a>Hi, {{ user.username }}!</a></li>
-			
-			  <li><a href="{% url 'django.contrib.auth.views.logout'%}"><span class="glyphicon glyphicon-log-out"></span> Log out</a></li>
+							{% if request.user.is_superuser %}
+								<li><a>Hi, {{ user.username }}!</a></li>
+								<li><a href="{% url 'django.contrib.auth.views.logout'%}"><span class="glyphicon glyphicon-log-out"></span>
+									 Log out</a></li>
+							{% else %}
+								<li><a>Hi, Guest!</a></li>
+								<li><a href="{% url 'WISH.views.index'%}"><span class="glyphicon glyphicon-log-out"></span> Exit</a></li>
+							{% endif %}
+
+
 	          </ul>
 	        </div>
 	      </div>
