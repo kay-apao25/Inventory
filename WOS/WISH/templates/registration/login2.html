@@ -69,8 +69,8 @@
           <div class="modal-dialog modal-sm">
             <div class="modal-content">
               <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title" id="myModalLabel">Sign In</h4>
+                <button  type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel" >Sign In</h4>
               </div>
               <div class="modal-body" id="mycontent">
                 {% if error %}
@@ -92,7 +92,7 @@
                 </table>
                 {% endfor %}
                 <div class="modal-footer">
-                  <input align="center" id="loginbutton" style="margin-right: 25px;" type="submit" class="save btn btn-info" value="Login" />
+                  <input name="login" align="center" id="loginbutton" style="margin-right: 25px;" type="submit" class="save btn btn-info" value="Login" />
                 </div>
                 <input type="hidden" name="next" value="{{ next }}" />
                 </form>
@@ -127,7 +127,7 @@
                     </table>
                     {% endfor %}
                     <div align="center" class="modal-footer">
-                        <button type="submit" class="save btn btn-info" id="save">Save</button>
+                        <button name="signup" type="submit" class="save btn btn-info" id="save">Save</button>
                     </div>
                     </form>
 
