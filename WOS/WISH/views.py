@@ -70,6 +70,7 @@ def index(request):
                     form1 = SignUpForm()
                     return redirect('WISH.views.index')# Redirect to a success page.
                 else:
+                    form1 = SignUpForm()
                     return render(request, 'registration/login2.html', {'error': 'Username and password does not match.', 'form':form, 'form1': form1 })
         else:
             form = LoginForm()
