@@ -171,7 +171,7 @@ def employee_del(request, pk):
             return render(request, 'registration/login2.html', {'form': form })
         form = LoginForm()
 
-def stat_lib(request):
+def add_inv_stat(request):
     if request.user.is_authenticated():
         if request.method == "POST":
             form = Statlib(request.POST)
@@ -183,23 +183,23 @@ def stat_lib(request):
             form = Statlib()
         try:
             form = Statlib()
-            return render(request, 'WISH/stat_lib.html', {'form': form , 'msg':msg})
+            return render(request, 'WISH/add_inv_stat.html', {'form': form , 'msg':msg})
         except:
-            return render(request, 'WISH/stat_lib.html', {'form': form})
+            return render(request, 'WISH/add_inv_stat.html', {'form': form})
     else:
         form = LoginForm(request.POST or None)
         if form.is_valid():
             user = authenticate(username=form.data['username'], password=form.data['password'])
             if user is not None:
                 login(request, user)
-                return redirect('WISH.views.stat_lib')# Redirect to a success page.
+                return redirect('WISH.views.add_inv_stat')# Redirect to a success page.
             else:
                 return render(request, 'registration/login2.html', {'error': 'Username and password does not match.', 'form':form})
         else:
             return render(request, 'registration/login2.html', {'form': form })
         form = LoginForm()
 
-def sup_lib(request):
+def add_supplier(request):
     if request.user.is_authenticated():
         if request.method == 'POST':
             form = Suplib(request.POST)
@@ -234,23 +234,23 @@ def sup_lib(request):
             form1 = Suplib1()
             form2 = Suplib2()
         try:
-            return render(request, 'WISH/sup_lib.html', {'form1': form1, 'form2': form2 , 'msg':msg})
+            return render(request, 'WISH/add_supplier.html', {'form1': form1, 'form2': form2 , 'msg':msg})
         except:
-            return render(request, 'WISH/sup_lib.html', {'form1': form1, 'form2': form2})
+            return render(request, 'WISH/add_supplier.html', {'form1': form1, 'form2': form2})
     else:
         form = LoginForm(request.POST or None)
         if form.is_valid():
             user = authenticate(username=form.data['username'], password=form.data['password'])
             if user is not None:
                 login(request, user)
-                return redirect('WISH.views.sup_lib')# Redirect to a success page.
+                return redirect('WISH.views.add_supplier')# Redirect to a success page.
             else:
                 return render(request, 'registration/login2.html', {'error': 'Username and password does not match.', 'form':form})
         else:
             return render(request, 'registration/login2.html', {'form': form })
         form = LoginForm()
 
-def employee_lib(request):
+def add_employee(request):
     if request.user.is_authenticated():
         if request.method == "POST":
             form = Emlib(request.POST)
@@ -273,16 +273,16 @@ def employee_lib(request):
             form = Emlib()
         try:
             form = Emlib()
-            return render(request, 'WISH/employee_lib.html', {'form': form , 'msg':msg})
+            return render(request, 'WISH/add_employee.html', {'form': form , 'msg':msg})
         except:
-            return render(request, 'WISH/employee_lib.html', {'form': form })
+            return render(request, 'WISH/add_employee.html', {'form': form })
     else:
         form = LoginForm(request.POST or None)
         if form.is_valid():
             user = authenticate(username=form.data['username'], password=form.data['password'])
             if user is not None:
                 login(request, user)
-                return redirect('WISH.views.employee_lib')# Redirect to a success page.
+                return redirect('WISH.views.add_employee')# Redirect to a success page.
             else:
                 return render(request, 'registration/login2.html', {'error': 'Username and password does not match.', 'form':form})
         else:
