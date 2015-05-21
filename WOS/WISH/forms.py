@@ -3,7 +3,6 @@ from django import forms
 from WISH.models import Supplier, Product, PAR, GARV, CostCenter, \
         InventoryStat, Employee, IRRHeader, IRR, MIV
 from bootstrap3_datetime.widgets import DateTimePicker
-
 class ProductForm(forms.ModelForm):
     """ProductForm"""
 
@@ -379,6 +378,6 @@ class LoginForm(forms.Form):
 class SignUpForm(forms.Form):
     """SignUpForm"""
     dce = forms.CharField(max_length=255, required=True)
-    username = forms.CharField(max_length=255, required=True)
-    password = forms.CharField(widget=forms.PasswordInput, required=True)
+    username1 = forms.CharField(label='Username', max_length=255, required=True)
+    password1 = forms.CharField(widget=forms.PasswordInput, required=True, label='Password')
     email = forms.EmailField(required=False)
