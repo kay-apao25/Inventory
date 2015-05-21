@@ -572,10 +572,10 @@ def product_to_irr(request, pk, inv):
 
             if 'delete' in request.POST:
                 k = int(request.POST['delete'])
-                prod = Product.objects.get(id=prod_to_irr[k]['Product'])
+                prod = Product.objects.get(id=product[k]['Product'])
                 prod.is_irr = False
                 prod.save()
-                prod_to_irr.remove(prod_to_irr[k])
+                product.remove(product[k])
 
             #Non-empty forms are to be validated.
             elif form.is_valid() and iform.is_valid():
@@ -660,6 +660,7 @@ def product_to_irr(request, pk, inv):
                             irr.irr_no + ') was successfully added.'
                         iform = forms.IRRentrycontForm(inv=inv)
                         del prod_to_irr[:]
+                        del product[:]
                         irr.save()
                     else:
                         msg = 'Item (' + str(Product.objects.\
@@ -1005,6 +1006,7 @@ def product_to_garv(request, pk):
 prod_to_par = []
 def par(request, inv):
     """function"""
+    del product[:]
     if request.user.is_authenticated():
         prod_list = []
         error = ''
@@ -1018,7 +1020,17 @@ def par(request, inv):
             form = forms.PARForm(request.POST, inv=inv)
             iform = forms.ProducttoPARForm(request.POST, prodlist=prod_list)
 
-            if form.is_valid() and iform.is_valid():
+            if 'delete' in request.POST:
+                k = int(request.POST['delete'])
+                irr = IRR.objects.get(irr_no=inv)
+                for prod in irr.product:
+                    if prod['Product'] == prod_to_par[k]['Product']:
+                        prod['is_par'] = False 
+                irr.is_par = False
+                irr.save()
+                prod_to_par.remove(prod_to_par[k])
+
+            elif form.is_valid() and iform.is_valid():
                 par_entry = form.save(commit=False)
 
                 par_no = form.data['par_no']
@@ -1043,6 +1055,10 @@ def par(request, inv):
                     par_entry.wo_number = IRR.objects.get(irr_no=inv)
                     par_entry.par_date = time.strftime("%Y-%m-%d")
                     prod_to_par.append({'Product': iform.data['product'],\
+                                    'Quantity': iform.data['quantity'], \
+                                    'quantity_garv': iform.data['quantity'],\
+                                    'is_garv': False})
+                    product.append({'Product': int(iform.data['product']),\
                                     'Quantity': iform.data['quantity'], \
                                     'quantity_garv': iform.data['quantity'],\
                                     'is_garv': False})
@@ -1081,6 +1097,9 @@ def par(request, inv):
                     else:
                         msg = 1
                         iform = forms.ProducttoPARForm(prodlist=prod_list)
+                        for prod in product:
+                            pro = Product.objects.get(id=int(prod['Product']))
+                            prod['pros'] = pro
                 else:
                     msg = 2
         else:
@@ -1094,19 +1113,19 @@ def par(request, inv):
             return render(request, 'WISH/par_entry.html', \
                 {'form': form, 'iform': iform, 'remove_add': remove_add, \
                 'msg': 'PAR Record (PAR No. - ' + str(par_no) + ') \
-                is successfully added.'})
+                is successfully added.', 'product': product})
         elif int(msg) == 1:
             return render(request, 'WISH/par_entry.html', \
                 {'form': form, 'iform': iform, 'remove_add': remove_add, \
-                'msg': 'Item is successfully added.'})
+                'msg': 'Item is successfully added.', 'product': product})
         elif int(msg) == 2:
             return render(request, 'WISH/par_entry.html', {'form': form,\
              'iform': iform, 'remove_add': remove_add, \
                 'error': 'Entered product quantity to be assigned to this \
-                employee is greater than stocked items.'})
+                employee is greater than stocked items.', 'product': product})
         else:
             return render(request, 'WISH/par_entry.html', {'form': form, \
-                'iform': iform, 'remove_add': remove_add})
+                'iform': iform, 'remove_add': remove_add, 'product': product})
     else:
         form = forms.LoginForm(request.POST or None)
         if form.is_valid():
