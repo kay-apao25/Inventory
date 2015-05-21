@@ -51,6 +51,8 @@ def index(request):
                     user = User.objects.create_superuser(username=form1.data['username1'], first_name=form1.data['first_name'],\
                                                 last_name=form1.data['last_name'], password=form1.data['password1'],\
                                                 email=None)
+                    emp.user_id_id = user.id
+                    emp.save()
                     msg = "You've successfully created an account."
                     form = LoginForm()
                     form1 = SignUpForm()

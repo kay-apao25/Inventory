@@ -25,7 +25,7 @@
       </li>
     </ul>
 <br>
-<div align="right"><a href="{% url 'WISH.views.add_inv_stat' %}" class="save btn btn-info">
+<div align="right"><a href="{% url 'add_inv_stat' %}" class="save btn btn-info">
     <i class="glyphicon glyphicon-plus"></i> Add Inventory station</a></div><br>
 <div id="inv">
 {% if inv_list|length == 0 %}
@@ -56,7 +56,7 @@
       {% for invs in inv_list %}
       <tr>
         <td>
-          <a href="{% url 'WISH.views.inv_stat_details' pk=invs.inv_station_no %}">
+          <a href="{% url 'invstat_details' pk=invs.inv_station_no %}">
             <center>{{ invs.inv_station_no }}</center>
           </a>
         </td>

@@ -36,7 +36,7 @@
       	{% for product in product_list %}
       		<tr>
             <td>
-              <a href="{% url 'WISH.views.product_details' pk=product.pk %}">
+              <a href="{% url 'prod_details' pk=product.pk %}">
               <center>{{ product.item_name}}-{{product.description}}</center></a>
             </td>
             <td>

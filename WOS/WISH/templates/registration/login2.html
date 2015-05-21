@@ -62,8 +62,8 @@
                 <img src={% static 'images/header1.png' %}></img>
 
                 <span class="right">
-                        <a href="{% url 'WISH.views.guest' %}" id="guest" class="login"
-                            style="text-decoration:none;margin-right:10px">Guest</a>
+                        <!--<a href="{% url 'guest' %}" id="guest" class="login"
+                            style="text-decoration:none;margin-right:10px">Guest</a>-->
                         <a href="#popup" id="s_in" class="login" data-toggle="modal" data-target="#anotherModal"
                             style="text-decoration:none;margin-right:10px">Sign Up</a>
                         <a href="#popup" id="l_in" class="login" data-toggle="modal" data-target="#smallModal"
@@ -89,7 +89,7 @@
                     <strong><p style="font-size:12px; text-align:center;">{{ error }}</p></strong>
                 </div>
                 {% endif %}
-                <form method="post" action="{% url 'WISH.views.index' %}">
+                <form method="post" action="{% url 'index' %}">
                   <br>
                 {% for field in form %}
                 {% csrf_token %}
@@ -136,7 +136,7 @@
                     {% endif %}
 
 
-                    <form method="post" action="{% url 'WISH.views.index' %}">
+                    <form method="post" action="{% url 'index' %}">
                     {% for field in form1 %}
                     {% csrf_token %}
                     <table>

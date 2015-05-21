@@ -65,7 +65,7 @@
      	  {% for irr in irr_list %}
       	 <tr>
            <td>
-              <a href="{% url 'WISH.views.irr_form' pk=irr.pk %}">
+              <a href="{% url 'irr_form' pk=irr.pk %}">
               <center>{{ irr.pk }}</center>
               </a>
             </td>

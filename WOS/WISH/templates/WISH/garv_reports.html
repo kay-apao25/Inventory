@@ -95,7 +95,7 @@
    	{% for garv in garv_list %}
      	<tr>
         <td>
-          <a href="{% url 'WISH.views.garv_form' pk=garv.garv_no %}">
+          <a href="{% url 'garv_form' pk=garv.garv_no %}">
             {{garv.garv_no}}
           </a>
         </td>

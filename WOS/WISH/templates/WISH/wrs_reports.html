@@ -62,7 +62,7 @@
    	{% for wrs in wrs_list %}
      	<tr>
         <td>
-          <a href="{% url 'WISH.views.wrs_form' pk=wrs.wrs_number %}">
+          <a href="{% url 'wrs_form' pk=wrs.wrs_number %}">
             {{wrs.wrs_number}}
           </a>
         </td>

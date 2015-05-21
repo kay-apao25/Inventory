@@ -25,7 +25,7 @@
       </li>
     </ul>
 <br>
-<div align="right"><a href="{% url 'WISH.views.add_cost_center' %}" class="save btn btn-info">
+<div align="right"><a href="{% url 'add_cost_center' %}" class="save btn btn-info">
     <i class="glyphicon glyphicon-plus"></i> Add Cost Center</a></div><br>
 <div id="cc">
 {% if cc_list|length == 0 %}
@@ -58,7 +58,7 @@
   <tr>
    <td>
 
-     <center><a href="{% url 'WISH.views.cost_center_details' pk=coss.pk %}">{{coss.cost_center_name}}</a></center>
+     <center><a href="{% url 'costcen_details' pk=coss.pk %}">{{coss.cost_center_name}}</a></center>
      </a>
    </td>
 

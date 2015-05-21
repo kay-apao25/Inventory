@@ -22,7 +22,7 @@
       <div class="alert alert-warning" style="width:400px">
         {{ exit }}
       </div>
-      <div align="center"><a href= "{% url 'WISH.views.index' %}"><i class="glyphicon glyphicon-share-alt"></i> Exit</a></div>
+      <div align="center"><a href= "{% url 'index' %}"><i class="glyphicon glyphicon-share-alt"></i> Exit</a></div>
     {% else %}
       <strong><p style="font-size:15px">Fields with asterisk are required.</p></strong>
       {%if msg%}

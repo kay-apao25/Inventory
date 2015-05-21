@@ -61,7 +61,7 @@
       	{% for par in par_list %}
       		<tr>
       			<td>
-              <a href="{% url 'WISH.views.par_form' pk=par.pk %}">
+              <a href="{% url 'par_form' pk=par.pk %}">
                 {{par.par_no}}
               </a>
             </td>

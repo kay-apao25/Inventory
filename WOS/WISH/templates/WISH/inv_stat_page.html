@@ -4,7 +4,7 @@
     {% for invs in inv %}
     <tr>
       <td>
-        <a href="{% url 'WISH.views.inv_stat_details' pk=invs.inv_station_no %}">
+        <a href="{% url 'invstat_details' pk=invs.inv_station_no %}">
         <center>{{ invs.inv_station_no }}</center>
         </a>
       </td>

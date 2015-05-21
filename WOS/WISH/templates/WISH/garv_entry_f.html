@@ -5,7 +5,7 @@
   <div class="alert alert-warning" style="width:400px">
     {{ exit }}
   </div>
-  <div align="center"><a href= "{% url 'WISH.views.index' %}"><i class="glyphicon glyphicon-share-alt"></i> Exit </a></div>
+  <div align="center"><a href= "{% url 'index' %}"><i class="glyphicon glyphicon-share-alt"></i> Exit </a></div>
 {% else %}
   <h2 align="center"> Select the PAR Record to be created with GARV Report </h2>
   <br><br>
@@ -33,7 +33,7 @@
       	{% for par in pars %}
       		<tr>
       			<td>
-              <a href="{% url 'WISH.views.product_to_garv' pk=par.pk  %}">
+              <a href="{% url 'new_garv' pk=par.pk  %}">
                 {{par.par_no}}
               </a>
             </td>

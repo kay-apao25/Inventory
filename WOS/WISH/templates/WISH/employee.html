@@ -25,7 +25,7 @@
       </li>
     </ul>
 <br>
-<div align="right"><a href="{% url 'WISH.views.add_employee' %}" class="save btn btn-info">
+<div align="right"><a href="{% url 'add_employee' %}" class="save btn btn-info">
     <i class="glyphicon glyphicon-plus"></i> Add Employee</a></div><br>
 <div id="employee">
 {% if em_list|length == 0 %}
@@ -58,7 +58,7 @@
 {% for ems in em_list %}
   <tr>
    <td>
-     <a href="{% url 'WISH.views.employee_details' dce=ems.dce %}">
+     <a href="{% url 'emp_details' dce=ems.dce %}">
        {{ems.dce}}
      </a>
    </td>

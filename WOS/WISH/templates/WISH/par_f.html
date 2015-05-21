@@ -5,7 +5,7 @@
   <div class="alert alert-warning" style="width:400px">
     {{ exit }}
   </div>
-  <div align="center"><a href= "{% url 'WISH.views.index' %}"><i class="glyphicon glyphicon-share-alt"></i> Exit </a></div>
+  <div align="center"><a href= "{% url 'index' %}"><i class="glyphicon glyphicon-share-alt"></i> Exit </a></div>
 {% else %}
   <div class="page-header">
     <h2 align="center">Select IRR Record to be created with PAR Report</h2>
@@ -34,7 +34,7 @@
       {% for irr in irrs %}
         <tr>
           <td>
-            <a href="{% url 'WISH.views.par' inv=irr.irr_no%}">
+            <a href="{% url 'new_par' inv=irr.irr_no%}">
               {{ irr.irr_no }}
             </a>
           </td>

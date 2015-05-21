@@ -179,18 +179,22 @@ Image placeholders: placemi.com
 	        <div class="collapse navbar-collapse" id="myNavbar">
 	          <ul class="nav navbar-nav">
 
-	            <li><a href="{% url 'WISH.views.index' %}">Dashboard</a></li>
+                {% if request.user.is_superuser %}
+	               <li><a href="{% url 'index' %}">Dashboard</a></li>
+                {% else %}
+                    <li><a href="{% url 'guest' %}">Dashboard</a></li>
+                {% endif %}
 
 							<li id="addrec" class="dropdown">
 	              <a class="dropdown-toggle" data-toggle="dropdown" href="#">Add Records<span class="caret"></span></a>
 	              <ul class="dropdown-menu">
-	                <li><a href="{% url 'WISH.views.product_new' %}">Add Product Record</a></li>
+	                <li><a href="{% url 'new_product' %}">Add Product Record</a></li>
 	                <li class="dropdown-submenu"><a href="#">Add File Record</a>
 	                	<ul class="dropdown-menu">
-	                		<li><a href="{% url 'WISH.views.irr_entry' %}">Add IRR Record</a></li>
-	                		<li><a href="{% url 'WISH.views.miv_entry' %}">Add MIV Record</a></li>
-	                		<li><a href="{% url 'WISH.views.par_f' %}">Add PAR Record</a></li>
-	                		<li><a href="{% url 'WISH.views.garv_entry_f'%}">Add GARV Record</a></li>
+	                		<li><a href="{% url 'new_irr' %}">Add IRR Record</a></li>
+	                		<li><a href="{% url 'new_miv' %}">Add MIV Record</a></li>
+	                		<li><a href="{% url 'new_par_s' %}">Add PAR Record</a></li>
+	                		<li><a href="{% url 'new_garv_s'%}">Add GARV Record</a></li>
 	                	</ul>
 	                </li>
 	              </ul>
@@ -219,11 +223,11 @@ Image placeholders: placemi.com
 							<li><a href="#"><span></span> About Us</a></li>
 							{% if request.user.is_superuser %}
 								<li><a>Hi, {{ user.username }}!</a></li>
-								<li><a href="{% url 'django.contrib.auth.views.logout'%}"><span class="glyphicon glyphicon-log-out"></span>
+								<li><a href="{% url 'logout' %}"><span class="glyphicon glyphicon-log-out"></span>
 									 Log out</a></li>
 							{% else %}
 								<li><a>Hi, Guest!</a></li>
-								<li><a href="{% url 'WISH.views.index'%}"><span class="glyphicon glyphicon-log-out"></span> Exit</a></li>
+								<li><a href="{% url 'index' %}"><span class="glyphicon glyphicon-log-out"></span> Exit</a></li>
 							{% endif %}
 
 
@@ -265,7 +269,7 @@ Image placeholders: placemi.com
                             <div align="center">
                                  <div class="thumbnail" style="width:500px; height:86px">
                         	{% for prod in product%}
-                                    <a href="{% url 'WISH.views.product_details' pk=prod.pk%}">
+                                    <a href="{% url 'prod_details' pk=prod.pk%}">
                                     	{{prod.item_name}} - {{ prod.description }}
                                     </a>
                             {% endfor %}
@@ -293,7 +297,7 @@ Image placeholders: placemi.com
                             <div align="center">
                                  <div class="thumbnail" style="width:500px; height:86px;">
                                  	{% if irr != null %}
-                                		<a href="{% url 'WISH.views.irr_form' pk=irr.pk%}">
+                                		<a href="{% url 'irr_form' pk=irr.pk%}">
                                     		IRR Record: {{irr.irr_no}} - {{irr.date_recv}}
                                     	</a>
                                     {%else%}
@@ -301,7 +305,7 @@ Image placeholders: placemi.com
                                     {% endif %}
                                     <br>
                                     {% if par != null %}
-                                        <a href="{% url 'WISH.views.par_form' pk=par.pk%}">
+                                        <a href="{% url 'par_form' pk=par.pk%}">
                                             PAR Record: {{par.par_no}} - {{par.date_acquired}}
                                         </a>
                                     {%else%}
@@ -309,7 +313,7 @@ Image placeholders: placemi.com
                                     {% endif %}
                                     <br> 
                                     {% if garv != null %}
-                                        <a href="{% url 'WISH.views.garv_form' pk=garv.pk%}">
+                                        <a href="{% url 'garv_form' pk=garv.pk%}">
                                             GARV Record: {{garv.garv_no}} - {{garv.garv_date}}
                                         </a>
                                     {%else%}
@@ -339,7 +343,7 @@ Image placeholders: placemi.com
                             <div align="center">
                                 <div class="thumbnail" style="width:500px; height:86px;">
                                 	{% if inv != null %}
-                                		<a href="{% url 'WISH.views.inv_stat_details' pk=inv.pk%}">
+                                		<a href="{% url 'invstat_details' pk=inv.pk%}">
                                     		Inventory Station: {{inv.inv_station_no}} - {{inv.station_description}}
                                     	</a>
                                     {%else%}
@@ -347,7 +351,7 @@ Image placeholders: placemi.com
                                    	{% endif %}
                                     <br>
                                     {% if cc != null %}
-                                        <a href="{% url 'WISH.views.cost_center_details' pk=cc.pk%}">
+                                        <a href="{% url 'costcen_details' pk=cc.pk%}">
                                             Cost Center: {{cc.id}} - <br> {{cc.functional_group}}
                                         </a>
                                     {%else%}
@@ -355,7 +359,7 @@ Image placeholders: placemi.com
                                     {% endif %}
                                     <br>
                                     {% if sup != null %}
-                                        <a href="{% url 'WISH.views.supplier_details' pk=sup.pk%}">
+                                        <a href="{% url 'supplier_details' pk=sup.pk%}">
                                             Supplier: {{sup.supplier_number}} - <br> {{sup.supplier_name}}
                                         </a>
                                     {%else%}
