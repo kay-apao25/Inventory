@@ -1,5 +1,6 @@
 """models"""
 from django.db import models
+from django.contrib.auth.models import User
 from simple_history.models import HistoricalRecords
 from json_field import JSONField
 
@@ -55,6 +56,7 @@ class Employee(models.Model):
     position = models.CharField(max_length=20)
     history = HistoricalRecords()
     is_delete = models.BooleanField(default=False)
+    user_id = models.ForeignKey(User, default=1) 
 
     def __unicode__(self):
         return self.name
