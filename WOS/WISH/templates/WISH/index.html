@@ -197,7 +197,7 @@ Image placeholders: placemi.com
 	            </li>
 
 
-
+                {% if request.user.is_superuser %}
 	            <li class="dropdown">
 	              <a class="dropdown-toggle" data-toggle="dropdown" href="#">Reports<span class="caret"></span></a>
 	              <ul class="dropdown-menu">
@@ -205,9 +205,12 @@ Image placeholders: placemi.com
 	              	<li><a href="{% url 'product_reports' %}">Product Reports</a></li>
 	              </ul>
 	            </li>
+                {% else %}
+                <li><a href="{% url 'wrs_reports1' %}">WRS Reports</a></li>
+                {% endif %}
 
-							<li class="dropdown">
-								<li><a id="lib_list" href="{% url 'inv_stat' %}"><span ></span> Libraries </a></li>
+				<li>
+					<li><a id="lib_list" href="{% url 'inv_stat' %}"><span ></span> Libraries </a></li>
 	            </li>
 
 	          </ul>

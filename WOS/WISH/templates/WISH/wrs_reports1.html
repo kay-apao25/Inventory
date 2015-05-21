@@ -2,92 +2,76 @@
 {% block content %}
 <div class="container" style="width:50%;">
 
-<ul class="nav nav-tabs" role="tablist">
-      <li>
-          <a id='inv_stat' href="{% url 'inv_stat' %}">
-              Inventory Station
-          </a>
-      </li>
-      <li >
-          <a id='cc' href="{% url 'cost_center' %}" >
-              Cost Center
-          </a>
-      </li>
-       <li>
-          <a id='supplier' href="{% url 'supplier' %}">
-              Supplier
-          </a>
-      </li>
-      <li class="active">
-          <a id='employee' href="{% url 'employee' %}">
-              Employee
-          </a>
-      </li>
-    </ul>
-<br>
-<div align="right"><a href="{% url 'WISH.views.add_employee' %}" class="save btn btn-info">
-    <i class="glyphicon glyphicon-plus"></i> Add Employee</a></div><br>
-<div id="employee">
-{% if em_list|length == 0 %}
+<div id="wrs">
+{% if wrs_list|length == 0 %}
 <br>
 <br>
   <div class="alert alert-warning" style="width:400px">
-    No records found.
+    No WRS Record(s) found.
   </div>
 {% else %}
-{% if em_list|length <= 6  %}
+<br>
+  {% if wrs_list|length <= 6  %}
   <div class="col-md-2"></div>
   {% else %}
   <div class="col-md-4">
     <form action="#" method="get">
       <div class="input-group">
         <!-- USE TWITTER TYPEAHEAD JSON WITH API TO SEARCH -->
-          <input class="form-control" id="system-search5" name="q" placeholder="Search for" required>
+          <input class="form-control" id="system-search3" name="q" placeholder="Search for" required>
       </div>
     </form>
   </div>
   {% endif %}
 <div class="col-md-8">
-  <table class="table table-list-search5">
-   <thead>
-     <tr>
-       <th>DCE</th>
-       <th>Name</th>
-     </tr>
-   </thead>
-{% for ems in em_list %}
-  <tr>
-   <td>
-     <a href="{% url 'WISH.views.employee_details' dce=ems.dce %}">
-       {{ems.dce}}
-     </a>
-   </td>
+       <table class="table table-list-search3">
+  
+    <thead>
+    	<th>WRS No.</th>
+      <th>REQUISITIONED BY:</th>
+      <th>APPROVED BY:</th>
+      <th>DATE:</th>
+    </thead>
+   	{% for wrs in wrs_list %}
+     	<tr>
+        <td>
+          <a href="{% url 'WISH.views.wrs_form' pk=wrs.wrs_number %}">
+            {{wrs.wrs_number}}
+          </a>
+        </td>
 
-   <td>
-       {{ems.name}}
-   </td>
+        <td>
+          {{ wrs.irr_headkey.dce_custodian.name }}
+        </td>
 
+        <td>
+          {{ wrs.irr_headkey.dce_user.name}}
+        </td>
 
- </tr>
-{% endfor %}
-</table>
+        <td>
+          {% now "DATE_FORMAT" %}
+        </td>
+
+      </tr>
+    {% endfor %}
+  </table>
+  </div>
   {% endif %}
   </div>
   </div>
-
-  <script type="text/javascript">
+    <script type="text/javascript">
   $(document).ready(function() {
     var activeSystemClass = $('.list-group-item.active');
 
     //something is entered in search form
-    $('#system-search5').keyup( function() {
+    $('#system-search3').keyup( function() {
        var that = this;
         // affect all table rows on in systems table
-        var tableBody = $('.table-list-search5 tbody');
-        var tableRowsClass = $('.table-list-search5 tbody tr');
+        var tableBody = $('.table-list-search3 tbody');
+        var tableRowsClass = $('.table-list-search3 tbody tr');
         $('.search-sf').remove();
         tableRowsClass.each( function(i, val) {
-
+        
             //Lower text for case insensitive
             var rowText = $(val).text().toLowerCase();
             var inputText = $(that).val().toLowerCase();
@@ -107,7 +91,7 @@
             {
                 //hide rows
                 tableRowsClass.eq(i).hide();
-
+                
             }
             else
             {

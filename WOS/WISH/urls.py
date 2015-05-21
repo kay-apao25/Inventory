@@ -106,6 +106,11 @@ urlpatterns = [
         + ' ' + str(request.user.last_name)).cost_center_no)))]),
         context_object_name='irr_list', template_name=\
         'WISH/product_reports.html')(request), name='product_reports'),
+    #for guest (start)
+    url(r'^wrs_reports1/$', lambda request: ListView.as_view(model=models.IRR,
+        context_object_name='irr_list', template_name=\
+        'WISH/wrs_reports1.html')(request), name='wrs_reports1'),
+    #for guest (end)
     #URL patterns for File and Product Reports (end)
 
     #URL patterns for Viewing Libraries (start)

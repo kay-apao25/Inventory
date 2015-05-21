@@ -56,7 +56,7 @@ class Employee(models.Model):
     position = models.CharField(max_length=20)
     history = HistoricalRecords()
     is_delete = models.BooleanField(default=False)
-    user_id = models.ForeignKey(User, default=9) 
+    user_id = models.ForeignKey(User, default=1) 
 
     def __unicode__(self):
         return self.name
