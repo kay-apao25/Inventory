@@ -179,7 +179,7 @@ Image placeholders: placemi.com
 	        <div class="collapse navbar-collapse" id="myNavbar">
 	          <ul class="nav navbar-nav">
 
-	            <li class="active"><a href="{% url 'WISH.views.index' %}">Dashboard</a></li>
+	            <li><a href="{% url 'WISH.views.index' %}">Dashboard</a></li>
 
 							<li id="addrec" class="dropdown">
 	              <a class="dropdown-toggle" data-toggle="dropdown" href="#">Add Records<span class="caret"></span></a>
@@ -249,18 +249,26 @@ Image placeholders: placemi.com
                         <h4 class="panel-header">Latest Product Reports</h4>
                         <small>A short report goes here.</small>
                     </div>
-                    <div class="panel-thumbnails">
+                    <div class="panel-thumbnails" style="text-align:center">
                         <div class="row">
+                            {% if product == null%}
+                            <div align="center">
+                                <div class="thumbnail" style="width:500px; height:86px">
+                                <br>
+                                    <center>No new product reports</center>
+                                </div>
+                            </div>
+                            {% else %}
+                            <div align="center">
+                                 <div class="thumbnail" style="width:500px; height:86px">
                         	{% for prod in product%}
-                            <div class="col-xs-4">
-                                <div class="thumbnail" style="background-image:url('{% static 'images/prod.jpg' %}')">
                                     <a href="{% url 'WISH.views.product_details' pk=prod.pk%}">
                                     	{{prod.item_name}} - {{ prod.description }}
                                     </a>
+                            {% endfor %}
                                 </div>
                             </div>
-                            {% endfor %}
-
+                            {% endif %}
                         </div>
                     </div>
                 </div>
@@ -279,38 +287,32 @@ Image placeholders: placemi.com
                     </div>
                     <div class="panel-thumbnails">
                         <div class="row">
-                            <div class="col-xs-4">
-                                <div class="thumbnail" style="background-image:url('{% static 'images/file6.jpeg' %}')">
-                                	{% if irr != null %}
+                            <div align="center">
+                                 <div class="thumbnail" style="width:500px; height:86px;">
+                                 	{% if irr != null %}
                                 		<a href="{% url 'WISH.views.irr_form' pk=irr.pk%}">
-                                    		{{irr.irr_no}} - <br> {{irr.date_recv}}
+                                    		IRR Record: {{irr.irr_no}} - {{irr.date_recv}}
                                     	</a>
                                     {%else%}
-                                    	<strong>No new <br> report recorded.</strong>
+                                    	<strong>IRR Record: No new report recorded.</strong>
                                     {% endif %}
-                                </div>
-                            </div>
-                            <div class="col-xs-4">
-                            	<div class="thumbnail" style="background-image:url('{% static 'images/file6.jpeg' %}')">
-                                	{% if par != null %}
-                                		<a href="{% url 'WISH.views.par_form' pk=par.pk%}">
-                                    		{{par.par_no}} - {{par.date_acquired}}
-                                    	</a>
-                                    	<br>
+                                    <br>
+                                    {% if par != null %}
+                                        <a href="{% url 'WISH.views.par_form' pk=par.pk%}">
+                                            PAR Record: {{par.par_no}} - {{par.date_acquired}}
+                                        </a>
                                     {%else%}
-                                    	<strong>No new <br> report recorded.</strong>
+                                        <strong>PAR Record: No new report recorded.</strong>
                                     {% endif %}
-                                </div>
-                            </div>
-                            <div class="col-xs-4">
-                           		<div class="thumbnail" style="background-image:url('{% static 'images/file6.jpeg' %}')">
-                                	{% if garv != null %}
-                                		<a href="{% url 'WISH.views.garv_form' pk=garv.pk%}">
-                                    		{{garv.garv_no}} - {{garv.garv_date}}
-                                    	</a>
+                                    <br> 
+                                    {% if garv != null %}
+                                        <a href="{% url 'WISH.views.garv_form' pk=garv.pk%}">
+                                            GARV Record: {{garv.garv_no}} - {{garv.garv_date}}
+                                        </a>
                                     {%else%}
-                                    	<strong>No new <br> report recorded.</strong>
-                                   	{% endif %}
+                                        <strong>GARV Record: No new report recorded.</strong>
+                                    {% endif %}
+                                    <br>
                                 </div>
                             </div>
                         </div>

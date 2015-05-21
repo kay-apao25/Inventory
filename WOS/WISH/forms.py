@@ -378,6 +378,8 @@ class LoginForm(forms.Form):
 class SignUpForm(forms.Form):
     """SignUpForm"""
     dce = forms.CharField(max_length=255, required=True)
+    first_name = forms.CharField(max_length=255, required=True)
+    last_name = forms.CharField(max_length=255, required=True)
     username1 = forms.CharField(label='Username', max_length=255, required=True)
     password1 = forms.CharField(widget=forms.PasswordInput, required=True, label='Password')
-    email = forms.EmailField(required=False)
+
