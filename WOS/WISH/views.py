@@ -569,8 +569,15 @@ def product_to_irr(request, pk, inv):
             form = forms.ProducttoIRRForm(request.POST, inv=inv)
             iform = forms.IRRentrycontForm(request.POST, inv=inv)
 
+            if 'delete' in request.POST:
+                k = int(request.POST['delete'])
+                prod = Product.objects.get(id=prod_to_irr[k]['Product'])
+                prod.is_irr = False
+                prod.save()
+                prod_to_irr.remove(prod_to_irr[k])
+
             #Non-empty forms are to be validated.
-            if form.is_valid() and iform.is_valid():
+            elif form.is_valid() and iform.is_valid():
 
                 #To check if the desired quantity of products
                     #to be delivered are delivered already.
@@ -650,7 +657,10 @@ def product_to_irr(request, pk, inv):
                         msg = 'Item (' + str(Product.objects.\
                             get(id=int(form.data['product'])).\
                             item_name) + ') was successfully added.'
-                form = forms.ProducttoIRRForm(inv=inv)
+                        for product in prod_to_irr:
+                            pro = Product.objects.get(id=product['Product'])
+                            product['pros'] = pro
+            form = forms.ProducttoIRRForm(inv=inv)
         else:
             form = forms.ProducttoIRRForm(inv=inv)
             iform = forms.IRRentrycontForm(inv=inv)
@@ -672,17 +682,17 @@ def product_to_irr(request, pk, inv):
                     {'exit': exit, 'remove_add': remove_add, 'msg': msg})
             except:
                 return render(request, 'WISH/product_to_irr.html', \
-                    {'form': form, 'iform': iform, \
-                    'remove_add': remove_add, 'error': error})
+                    {'form': form, 'iform': iform, 'remove_add': \
+                    remove_add, 'error': error, 'product': prod_to_irr})
         except:
             try:
                 return render(request, 'WISH/product_to_irr.html', \
                     {'form': form, 'iform': iform, 'msg': msg, \
-                    'remove_add': remove_add, 'pk':pk, 'inv': inv})
+                    'remove_add': remove_add, 'product': prod_to_irr})
             except:
                 return render(request, 'WISH/product_to_irr.html', \
                     {'form': form, 'iform': iform, 'remove_add': \
-                    remove_add, 'pk':pk, 'inv': inv})
+                    remove_add, 'product': prod_to_irr})
     else:
         form = forms.LoginForm(request.POST or None)
         if form.is_valid():
