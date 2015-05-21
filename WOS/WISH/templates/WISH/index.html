@@ -9,6 +9,9 @@
 	    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 	    <script src="{% static 'js/bootstrap.min.js' %}"></script>
 	    <script src="{% static 'js/dropdown.min.js' %}"></script>
+			{% if request.user.is_anonymous %}
+			<script src="{% static 'js/index.js' %}"></script>
+			{% endif %}
 
 			<!--Datepicker-->
       <link href="{% static 'css/bootstrap-datetimepicker.min.css' %}" type="text/css" media="all" rel="stylesheet">
@@ -204,9 +207,9 @@ Image placeholders: placemi.com
 	            </li>
 
 							<li class="dropdown">
-								<li><a href="{% url 'inv_stat' %}"><span ></span> Libraries </a></li>
-
+								<li><a id="lib_list" href="{% url 'inv_stat' %}"><span ></span> Libraries </a></li>
 	            </li>
+
 	          </ul>
 
 	          <ul class="nav navbar-nav navbar-right">
