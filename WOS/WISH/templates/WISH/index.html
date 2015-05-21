@@ -252,7 +252,7 @@ Image placeholders: placemi.com
                             <div align="center">
                                 <div class="thumbnail" style="width:500px; height:86px">
                                 <br>
-                                    <center>No new product reports</center>
+                                    <strong>No new product reports</strong>
                                 </div>
                             </div>
                             {% else %}
@@ -330,38 +330,31 @@ Image placeholders: placemi.com
                     </div>
                     <div class="panel-thumbnails">
                         <div class="row">
-                            <div class="col-xs-4">
-                                <div class="thumbnail" >
+                            <div align="center">
+                                <div class="thumbnail" style="width:500px; height:86px;">
                                 	{% if inv != null %}
                                 		<a href="{% url 'WISH.views.inv_stat_details' pk=inv.pk%}">
-                                    		{{inv.inv_station_no}} - {{inv.station_description}}
+                                    		Inventory Station: {{inv.inv_station_no}} - {{inv.station_description}}
                                     	</a>
                                     {%else%}
-                                    	None
+                                    	<strong>No new inventory station added.</strong>
                                    	{% endif %}
-                                </div>
-                            </div>
-                            <div class="col-xs-4">
-                                <div class="thumbnail" >
-                                	{% if cc != null %}
-                                		<a href="{% url 'WISH.views.cost_center_details' pk=cc.pk%}">
-                                    		{{cc.id}} - <br> {{cc.functional_group}}
-                                    	</a>
+                                    <br>
+                                    {% if cc != null %}
+                                        <a href="{% url 'WISH.views.cost_center_details' pk=cc.pk%}">
+                                            Cost Center: {{cc.id}} - <br> {{cc.functional_group}}
+                                        </a>
                                     {%else%}
-                                    	None
-                                   	{% endif %}
-                                </div>
-                            </div>
-                            <div class="col-xs-4">
-                                <div class="thumbnail"r
-                                >
-                                	{% if sup != null %}
-                                		<a href="{% url 'WISH.views.supplier_details' pk=sup.pk%}">
-                                    		{{sup.supplier_number}} - <br> {{sup.supplier_name}}
-                                    	</a>
+                                        <strong>No new cost center added.</strong>
+                                    {% endif %}
+                                    <br>
+                                    {% if sup != null %}
+                                        <a href="{% url 'WISH.views.supplier_details' pk=sup.pk%}">
+                                            Supplier: {{sup.supplier_number}} - <br> {{sup.supplier_name}}
+                                        </a>
                                     {%else%}
-                                    	None
-                                   	{% endif %}
+                                        <strong>No new supplier added.</strong>
+                                    {% endif %}
                                 </div>
                             </div>
                         </div>
