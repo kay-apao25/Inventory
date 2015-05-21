@@ -33,11 +33,16 @@
             <li><span>Image 05</span></li>
             <li><span>Image 06</span></li>
         </ul>
-        {% if error or msg %}
+        {% if error1 or msg or form1.errors%}
+        <script type="text/javascript">
+            $( document ).ready( function() {
+                $('#anotherModal').modal({show:true});
+            });
+        </script>
+        {% elif error or form.errors %}
         <script type="text/javascript">
             $( document ).ready( function() {
                 $('#smallModal').modal({show:true});
-                $('#anotherModal').modal({show:true});
             });
         </script>
         {% endif %}

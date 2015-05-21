@@ -53,7 +53,7 @@ def index(request):
                     form1 = SignUpForm()
                     return render(request, 'registration/login2.html', {'form':form, 'form1': form1, 'msg': msg })
                 else:
-                    return render(request, 'registration/login2.html', {'error': 'Does not match any custodian profile.', 'form':form, 'form1': form1 })
+                    return render(request, 'registration/login2.html', {'error1': 'Does not match any custodian profile.', 'form':form, 'form1': form1 })
         elif 'login' in request.POST:
             form1 = SignUpForm(request.POST or None)
             form = LoginForm(request.POST or None)
