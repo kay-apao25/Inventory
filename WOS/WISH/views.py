@@ -13,6 +13,8 @@ from django.contrib.auth.models import User
 def index(request):
     if request.user.is_authenticated():
         product = Product.objects.order_by('id')[:3]
+        if len(product) == 0:
+            product = None
         try:
             irr = IRR.objects.latest('wrs_number')
         except:
@@ -46,8 +48,9 @@ def index(request):
                 dce = form1.data['dce']
                 emp = Employee.objects.get(dce=dce)
                 if emp.position == "Property Custodian":
-                    user = User.objects.create_superuser(username=form1.data['username1'], email=form1.data['email'],\
-                                                password=form1.data['password1'])
+                    user = User.objects.create_superuser(username=form1.data['username1'], first_name=form1.data['first_name'],\
+                                                last_name=form1.data['last_name'], password=form1.data['password1'],\
+                                                email=None)
                     msg = "You've successfully created an account."
                     form = LoginForm()
                     form1 = SignUpForm()

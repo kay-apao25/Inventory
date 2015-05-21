@@ -118,7 +118,7 @@
                     <h4 class="modal-title" id="myModalLabel">Sign Up</h4>
                     <p>Note: Only custodians can sign up.</p>
                   </div>
-                  <div class="modal-body" id="mycontent">
+                  <div class="modal-body" id="mycontent" style="padding-top: 0px;">
                     {% if msg %}
                         <div class="alert alert-success" style="width:270px; height:50px">
                             <strong><p style="font-size:12px; text-align:center;">{{ msg }}</p></strong>
@@ -136,15 +136,13 @@
                     {% csrf_token %}
                     <table>
                     <tr>
-                        <td>{{ field | bootstrap_horizontal:'col-lg-4' }}</td>
-                    </tr>
-                    <tr>
-                      <td> <br> </td>
+                        <td>{{ field | bootstrap_horizontal:'col-lg-5' }}</td><br>
                     </tr>
                     </table>
                     {% endfor %}
+                    <br>
                     <div align="center" class="modal-footer">
-                        <button name="signup" type="submit" class="save btn btn-info" id="save">Save</button>
+                        <button name="signup" type="submit" style="margin-right: 90px;" class="save btn btn-info" id="save">Save</button>
                     </div>
                     </form>
 

@@ -105,8 +105,9 @@ urlpatterns = [
         + ' ' + str(request.user.last_name)).cost_center_no)))]),
         context_object_name='irr_list', template_name=\
         'WISH/product_reports.html')(request), name='product_reports'),
-    #URL patterns for File and Product Reports (start)
+    #URL patterns for File and Product Reports (end)
 
+    #URL patterns for Viewing Libraries (start)
     url(r'^inv_stat/$', ListView.as_view(model=models.InventoryStat, \
         context_object_name='inv_list',\
         template_name='WISH/inv_stat.html'), name='inv_stat'),
@@ -119,6 +120,5 @@ urlpatterns = [
     url(r'^employee/$', ListView.as_view(model=models.Employee, \
         context_object_name='em_list',\
         template_name='WISH/employee.html'), name='employee'),
-    
-    
+    #URL patterns for Viewing Libraries (end)
 ]
