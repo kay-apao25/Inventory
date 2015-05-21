@@ -29,6 +29,21 @@
     {% endif %}
       <table width="50%">
     <tr>
+    {% if product|length != 0%}
+            {% for prod in product %}
+            <td>
+            <div class="form-group">
+            <div class="control-label">
+              Product: {{prod.pros.item_name}} - {{prod.pros.description}},<br>
+              Quantity Accepted: {{prod.quantity_accepted}},<br>
+              Quantity Rejected: {{prod.quantity_accepted}},<br>
+              Quantity Balance: {{prod.quantity_balance}} <br>
+            </div>
+            <button type="submit" name="delete" value="{{forloop.counter|add:'-1'}}" class="save btn btn-default">Delete</button>
+            </div>
+            </td>
+    {% endfor %}
+    {% endif %}
     <td style="padding:20px">
      {% for field in iform %}
       &nbsp;&nbsp;{{field | bootstrap_horizontal:'col-lg-4'}} &nbsp;&nbsp;&nbsp;
