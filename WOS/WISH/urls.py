@@ -11,6 +11,7 @@ urlpatterns = [
     #URL patterns for Log In and Out (start)
     url(r'^login/$', 'django.contrib.auth.views.login', name='login'),
     url(r'^logout/$', 'django.contrib.auth.views.logout', {'next_page': '/'}),
+    url(r'^guest/$', views.guest, name='guest'),
     #URL patterns for Log In and Out (end)
 
     #URL patterns for File and Product Fill-Up Forms (start)
@@ -42,7 +43,7 @@ urlpatterns = [
     url(r'^supplier_form/(?P<pk>[0-9]+)/$', views.supplier_form),
     url(r'^employee_form/(?P<dce>[0-9]+)/$', views.employee_form),
     #URL patterns for Editing Libraries (end)
-    
+
     #URL patterns for Library Details (start)
     url(r'^product_details/(?P<pk>[0-9]+)/$', views.product_details),
     url(r'^inv_stat_details/(?P<pk>[0-9]+)/$', views.inv_stat_details),
@@ -50,7 +51,7 @@ urlpatterns = [
     url(r'^supplier_details/(?P<pk>[0-9]+)/$', views.supplier_details),
     url(r'^employee_details/(?P<dce>[0-9]+)/$', views.employee_details),
     #URL patterns for Library Details (end)
-    
+
     #URL patterns for Deleting Libraries (start)
     url(r'^inv_stat_del/(?P<pk>[0-9]+)/$', views.inv_stat_del),
     url(r'^cost_center_del/(?P<pk>[0-9]+)/$', views.cost_center_del),
@@ -119,6 +120,6 @@ urlpatterns = [
     url(r'^employee/$', ListView.as_view(model=models.Employee, \
         context_object_name='em_list',\
         template_name='WISH/employee.html'), name='employee'),
-    
-    
+
+
 ]
