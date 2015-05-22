@@ -426,10 +426,12 @@ def product_to_irr(request, pk, inv):
 
         if 'delete' in request.POST:
             k = int(request.POST['delete'])
-            prod = Product.objects.get(id=show_product[k]['Product'])
+            prod = Product.objects.get(id=prod_to_irr[k]['Product'])
             prod.is_irr = False
             prod.save()
-            show_product.remove(show_product[k])
+            #del show_product[k]['pros']
+            prod_to_irr.remove(prod_to_irr[k])
+            #pr.remove(show_product[k])
 
         #Non-empty forms are to be validated.
         elif form.is_valid() and iform.is_valid():
@@ -466,13 +468,13 @@ def product_to_irr(request, pk, inv):
                 'quantity_balance': int(form.data['quantity_balance']), \
                 'is_par':False, \
                 'quantity_par': int(form.data['quantity_accepted'])})
-                show_product.append({'Product': form.data['product'], \
-                    'quantity_accepted': \
-                int(form.data['quantity_accepted']), \
-                'quantity_rejected':int(form.data['quantity_rejected']), \
-                'quantity_balance': int(form.data['quantity_balance']), \
-                'is_par':False, \
-                'quantity_par': int(form.data['quantity_accepted'])})
+                #show_product.append({'Product': form.data['product'], \
+                #    'quantity_accepted': \
+                #int(form.data['quantity_accepted']), \
+                #'quantity_rejected':int(form.data['quantity_rejected']), \
+                #'quantity_balance': int(form.data['quantity_balance']), \
+                #'is_par':False, \
+                #'quantity_par': int(form.data['quantity_accepted'])})
                 p = Product.objects.get(id=int(form.data['product']))
                 p.quantity = int(form.data['quantity_accepted'])
                 p.balance = int(form.data['quantity_balance'])
@@ -504,6 +506,10 @@ def product_to_irr(request, pk, inv):
 
                 irr.irr_headkey_id = pk
 
+                for prod in prod_to_irr:
+                    if 'pros' in prod:
+                        del prod['pros']
+
                 res = json.dumps(prod_to_irr)
                 irr.product = res
 
@@ -521,7 +527,7 @@ def product_to_irr(request, pk, inv):
                         get(id=int(form.data['product'])).\
                         item_name) + ') was successfully added.'
                     p.save()
-                    for prod in show_product:
+                    for prod in prod_to_irr:
                         pro = Product.objects.get(id=prod['Product'])
                         prod['pros'] = pro
         form = forms.ProducttoIRRForm(inv=inv)
@@ -547,16 +553,16 @@ def product_to_irr(request, pk, inv):
         except:
             return render(request, 'WISH/product_to_irr.html', \
                 {'form': form, 'iform': iform, 'remove_add': \
-                remove_add, 'error': error, 'product': show_product})
+                remove_add, 'error': error, 'product': prod_to_irr})
     except:
         try:
             return render(request, 'WISH/product_to_irr.html', \
                 {'form': form, 'iform': iform, 'msg': msg, \
-                'remove_add': remove_add, 'product': show_product})
+                'remove_add': remove_add, 'product': prod_to_irr})
         except:
             return render(request, 'WISH/product_to_irr.html', \
                 {'form': form, 'iform': iform, 'remove_add': \
-                remove_add, 'product': show_product})
+                remove_add, 'product': prod_to_irr})
 
 @login_required
 def miv_entry_S(request, pk):
