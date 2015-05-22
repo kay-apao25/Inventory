@@ -879,11 +879,8 @@ def garv_entry_f(request):
             return render(request, 'registration/login2.html', {'form': form})
         form = forms.LoginForm()
 
-<<<<<<< HEAD
+
 prod_to_garv = []
-product = []
-=======
->>>>>>> 4e40054d8b65c38ccbb2b33d256bb78217517127
 def product_to_garv(request, pk):
     """function"""
     if request.user.is_authenticated():
@@ -901,10 +898,16 @@ def product_to_garv(request, pk):
 
             if 'delete' in request.POST:
                 k = int(request.POST['delete'])
-                prod = Product.objects.get(id=product[k]['Product'])
-                prod.is_garv = False
-                prod.save()
-                product.remove(product[k])
+                for prod in products.product:
+                    if prod['Product'] == show_product[k]['Product']:
+                        prod['quantity_garv'] = show_product[k]['Quantity']
+                        prod['is_garv'] = False 
+                        prod_list.append(int(prod['Product']))
+                products.is_garv = False
+                products.save()
+                show_product.remove(show_product[k])
+                iform = forms.ProducttoGARVform(prodlist=prod_list)
+
 
             elif form.is_valid() and iform.is_valid():
                 garv = form.save(commit=False)
@@ -935,7 +938,7 @@ def product_to_garv(request, pk):
                      'Quantity': \
                         iform.data['quantity'], 'PAR_number': pk, 'Remarks': \
                         iform.data['remarks']})
-                    product.append({'Product': iform.data['product'],\
+                    show_product.append({'Product': iform.data['product'],\
                      'Quantity': \
                         iform.data['quantity'], 'PAR_number': pk, 'Remarks': \
                         iform.data['remarks']})
@@ -960,11 +963,8 @@ def product_to_garv(request, pk):
                         garv.save()
                         del prod_to_garv[:]
                         exit = 'Exit'
-<<<<<<< HEAD
-                        return render(request, 'WISH/p_entry.html', \
-=======
+
                         return render(request, 'WISH/garv_entry.html', \
->>>>>>> 4e40054d8b65c38ccbb2b33d256bb78217517127
                             {'exit': exit, 'msg': \
                             'GARV Record (GARV No. - ' +\
                              str(garv_no) + ') is successfully added.'})
@@ -975,12 +975,15 @@ def product_to_garv(request, pk):
                         del prod_to_par[:]
                         form = forms.GARVentryForm(pk=pk)
                         iform = forms.ProducttoGARVform(prodlist=prod_list)
+
                     else:
                         msg = 1
+                        products.save()
                         iform = forms.ProducttoGARVform(prodlist=prod_list)
-                        for prod in product:
-                            pro = Product.objects.get(id=prod['Product'])
+                        for prod in show_product:
+                            pro = Product.objects.get(id=int(prod['Product']))
                             prod['pros'] = pro
+                    iform = forms.ProducttoGARVform(prodlist=prod_list)
                 else:
                     msg = 2
 
@@ -996,17 +999,17 @@ def product_to_garv(request, pk):
                 {'form': form, 'iform': iform, 'remove_add': \
                 remove_add, 'msg': 'GARV Record (GARV No. - ' \
                     + str(garv_no) + \
-                    ') is successfully added.'})
+                    ') is successfully added.','product': show_product})
         elif int(msg) == 1:
             return render(request, 'WISH/garv_entry.html', \
                 {'form': form, 'iform': iform, 'remove_add': \
-                remove_add, 'msg': 'Item is successfully added.'})
+                remove_add, 'msg': 'Item is successfully added.','product': show_product})
         elif int(msg) == 2:
             return render(request, 'WISH/garv_entry.html', \
                 {'form': form, 'iform': iform, 'remove_add': \
                 remove_add, 'error': 'Entered product quantity \
                 to be assigned to this employee is greater than\
-                 stocked items.'})
+                 stocked items.','product': show_product})
         else:
             return render(request, 'WISH/garv_entry.html', \
                 {'form': form, 'iform': iform, 'remove_add': \
