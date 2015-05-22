@@ -122,7 +122,7 @@ urlpatterns = [
         for i in (models.InventoryStat.objects.filter(cost_center_no=(\
         models.Employee.objects.get(name=str(request.user.first_name) \
         + ' ' + str(request.user.last_name)).cost_center_no)))]),
-        context_object_name='irr_list', template_name=\
+        context_object_name='product_list', template_name=\
         'WISH/product_reports.html')(request), name='product_reports'),
     #for guest (start)
     url(r'^wrs_reports1/$', lambda request: ListView.as_view(model=models.IRR,

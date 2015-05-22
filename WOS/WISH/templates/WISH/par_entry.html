@@ -27,22 +27,24 @@
     {{ error }}
         </div>
     {% endif %}
-      <table width="50%">
+      <table width="90%">
     <tr>
-    {% if product|length != 0%}
+    <td width="30%">
+            
+            {% if product|length != 0%}
+            <h4>Added item/s:</h4>
             {% for prod in product %}
-            <td>
-            <div class="form-group">
-            <div class="control-label">
-              Product: {{prod.pros.item_name}} - {{prod.pros.description}},<br>
-              Quantity: {{prod.Quantity}}<br>
+            <div>
+            <span align:"center" > 
+             <button type="submit" name="delete" value="{{forloop.counter|add:'-1'}}" class="save btn btn-default">Delete</button>
+              Product: {{prod.pros.item_name}} - {{prod.pros.description}},<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              Quantity: {{prod.Quantity}},<br>
+           </span>
             </div>
-            <button type="submit" name="delete" value="{{forloop.counter|add:'-1'}}" class="save btn btn-default">Delete</button>
-            </div>
+            {% endfor %}
+            {% endif %}
             </td>
-    {% endfor %}
-    {% endif %}
-    <td style="padding:20px">
+    <td style="padding:25px">
      {% for field in iform %}
       &nbsp;&nbsp;{{field | bootstrap_horizontal:'col-lg-4'}} &nbsp;&nbsp;&nbsp;
      {%endfor%}
