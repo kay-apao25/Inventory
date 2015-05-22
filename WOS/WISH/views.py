@@ -904,9 +904,8 @@ def product_to_garv(request, pk):
                         prod['is_garv'] = False 
                         prod_list.append(int(prod['Product']))
                 products.is_garv = False
-                products.save()
                 show_product.remove(show_product[k])
-                prod_to_garv.remove(show_product[k])
+                products.save()
                 iform = forms.ProducttoGARVform(prodlist=prod_list)
 
 
