@@ -17,7 +17,6 @@ import json
 prod_to_par = []
 prod_to_irr = []
 prod_to_garv = []
-show_product = []
 
 def log_in(request):
     if request.method == 'POST':
@@ -429,9 +428,7 @@ def product_to_irr(request, pk, inv):
             prod = Product.objects.get(id=prod_to_irr[k]['Product'])
             prod.is_irr = False
             prod.save()
-            #del show_product[k]['pros']
             prod_to_irr.remove(prod_to_irr[k])
-            #pr.remove(show_product[k])
 
         #Non-empty forms are to be validated.
         elif form.is_valid() and iform.is_valid():
@@ -468,13 +465,6 @@ def product_to_irr(request, pk, inv):
                 'quantity_balance': int(form.data['quantity_balance']), \
                 'is_par':False, \
                 'quantity_par': int(form.data['quantity_accepted'])})
-                #show_product.append({'Product': form.data['product'], \
-                #    'quantity_accepted': \
-                #int(form.data['quantity_accepted']), \
-                #'quantity_rejected':int(form.data['quantity_rejected']), \
-                #'quantity_balance': int(form.data['quantity_balance']), \
-                #'is_par':False, \
-                #'quantity_par': int(form.data['quantity_accepted'])})
                 p = Product.objects.get(id=int(form.data['product']))
                 p.quantity = int(form.data['quantity_accepted'])
                 p.balance = int(form.data['quantity_balance'])
@@ -519,7 +509,6 @@ def product_to_irr(request, pk, inv):
                         irr.irr_no + ') was successfully added.'
                     iform = forms.IRRentrycontForm(inv=inv)
                     del prod_to_irr[:]
-                    del show_product[:]
                     irr.save()
                     p.save()
                 else:
@@ -689,16 +678,16 @@ def product_to_garv(request, pk):
         iform = forms.ProducttoGARVform(request.POST, prodlist=prod_list)
 
         if 'delete' in request.POST:
-                k = int(request.POST['delete'])
-                for prod in products.product:
-                    if prod['Product'] == show_product[k]['Product']:
-                        prod['quantity_garv'] = show_product[k]['Quantity']
-                        prod['is_garv'] = False 
-                        prod_list.append(int(prod['Product']))
-                products.is_garv = False
-                show_product.remove(show_product[k])
-                products.save()
-                iform = forms.ProducttoGARVform(prodlist=prod_list)
+            k = int(request.POST['delete'])
+            for prod in products.product:
+                if prod['Product'] == prod_to_garv[k]['Product']:
+                    prod['quantity_garv'] = prod_to_garv[k]['Quantity']
+                    prod['is_garv'] = False 
+                    prod_list.append(int(prod['Product']))
+            products.is_par = False
+            products.save()
+            prod_to_garv.remove(prod_to_garv[k])
+            iform = forms.ProducttoGARVform(prodlist=prod_list)
 
         elif form.is_valid() and iform.is_valid():
             garv = form.save(commit=False)
@@ -719,11 +708,7 @@ def product_to_garv(request, pk):
                         products.save()
                     else:
                         prod['quantity_garv'] = prod['quantity_garv']
-                        prod_list.append(int(prod['Product']))
-                        products.save()
-                if prod['is_garv'] == False:
-                    prod_list.append(int(prod['Product']))
-
+            
             if error == '':
                 prod_to_garv.append({'Product': iform.data['product'],\
                  'Quantity': \
@@ -737,6 +722,11 @@ def product_to_garv(request, pk):
                 garv.garv_date = time.strftime("%Y-%m-%d")
                 garv.dce = (PAR.objects.get(par_no=pk)).dce
                 garv.wo_number = (PAR.objects.get(par_no=pk)).wo_number
+
+                for prod in prod_to_garv:
+                    if 'pros' in prod:
+                        del prod['pros']
+
                 res = json.dumps(prod_to_garv)
                 garv.product_to_GARV = res
 
@@ -758,7 +748,7 @@ def product_to_garv(request, pk):
                 if 'save' in request.POST:
                     msg = 0
                     garv.save()
-                    del prod_to_par[:]
+                    del prod_to_garv[:]
                     form = forms.GARVentryForm(pk=pk)
                     iform = forms.ProducttoGARVform(prodlist=prod_list)
 
@@ -766,7 +756,7 @@ def product_to_garv(request, pk):
                     msg = 1
                     products.save()
                     iform = forms.ProducttoGARVform(prodlist=prod_list)
-                    for prod in show_product:
+                    for prod in prod_to_garv:
                         pro = Product.objects.get(id=int(prod['Product']))
                         prod['pros'] = pro
                 iform = forms.ProducttoGARVform(prodlist=prod_list)
@@ -784,22 +774,22 @@ def product_to_garv(request, pk):
         return render(request, 'WISH/garv_entry.html', \
             {'form': form, 'iform': iform, 'remove_add': \
             remove_add, 'msg': 'GARV Record (GARV No. - ' \
-                + str(garv_no) + \
-                ') is successfully added.'})
+            + str(garv_no) + ') is successfully added.'})
     elif int(msg) == 1:
         return render(request, 'WISH/garv_entry.html', \
             {'form': form, 'iform': iform, 'remove_add': \
-            remove_add, 'msg': 'Item is successfully added.'})
+            remove_add, 'msg': 'Item is successfully added.'\
+            , 'product': prod_to_garv})
     elif int(msg) == 2:
         return render(request, 'WISH/garv_entry.html', \
             {'form': form, 'iform': iform, 'remove_add': \
             remove_add, 'error': 'Entered product quantity \
             to be assigned to this employee is greater than\
-             stocked items.'})
+             stocked items.', 'product': prod_to_garv})
     else:
         return render(request, 'WISH/garv_entry.html', \
             {'form': form, 'iform': iform, 'remove_add': \
-            remove_add})
+            remove_add, 'product': prod_to_garv})
 
 @login_required
 def par(request, inv):
@@ -820,14 +810,13 @@ def par(request, inv):
         if 'delete' in request.POST:
             k = int(request.POST['delete'])
             for prod in products.product:
-                if prod['Product'] == show_product[k]['Product']:
-                    prod['quantity_par'] = show_product[k]['Quantity']
+                if prod['Product'] == prod_to_par[k]['Product']:
+                    prod['quantity_par'] = prod_to_par[k]['Quantity']
                     prod['is_par'] = False 
                     prod_list.append(int(prod['Product']))
             products.is_par = False
             products.save()
-            show_product.remove(show_product[k])
-            prod_to_par.remove(show_product[k])
+            prod_to_par.remove(prod_to_par[k])
             iform = forms.ProducttoPARForm(prodlist=prod_list)
 
         elif form.is_valid() and iform.is_valid():
@@ -857,16 +846,16 @@ def par(request, inv):
                                 'Quantity': iform.data['quantity'], \
                                 'quantity_garv': iform.data['quantity'],\
                                 'is_garv': False})
-                show_product.append({'Product': iform.data['product'],\
-                                'Quantity': iform.data['quantity'], \
-                                'quantity_garv': iform.data['quantity'],\
-                                'is_garv': False})
                 par_entry.amt_cost = 0
                 for product in prod_to_par:
                     pro = Product.objects.get(id=product['Product'])
                     amount = float(product['Quantity']) * \
                     int(pro.unit_cost)
                     par_entry.amt_cost = par_entry.amt_cost + amount
+
+                for prod in prod_to_par:
+                    if 'pros' in prod:
+                        del prod['pros']
 
                 res = json.dumps(prod_to_par)
                 par_entry.product = prod_to_par
@@ -897,10 +886,11 @@ def par(request, inv):
                     msg = 1
                     products.save()
                     iform = forms.ProducttoPARForm(prodlist=prod_list)
-                    for prod in show_product:
+                    for prod in prod_to_par:
                         pro = Product.objects.get(id=int(prod['Product']))
                         prod['pros'] = pro
                 iform = forms.ProducttoPARForm(prodlist=prod_list)
+
             else:
                 msg = 2
     else:
@@ -918,15 +908,15 @@ def par(request, inv):
     elif int(msg) == 1:
         return render(request, 'WISH/par_entry.html', \
             {'form': form, 'iform': iform, 'remove_add': remove_add, \
-            'msg': 'Item is successfully added.', 'product': show_product})
+            'msg': 'Item is successfully added.', 'product': prod_to_par})
     elif int(msg) == 2:
         return render(request, 'WISH/par_entry.html', {'form': form,\
          'iform': iform, 'remove_add': remove_add, \
             'error': 'Entered product quantity to be assigned to this \
-            employee is greater than stocked items.', 'product': show_product})
+            employee is greater than stocked items.', 'product': prod_to_par})
     else:
         return render(request, 'WISH/par_entry.html', {'form': form, \
-            'iform': iform, 'remove_add': remove_add, 'product': show_product})
+            'iform': iform, 'remove_add': remove_add, 'product': prod_to_par})
 
 
 #def wrs_entry(request):
@@ -1151,16 +1141,18 @@ def par_form(request, pk):
          {'parss':parss, 'products': products, \
             'loop': range(loop), 'remain': range(remain)})
     else:
+        loop = 1
         remain = 5 - len(products)
         return render(request, 'WISH/par_form.html',\
-         {'parss':parss, 'products': products, 'remain': range(remain)})
+         {'parss':parss, 'products': products, \
+         'remain': range(remain), 'loop': range(loop)})
 
 @login_required
 def garv_form(request, pk):
     """function"""
 
     garvs = get_object_or_404(GARV, pk=pk)
-    products = garvs.producttoGARV
+    products = garvs.product_to_GARV
     for product in products:
         pro = Product.objects.get(id=product['Product'])
         product['pros'] = pro
