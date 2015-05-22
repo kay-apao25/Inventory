@@ -17,6 +17,7 @@ import json
 prod_to_par = []
 prod_to_irr = []
 prod_to_garv = []
+prod_list = []
 
 def log_in(request):
     if request.method == 'POST':
@@ -78,8 +79,7 @@ def log_out(request):
     logout(request)
     form = forms.LoginForm()
     form1 = forms.SignUpForm()
-    return render(request, 'WISH/login.html', \
-        {'form': form, 'form1': form1})
+    return render(request, 'WISH/login.html', {'form': form, 'form1': form1})
 
 @login_required
 def index(request):
@@ -91,10 +91,8 @@ def index(request):
     inv = InventoryStat.objects.latest('id')
     sup = Supplier.objects.latest('id')
     cc = CostCenter.objects.latest('id')
-    return render(request, 'WISH/index.html', \
-        {'product': product, 'irr': irr, \
-        'par': par, 'garv': garv, 'inv': inv, \
-        'sup': sup, 'cc': cc})
+    return render(request, 'WISH/index.html', {'product': product, 'irr': irr, \
+        'par': par, 'garv': garv, 'inv': inv, 'sup': sup, 'cc': cc})
 
 @login_required
 def guest(request):
@@ -109,78 +107,60 @@ def aboutus(request):
 @login_required
 def inv_stat_del(request, pk):
     """function"""
-
     inv_del = get_object_or_404(InventoryStat, pk=pk)
     inv_del.is_delete = True
     inv_del.save()
-    msg = 'Inventory Station was deleted successfully.'
-    try:
-        return render(request, 'WISH/index.html', {'msg':msg})
-    except:
-        return render(request, 'WISH/index.html', {})
+    return render(request, 'WISH/index.html', {'msg':'Inventory Station' + \
+        ' was deleted successfully.'})
 
 @login_required
 def cost_center_del(request, pk):
     """function"""
-    
     cos_del = get_object_or_404(CostCenter, pk=pk)
     cos_del.is_delete = True
     cos_del.save()
-    msg = 'Cost center was deleted successfully.'
-    try:
-        return render(request, 'WISH/index.html', {'msg':msg})
-    except:
-        return render(request, 'WISH/index.html', {})
+    return render(request, 'WISH/index.html', {'msg':'Cost center' + \
+        ' was deleted successfully.'})
 
 @login_required
 def supplier_del(request, pk):
     """function"""
-
     sup_del = get_object_or_404(Supplier, pk=pk)
     sup_del.is_delete = True
     sup_del.save()
-    msg = 'Supplier was deleted successfully.'
-    try:
-        return render(request, 'WISH/index.html', {'msg':msg})
-    except:
-        return render(request, 'WISH/index.html', {})
+    return render(request, 'WISH/index.html', {'msg':'Supplier' + \
+        ' was deleted successfully.'})
 
 @login_required
 def employee_del(request, pk):
     """function"""
-
     em_del = get_object_or_404(Employee, pk=pk)
     em_del.is_delete = True
     em_del.save()
-    msg = 'Employee was deleted successfully.'
     try:
-        return render(request, 'WISH/index.html', {'msg':msg})
+        return render(request, 'WISH/index.html', {'msg':'Employee' + \
+        ' was deleted successfully.'})
     except:
         return render(request, 'WISH/index.html', {})
 
 @login_required
 def add_inv_stat(request):
     """function"""
-
     if request.method == "POST":
         form = forms.Statlib(request.POST)
         if form.is_valid():
-            product = form.save(commit=False)
-            product.save()
-            msg = 'Inventory Station was added successfully.'
+            form.save()
+            form = forms.Statlib()
+            return render(request, 'WISH/add_inv_stat.html', \
+             {'form': form, 'msg':'Inventory Station was added successfully.'})
     else:
         form = forms.Statlib()
-    try:
-        form = forms.Statlib()
-        return render(request, 'WISH/add_inv_stat.html', \
-            {'form': form, 'msg':msg})
-    except:
-        return render(request, 'WISH/add_inv_stat.html', {'form': form})
+        
+    return render(request, 'WISH/add_inv_stat.html', {'form': form})
 
 @login_required
 def add_supplier(request):
     """function"""
-
     if request.method == 'POST':
         form = forms.Suplib(request.POST)
         form1 = forms.Suplib1(request.POST)
@@ -196,7 +176,6 @@ def add_supplier(request):
             res = ""
             sup_name = list(form.data['supplier_name'])
             for name in sup_name:
-
                 if name == "'":
                     name = '-'
                     res = res + name
@@ -209,21 +188,19 @@ def add_supplier(request):
             form = forms.Suplib()
             form1 = forms.Suplib1()
             form2 = forms.Suplib2()
+            return render(request, 'WISH/add_supplier.html', \
+              {'form1': form1, 'form2': form2, 'msg':'Supplier ' +\
+              'was added successfully.'})
     else:
         form = forms.Suplib()
         form1 = forms.Suplib1()
         form2 = forms.Suplib2()
-    try:
-        return render(request, 'WISH/add_supplier.html', \
-            {'form1': form1, 'form2': form2, 'msg':msg})
-    except:
-        return render(request, 'WISH/add_supplier.html', \
-            {'form1': form1, 'form2': form2})
+    
+    return render(request, 'WISH/add_supplier.html', {'form1': form1, 'form2': form2})
 
 @login_required
 def add_employee(request):
     """function"""
-
     if request.method == "POST":
         form = forms.Emlib(request.POST)
         if form.is_valid():
@@ -231,7 +208,6 @@ def add_employee(request):
             res = ""
             em_name = list(form.data['name'])
             for name in em_name:
-
                 if name == "'":
                     name = '-'
                     res = res + name
@@ -240,40 +216,33 @@ def add_employee(request):
 
             employee.name = res
             employee.save()
-            msg = 'Employee was added successfully.'
+            form = forms.Emlib()
+            return render(request, 'WISH/add_employee.html', {'form': form,\
+                'msg':'Employee was added successfully.'})
     else:
         form = forms.Emlib()
-    try:
-        form = forms.Emlib()
-        return render(request, 'WISH/add_employee.html', {'form': form,\
-         'msg':msg})
-    except:
-        return render(request, 'WISH/add_employee.html', {'form': form})
+
+    return render(request, 'WISH/add_employee.html', {'form': form})
 
 @login_required
 def add_cost_center(request):
     """function"""
-
     if request.method == "POST":
         form = forms.CClib(request.POST)
         if form.is_valid():
-            product = form.save(commit=False)
-
-            product.save()
+            form.save()
+            form = forms.CClib()
             msg = 'Cost center was added successfully.'
+            return render(request, 'WISH/add_cost_center.html',\
+               {'form': form, 'msg':'Cost center was added successfully.'})
     else:
         form = forms.CClib()
-    try:
-        form = forms.CClib()
-        return render(request, 'WISH/add_cost_center.html',\
-         {'form': form, 'msg':msg})
-    except:
-        return render(request, 'WISH/add_cost_center.html', {'form': form})
+
+    return render(request, 'WISH/add_cost_center.html', {'form': form})
 
 @login_required
 def product_new(request):
     """function"""
-
     if request.method == "POST":
 
         #Forms containing the entries entered by the user
@@ -297,7 +266,7 @@ def product_new(request):
             else:
                 product.slc_number = '000000'
 
-        #Assignment of values in Product model
+            #Assignment of values in Product model
             for key in form.data.keys():
                 key1 = key
                 if key == 'inv_station_no' or key == 'purchased_from':
@@ -308,6 +277,7 @@ def product_new(request):
 
             if form2.data['expiry_date'] == '':
                 product.expiry_date = None
+
             if int(form2.data['quantity']) > 1:
                 if form2.data['unit_measure'] == 'box':
                     product.unit_measure = str(product.unit_measure) + 'es'
@@ -315,18 +285,18 @@ def product_new(request):
                     product.unit_measure = str(product.unit_measure) + 's'
 
             product.amount = int(form2.data['unit_cost']) * \
-            int(form2.data['quantity'])
+                int(form2.data['quantity'])
 
             product.save()
-
-            #Message to be returned if adding of the new product entry.
-            msg = 'Product (' + form1.data['item_name'] + ')\
-             was added successfully.'
 
             #Displaying of blank forms
             form1 = forms.ProductForm1()
             form2 = forms.ProductForm2()
             form3 = forms.ProductForm3()
+
+            return render(request, 'WISH/product_add.html', {'form3': form3,\
+             'form1':form1, 'form2': form2, 'msg': 'Product (' + \
+             product.item_name + ') was added successfully.'})
     else:
         #Displaying of blank forms
         form = forms.ProductForm()
@@ -335,11 +305,7 @@ def product_new(request):
         form3 = forms.ProductForm3()
 
     #Rendering of forms and/or messages
-    try:
-        return render(request, 'WISH/product_add.html', {'form3': form3,\
-         'form1':form1, 'form2': form2, 'msg': msg})
-    except:
-        return render(request, 'WISH/product_add.html', {'form3': form3, \
+    return render(request, 'WISH/product_add.html', {'form3': form3, \
             'form1':form1, 'form2': form2})
 
 @login_required
@@ -378,24 +344,18 @@ def irr_entry(request):
 
         if len(prodlist) == 0:
             #If true return this exit message
-            exit = 'No available products to be made with IRR record.'
+            return render(request, 'WISH/irr_entry.html',\
+              {'exit': 'No available products to be made with IRR record.'})
         else:
             #else display blank forms.
             form1 = forms.IRRentryForm1(name=name)
             form2 = forms.IRRentryForm2(name=name)
-
-    #Rendering of forms
-    try:
-        return render(request, 'WISH/irr_entry.html',\
-         {'exit': exit})
-    except:
-        return render(request, 'WISH/irr_entry.html',\
-         {'form1': form1, 'form2': form2})
+            return render(request, 'WISH/irr_entry.html',\
+                {'form1': form1, 'form2': form2})        
 
 @login_required
 def product_to_irr(request, pk, inv):
     """function"""
-
     remove_add = 0
     if request.method == "POST":
 
@@ -413,28 +373,14 @@ def product_to_irr(request, pk, inv):
         #Non-empty forms are to be validated.
         elif form.is_valid() and iform.is_valid():
 
-            #To check if the desired quantity of products
-                #to be delivered are delivered already.
-            if int(form.data['quantity_balance']) == 0:
-                p = Product.objects.get(id=int(form.data['product']))
-                p.balance = 0
-                p.status = 'Complete'
-                p.save()
-
             #To check if quantity accepted entered is 
                 #less than the present stocked items.
             if Product.objects.get(id=int(form.data['product'])).quantity \
             < int(form.data['quantity_accepted']):
-                error = 'Accepted quantity is greater than \
-                the number of stocked items.'
-
-            #To check if the delivering process of
-                #the product is already completed.
-            elif Product.objects.get(id=int\
-                (form.data['product'])).status == 'Pending':
-                error = 'Product -' + str(Product.objects.get(id=int\
-                    (form.data['product'])).item_name) +\
-                      '- is still pending.'
+            return render(request, 'WISH/product_to_irr.html', \
+                {'form': form, 'iform': iform, 'remove_add': \
+                remove_add, 'error': 'Accepted quantity is greater than ' + \
+                'the number of stocked items.', 'product': prod_to_irr})
 
             else:
                 #Storing of products for this specific IRR form.
@@ -516,13 +462,8 @@ def product_to_irr(request, pk, inv):
 
     #Rendering of forms and/or messages and/or errors
     try:
-        try:
-            return render(request, 'WISH/product_to_irr.html', \
-                {'exit': exit, 'remove_add': remove_add, 'msg': msg})
-        except:
-            return render(request, 'WISH/product_to_irr.html', \
-                {'form': form, 'iform': iform, 'remove_add': \
-                remove_add, 'error': error, 'product': prod_to_irr})
+        return render(request, 'WISH/product_to_irr.html', \
+            {'exit': exit, 'remove_add': remove_add, 'msg': msg})
     except:
         try:
             return render(request, 'WISH/product_to_irr.html', \
@@ -536,7 +477,6 @@ def product_to_irr(request, pk, inv):
 @login_required
 def miv_entry_S(request, pk):
     """function"""
-
     if request.method == "POST":
 
         #Forms containing the entries entered by the user
@@ -574,36 +514,21 @@ def miv_entry_S(request, pk):
 
             miv_entry.save()
 
-            #Success message
-            msg = 'MIV record (MIV No. - ' + \
-                miv_entry.miv_no + ') was successfully added.'
+            IRR.objects.get(irr_no=pk).is_miv = True
+            IRR.objects.get(irr_no=pk).save()
 
-            #Exit message
-            exit = 'Exit'
-
-            for prod in prods:
-                p = Product.objects.get(id=(prod['Product']))
-                p.quantity = int(p.quantity) - \
-                int(prod['quantity_accepted'])
-                if p.quantity < 0:
-                    irr = IRR.objects.get(irr_no=pk)
-                    irr.is_miv = True
-                    irr.save()
+            return render(request, 'WISH/miv_entry.html', \
+                {'msg': 'MIV record (MIV No. - ' + miv_entry.miv_no \
+                + ') was successfully added.', 'exit': 'Exit'})      
 
     else:
         form = forms.MIVentryForm()
 
-    #Rendering of forms and/or messages
-    try:
-        return render(request, 'WISH/miv_entry.html', \
-            {'msg': msg, 'exit': exit})
-    except:
-        return render(request, 'WISH/miv_entry.html', {'form': form})
+    return render(request, 'WISH/miv_entry.html', {'form': form})
 
 @login_required
 def miv_entry(request):
     """function"""
-
     irrs = IRR.objects.filter(is_miv=False)
     if len(irrs) == 0:
         return render(request, 'WISH/miv_entry_f.html', \
@@ -617,7 +542,6 @@ def miv_entry(request):
 @login_required
 def par_f(request):
     """function"""
-
     irrs = IRR.objects.filter(is_par=False)
     if len(irrs) == 0:
         return render(request, 'WISH/par_f.html', \
@@ -631,7 +555,6 @@ def par_f(request):
 @login_required
 def garv_entry_f(request):
     """function"""
-
     pars = PAR.objects.filter(is_garv=False)
     if len(pars) == 0:
         return render(request, 'WISH/garv_entry_f.html', \
@@ -645,7 +568,6 @@ def garv_entry_f(request):
 @login_required
 def product_to_garv(request, pk):
     """function"""
-    prod_list = []
     error = ''
     msg = 3
     remove_add = 0
@@ -774,8 +696,7 @@ def product_to_garv(request, pk):
 @login_required
 def par(request, inv):
     """function"""
-
-    prod_list = []
+    del prod_list[:]
     error = ''
     msg = 3
     remove_add = 0
