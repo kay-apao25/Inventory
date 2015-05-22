@@ -376,7 +376,7 @@ def product_to_irr(request, pk, inv):
                 #less than the present stocked items.
             if Product.objects.get(id=int(form.data['product'])).quantity \
             < int(form.data['quantity_accepted']):
-            return render(request, 'WISH/product_to_irr.html', \
+                return render(request, 'WISH/product_to_irr.html', \
                 {'form': form, 'iform': iform, 'remove_add': \
                 remove_add, 'error': 'Accepted quantity is greater than ' + \
                 'the number of stocked items.', 'product': prod_to_irr})
@@ -884,8 +884,7 @@ def product_form(request, pk):
             product.amount = float(form2.data['unit_cost']) * \
             int(form2.data['quantity'])
             product.save()
-            return render(request, 'WISH/product_form.html', {'form': \
-            form, 'msg': 'Product was edited successfully.'})
+            return redirect('WISH.views.product_details', pk=pk)
     else:
         form = forms.ProductForm5(instance=product)
         form1 = forms.ProductForm1()
@@ -912,8 +911,7 @@ def inv_stat_form(request, pk):
     if form.is_valid():
         form.save()
         form = forms.Statlib(request.POST or None, instance=inv)
-        return render(request, 'WISH/inv_stat_form.html', {'form': \
-            form, 'msg': 'Inventory Station was edited successfully.'})
+        return redirect('WISH.views.inv_stat_details', pk=pk)
     return render(request, 'WISH/inv_stat_form.html', {'form': form})
 
 @login_required
@@ -924,8 +922,7 @@ def cost_center_form(request, pk):
     if form.is_valid():
         form.save()
         form = forms.CClib(request.POST or None, instance=cc)
-        return render(request, 'WISH/cost_center_form.html',\
-         {'form': form, 'msg':'Cost center was edited successfully.'})
+        return redirect('WISH.views.cost_center_details', pk=pk)
     return render(request, 'WISH/cost_center_form.html', {'form': form})
 
 @login_required
@@ -942,7 +939,7 @@ def supplier_form(request, pk):
                 setattr(sup, key, form1.data[key1])
                 setattr(sup, key, form2.data[key1])
             sup.save()
-            msg = 'Supplier information was editted successfully.'
+            return redirect('WISH.views.supplier_details', pk=pk)
     else:
         form = forms.Supplierlib(instance=sup)
         form1 = forms.Supplierlib1()
@@ -954,38 +951,18 @@ def supplier_form(request, pk):
             for key2 in form2.fields.keys():
                 if key == key2:
                     form2.fields[key].initial = getattr(sup, key)
-    try:
-        form = forms.Supplierlib(instance=sup)
-        form1 = forms.Supplierlib1()
-        form2 = forms.Supplierlib2()
-        for key in form.fields.keys():
-            for key1 in form1.fields.keys():
-                if key == key1:
-                    form1.fields[key].initial = getattr(sup, key)
-            for key2 in form2.fields.keys():
-                if key == key2:
-                    form2.fields[key].initial = getattr(sup, key)
-        return render(request, 'WISH/supplier_form.html', \
-            {'form1': form1, 'form2': form2, 'msg':msg})
-    except:
-        return render(request, 'WISH/supplier_form.html',\
+    return render(request, 'WISH/supplier_form.html',\
          {'form1': form1, 'form2': form2})
 
 @login_required
 def employee_form(request, dce):
     """function"""
-
     em = get_object_or_404(Employee, dce=dce)
     form = forms.Employeelib(request.POST or None, instance=em)
     if form.is_valid():
         form.save()
-        msg = 'Employee information was editted successfully.'
-    try:
-        form = forms.Employeelib(request.POST or None, instance=em)
-        return render(request, 'WISH/employee_form.html', \
-            {'form': form, 'msg':msg})
-    except:
-        return render(request, 'WISH/employee_form.html', {'form': form})
+        return redirect('WISH.views.employee_details', dce=dce)
+    return render(request, 'WISH/employee_form.html', {'form': form})
 
 @login_required
 def par_form(request, pk):
