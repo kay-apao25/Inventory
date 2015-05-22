@@ -9,10 +9,10 @@ urlpatterns = [
     url(r'^Aboutus/$', views.aboutus, name='aboutus'),
 
     #URL patterns for Log In and Out (start)
-    url(r'^login/$', 'django.contrib.auth.views.login', \
+    url(r'^log_in/$', views.log_in, \
         name='login'),
-    url(r'^logout/$', 'django.contrib.auth.views.logout', \
-        {'next_page': '/'}, name='logout'),
+    url(r'^logout/$', views.log_out, \
+        name='logout'),
     url(r'^guest/$', views.guest, name='guest'),
     #URL patterns for Log In and Out (end)
 
@@ -27,7 +27,7 @@ urlpatterns = [
     url(r'^garv_entry_f/$', views.garv_entry_f, name='new_garv_s'),
     url(r'^product_to_garv/(?P<pk>[0-9]+)/$', views.product_to_garv,\
         name='new_garv'),
-    url(r'^wrs_entry/$', views.wrs_entry, name='wrs_entry'),
+    #url(r'^wrs_entry/$', views.wrs_entry, name='wrs_entry'),
     url(r'^product_to_irr/(?P<pk>[0-9]+)/(?P<inv>[0-9]+)/$', views.\
         product_to_irr, name='new_irr_cont'),
     #URL patterns for File and Product Fill-Up Forms (end)
@@ -98,24 +98,24 @@ urlpatterns = [
         irr_headkey__in=[i.id for i in (models.IRRHeader.objects.filter(\
         dce_custodian=(models.Employee.objects.get(name=str(request.user.\
         first_name) + ' ' + str(request.user.last_name)))))])),
-        context_object_name='irr_list', template_name=\
+        context_object_name='miv_list', template_name=\
         'WISH/miv_reports.html')(request), name='miv_reports'),
     url(r'^wrs_reports/$', lambda request: ListView.as_view(queryset=\
         models.IRR.objects.filter(irr_headkey__in=[i.id for i in (\
         models.IRRHeader.objects.filter(dce_custodian=(\
         models.Employee.objects.get(name=str(request.user.\
         first_name) + ' ' + str(request.user.last_name)))))]),
-        context_object_name='irr_list', template_name=\
+        context_object_name='wrs_list', template_name=\
         'WISH/wrs_reports.html')(request), name='wrs_reports'),
     url(r'^par_reports/$', lambda request: ListView.as_view(queryset=\
         models.PAR.objects.filter(issued_by=(models.Employee.objects.get(\
         name=str(request.user.first_name) + ' ' + str(request.user.last_name\
-        )))), context_object_name='irr_list', template_name=\
+        )))), context_object_name='par_list', template_name=\
         'WISH/par_reports.html')(request), name='par_reports'),
     url(r'^garv_reports/$', lambda request: ListView.as_view(queryset=\
         models.GARV.objects.filter(confirmed_by=(models.Employee.objects.get(\
         name=str(request.user.first_name) + ' ' + str(request.user.last_name\
-        )))), context_object_name='irr_list', template_name=\
+        )))), context_object_name='garv_list', template_name=\
         'WISH/garv_reports.html')(request), name='garv_reports'),
     url(r'^product_reports/$', lambda request: ListView.as_view(queryset=\
         models.Product.objects.filter(inv_station_no__in=[i.inv_station_no \

@@ -123,7 +123,7 @@ TEMPLATE_DIRS = (
 )
 
 LOGIN_REDIRECT_URL = '/'
-LOGIN_URL = 'django.contrib.auth.views.login'
+LOGIN_URL = '/log_in/'
 
 AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
