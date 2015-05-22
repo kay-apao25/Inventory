@@ -676,7 +676,6 @@ def garv_entry_f(request):
 @login_required
 def product_to_garv(request, pk):
     """function"""
-
     prod_list = []
     error = ''
     msg = 3
@@ -689,7 +688,19 @@ def product_to_garv(request, pk):
         form = forms.GARVentryForm(request.POST, pk=pk)
         iform = forms.ProducttoGARVform(request.POST, prodlist=prod_list)
 
-        if form.is_valid() and iform.is_valid():
+        if 'delete' in request.POST:
+                k = int(request.POST['delete'])
+                for prod in products.product:
+                    if prod['Product'] == show_product[k]['Product']:
+                        prod['quantity_garv'] = show_product[k]['Quantity']
+                        prod['is_garv'] = False 
+                        prod_list.append(int(prod['Product']))
+                products.is_garv = False
+                show_product.remove(show_product[k])
+                products.save()
+                iform = forms.ProducttoGARVform(prodlist=prod_list)
+
+        elif form.is_valid() and iform.is_valid():
             garv = form.save(commit=False)
 
             garv_no = form.data['garv_no']
@@ -750,9 +761,15 @@ def product_to_garv(request, pk):
                     del prod_to_par[:]
                     form = forms.GARVentryForm(pk=pk)
                     iform = forms.ProducttoGARVform(prodlist=prod_list)
+
                 else:
                     msg = 1
+                    products.save()
                     iform = forms.ProducttoGARVform(prodlist=prod_list)
+                    for prod in show_product:
+                        pro = Product.objects.get(id=int(prod['Product']))
+                        prod['pros'] = pro
+                iform = forms.ProducttoGARVform(prodlist=prod_list)
             else:
                 msg = 2
 
