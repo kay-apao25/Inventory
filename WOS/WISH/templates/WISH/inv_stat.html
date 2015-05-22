@@ -27,7 +27,7 @@
 <br>
 <div align="right"><a href="{% url 'add_inv_stat' %}" class="save btn btn-info">
     <i class="glyphicon glyphicon-plus"></i> Add Inventory station</a></div><br>
-<div id="inv">
+<div id="invs">
 {% if inv_list|length == 0 %}
 <br>
 <br>
@@ -66,6 +66,7 @@
       </tr>
     {% endfor %}
   </table>
+</div>
    {% endif %}
 </div>
 </div>
