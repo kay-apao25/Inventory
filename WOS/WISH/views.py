@@ -572,10 +572,10 @@ def product_to_irr(request, pk, inv):
 
             if 'delete' in request.POST:
                 k = int(request.POST['delete'])
-                prod = Product.objects.get(id=prod_to_irr[k]['Product'])
+                prod = Product.objects.get(id=product[k]['Product'])
                 prod.is_irr = False
                 prod.save()
-                prod_to_irr.remove(prod_to_irr[k])
+                product.remove(product[k])
 
             #Non-empty forms are to be validated.
             elif form.is_valid() and iform.is_valid():
@@ -876,6 +876,7 @@ def garv_entry_f(request):
         form = forms.LoginForm()
 
 prod_to_garv = []
+product = []
 def product_to_garv(request, pk):
     """function"""
     if request.user.is_authenticated():
@@ -891,7 +892,14 @@ def product_to_garv(request, pk):
             form = forms.GARVentryForm(request.POST, pk=pk)
             iform = forms.ProducttoGARVform(request.POST, prodlist=prod_list)
 
-            if form.is_valid() and iform.is_valid():
+            if 'delete' in request.POST:
+                k = int(request.POST['delete'])
+                prod = Product.objects.get(id=product[k]['Product'])
+                prod.is_garv = False
+                prod.save()
+                product.remove(product[k])
+
+            elif form.is_valid() and iform.is_valid():
                 garv = form.save(commit=False)
 
                 garv_no = form.data['garv_no']
@@ -920,6 +928,10 @@ def product_to_garv(request, pk):
                      'Quantity': \
                         iform.data['quantity'], 'PAR_number': pk, 'Remarks': \
                         iform.data['remarks']})
+                    product.append({'Product': iform.data['product'],\
+                     'Quantity': \
+                        iform.data['quantity'], 'PAR_number': pk, 'Remarks': \
+                        iform.data['remarks']})
 
                     p = Product.objects.get(id=int(iform.data['product']))
                     p.quantity = int(p.quantity) + int(prod['Quantity'])
@@ -941,7 +953,7 @@ def product_to_garv(request, pk):
                         garv.save()
                         del prod_to_garv[:]
                         exit = 'Exit'
-                        return render(request, 'WISH/par_entry.html', \
+                        return render(request, 'WISH/p_entry.html', \
                             {'exit': exit, 'msg': \
                             'GARV Record (GARV No. - ' +\
                              str(garv_no) + ') is successfully added.'})
@@ -955,6 +967,9 @@ def product_to_garv(request, pk):
                     else:
                         msg = 1
                         iform = forms.ProducttoGARVform(prodlist=prod_list)
+                        for prod in product:
+                            pro = Product.objects.get(id=prod['Product'])
+                            prod['pros'] = pro
                 else:
                     msg = 2
 
