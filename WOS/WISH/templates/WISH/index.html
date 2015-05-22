@@ -258,7 +258,7 @@ Image placeholders: placemi.com
                     </div>
                     <div class="panel-thumbnails" style="text-align:center">
                         <div class="row">
-                            {% if product == null%}
+                            {% if product|length == 0%}
                             <div align="center">
                                 <div class="thumbnail" style="width:500px; height:86px">
                                 <br>
@@ -296,7 +296,7 @@ Image placeholders: placemi.com
                         <div class="row">
                             <div align="center">
                                  <div class="thumbnail" style="width:500px; height:86px;">
-                                 	{% if irr != null %}
+                                 	{% if irr|length == 0 %}
                                 		<a href="{% url 'irr_form' pk=irr.pk%}">
                                     		IRR Record: {{irr.irr_no}} - {{irr.date_recv}}
                                     	</a>
@@ -304,7 +304,7 @@ Image placeholders: placemi.com
                                     	<strong>IRR Record: No new report recorded.</strong>
                                     {% endif %}
                                     <br>
-                                    {% if par != null %}
+                                    {% if par|length == 0 %}
                                         <a href="{% url 'par_form' pk=par.pk%}">
                                             PAR Record: {{par.par_no}} - {{par.date_acquired}}
                                         </a>
@@ -312,7 +312,7 @@ Image placeholders: placemi.com
                                         <strong>PAR Record: No new report recorded.</strong>
                                     {% endif %}
                                     <br> 
-                                    {% if garv != null %}
+                                    {% if garv|length == 0 %}
                                         <a href="{% url 'garv_form' pk=garv.pk%}">
                                             GARV Record: {{garv.garv_no}} - {{garv.garv_date}}
                                         </a>

@@ -85,32 +85,12 @@ def log_out(request):
 def index(request):
     """function"""
     product = Product.objects.order_by('id')[:3]
-    if len(product) == 0:
-        product = None
-    try:
-        irr = IRR.objects.latest('wrs_number')
-    except:
-        irr = None
-    try:
-        par = PAR.objects.latest('par_no')
-    except:
-        par = None
-    try:
-        garv = GARV.objects.latest('garv_no')
-    except:
-        garv = None
-    try:
-        inv = InventoryStat.objects.latest('id')
-    except:
-        inv = None
-    try:
-        sup = Supplier.objects.latest('id')
-    except:
-        sup = None
-    try:
-        cc = CostCenter.objects.latest('id')
-    except:
-        cc = None
+    irr = IRR.objects.latest('wrs_number')
+    par = PAR.objects.latest('par_no')
+    garv = GARV.objects.latest('garv_no')
+    inv = InventoryStat.objects.latest('id')
+    sup = Supplier.objects.latest('id')
+    cc = CostCenter.objects.latest('id')
     return render(request, 'WISH/index.html', \
         {'product': product, 'irr': irr, \
         'par': par, 'garv': garv, 'inv': inv, \
