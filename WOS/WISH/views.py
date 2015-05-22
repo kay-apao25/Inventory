@@ -377,7 +377,7 @@ def product_to_irr(request, pk, inv):
                 #less than the present stocked items.
             if Product.objects.get(id=int(form.data['product'])).quantity \
             < int(form.data['quantity_accepted']):
-            return render(request, 'WISH/product_to_irr.html', \
+                return render(request, 'WISH/product_to_irr.html', \
                 {'form': form, 'iform': iform, 'remove_add': \
                 remove_add, 'error': 'Accepted quantity is greater than ' + \
                 'the number of stocked items.', 'product': prod_to_irr})
