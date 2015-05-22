@@ -12,6 +12,11 @@
         	<!--<img src=""></img>-->
        	<h2 align="center">Product Record</h2>
 	</div>
+  {%if msg%}
+  <div class="alert alert-success" style="width:400px">
+      {{ msg }}
+  </div>
+  {% endif %}
     
     <form method="POST" class="product-form">{% csrf_token %}
     <strong><p style="font-size:15px">Fields with asterisk are required.</p></strong>
