@@ -1,134 +1,97 @@
 {% extends 'WISH/index.html' %}
+{% load staticfiles %}
  {% block content %}
 <html>
     <head>
         <title>Product Details</title>
         <style type="text/css" >
         	table, th, td{
-        		border: 1px solid black;
-        		border-collapse: collapse;
         		text-align: left;
-            font-weight: italic;
-        	}
+          }
         	th, td {
         		padding: 5px
         	}
         </style>
-      <div class="page-header">
-        <h2 align="center"><b>Product Details</b></h2>
-      </div>
     </head>
     <br>
-
     <body>
-      <table style="width:70%;" align="center" bgcolor="#00FF00">
-        <tr>
-          <td >
-            <b>NSN :</b><br> <center>{{prod.nsn}}</center>
-          </td>
-          <td >
-            <b>SLC :</b> <br><center>{{prod.slc_number}}</center>
-          </td>
-          <td>
-            <b>Product number :</b><br><center> {{prod.product_number}}</center>
-          </td>
+      <link rel="stylesheet" href="{% static 'css/font-awesome.min.css' %}">
+      <link rel="stylesheet" href="{% static 'css/details.css' %}">
+      <div class="container">
+              <div class="row text-center">
+                  <div class="col-md-12" style="margin-top: 20px;">
+                      <div class="pricing-table">
+                          <div class="panel panel-primary" style="border: none;">
+                              <div class="controle-header panel-heading panel-heading-landing">
+                                  <h1 class="panel-title panel-title-landing">
+                                    Product
+                                  </h1>
+                              </div>
+                              <div class="controle-panel-heading panel-heading panel-heading-landing-box">
+                                  Details
+                              </div>
+                              <div class="panel-body panel-body-landing">
+                                  <table class="table">
+                                      <tr>
+                                          <td width="50%"><b>NSN :</b>{{prod.nsn}}</td>
+                                          <td><b>SLC :</b>{{prod.slc_number}}</td>
+                                      </tr>
+                                      <tr>
+                                          <td><b>Product number :</b>{{prod.product_number}}</td>
+                                          <td><b>Description :</b>{{prod.description}}</td>
+                                      </tr>
+                                      <tr>
+                                          <td><b>Generic name : </b>{{prod.generic_name}}</td>
+                                          <td><b>Item name :</b>{{prod.item_name}}</td>
+                                      </tr>
+                                      <tr>
+                                          <td><b>Brand :</b>{{prod.brand}}</td>
+                                          <td><b>Part number :</b>{{prod.part_number}}</td>
+                                      </tr>
+                                      <tr>
+                                          <td><b>Manufacture date :</b>{{prod.manufacture_date}}</td>
+                                          <td><b>Expiry date : </b>{{prod.expiry_date}}</td>
+                                      </tr>
+                                      <tr>
+                                          <td><b>Unit cost :</b>{{prod.unit_cost}}</td>
+                                          <td><b>Quantity : </b>{{prod.quantity}}</td>
+                                      </tr>
+                                      <tr>
+                                          <td><b>Classification :</b>{{prod.classification}}</td>
+                                          <td><b>Stock : </b>{{prod.stock}}</center></td>
+                                      </tr>
+                                      <tr>
+                                          <td><b>Block : </b>{{prod.block}}</td>
+                                          <td><b>Unit measure : </b>{{prod.unit_measure}}</td>
+                                      </tr>
 
-        </tr>
-        <tr>
+                                      <tr>
+                                          <td><b>Status : </b>{{prod.status}}</td>
+                                          <td><b>Purchased from :</b>{{prod.purchased_from}}</td>
+                                      </tr>
+                                      <tr>
+                                          <td><b>Average Amount : </b>{{prod.average_amount}}</td>
+                                          <td><b>Balance limit :</b>{{prod.balance_limit}}</td>
+                                      </tr>
+                                      <tr>
+                                          <td><b>Serial number :</b>{{prod.serial_number}}</td>
+                                          <td><b>Model : </b>{{prod.model}}</td>
+                                      </tr>
+                                      <tr>
+                                          <td><b>Amount :</b>{{prod.amount}}</td>
+                                          <td><b>Remarks : </b>{{prod.remarks}}</td>
+                                      </tr>
+                                </table>
+                              </div>
+                              <div class="panel-footer panel-footer-landing">
+                                  <a href="{% url 'product_entry' pk=prod.pk %}" class="btn btn-price btn-info btn-lg">Edit</a>
 
-          <td>
-            <b>Generic name : </b><br><center>{{prod.generic_name}}</center>
-          </td>
-          <td>
-            <b>Item name :</b><br> <center>{{prod.item_name}}</center>
-          </td>
-          <td>
-            <b>Brand :</b><br> <center>{{prod.brand}}</center>
-          </td>
-
-        </tr>
-        <tr>
-          <td>
-            <b>Part number :</b> <br><center>{{prod.part_number}}</center>
-          </td>
-          <td>
-            <b>Manufacture date :</b><br> <center>{{prod.manufacture_date}}</center>
-          </td>
-          <td>
-            <b>Expiry date : </b><br><center>{{prod.expiry_date}}</center>
-          </td>
-
-        </tr>
-        <tr>
-
-          <td>
-            <b>Unit cost :</b> <br><center>{{prod.unit_cost}}</center>
-          </td>
-          <td>
-            <b>Quantity : </b><br><center>{{prod.quantity}}</center>
-          </td>
-          <td>
-            <b>Classification :</b> <br><center>{{prod.classification}}</center>
-          </td>
-
-
-        </tr>
-        <tr>
-          <td>
-            <b>Stock : </b> <br><center>{{prod.stock}}</center>
-          </td>
-          <td>
-            <b>Block : </b> <br><center>{{prod.block}}</center>
-          </td>
-          <td>
-            <b>Unit measure : </b> <br><center>{{prod.unit_measure}}</center>
-          </td>
-
-        </tr>
-        <tr>
-
-          <td>
-            <b>Status : </b> <br><center>{{prod.status}}</center>
-          </td>
-          <td>
-            <b>Purchased from :</b> <br><center> {{prod.purchased_from}}</center>
-          </td>
-          <td>
-            <b>Average Amount : </b> <br><center>{{prod.average_amount}}</center>
-          </td>
-
-
-        </tr>
-        <tr>
-          <td>
-            <b>Balance limit :</b> <br><center> {{prod.balance_limit}}</center>
-          </td>
-          <td>
-            <b>Serial number :</b> <br><center> {{prod.serial_number}}</center>
-          </td>
-          <td>
-            <b>Model : </b> <br><center>{{prod.model}}</center>
-          </td>
-
-        </tr>
-        <tr>
-
-          <td>
-            <b>Amount :</b> <br><center> {{prod.amount}}</center>
-          </td>
-          <td>
-            <b>Descrition :</b> <br><center> {{prod.description}}</center>
-          </td>
-          <td>
-            <b>Remarks : </b> <br><center>{{prod.remarks}}</center>
-          </td>
-
-        </tr>
-
-
-      </table>
-      <br><br>
-      <div align="center"><a href="{% url 'product_entry' pk=prod.pk %}" class="save btn btn-default">Edit</a></div>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
     </body>
 
 </html>
