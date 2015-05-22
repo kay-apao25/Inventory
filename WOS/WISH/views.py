@@ -88,7 +88,7 @@ def index(request):
                     return redirect('WISH.views.index')
                     # Redirect to a success page.
                 else:
-                    form1 = SignUpForm()
+                    form1 = forms.SignUpForm()
                     return render(request, 'registration/login2.html', \
                         {'error': 'Username and password does not match.',\
                          'form':form, 'form1': form1})
@@ -906,6 +906,7 @@ def product_to_garv(request, pk):
                 products.is_garv = False
                 products.save()
                 show_product.remove(show_product[k])
+                prod_to_garv.remove(show_product[k])
                 iform = forms.ProducttoGARVform(prodlist=prod_list)
 
 
@@ -972,7 +973,7 @@ def product_to_garv(request, pk):
                     if 'save' in request.POST:
                         msg = 0
                         garv.save()
-                        del prod_to_par[:]
+                        del prod_to_garv[:]
                         form = forms.GARVentryForm(pk=pk)
                         iform = forms.ProducttoGARVform(prodlist=prod_list)
 
