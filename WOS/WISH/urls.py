@@ -98,24 +98,24 @@ urlpatterns = [
         irr_headkey__in=[i.id for i in (models.IRRHeader.objects.filter(\
         dce_custodian=(models.Employee.objects.get(name=str(request.user.\
         first_name) + ' ' + str(request.user.last_name)))))])),
-        context_object_name='irr_list', template_name=\
+        context_object_name='miv_list', template_name=\
         'WISH/miv_reports.html')(request), name='miv_reports'),
     url(r'^wrs_reports/$', lambda request: ListView.as_view(queryset=\
         models.IRR.objects.filter(irr_headkey__in=[i.id for i in (\
         models.IRRHeader.objects.filter(dce_custodian=(\
         models.Employee.objects.get(name=str(request.user.\
         first_name) + ' ' + str(request.user.last_name)))))]),
-        context_object_name='irr_list', template_name=\
+        context_object_name='wrs_list', template_name=\
         'WISH/wrs_reports.html')(request), name='wrs_reports'),
     url(r'^par_reports/$', lambda request: ListView.as_view(queryset=\
         models.PAR.objects.filter(issued_by=(models.Employee.objects.get(\
         name=str(request.user.first_name) + ' ' + str(request.user.last_name\
-        )))), context_object_name='irr_list', template_name=\
+        )))), context_object_name='par_list', template_name=\
         'WISH/par_reports.html')(request), name='par_reports'),
     url(r'^garv_reports/$', lambda request: ListView.as_view(queryset=\
         models.GARV.objects.filter(confirmed_by=(models.Employee.objects.get(\
         name=str(request.user.first_name) + ' ' + str(request.user.last_name\
-        )))), context_object_name='irr_list', template_name=\
+        )))), context_object_name='garv_list', template_name=\
         'WISH/garv_reports.html')(request), name='garv_reports'),
     url(r'^product_reports/$', lambda request: ListView.as_view(queryset=\
         models.Product.objects.filter(inv_station_no__in=[i.inv_station_no \
@@ -132,16 +132,16 @@ urlpatterns = [
     #URL patterns for File and Product Reports (end)
 
     #URL patterns for Viewing Libraries (start)
-    url(r'^inv_stat/$', ListView.as_view(model=models.InventoryStat, \
+    url(r'^inv_stat/$', ListView.as_view(queryset=models.InventoryStat.objects.filter(is_delete=False), \
         context_object_name='inv_list',\
         template_name='WISH/inv_stat.html'), name='inv_stat'),
-    url(r'^cost_center/$', ListView.as_view(model=models.CostCenter,\
+    url(r'^cost_center/$', ListView.as_view(queryset=models.CostCenter.objects.filter(is_delete=False),\
      context_object_name='cc_list',\
         template_name='WISH/cost_center.html'), name='cost_center'),
-    url(r'^supplier/$', ListView.as_view(model=models.Supplier, \
+    url(r'^supplier/$', ListView.as_view(queryset=models.Supplier.objects.filter(is_delete=False), \
         context_object_name='sup_list',\
         template_name='WISH/supplier.html'), name='supplier'),
-    url(r'^employee/$', ListView.as_view(model=models.Employee, \
+    url(r'^employee/$', ListView.as_view(queryset=models.Employee.objects.filter(is_delete=False), \
         context_object_name='em_list',\
         template_name='WISH/employee.html'), name='employee'),
     #URL patterns for Viewing Libraries (end)
