@@ -301,6 +301,18 @@ class Statlib(forms.ModelForm):
         model = InventoryStat
         fields = ('inv_station_no', 'station_description', 'cost_center_no',)
 
+class Statlib1(forms.ModelForm):
+    """Stat_lib"""
+
+    cost_center_no = forms.ModelChoiceField(\
+        queryset=CostCenter.objects.filter(is_delete=False), label='Cost center no*')
+    station_description = forms.CharField(label='Station description*')
+
+    class Meta:
+        model = InventoryStat
+        fields = ( 'station_description', 'cost_center_no',)
+
+
 class CClib(forms.ModelForm):
     """CC_lib"""
 
@@ -387,4 +399,3 @@ class SignUpForm(forms.Form):
     last_name = forms.CharField(max_length=255, required=True)
     username1 = forms.CharField(label='Username', max_length=255, required=True)
     password1 = forms.CharField(widget=forms.PasswordInput, required=True, label='Password')
-

@@ -908,10 +908,10 @@ def supplier_form(request, pk):
 def inv_stat_form(request, pk):
     """function"""
     inv = get_object_or_404(InventoryStat, pk=pk)
-    form = forms.Statlib(request.POST or None, instance=inv)
+    form = forms.Statlib1(request.POST or None, instance=inv)
     if form.is_valid():
         form.save()
-        form = forms.Statlib(request.POST or None, instance=inv)
+        form = forms.Statlib1(request.POST or None, instance=inv)
         return redirect('invstat_details', pk=pk)
     return render(request, 'WISH/inventorystat_form.html', {'form': form})
 
