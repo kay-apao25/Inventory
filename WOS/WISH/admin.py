@@ -2,7 +2,7 @@
 from django.contrib import admin
 from simple_history.admin import SimpleHistoryAdmin
 from WISH.models import Supplier, Product, PAR, GARV, CostCenter, \
-		InventoryStat, Employee, IRRHeader, IRR, MIV
+		InventoryStat, Employee, IRRHeader, IRR, MIV, Customer
 
 
 
@@ -16,3 +16,4 @@ admin.site.register(Employee, SimpleHistoryAdmin)
 admin.site.register(IRRHeader, SimpleHistoryAdmin)
 admin.site.register(IRR, SimpleHistoryAdmin)
 admin.site.register(MIV, SimpleHistoryAdmin)
+admin.site.register(Customer, SimpleHistoryAdmin)
