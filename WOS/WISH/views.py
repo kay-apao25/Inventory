@@ -1,7 +1,6 @@
 # Create your views here.
 # pylint: disable=bare-except,invalid-name, too-many-branches, unused-variable, too-many-statements, too-many-locals
 
-
 """views"""
 from django.shortcuts import render, redirect, get_object_or_404
 from WISH.models import Supplier, Product, PAR, GARV, CostCenter, \
@@ -12,7 +11,6 @@ from django.contrib.auth.models import User
 from WISH import forms
 import time
 import json
-
 
 prod_to_par = []
 prod_to_irr = []
@@ -618,8 +616,7 @@ def product_to_garv(request, pk):
                 if 'pros' in prod:
                     del prod['pros']
 
-            res = json.dumps(prod_to_garv)
-            garv.product_to_GARV = res
+            garv.product_to_GARV = json.dumps(prod_to_garv)
 
             garv.confirmed_by = Employee.objects.get\
             (name=(str(request.user.first_name) + ' ' + \
@@ -737,8 +734,8 @@ def par(request, inv):
                 par_entry.amt_cost = par_entry.amt_cost + amount
                 if 'pros' in prod:
                     del prod['pros']
-            res = json.dumps(prod_to_par)
-            par_entry.product = prod_to_par
+            
+            par_entry.product = json.dumps(prod_to_par)
             par_entry.inv_stat_no_id = IRR.objects.get(irr_no=inv).\
             irr_headkey.inv_station_no.id
 
@@ -790,18 +787,6 @@ def par(request, inv):
     else:
         return render(request, 'WISH/par_entry.html', {'form': form, \
             'iform': iform, 'remove_add': remove_add, 'product': prod_to_par})
-
-#def wrs_entry(request):
-#    """function"""
-#
-#        if 'q' in request.GET and request.GET['q']:
-#            q = request.GET['q']
-#            return redirect('WISH.views.wrs_form', pk=q)
-#        return render(request, 'WISH/wrs_entry.html', {})
-#    else:
-#        form = forms.LoginForm(request.POST or None)
-#            return render(request, 'registration/login2.html', {'form': form})
-#        form = forms.LoginForm()"""
 
 @login_required
 def product_form(request, pk):
@@ -884,38 +869,6 @@ def supplier_form(request, pk):
                     form2.fields[key].initial = getattr(sup, key)
     return render(request, 'WISH/supplier_form.html',\
          {'form1': form1, 'form2': form2})
-
-@login_required
-def inv_stat_form(request, pk):
-    """function"""
-    inv = get_object_or_404(InventoryStat, pk=pk)
-    form = forms.Statlib1(request.POST or None, instance=inv)
-    if form.is_valid():
-        form.save()
-        form = forms.Statlib1(request.POST or None, instance=inv)
-        return redirect('invstat_details', pk=pk)
-    return render(request, 'WISH/inventorystat_form.html', {'form': form})
-
-@login_required
-def cost_center_form(request, pk):
-    """function"""
-    cc = get_object_or_404(CostCenter, pk=pk)
-    form = forms.CClib(request.POST or None, instance=cc)
-    if form.is_valid():
-        form.save()
-        form = forms.CClib(request.POST or None, instance=cc)
-        return redirect('costcen_details', pk=pk)
-    return render(request, 'WISH/cost_center_form.html', {'form': form})
-
-@login_required
-def employee_form(request, dce):
-    """function"""
-    em = get_object_or_404(Employee, dce=dce)
-    form = forms.Employeelib(request.POST or None, instance=em)
-    if form.is_valid():
-        form.save()
-        return redirect('emp_details', pk=dce)
-    return render(request, 'WISH/employee_form.html', {'form': form})
 
 @login_required
 def par_form(request, pk):

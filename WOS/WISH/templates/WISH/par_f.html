@@ -31,7 +31,7 @@
        <th>Work Order No.</th>
 
     </thead>
-      {% for irr in irrs %}
+      {% for irr in irr_list %}
         <tr>
           <td>
             <a href="{% url 'new_par' inv=irr.irr_no%}">

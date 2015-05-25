@@ -1,7 +1,7 @@
 """urls"""
 from django.conf.urls import url
 from django.contrib.auth.decorators import login_required
-from django.views.generic import ListView, DetailView, CreateView
+from django.views.generic import ListView, DetailView, CreateView, UpdateView
 from django.core.urlresolvers import reverse_lazy
 from . import views
 from . import models
@@ -46,14 +46,17 @@ urlpatterns = [
     #URL patterns for Editing Libraries (start)
     url(r'^product_form/(?P<pk>[0-9]+)/$', views.product_form,\
         name='product_entry'),
-    url(r'^inv_stat_form/(?P<pk>[0-9]+)/$', views.inv_stat_form,\
-        name='invstat_entry'),
-    url(r'^cost_center_form/(?P<pk>[0-9]+)/$', \
-        views.cost_center_form, name='costcen_entry'),
+    url(r'^inv_stat_form/(?P<pk>[0-9]+)/$', login_required(UpdateView.as_view(\
+        model=models.InventoryStat, form_class=forms.Statlib1, success_url=\
+        reverse_lazy('inv_stat'))), name='invstat_entry'),
+    url(r'^cost_center_form/(?P<pk>[0-9]+)/$', login_required(UpdateView.as_view(\
+        model=models.CostCenter, form_class=forms.CClib, success_url=reverse_lazy(\
+        'cost_center'))), name='costcen_entry'),
     url(r'^supplier_form/(?P<pk>[0-9]+)/$', views.supplier_form,\
         name='supplier_entry'),
-    url(r'^employee_form/(?P<dce>[0-9]+)/$', views.employee_form,\
-        name='emp_entry'),
+    url(r'^employee_form/(?P<pk>[0-9]+)/$', login_required(UpdateView.as_view(\
+        model=models.Employee, form_class=forms.Employeelib, success_url=\
+        reverse_lazy('employee'))), name='emp_entry'),
     #URL patterns for Editing Libraries (end)
 
     #URL patterns for Library Details (start)
