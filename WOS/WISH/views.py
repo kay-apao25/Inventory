@@ -167,21 +167,6 @@ def employee_del(request, pk):
         return render(request, 'WISH/index.html', {})
 
 @login_required
-def add_inv_stat(request):
-    """function"""
-    if request.method == "POST":
-        form = forms.Statlib(request.POST)
-        if form.is_valid():
-            form.save()
-            form = forms.Statlib()
-            return render(request, 'WISH/add_inv_stat.html', \
-             {'form': form, 'msg':'Inventory Station was added successfully.'})
-    else:
-        form = forms.Statlib()
-
-    return render(request, 'WISH/add_inv_stat.html', {'form': form})
-
-@login_required
 def add_supplier(request):
     """function"""
     if request.method == 'POST':
@@ -392,12 +377,11 @@ def product_to_irr(request, pk, inv):
             else:
                 #Storing of products for this specific IRR form.
                 prod_to_irr.append({'Product': form.data['product'], \
-                    'quantity_accepted': \
-                int(form.data['quantity_accepted']), \
-                'quantity_rejected':int(form.data['quantity_rejected']), \
-                'quantity_balance': int(form.data['quantity_balance']), \
-                'is_par':False, \
-                'quantity_par': int(form.data['quantity_accepted'])})
+                    'quantity_accepted': int(form.data['quantity_accepted']), \
+                    'quantity_rejected':int(form.data['quantity_rejected']), \
+                    'quantity_balance': int(form.data['quantity_balance']), \
+                    'is_par':False, 'quantity_par': int(form.data['quantity_accepted'])})
+
                 p = Product.objects.get(id=int(form.data['product']))
                 p.quantity = int(form.data['quantity_accepted'])
                 p.balance = int(form.data['quantity_balance'])
@@ -427,14 +411,11 @@ def product_to_irr(request, pk, inv):
                     irr.wrs_number = irr.irr_headkey.\
                     inv_station_no.inv_station_no + '000000'
 
-                irr.irr_headkey_id = pk
-
                 for prod in prod_to_irr:
                     if 'pros' in prod:
                         del prod['pros']
 
-                res = json.dumps(prod_to_irr)
-                irr.product = res
+                irr.product = json.dumps(prod_to_irr)
 
                 #To check if all entries for the IRR form is filled.
                 if 'save' in request.POST:
