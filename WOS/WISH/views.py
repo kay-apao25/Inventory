@@ -18,7 +18,6 @@ prod_to_par = []
 prod_to_irr = []
 prod_to_garv = []
 
-@login_required
 def log_in(request):
     """function"""
     if request.method == 'POST':
