@@ -1,43 +1,58 @@
 {% extends 'WISH/index.html' %}
+{% load staticfiles %}
  {% block content %}
 <html>
     <head>
         <title>Cost Center details</title>
         <style type="text/css" >
         	table, th, td{
-        		border: 1px solid black;
-        		border-collapse: collapse;
         		text-align: left;
-            font-weight: italic;
         	}
         	th, td {
         		padding: 5px
         	}
         </style>
-        <div class="page-header">
-          <h2 align="center"><b>Cost Center Details</b></h2>
-        </div>
     </head>
 <br><br>
     <body>
-      <table style="width:30%;" align="center" bgcolor="#00FF00">
-        <tr>
-          <td >
-            <b>Cost Center Name :</b><br> <center>{{cc.cost_center_name}}</center>
-          </td>
+      <link rel="stylesheet" href="{% static 'css/font-awesome.min.css' %}">
+      <link rel="stylesheet" href="{% static 'css/details.css' %}">
+      <div class="container">
+              <div class="row text-center">
+                  <div class="col-md-12" style="margin-top: 20px;">
+                      <div class="pricing-table">
+                          <div class="panel panel-primary" style="border: none;">
+                              <div class="controle-header panel-heading panel-heading-landing">
+                                  <h1 class="panel-title panel-title-landing">
+                                    Cost Center
+                                  </h1>
+                              </div>
+                              <div class="controle-panel-heading panel-heading panel-heading-landing-box">
+                                  Details
+                              </div>
+                              <div class="panel-body panel-body-landing">
+                                  <table class="table">
+                                      <tr>
+                                          <td width="50%">Cost Center Name :</td>
+                                          <td>{{cc.cost_center_name}}</td>
+                                      </tr>
+                                      <tr>
+                                          <td width="50px">Functional Group : </td>
+                                          <td>{{cc.functional_group}}</td>
+                                      </tr>
 
-        </tr>
-        <tr>
+                                  </table>
+                              </div>
+                              <div class="panel-footer panel-footer-landing">
+                                  <a href="{% url 'costcen_entry' pk=cc.pk %}" class="btn btn-price btn-info btn-lg">Edit</a>
+                                  <a href="{% url 'costcen_del' pk=cc.pk %}" class="btn btn-price btn-info btn-lg">Delete</a>
 
-          <td>
-            <b>Functional Group : </b><br><center>{{cc.functional_group}}</center>
-          </td>
-
-      </table>
-      <br><br
-      <div align="center"><a href="{% url 'costcen_entry' pk=cc.pk %}" class="save btn btn-default">Edit</a>&nbsp;&nbsp;&nbsp;
-        <a href="{% url 'costcen_del' pk=cc.pk %}" class="save btn btn-default">Delete</a></div>
-
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
     </body>
 
 </html>

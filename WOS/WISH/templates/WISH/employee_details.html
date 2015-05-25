@@ -1,67 +1,73 @@
 {% extends 'WISH/index.html' %}
+{% load staticfiles %}
  {% block content %}
 <html>
     <head>
         <title>Employee Details</title>
         <style type="text/css" >
         	table, th, td{
-        		border: 1px solid black;
-        		border-collapse: collapse;
         		text-align: left;
-            font-weight: italic;
-        	}
+            }
         	th, td {
         		padding: 5px
         	}
         </style>
-      <div class="page-header">
-        <h2 align="center"><b>Employee Details</b></h2>
-      </div>
     </head>
 <br><br>
     <body>
-      <table style="width:30%;" align="center" bgcolor="#00FF00">
-        <tr>
-          <td >
-            <b>DCE :</b><br> <center>{{em.dce}}</center>
-          </td>
+      <link rel="stylesheet" href="{% static 'css/font-awesome.min.css' %}">
+      <link rel="stylesheet" href="{% static 'css/details.css' %}">
+      <div class="container">
+              <div class="row text-center">
+                  <div class="col-md-12" style="margin-top: 20px;">
+                      <div class="pricing-table">
+                          <div class="panel panel-primary" style="border: none;">
+                              <div class="controle-header panel-heading panel-heading-landing">
+                                  <h1 class="panel-title panel-title-landing">
+                                    Employee
+                                  </h1>
+                              </div>
+                              <div class="controle-panel-heading panel-heading panel-heading-landing-box">
+                                  Details
+                              </div>
+                              <div class="panel-body panel-body-landing">
+                                  <table class="table">
+                                      <tr>
+                                          <td width="50%">DCE :</td>
+                                          <td>{{em.dce}}</td>
+                                      </tr>
+                                      <tr>
+                                          <td width="200px">Name : </td>
+                                          <td>{{em.name}}</td>
+                                      </tr>
 
+                                      <tr>
+                                          <td width="200px">Charging CC No.:</td>
+                                          <td>{{em.charging_cc_no}}</td>
+                                      </tr>
 
-        </tr>
-        <tr>
+                                      <tr>
+                                          <td width="50px">Position:</td>
+                                          <td>{{em.position}}</td>
+                                      </tr>
 
-          <td>
-            <b>Name : </b><br><center>{{em.name}}</center>
-          </td>
+                                      <tr>
+                                          <td width="200px">Cost Center Number:</td>
+                                          <td>{{em.cost_center_no}}</td>
+                                      </tr>
 
-        <tr>
-          <td>
-            <b>Charging CC No.:</b> <br><center>{{em.charging_cc_no}}</center>
-          </td>
+                                  </table>
+                              </div>
+                              <div class="panel-footer panel-footer-landing">
+                                  <a href="{% url 'emp_entry' dce=em.dce %}" class="btn btn-price btn-info btn-lg">Edit</a>
+                                  <a href="{% url 'emp_del' pk=em.pk %}" class="btn btn-price btn-info btn-lg">Delete</a>
 
-        </tr>
-
-        <tr>
-          <td>
-            <b>Position:</b> <br><center>{{em.position}}</center>
-          </td>
-
-        </tr>
-
-        <tr>
-          <td>
-            <b>Cost center number:</b> <br><center>{{em.cost_center_no}}</center>
-          </td>
-
-        </tr>
-
-
-
-      </table>
-      <br><br
-      <div align="center"><a href="{% url 'emp_entry' dce=em.dce %}" class="save btn btn-default">Edit</a>&nbsp;&nbsp;&nbsp;
-        <a href="{% url 'emp_del' pk=em.pk %}" class="save btn btn-default">Delete</a></div>
-
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
     </body>
 
 </html>

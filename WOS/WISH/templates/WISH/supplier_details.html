@@ -1,82 +1,110 @@
 {% extends 'WISH/index.html' %}
+{% load staticfiles %}
  {% block content %}
 <html>
     <head>
         <title>Supplier details</title>
         <style type="text/css" >
         	table, th, td{
-        		border: 1px solid black;
-        		border-collapse: collapse;
         		text-align: left;
-            font-weight: italic;
         	}
         	th, td {
         		padding: 5px
         	}
         </style>
-        <div class="page-header">
-          <h2 align="center"><b>Supplier Details</b></h2>
-        </div>
     </head>
 <br><br>
     <body>
-      <table style="width:50%;" align="center" bgcolor="#00FF00">
-        <tr>
-          <td >
-            <b>supplier number :</b><br><center> {{sup.supplier_number}}</center>
-          </td>
-          <td >
-            <b>supplier name :</b><br> <center>{{sup.supplier_name}}</center>
-          </td>
+      <link rel="stylesheet" href="{% static 'css/font-awesome.min.css' %} ">
+      <link rel="stylesheet" href="{% static 'css/details.css' %}">
+      <div class="container">
+              <div class="row text-center">
+                  <div class="col-md-12" style="margin-top: 20px;">
+                      <div class="pricing-table">
+                          <div class="panel panel-primary" style="border: none;">
+                              <div class="controle-header panel-heading panel-heading-landing">
+                                  <h1 class="panel-title panel-title-landing">
+                                    Supplier
+                                  </h1>
+                              </div>
+                              <div class="controle-panel-heading panel-heading panel-heading-landing-box">
+                                  Details
+                              </div>
+                              <div class="panel-body panel-body-landing">
+                                  <table class="table">
+                                      <tr>
+                                          <td width="50%">Supplier Number :</td>
+                                          <td>{{sup.supplier_number}}</td>
+                                      </tr>
 
-        </tr>
-        <tr>
+                                      <tr>
 
-          <td>
-            <b>supplier address: </b><br><center>{{sup.supplier_address}}</center>
-          </td>
-          <td >
-            <b>telephone number :</b><br> <center>{{sup.telephone_number}}</center>
-          </td>
-        </tr>
+                                          <td width="200px">Supplier Name :</td>
+                                          <td>{{sup.supplier_name}}</td>
 
-        <tr>
-          <td>
-            <b>credit limit:</b> <br><center>{{sup.credit_limit}}</center>
-          </td>
-          <td >
-            <b>debit amount :</b><br> <center>{{sup.debit_amount}}</center>
-          </td>
+                                      </tr>
 
-        </tr>
-        <tr>
-          <td>
-            <b>credit amount:</b> <br><center>{{sup.credit_amount}}</center>
-          </td>
-          <td >
-            <b>balance amount :</b><br> <center>{{sup.balance_amount}}</center>
-          </td>
+                                      <tr>
+                                          <td width="200px">Supplier Address: </td>
+                                          <td>{{sup.supplier_address}}</td>
+                                      </tr>
 
-        </tr>
-        <tr>
-          <td>
-            <b>contact person:</b> <br><center>{{sup.contact_person}}</center>
-          </td>
-          <td >
-            <b>remark :</b><br> <center>{{sup.remarks}}</center>
-          </td>
+                                      <tr>
 
-        </tr>
+                                          <td width="200px">Telephone Number:</td>
+                                          <td>{{sup.telephone_number}}</td>
 
+                                      </tr>
 
+                                      <tr>
+                                          <td width="200px">Credit Limit:</td>
+                                          <td>{{sup.credit_limit}}</td>
+                                      </tr>
 
-      </table>
-      <br><br>
-      <div align="center"><a href="{% url 'supplier_entry' pk=sup.supplier_number %}" class="save btn btn-default">Edit</a>&nbsp;&nbsp;&nbsp;
-        <a href="{% url 'supplier_del' pk=sup.pk %}" class="save btn btn-default">Delete</a></div>
+                                      <tr>
 
+                                          <td width="200px">Debit Amount:</td>
+                                          <td>{{sup.debit_amount}}</td>
 
+                                      </tr>
+
+                                      <tr>
+                                          <td width="200px">Credit Amount:</td>
+                                          <td>{{sup.credit_amount}}</td>
+                                      </tr>
+
+                                      <tr>
+
+                                          <td width="200px">Balance Amount:</td>
+                                          <td>{{sup.balance_amount}}</td>
+
+                                      </tr>
+
+                                      <tr>
+                                          <td width="200px">Contact Person:</td>
+                                          <td>{{sup.contact_person}}</td>
+                                      </tr>
+
+                                      <tr>
+
+                                          <td width="200px">Remark:</td>
+                                          <td>{{sup.remarks}}</td>
+
+                                      </tr>
+                                </table>
+                              </div>
+                              <div class="panel-footer panel-footer-landing">
+                                  <a href="{% url 'supplier_entry' pk=sup.supplier_number %}" class="btn btn-price btn-info btn-lg">Edit</a>
+                                  <a href="{% url 'supplier_del' pk=sup.pk %}" class="btn btn-price btn-info btn-lg">Delete</a>
+
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
     </body>
+
 
 </html>
 

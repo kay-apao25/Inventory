@@ -1,52 +1,61 @@
 {% extends 'WISH/index.html' %}
+{% load staticfiles %}
  {% block content %}
 <html>
     <head>
         <title>Inventory station details</title>
         <style type="text/css" >
         	table, th, td{
-        		border: 1px solid black;
-        		border-collapse: collapse;
         		text-align: left;
-            font-weight: italic;
         	}
         	th, td {
         		padding: 5px
         	}
         </style>
-      <div class="page-header">
-        <h2 align="center"><b>Inventory Station Details</b></h2>
-      </div>
     </head>
 <br><br>
     <body>
-      <table style="width:30%;" align="center" bgcolor="#00FF00">
-        <tr>
-          <td >
-            <b>Inventory station no. :</b><br> <center>{{invs.inv_station_no}}</center>
-          </td>
+      <link rel="stylesheet" href="{% static 'css/font-awesome.min.css' %}">
+      <link rel="stylesheet" href="{% static 'css/details.css' %}">
+      <div class="container">
+              <div class="row text-center">
+                  <div class="col-md-12" style="margin-top: 20px;">
+                      <div class="pricing-table">
+                          <div class="panel panel-primary" style="border: none;">
+                              <div class="controle-header panel-heading panel-heading-landing">
+                                  <h1 class="panel-title panel-title-landing">
+                                    Inventory Station
+                                  </h1>
+                              </div>
+                              <div class="controle-panel-heading panel-heading panel-heading-landing-box">
+                                  Details
+                              </div>
+                              <div class="panel-body panel-body-landing">
+                                  <table class="table">
+                                      <tr>
+                                          <td width="50%">Inventory Station No. :</td>
+                                          <td>{{invs.inv_station_no}}</td>
+                                      </tr>
+                                      <tr>
+                                          <td width="50px">Inventory Station Name : </td>
+                                          <td>{{invs.station_description}}</td>
+                                      </tr>
+                                      <tr>
+                                          <td width="50px">Cost Center:</td>
+                                          <td>{{invs.cost_center_no}}</td>
+                                      </tr>
+                                  </table>
+                              </div>
+                              <div class="panel-footer panel-footer-landing">
+                                  <a href="{% url 'invstat_entry' pk=invs.pk %}" class="btn btn-price btn-info btn-lg">Edit</a>
+                                  <a href="{% url 'invstat_del' pk=invs.pk %}" class="btn btn-price btn-info btn-lg">Delete</a>
 
-        </tr>
-        <tr>
-
-          <td>
-            <b>Inventory station name : </b><br><center>{{invs.station_description}}</center>
-          </td>
-
-        <tr>
-          <td>
-            <b>Cost center:</b> <br><center>{{invs.cost_center_no}}</center>
-          </td>
-
-        </tr>
-
-
-
-      </table>
-      <br><br
-      <div align="center"><a href="{% url 'invstat_entry' pk=invs.pk %}" class="save btn btn-default">Edit</a>&nbsp;&nbsp;&nbsp;
-        <a href="{% url 'invstat_del' pk=invs.pk %}" class="save btn btn-default">Delete</a></div>
-
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
     </body>
 
 </html>
