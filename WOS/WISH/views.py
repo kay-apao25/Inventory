@@ -409,7 +409,7 @@ def product_to_irr(request, pk, inv):
                 {'form': form, 'iform': iform, 'remove_add': \
                 remove_add, 'product': prod_to_irr})
 
-def miv_entry_S(request, pk):
+def miv_entry(request, pk):
     """function"""
     if request.method == "POST":
         #Forms containing the entries entered by the user

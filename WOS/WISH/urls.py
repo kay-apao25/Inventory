@@ -20,7 +20,9 @@ urlpatterns = [
 
     #URL patterns for File and Product Fill-Up Forms (start)
     url(r'^product/new/$', login_required(views.product_new), name='new_product'),
+
     url(r'^par/(?P<inv>[0-9]+)/$', login_required(views.par), name='new_par'),
+
     url(r'^par_f/$', login_required(lambda request: ListView.as_view(queryset=\
         models.IRR.objects.filter(irr_headkey__in=[i.id for i in (\
         models.IRRHeader.objects.filter(dce_custodian=(\
@@ -31,7 +33,7 @@ urlpatterns = [
 
     url(r'^irr_entry/$', login_required(views.irr_entry), name='new_irr'),
 
-    url(r'^miv_entry/$', login_required(lambda request: ListView.as_view(queryset=\
+    url(r'^miv_entry_f/$', login_required(lambda request: ListView.as_view(queryset=\
         models.IRR.objects.filter(irr_headkey__in=[i.id for i in (\
         models.IRRHeader.objects.filter(dce_custodian=(\
         models.Employee.objects.get(name=str(request.user.\
@@ -39,8 +41,9 @@ urlpatterns = [
         context_object_name='irr_list', template_name=\
         'WISH/miv_entry_f.html')(request)), name='new_miv'),
 
-    url(r'^miv_entry_S/(?P<pk>[0-9]+)/$', login_required(views.miv_entry_S), \
+    url(r'^miv_entry/(?P<pk>[0-9]+)/$', login_required(views.miv_entry), \
         name='new_miv_s'),
+
     url(r'^garv_entry_f/$', login_required(lambda request: ListView.as_view(queryset=\
         models.PAR.objects.filter(issued_by=(models.Employee.objects.get(\
         name=str(request.user.first_name) + ' ' + str(request.user.last_name\
