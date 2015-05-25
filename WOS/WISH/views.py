@@ -228,7 +228,7 @@ def product_new(request):
 
         #Non-empty forms are to be validated.
         if form.is_valid() and form1.is_valid() \
-        and form2.is_valid():
+        and form2.is_valid() and form3.is_valid():
 
             product = form.save(commit=False)
 

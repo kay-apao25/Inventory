@@ -19,7 +19,6 @@ class ProductForm(forms.ModelForm):
             'slc_number', 'amount', 'balance', 'is_irr')
 
 
-
 class ProductForm1(forms.Form):
     """ProductForm1"""
     nsn = forms.CharField(label='NSN *', max_length=10)
