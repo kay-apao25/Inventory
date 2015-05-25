@@ -1,7 +1,7 @@
 """urls"""
 from django.conf.urls import url
 from django.contrib.auth.decorators import login_required
-from django.views.generic import ListView, DetailView, UpdateView
+from django.views.generic import ListView, DetailView, CreateView
 from django.core.urlresolvers import reverse_lazy
 from . import views
 from . import models
@@ -46,9 +46,7 @@ urlpatterns = [
     #URL patterns for Editing Libraries (start)
     url(r'^product_form/(?P<pk>[0-9]+)/$', views.product_form,\
         name='product_entry'),
-    url(r'^inv_stat_form/(?P<pk>[0-9]+)/$', UpdateView.as_view(\
-        model=models.InventoryStat, form_class=forms.Statlib,\
-        success_url=reverse_lazy('inv_stat')),\
+    url(r'^inv_stat_form/(?P<pk>[0-9]+)/$', views.inv_stat_form,\
         name='invstat_entry'),
     url(r'^cost_center_form/(?P<pk>[0-9]+)/$', \
         views.cost_center_form, name='costcen_entry'),
@@ -61,8 +59,8 @@ urlpatterns = [
     #URL patterns for Library Details (start)
     url(r'^product_details/(?P<pk>[0-9]+)/$', login_required(DetailView.as_view(\
             model=models.Product, context_object_name='prod')), name='prod_details'),
-    url(r'^inv_stat_details/(?P<pk>[0-9]+)/$', DetailView.as_view(\
-        model=models.InventoryStat, context_object_name='invs'),\
+    url(r'^inv_stat_details/(?P<pk>[0-9]+)/$', login_required(DetailView.as_view(\
+            model=models.InventoryStat, context_object_name='invs')),\
         name='invstat_details'),
     url(r'^cost_center_details/(?P<pk>[0-9]+)/$', login_required(DetailView.as_view(\
             model=models.CostCenter, context_object_name='cc')), \
@@ -87,9 +85,12 @@ urlpatterns = [
     #URL patterns for Deleting Libraries (end)
 
     #URL patterns for Adding Libraries (start)
-    url(r'^add_cost_center/$', views.add_cost_center,\
-     name='add_cost_center'),
-    url(r'^add_inv_stat/$', views.add_inv_stat, name='add_inv_stat'),
+    url(r'^add_cost_center/$', CreateView.as_view(form_class=forms.CClib, \
+        template_name='WISH/add_cost_center.html', success_url=reverse_lazy(\
+        'cost_center')), name='add_cost_center'),
+    url(r'^add_inv_stat/$', CreateView.as_view(form_class=forms.Statlib, \
+        template_name='WISH/add_inv_stat.html', success_url=reverse_lazy(\
+        'inv_stat')), name='add_inv_stat'),
     url(r'^add_supplier/$', views.add_supplier, name='add_supplier'),
     url(r'^add_employee/$', views.add_employee, name='add_employee'),
     #URL patterns for Adding Libraries (end)

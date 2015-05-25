@@ -248,22 +248,6 @@ def add_employee(request):
     return render(request, 'WISH/add_employee.html', {'form': form})
 
 @login_required
-def add_cost_center(request):
-    """function"""
-    if request.method == "POST":
-        form = forms.CClib(request.POST)
-        if form.is_valid():
-            form.save()
-            form = forms.CClib()
-            msg = 'Cost center was added successfully.'
-            return render(request, 'WISH/add_cost_center.html',\
-               {'form': form, 'msg':'Cost center was added successfully.'})
-    else:
-        form = forms.CClib()
-
-    return render(request, 'WISH/add_cost_center.html', {'form': form})
-
-@login_required
 def product_new(request):
     """function"""
     if request.method == "POST":
@@ -835,18 +819,6 @@ def par(request, inv):
 #        return render(request, 'WISH/wrs_entry.html', {})
 #    else:
 #        form = forms.LoginForm(request.POST or None)
-#        if form.is_valid():
-#            user = authenticate(username=form.data['username'], \
-#                password=form.data['password'])
-#            if user is not None:
-#                login(request, user)
-#                return redirect('WISH.views.wrs_entry')
-            # Redirect to a success page.
-#            else:
-#                return render(request, 'registration/login2.html', \
-#                    {'error': 'Username and password does not match.',\
-#                     'form':form})
-#        else:
 #            return render(request, 'registration/login2.html', {'form': form})
 #        form = forms.LoginForm()"""
 
