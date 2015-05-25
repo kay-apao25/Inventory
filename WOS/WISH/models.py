@@ -94,7 +94,7 @@ class Product(models.Model):
     classification = models.CharField(max_length=30)
     stock = models.CharField(max_length=10)
     block = models.CharField(max_length=10)
-    unit_measure = models.CharField(max_length=10)
+    unit_measure = models.CharField(max_length=20)
     status = models.CharField(max_length=20)
     purchased_from = models.ForeignKey(Supplier, related_name="s_pFK")
     average_amount = models.FloatField()

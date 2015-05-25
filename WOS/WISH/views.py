@@ -18,6 +18,7 @@ prod_to_par = []
 prod_to_irr = []
 prod_to_garv = []
 
+@login_required
 def log_in(request):
     if request.method == 'POST':
         if 'signup' in request.POST:
@@ -83,15 +84,36 @@ def log_out(request):
 @login_required
 def index(request):
     """function"""
-    product = Product.objects.order_by('id')[:3]
-    irr = IRR.objects.latest('wrs_number')
-    par = PAR.objects.latest('par_no')
-    garv = GARV.objects.latest('garv_no')
-    inv = InventoryStat.objects.latest('id')
-    sup = Supplier.objects.latest('id')
-    cc = CostCenter.objects.latest('id')
+    try:
+        product = Product.objects.order_by('id')[:3]
+    except:
+        product = []
+    try:
+        irr = IRR.objects.latest('wrs_number')
+    except:
+        irr = []
+    try:
+        par = PAR.objects.latest('par_no')
+    except:
+        par = []
+    try:
+        garv = GARV.objects.latest('garv_no')
+    except:
+        garv = []
+    try:
+        inv = InventoryStat.objects.latest('id')
+    except:
+        inv = []
+    try:
+        sup = Supplier.objects.latest('id')
+    except:
+        sup = []
+    try:
+        cc = CostCenter.objects.latest('id')
+    except:
+        cc = []
     return render(request, 'WISH/index.html', {'product': product, 'irr': irr, \
-        'par': par, 'garv': garv, 'inv': inv, 'sup': sup, 'cc': cc})
+    'par': par, 'garv': garv, 'inv': inv, 'sup': sup, 'cc': cc})
 
 @login_required
 def guest(request):
@@ -802,61 +824,6 @@ def par(request, inv):
         return render(request, 'WISH/par_entry.html', {'form': form, \
             'iform': iform, 'remove_add': remove_add, 'product': prod_to_par})
 
-
-#def wrs_entry(request):
-#    """function"""
-#    
-#        if 'q' in request.GET and request.GET['q']:
-#            q = request.GET['q']
-#            return redirect('WISH.views.wrs_form', pk=q)
-#        return render(request, 'WISH/wrs_entry.html', {})
-#    else:
-#        form = forms.LoginForm(request.POST or None)
-#        if form.is_valid():
-#            user = authenticate(username=form.data['username'], \
-#                password=form.data['password'])
-#            if user is not None:
-#                login(request, user)
-#                return redirect('WISH.views.wrs_entry')
-            # Redirect to a success page.
-#            else:
-#                return render(request, 'registration/login2.html', \
-#                    {'error': 'Username and password does not match.',\
-#                     'form':form})
-#        else:
-#            return render(request, 'registration/login2.html', {'form': form})
-#        form = forms.LoginForm()"""
-
-@login_required
-def product_details(request, pk):
-    """function"""
-    prod = get_object_or_404(Product, pk=pk)
-    return render(request, 'WISH/product_details.html', {'prod': prod})
-
-@login_required
-def inv_stat_details(request, pk):
-    """function"""
-    invs = get_object_or_404(InventoryStat, inv_station_no=pk)
-    return render(request, 'WISH/inv_stat_details.html', {'invs': invs})
-
-@login_required
-def cost_center_details(request, pk):
-    """function"""
-    cc = get_object_or_404(CostCenter, pk=pk)
-    return render(request, 'WISH/cost_center_details.html', {'cc': cc})
-
-@login_required
-def supplier_details(request, pk):
-    """function"""
-    sup = get_object_or_404(Supplier, supplier_number=pk)
-    return render(request, 'WISH/supplier_details.html', {'sup': sup})
-
-@login_required
-def employee_details(request, dce):
-    """function"""
-    em = get_object_or_404(Employee, dce=dce)
-    return render(request, 'WISH/employee_details.html', {'em': em})
-
 @login_required
 def product_form(request, pk):
     """function"""
@@ -876,15 +843,22 @@ def product_form(request, pk):
                 setattr(product, key, form3.data[key1])
             if form2.data['expiry_date'] == '':
                 product.expiry_date = None
-            if int(form2.data['quantity']) > 1:
+            if int(form2.data['quantity']) > 1 and \
+            not (product.unit_measure.endswith('s')):
                 if form2.data['unit_measure'] == 'box':
                     product.unit_measure = str(product.unit_measure) + 'es'
                 else:
                     product.unit_measure = str(product.unit_measure) + 's'
+            if int(form2.data['quantity']) == 1 and (product.unit_measure.endswith('s')):
+                if product.unit_measure.startswith('b'):
+                    product.unit_measure = product.unit_measure[:-2]
+                else:
+                    product.unit_measure = product.unit_measure[:-1]
+
             product.amount = float(form2.data['unit_cost']) * \
-            int(form2.data['quantity'])
+            float(form2.data['quantity'])
             product.save()
-            return redirect('WISH.views.product_details', pk=pk)
+        return redirect('prod_details', pk=pk)
     else:
         form = forms.ProductForm5(instance=product)
         form1 = forms.ProductForm1()
@@ -901,34 +875,12 @@ def product_form(request, pk):
                 if key == key3:
                     form3.fields[key].initial = getattr(product, key)
     return render(request, 'WISH/product_form.html', \
-        {'form1': form1, 'form2': form2, 'form3': form3})
-
-@login_required
-def inv_stat_form(request, pk):
-    """function"""
-    inv = get_object_or_404(InventoryStat, pk=pk)
-    form = forms.Statlib(request.POST or None, instance=inv)
-    if form.is_valid():
-        form.save()
-        form = forms.Statlib(request.POST or None, instance=inv)
-        return redirect('WISH.views.inv_stat_details', pk=pk)
-    return render(request, 'WISH/inv_stat_form.html', {'form': form})
-
-@login_required
-def cost_center_form(request, pk):
-    """function"""
-    cc = get_object_or_404(CostCenter, pk=pk)
-    form = forms.CClib(request.POST or None, instance=cc)
-    if form.is_valid():
-        form.save()
-        form = forms.CClib(request.POST or None, instance=cc)
-        return redirect('WISH.views.cost_center_details', pk=pk)
-    return render(request, 'WISH/cost_center_form.html', {'form': form})
+    {'form1': form1, 'form2': form2, 'form3': form3})
 
 @login_required
 def supplier_form(request, pk):
     """function"""
-    sup = get_object_or_404(Supplier, supplier_number=pk)
+    sup = get_object_or_404(Supplier, pk=pk)
     if request.method == 'POST':
         form = forms.Supplierlib(request.POST)
         form1 = forms.Supplierlib1(request.POST)
@@ -939,7 +891,7 @@ def supplier_form(request, pk):
                 setattr(sup, key, form1.data[key1])
                 setattr(sup, key, form2.data[key1])
             sup.save()
-            return redirect('WISH.views.supplier_details', pk=pk)
+            return redirect('supplier_details', pk=pk)
     else:
         form = forms.Supplierlib(instance=sup)
         form1 = forms.Supplierlib1()
@@ -955,19 +907,40 @@ def supplier_form(request, pk):
          {'form1': form1, 'form2': form2})
 
 @login_required
+def inv_stat_form(request, pk):
+    """function"""
+    inv = get_object_or_404(InventoryStat, pk=pk)
+    form = forms.Statlib(request.POST or None, instance=inv)
+    if form.is_valid():
+        form.save()
+        form = forms.Statlib(request.POST or None, instance=inv)
+        return redirect('invstat_details', pk=pk)
+    return render(request, 'WISH/inv_stat_form.html', {'form': form})
+
+@login_required
+def cost_center_form(request, pk):
+    """function"""
+    cc = get_object_or_404(CostCenter, pk=pk)
+    form = forms.CClib(request.POST or None, instance=cc)
+    if form.is_valid():
+        form.save()
+        form = forms.CClib(request.POST or None, instance=cc)
+        return redirect('costcen_details', pk=pk)
+    return render(request, 'WISH/cost_center_form.html', {'form': form})
+
+@login_required
 def employee_form(request, dce):
     """function"""
     em = get_object_or_404(Employee, dce=dce)
     form = forms.Employeelib(request.POST or None, instance=em)
     if form.is_valid():
         form.save()
-        return redirect('WISH.views.employee_details', dce=dce)
+        return redirect('emp_details', pk=dce)
     return render(request, 'WISH/employee_form.html', {'form': form})
 
 @login_required
 def par_form(request, pk):
     """function"""
-
     parss = get_object_or_404(PAR, pk=pk)
     products = parss.product
     for product in products:
@@ -984,20 +957,17 @@ def par_form(request, pk):
         if len(products) % 5 != 0:
             loop = loop + 1
             remain = 5 - (len(products) % 5)
-        return render(request, 'WISH/par_form.html',\
-         {'parss':parss, 'products': products, \
-            'loop': range(loop), 'remain': range(remain)})
+        return render(request, 'WISH/par_form.html', {'parss':parss,\
+         'products': products, 'loop': range(loop), 'remain': range(remain)})
     else:
         loop = 1
         remain = 5 - len(products)
-        return render(request, 'WISH/par_form.html',\
-         {'parss':parss, 'products': products, \
-         'remain': range(remain), 'loop': range(loop)})
+        return render(request, 'WISH/par_form.html', {'parss':parss, 'products': \
+         products, 'remain': range(remain), 'loop': range(loop)})
 
 @login_required
 def garv_form(request, pk):
     """function"""
-
     garvs = get_object_or_404(GARV, pk=pk)
     products = garvs.product_to_GARV
     for product in products:
@@ -1008,20 +978,17 @@ def garv_form(request, pk):
         if len(products) % 3 != 0:
             loop = loop + 1
             remain = 3 - (len(products) % 3)
-        return render(request, 'WISH/garv_form.html',\
-         {'garvs':garvs, 'products': products, 'pro': pro,\
-            'loop': range(loop), 'remain': range(remain)})
+        return render(request, 'WISH/garv_form.html', {'garvs':garvs, \
+         'products': products, 'loop': range(loop), 'remain': range(remain)})
     else:
         loop = 1
         remain = 3 - len(products)
-        return render(request, 'WISH/garv_form.html', \
-            {'garvs': garvs, 'products': products, 'pro':pro,\
-            'remain': range(remain), 'loop': range(loop)})
+        return render(request, 'WISH/garv_form.html', {'garvs': garvs, \
+            'products': products, 'remain': range(remain), 'loop': range(loop)})
 
 @login_required
 def irr_form(request, pk):
     """function"""
-
     irs = get_object_or_404(IRR, pk=pk)
     products = irs.product
     total = 0
@@ -1037,20 +1004,18 @@ def irr_form(request, pk):
             loop = loop + 1
             remain = 6 - (len(products) % 6)
         return render(request, 'WISH/irr_form.html', \
-            {'irs':irs, 'products': products, \
-            'loop': range(loop), 'total': total, 'remain': range(remain)})
+            {'irs':irs, 'products': products, 'loop': range(loop), \
+            'total': total, 'remain': range(remain)})
     else:
         loop = 1
         remain = 6 - len(products)
-        return render(request, 'WISH/irr_form.html', \
-            {'irs':irs, 'products': products, \
-            'total': total, 'remain': range(remain),\
+        return render(request, 'WISH/irr_form.html', {'irs':irs, \
+            'products': products, 'total': total, 'remain': range(remain),\
             'loop': range(loop)})
 
 @login_required
 def miv_form(request, pk):
     """function"""
-
     mivs = get_object_or_404(MIV, miv_no=pk)
     products = mivs.irr_no.product
     for product in products:
@@ -1063,20 +1028,17 @@ def miv_form(request, pk):
         if len(products) % 6 != 0:
             loop = loop + 1
             remain = 6 - (len(products) % 6)
-        return render(request, 'WISH/miv_form.html', \
-            {'mivs':mivs, 'products': products, \
-            'loop': range(loop), 'remain': range(remain)})
+        return render(request, 'WISH/miv_form.html', {'mivs':mivs, \
+            'products': products, 'loop': range(loop), 'remain': range(remain)})
     else:
         loop = 1
         remain = 6 - len(products)
-        return render(request, 'WISH/miv_form.html', \
-            {'mivs':mivs, 'products':products, 'remain': range(remain),\
-            'loop': range(loop)})
+        return render(request, 'WISH/miv_form.html', {'mivs':mivs, \
+            'products':products, 'remain': range(remain), 'loop': range(loop)})
 
 @login_required
 def wrs_form(request, pk):
     """function"""
-
     wrss = get_object_or_404(IRR, wrs_number=pk)
     pros = wrss.product
     for pro in pros:
@@ -1086,12 +1048,10 @@ def wrs_form(request, pk):
         if len(pros) % 3 != 0:
             loop = loop + 1
             remain = 3 - (len(pros) % 3)
-        return render(request, 'WISH/wrs_form.html', \
-            {'wrss':wrss, 'pros': pros, \
+        return render(request, 'WISH/wrs_form.html', {'wrss':wrss, 'pros': pros, \
             'loop': range(loop), 'remain': range(remain)})
     else:
         loop = 1
         remain = 3 - len(pros)
-        return render(request, 'WISH/wrs_form.html', \
-            {'wrss': wrss, 'pros': pros, 'remain': range(remain),\
-            'loop': range(loop)})
+        return render(request, 'WISH/wrs_form.html', {'wrss': wrss, \
+            'pros': pros, 'remain': range(remain), 'loop': range(loop)})

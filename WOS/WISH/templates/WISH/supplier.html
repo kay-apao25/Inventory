@@ -56,7 +56,7 @@
    {% for sups in sup_list %}
      <tr>
        <td>
-         <a href="{% url 'supplier_details' pk=sups.supplier_number %}">
+         <a href="{% url 'supplier_details' pk=sups.pk %}">
            {{sups.supplier_number}}
          </a>
        </td>

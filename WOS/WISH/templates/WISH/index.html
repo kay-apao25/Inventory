@@ -342,7 +342,7 @@ Image placeholders: placemi.com
                         <div class="row">
                             <div align="center">
                                 <div class="thumbnail" style="width:500px; height:86px;">
-                                	{% if inv != null %}
+                                	{% if inv|length != 0 %}
                                 		<a href="{% url 'invstat_details' pk=inv.pk%}">
                                     		Inventory Station: {{inv.inv_station_no}} - {{inv.station_description}}
                                     	</a>
@@ -350,7 +350,7 @@ Image placeholders: placemi.com
                                     	<strong>No new inventory station added.</strong>
                                    	{% endif %}
                                     <br>
-                                    {% if cc != null %}
+                                    {% if cc|length != 0 %}
                                         <a href="{% url 'costcen_details' pk=cc.pk%}">
                                             Cost Center: {{cc.id}} - <br> {{cc.functional_group}}
                                         </a>
@@ -358,7 +358,7 @@ Image placeholders: placemi.com
                                         <strong>No new cost center added.</strong>
                                     {% endif %}
                                     <br>
-                                    {% if sup != null %}
+                                    {% if sup|length != 0 %}
                                         <a href="{% url 'supplier_details' pk=sup.pk%}">
                                             Supplier: {{sup.supplier_number}} - <br> {{sup.supplier_name}}
                                         </a>
