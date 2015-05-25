@@ -99,7 +99,9 @@ urlpatterns = [
             template_name='WISH/add_inv_stat.html', success_url=reverse_lazy(\
             'inv_stat'))), name='add_inv_stat'),
     url(r'^add_supplier/$', views.add_supplier, name='add_supplier'),
-    url(r'^add_employee/$', views.add_employee, name='add_employee'),
+    url(r'^add_employee/$', login_required(CreateView.as_view(form_class=forms.Emlib, \
+            template_name='WISH/add_employee.html', success_url=reverse_lazy(\
+            'employee'))), name='add_employee'),
     #URL patterns for Adding Libraries (end)
 
     #URL patterns for File and Product Reports (start)

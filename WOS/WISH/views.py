@@ -167,15 +167,7 @@ def add_supplier(request):
                 setattr(sup, key, form2.data[key1])
 
             res = ""
-            sup_name = list(form.data['supplier_name'])
-            for name in sup_name:
-                if name == "'":
-                    name = '-'
-                    res = res + name
-                else:
-                    res = res + name
-            sup.supplier_name = res
-
+            sup.supplier_name = form.data['supplier_name']
             sup.save()
             msg = 'Supplier was added successfully.'
             form = forms.Suplib()
@@ -190,31 +182,6 @@ def add_supplier(request):
         form2 = forms.Suplib2()
     return render(request, 'WISH/add_supplier.html', \
         {'form1': form1, 'form2': form2})
-
-def add_employee(request):
-    """function"""
-    if request.method == "POST":
-        form = forms.Emlib(request.POST)
-        if form.is_valid():
-            employee = form.save(commit=False)
-            res = ""
-            em_name = list(form.data['name'])
-            for name in em_name:
-                if name == "'":
-                    name = '-'
-                    res = res + name
-                else:
-                    res = res + name
-
-            employee.name = res
-            employee.save()
-            form = forms.Emlib()
-            return render(request, 'WISH/add_employee.html', {'form': form,\
-                'msg':'Employee was added successfully.'})
-    else:
-        form = forms.Emlib()
-
-    return render(request, 'WISH/add_employee.html', {'form': form})
 
 def product_new(request):
     """function"""
