@@ -942,7 +942,7 @@ def inv_stat_form(request, pk):
         form.save()
         form = forms.Statlib(request.POST or None, instance=inv)
         return redirect('invstat_details', pk=pk)
-    return render(request, 'WISH/inv_stat_form.html', {'form': form})
+    return render(request, 'WISH/inventorystat_form.html', {'form': form})
 
 @login_required
 def cost_center_form(request, pk):

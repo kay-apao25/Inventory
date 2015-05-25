@@ -46,7 +46,7 @@ urlpatterns = [
     #URL patterns for Editing Libraries (start)
     url(r'^product_form/(?P<pk>[0-9]+)/$', views.product_form,\
         name='product_entry'),
-    url(r'^inv_stat_form/(?P<pk>[0-9]+)/$', view.inv_stat_form,\
+    url(r'^inv_stat_form/(?P<pk>[0-9]+)/$', views.inv_stat_form,\
         name='invstat_entry'),
     url(r'^cost_center_form/(?P<pk>[0-9]+)/$', \
         views.cost_center_form, name='costcen_entry'),
