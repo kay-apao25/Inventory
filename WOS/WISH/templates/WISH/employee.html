@@ -58,7 +58,7 @@
 {% for ems in em_list %}
   <tr>
    <td>
-     <a href="{% url 'emp_details' dce=ems.dce %}">
+     <a href="{% url 'emp_details' pk=ems.pk %}">
        {{ems.dce}}
      </a>
    </td>
