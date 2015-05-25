@@ -4,8 +4,6 @@ from simple_history.admin import SimpleHistoryAdmin
 from WISH.models import Supplier, Product, PAR, GARV, CostCenter, \
 		InventoryStat, Employee, IRRHeader, IRR, MIV, Customer
 
-
-
 admin.site.register(Supplier, SimpleHistoryAdmin)
 admin.site.register(Product, SimpleHistoryAdmin)
 admin.site.register(PAR, SimpleHistoryAdmin)

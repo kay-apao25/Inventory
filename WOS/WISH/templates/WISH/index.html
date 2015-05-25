@@ -210,7 +210,14 @@ Image placeholders: placemi.com
 	              </ul>
 	            </li>
                 {% else %}
-                <li><a href="{% url 'wrs_reports1' %}">WRS Reports</a></li>
+                <li id="addrec" class="dropdown">
+                  <a class="dropdown-toggle" data-toggle="dropdown" href="#">Add Request<span class="caret"></span></a>
+                  <ul class="dropdown-menu">
+                    <li><a href="{% url 'new_product' %}">WRS</a></li>
+                    <li><a href="{% url 'new_garv_s' %}">Return of Item</a></li>
+                  </ul>
+                </li>
+                
                 {% endif %}
 
 				<li>
@@ -227,7 +234,7 @@ Image placeholders: placemi.com
 									 Log out</a></li>
 							{% else %}
 								<li><a>Hi, Guest!</a></li>
-								<li><a href="{% url 'index' %}"><span class="glyphicon glyphicon-log-out"></span> Exit</a></li>
+								<li><a href="{% url 'login' %}"><span class="glyphicon glyphicon-log-out"></span> Exit</a></li>
 							{% endif %}
 
 

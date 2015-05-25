@@ -56,9 +56,6 @@ class Employee(models.Model):
     position = models.CharField(max_length=20)
     history = HistoricalRecords()
     is_delete = models.BooleanField(default=False)
-    user = User.objects.create_user(username='guest',
-                                 email='', id=1,
-                                 password='guest')
     user_id = models.ForeignKey(User, default=1) 
 
     def __unicode__(self):
@@ -201,6 +198,7 @@ class GARV(models.Model):
     confirmed_by = models.ForeignKey(Employee, related_name='dce_FK5')
     date_confirmed = models.DateField(null=True, blank=True)
     noted_by = models.ForeignKey(Employee, related_name='dce_FK6')
+    is_approved = models.BooleanField(default=False)
     history = HistoricalRecords()
 
     def __unicode__(self):
