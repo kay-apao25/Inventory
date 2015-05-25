@@ -292,15 +292,20 @@ class ProducttoGARVform(forms.Form):
 class Statlib(forms.ModelForm):
     """Stat_lib"""
 
+    inv_station_no = forms.CharField(label='Inventory station no*')
     cost_center_no = forms.ModelChoiceField(\
-        queryset=CostCenter.objects.filter(is_delete=False))
+        queryset=CostCenter.objects.filter(is_delete=False), label='Cost center no*')
+    station_description = forms.CharField(label='Station description*')
 
     class Meta:
         model = InventoryStat
-        fields = ( 'station_description', 'cost_center_no',)
+        fields = ('inv_station_no', 'station_description', 'cost_center_no',)
 
 class CClib(forms.ModelForm):
     """CC_lib"""
+
+    cost_center_name = forms.CharField(label='Cost center name*')
+    functional_group = forms.CharField(label='Functional group*')
 
     class Meta:
         """Meta"""
