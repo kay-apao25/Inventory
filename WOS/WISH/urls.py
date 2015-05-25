@@ -21,12 +21,32 @@ urlpatterns = [
     #URL patterns for File and Product Fill-Up Forms (start)
     url(r'^product/new/$', login_required(views.product_new), name='new_product'),
     url(r'^par/(?P<inv>[0-9]+)/$', login_required(views.par), name='new_par'),
-    url(r'^par_f/$', login_required(views.par_f), name='new_par_s'),
+    url(r'^par_f/$', login_required(lambda request: ListView.as_view(queryset=\
+        models.IRR.objects.filter(irr_headkey__in=[i.id for i in (\
+        models.IRRHeader.objects.filter(dce_custodian=(\
+        models.Employee.objects.get(name=str(request.user.\
+        first_name) + ' ' + str(request.user.last_name)))))]).filter(is_par=False),
+        context_object_name='irr_list', template_name=\
+        'WISH/par_f.html')(request)), name='new_par_s'),
+
     url(r'^irr_entry/$', login_required(views.irr_entry), name='new_irr'),
-    url(r'^miv_entry/$', login_required(views.miv_entry), name='new_miv'),
+
+    url(r'^miv_entry/$', login_required(lambda request: ListView.as_view(queryset=\
+        models.IRR.objects.filter(irr_headkey__in=[i.id for i in (\
+        models.IRRHeader.objects.filter(dce_custodian=(\
+        models.Employee.objects.get(name=str(request.user.\
+        first_name) + ' ' + str(request.user.last_name)))))]).filter(is_miv=False),
+        context_object_name='irr_list', template_name=\
+        'WISH/miv_entry_f.html')(request)), name='new_miv'),
+
     url(r'^miv_entry_S/(?P<pk>[0-9]+)/$', login_required(views.miv_entry_S), \
         name='new_miv_s'),
-    url(r'^garv_entry_f/$', login_required(views.garv_entry_f), name='new_garv_s'),
+    url(r'^garv_entry_f/$', login_required(lambda request: ListView.as_view(queryset=\
+        models.PAR.objects.filter(issued_by=(models.Employee.objects.get(\
+        name=str(request.user.first_name) + ' ' + str(request.user.last_name\
+        )))).filter(is_garv=False), context_object_name='par_list', template_name=\
+        'WISH/garv_entry_f.html')(request)), name='new_garv_s'),
+
     url(r'^product_to_garv/(?P<pk>[0-9]+)/$', login_required(views.product_to_garv),\
         name='new_garv'),
     #url(r'^wrs_entry/$', views.wrs_entry, name='wrs_entry'),
@@ -120,6 +140,7 @@ urlpatterns = [
         first_name) + ' ' + str(request.user.last_name)))))])),
         context_object_name='miv_list', template_name=\
         'WISH/miv_reports.html')(request)), name='miv_reports'),
+
     url(r'^wrs_reports/$', login_required(lambda request: ListView.as_view(queryset=\
         models.IRR.objects.filter(irr_headkey__in=[i.id for i in (\
         models.IRRHeader.objects.filter(dce_custodian=(\

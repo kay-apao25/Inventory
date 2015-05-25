@@ -1,16 +1,16 @@
 {% extends 'WISH/index.html' %}
 
 {% block content %}
-{% if exit %}
+{% if irr_list|length == 0 %}
   <div class="alert alert-warning" style="width:400px">
-    {{ exit }}
+    No IRR Record(s) to be made with MIV Record.
   </div>
   <div align="center"><a href= "{% url 'index' %}"><i class="glyphicon glyphicon-share-alt"></i> Exit </a></div>
 {% else %}
   <div class="page-header">
     <h2 align="center">Select IRR Record to be created with MIV Report</h2>
   </div>
-  {% if small_entry %}
+  {% if irr_list|length <= 10 %}
     <div class="col-md-2" style="margin-left: 130px"></div>
    {% else %}
     <div class="col-md-2" style="padding-right: 0px; margin-left: 300px; padding-left: 0px;">
@@ -30,7 +30,7 @@
        <th>Date Received</th>
        <th>Work Order No.</th>
     </thead>
-     	{% for irr in irrs %}
+     	{% for irr in irr_list %}
       	<tr>
           <td>
             <a href="{% url 'new_miv_s' pk=irr.pk %}">

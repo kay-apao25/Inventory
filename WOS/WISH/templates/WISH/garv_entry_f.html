@@ -1,15 +1,15 @@
 {% extends 'WISH/index.html' %}
 
 {% block content %}
-{% if exit %}
+{% if par_list|length == 0 %}
   <div class="alert alert-warning" style="width:400px">
-    {{ exit }}
+    No PAR Record(s) to be made with GARV Record.
   </div>
   <div align="center"><a href= "{% url 'index' %}"><i class="glyphicon glyphicon-share-alt"></i> Exit </a></div>
 {% else %}
   <h2 align="center"> Select the PAR Record to be created with GARV Report </h2>
   <br><br>
-  {% if small_entry %}
+  {% if par_list|length <= 10 %}
     <div class="col-md-2" style="margin-left: 130px"></div>
    {% else %}
     <div class="col-md-2" style="padding-right: 0px; margin-left: 300px; padding-left: 0px;">
@@ -30,7 +30,7 @@
         <th>DATE ACQUIRED</th>
         <th>APPROVED BY:</th>
       </thead>
-      	{% for par in pars %}
+      	{% for par in par_list %}
       		<tr>
       			<td>
               <a href="{% url 'new_garv' pk=par.pk  %}">
