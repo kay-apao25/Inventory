@@ -245,10 +245,7 @@ Image placeholders: placemi.com
 			<div align="center">
 				{% block content %}
 
-	    <h1 align="center">Welcome</h1>
-
-			<br>
-			<section id="t-cards">
+	    	<section id="t-cards">
     <div class="container" align="center">
         <div class="row" align="center">
              <div class="col-sm-6 col-md-4">
@@ -303,7 +300,7 @@ Image placeholders: placemi.com
                         <div class="row">
                             <div align="center">
                                  <div class="thumbnail" style="width:500px; height:86px;">
-                                 	{% if irr|length != 0 %}
+                                 	{% if irr != null %}
                                 		<a href="{% url 'irr_form' pk=irr.pk%}">
                                     		IRR Record: {{irr.irr_no}} - {{irr.date_recv}}
                                     	</a>
@@ -311,7 +308,7 @@ Image placeholders: placemi.com
                                     	<strong>IRR Record: No new report recorded.</strong>
                                     {% endif %}
                                     <br>
-                                    {% if par|length != 0 %}
+                                    {% if par != null %}
                                         <a href="{% url 'par_form' pk=par.pk%}">
                                             PAR Record: {{par.par_no}} - {{par.date_acquired}}
                                         </a>
@@ -319,7 +316,7 @@ Image placeholders: placemi.com
                                         <strong>PAR Record: No new report recorded.</strong>
                                     {% endif %}
                                     <br> 
-                                    {% if garv|length != 0 %}
+                                    {% if garv != null %}
                                         <a href="{% url 'garv_form' pk=garv.pk%}">
                                             GARV Record: {{garv.garv_no}} - {{garv.garv_date}}
                                         </a>

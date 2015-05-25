@@ -85,27 +85,27 @@ def index(request):
     try:
         irr = IRR.objects.latest('wrs_number')
     except:
-        irr = []
+        irr = None
     try:
         par = PAR.objects.latest('par_no')
     except:
-        par = []
+        par = None
     try:
         garv = GARV.objects.latest('garv_no')
     except:
-        garv = []
+        garv = None
     try:
         inv = InventoryStat.objects.latest('id')
     except:
-        inv = []
+        inv = None
     try:
         sup = Supplier.objects.latest('id')
     except:
-        sup = []
+        sup = None
     try:
         cc = CostCenter.objects.latest('id')
     except:
-        cc = []
+        cc = None
     return render(request, 'WISH/index.html', {'product': product, 'irr': irr, \
     'par': par, 'garv': garv, 'inv': inv, 'sup': sup, 'cc': cc})
 
