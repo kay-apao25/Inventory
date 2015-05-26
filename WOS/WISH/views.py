@@ -301,8 +301,8 @@ def product_new(request):
                 else:
                     product.unit_measure = str(product.unit_measure) + 's'
 
-            product.amount = int(form2.data['unit_cost']) * \
-                int(form2.data['quantity'])
+            product.amount = float(form2.data['unit_cost']) * \
+                float(form2.data['quantity'])
             product.save()
 
             #Displaying of blank forms
