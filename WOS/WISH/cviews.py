@@ -60,6 +60,16 @@ class WRSRep(ListView):
         models.Employee.objects.get(name=str(self.request.user.\
         first_name) + ' ' + str(self.request.user.last_name)))))])
 
+class WRSRep1(ListView):
+    context_object_name='wrs_list' 
+    template_name = 'WISH/wrs_reports.html'
+    extra_context={'user': 'user'}
+
+    def get_queryset(self):
+        return models.IRR.objects.filter(irr_headkey__in=[i.id for i in (\
+        models.IRRHeader.objects.filter(dce_user=(\
+        models.Employee.objects.get(name=str(self.kwargs['user'])))))])
+        
 class PARRep(ListView):
     context_object_name='par_list' 
     template_name = 'WISH/par_reports.html'
@@ -77,6 +87,14 @@ class GARVRep(ListView):
         return models.GARV.objects.filter(confirmed_by=(models.Employee.objects.get(\
         name=str(self.request.user.first_name) + ' ' + str(self.request.user.\
         last_name))))
+
+class GARVRep1(ListView):
+    context_object_name='garv_list' 
+    template_name = 'WISH/garv_reports1.html'
+    
+    def get_queryset(self):
+        return models.GARV.objects.filter(dce=(models.Employee.objects.get(\
+        name=str(self.kwargs['user'])).dce))
 
 class ProdRep(ListView):
     context_object_name='product_list' 

@@ -21,8 +21,8 @@ def log_in(request):
     if request.method == 'POST':
         if 'signup' in request.POST:
             form1 = forms.SignUpForm(request.POST or None)
-            form = forms.LoginForm(request.POST or None)
-            form2 = forms.GuestForm(request.POST or None)
+            form = forms.LoginForm()
+            form2 = forms.GuestForm()
             if form1.is_valid():
                 dce = form1.data['dce']
                 emp = Employee.objects.get(dce=dce)
@@ -35,55 +35,42 @@ def log_in(request):
 
                         emp.user_id_id = user.id
                         emp.save()
-                        form = forms.LoginForm()
                         form1 = forms.SignUpForm()
-                        form2 = forms.GuestForm()
                         return render(request, 'WISH/login.html', {'form':form, \
                          'form1': form1, 'msg': "You've successfully created an account.", 'form2':form2})
                     except:
-                        form = forms.LoginForm()
-                        form2 = forms.GuestForm()
                         return render(request, 'WISH/login.html', \
                         {'error1': 'Username already exists.',\
                          'form':form, 'form1': form1, 'form2':form2})
                 else:
-                    form = forms.LoginForm()
                     return render(request, 'WISH/login.html', \
                         {'error1': 'Does not match any custodian profile.',\
                          'form':form, 'form1': form1})
         elif 'login' in request.POST:
-            form1 = forms.SignUpForm(request.POST or None)
             form = forms.LoginForm(request.POST or None)
-            form2 = forms.GuestForm(request.POST or None)
+            form1 = forms.SignUpForm()
+            form2 = forms.GuestForm()
             if form.is_valid():
                 user = authenticate(username=form.data['username'], \
                     password=form.data['password'])
                 if user is not None:
                     login(request, user)
                     form = forms.LoginForm()
-                    form1 = forms.SignUpForm()
-                    form2 = forms.GuestForm()
                     return redirect('index')
                 else:
-                    form1 = forms.SignUpForm()
-                    form2 = forms.GuestForm()
                     return render(request, 'WISH/login.html', \
                         {'error': 'Username and password does not match.',\
                          'form':form, 'form1': form1, 'form2':form2})
         elif 'guest' in request.POST:
-            form1 = forms.SignUpForm(request.POST or None)
-            form = forms.LoginForm(request.POST or None)
+            form1 = forms.SignUpForm()
+            form = forms.LoginForm()
             form2 = forms.GuestForm(request.POST or None)
             if form2.is_valid():
                 if len(Employee.objects.filter(dce=int(form2.data['dce']))) != 0:
                     name = Employee.objects.get(dce=int(form2.data['dce'])).name
-                    form1 = forms.SignUpForm()
-                    form = forms.LoginForm()
                     form2 = forms.GuestForm()
                     return redirect('guest', user=name)
                 else:
-                    form1 = forms.SignUpForm()
-                    form = forms.LoginForm()
                     return render(request, 'WISH/login.html', \
                         {'error2': 'Employee does not exist.',\
                          'form':form, 'form1': form1, 'form2':form2})
@@ -169,8 +156,9 @@ def guest(request, user):
     'par': par, 'garv': garv, 'inv': inv, 'sup': sup, 'cc': cc, 'user': user})
 
 def wrs_entry(request, user):
+    #if len(Employee.objects.filter(name=user)) != 0:
     inv = InventoryStat.objects.get(id=InventoryStat.objects.filter(cost_center_no=(\
-        Employee.objects.get(name=str(user)).cost_center_no))[:1]).inv_station_no
+        Employee.objects.get(name=str(user)).cost_center_no))[:1]).id
     if request.method == 'POST':
         form = forms.ProducttoIRRForm(request.POST)
         if form.is_valid():
@@ -186,12 +174,12 @@ def wrs_entry(request, user):
             
             return render(request, 'WISH/wrs_entry.html', \
               {'form1': form1, 'form2': form2, 'msg':'Supplier ' +\
-              'was added successfully.'})
+              'was added successfully.', 'user': user})
     else:
         form = forms.ProducttoIRRForm(inv=inv)
        
     return render(request, 'WISH/wrs_entry.html', \
-        {'form': form})
+        {'form': form, 'user': user})
 
 
 def aboutus(request):
@@ -240,10 +228,8 @@ def add_supplier(request):
                 setattr(sup, key, form1.data[key1])
                 setattr(sup, key, form2.data[key1])
 
-            res = ""
             sup.supplier_name = form.data['supplier_name']
             sup.save()
-            msg = 'Supplier was added successfully.'
             form = forms.Suplib()
             form1 = forms.Suplib1()
             form2 = forms.Suplib2()
@@ -314,7 +300,6 @@ def product_new(request):
              product.item_name + ') was added successfully.'})
     else:
         #Displaying of blank forms
-        form = forms.ProductForm()
         form1 = forms.ProductForm1()
         form2 = forms.ProductForm2()
         form3 = forms.ProductForm3()
@@ -327,7 +312,6 @@ def irr_entry(request):
     """function"""
 
     name = str(request.user.first_name) + ' ' + str(request.user.last_name)
-
     if request.method == "POST":
 
         #Forms containing the entries entered by the user
@@ -429,8 +413,8 @@ def product_to_irr(request, pk, inv):
                         ('wrs_number')).wrs_number) + 1
                     irr.wrs_number = str(no)
                 else:
-                    irr.wrs_number = irr.irr_headkey.\
-                    inv_station_no.inv_station_no + '000000'
+                    irr.wrs_number = str(irr.irr_headkey.\
+                        inv_station_no.id) + '000000'
 
                 for prod in prod_to_irr:
                     if 'pros' in prod:
@@ -704,8 +688,8 @@ def par(request, inv):
                 amount = float(product['Quantity']) * \
                 int(pro.unit_cost)
                 par_entry.amt_cost = par_entry.amt_cost + amount
-                if 'pros' in prod:
-                    del prod['pros']
+                if 'pros' in product:
+                    del product['pros']
 
             par_entry.product = json.dumps(prod_to_par)
             par_entry.inv_stat_no_id = IRR.objects.get(irr_no=inv).\
@@ -861,7 +845,7 @@ def par_form(request, pk):
          'products': products, 'loop': range(loop), 'remain': range(remain)})
     else:
         loop = 1
-        remain = 5 - len(products)
+        remain = 4 - len(products)
         return render(request, 'WISH/par_form.html', {'parss':parss, 'products': \
          products, 'remain': range(remain), 'loop': range(loop)})
 
