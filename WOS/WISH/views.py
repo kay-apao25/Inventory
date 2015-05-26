@@ -22,6 +22,7 @@ def log_in(request):
         if 'signup' in request.POST:
             form1 = forms.SignUpForm(request.POST or None)
             form = forms.LoginForm(request.POST or None)
+            form2 = forms.GuestForm(request.POST or None)
             if form1.is_valid():
                 dce = form1.data['dce']
                 emp = Employee.objects.get(dce=dce)
@@ -37,12 +38,12 @@ def log_in(request):
                         form = forms.LoginForm()
                         form1 = forms.SignUpForm()
                         return render(request, 'WISH/login.html', {'form':form, \
-                         'form1': form1, 'msg': "You've successfully created an account."})
+                         'form1': form1, 'msg': "You've successfully created an account.", 'form2':form2})
                     except:
                         form = forms.LoginForm()
                         return render(request, 'WISH/login.html', \
                         {'error1': 'Username already exists.',\
-                         'form':form, 'form1': form1})
+                         'form':form, 'form1': form1, 'form2':form2})
                 else:
                     form = forms.LoginForm()
                     return render(request, 'WISH/login.html', \
@@ -58,23 +59,28 @@ def log_in(request):
                     login(request, user)
                     form = forms.LoginForm()
                     form1 = forms.SignUpForm()
+                    form2 = forms.GuestForm()
                     return redirect('index')
                 else:
                     form1 = forms.SignUpForm()
+                    form2 = forms.GuestForm()
                     return render(request, 'WISH/login.html', \
                         {'error': 'Username and password does not match.',\
-                         'form':form, 'form1': form1})
+                         'form':form, 'form1': form1, 'form2':form2})
     else:
         form = forms.LoginForm()
         form1 = forms.SignUpForm()
-        return render(request, 'WISH/login.html', {'form': form, 'form1': form1})
+        form2 = forms.GuestForm()
+        return render(request, 'WISH/login.html', \
+            {'form': form, 'form1': form1, 'form2':form2})
 
 def log_out(request):
     """function"""
     logout(request)
     form = forms.LoginForm()
     form1 = forms.SignUpForm()
-    return render(request, 'WISH/login.html', {'form': form, 'form1': form1})
+    form2 = forms.GuestForm()
+    return render(request, 'WISH/login.html', {'form': form, 'form1': form1, 'form2':form2})
 
 def index(request):
     """function"""
@@ -632,7 +638,7 @@ def par(request, inv):
                 par_entry.amt_cost = par_entry.amt_cost + amount
                 if 'pros' in prod:
                     del prod['pros']
-            
+
             par_entry.product = json.dumps(prod_to_par)
             par_entry.inv_stat_no_id = IRR.objects.get(irr_no=inv).\
             irr_headkey.inv_station_no.id
