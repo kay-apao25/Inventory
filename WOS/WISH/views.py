@@ -128,35 +128,28 @@ def inv_stat_del(request, pk):
     inv_del = get_object_or_404(InventoryStat, pk=pk)
     inv_del.is_delete = True
     inv_del.save()
-    return render(request, 'WISH/index.html', {'msg':'Inventory Station' + \
-        ' was deleted successfully.'})
+    return redirect('inv_stat')
 
 def cost_center_del(request, pk):
     """function"""
     cos_del = get_object_or_404(CostCenter, pk=pk)
     cos_del.is_delete = True
     cos_del.save()
-    return render(request, 'WISH/index.html', {'msg':'Cost center' + \
-        ' was deleted successfully.'})
+    return redirect('cost_center')
 
 def supplier_del(request, pk):
     """function"""
     sup_del = get_object_or_404(Supplier, pk=pk)
     sup_del.is_delete = True
     sup_del.save()
-    return render(request, 'WISH/index.html', {'msg':'Supplier' + \
-        ' was deleted successfully.'})
+    return redirect('supplier')
 
 def employee_del(request, pk):
     """function"""
     em_del = get_object_or_404(Employee, pk=pk)
     em_del.is_delete = True
     em_del.save()
-    try:
-        return render(request, 'WISH/index.html', {'msg':'Employee' + \
-        ' was deleted successfully.'})
-    except:
-        return render(request, 'WISH/index.html', {})
+    return redirect('employee')
 
 def add_supplier(request):
     """function"""
