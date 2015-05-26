@@ -1,7 +1,7 @@
 """forms"""
 from django import forms
 from WISH.models import Supplier, Product, PAR, GARV, CostCenter, \
-        InventoryStat, Employee, IRRHeader, IRR, MIV
+        InventoryStat, Employee, IRRHeader, IRR, MIV, WRSPending
 from bootstrap3_datetime.widgets import DateTimePicker
 class ProductForm(forms.ModelForm):
     """ProductForm"""
@@ -402,3 +402,22 @@ class SignUpForm(forms.Form):
 class GuestForm(forms.Form):
     """GuestForm"""
     dce = forms.CharField(max_length=255, required=True)
+
+class WRSPendingForm(forms.ModelForm):
+    """WRSPendingForm"""
+    class Meta:
+        model = WRSPending
+        exclude = ('product', 'inv_station_no', 'cost_center_no', 'wrs_number',)
+
+class ProductWRS(forms.Form):
+    """ProductWRS"""
+    def __init__(self, *args, **kwargs):
+        inv = kwargs.pop('inv')
+        super(ProductWRS, self).__init__(*args, **kwargs)
+
+        self.fields['product'] = forms.ModelChoiceField(\
+            queryset=Product.objects.filter(\
+            inv_station_no=inv).filter(is_irr=True), label='Product *',\
+             required=True)
+        self.fields['qty'] = forms.IntegerField(min_value=0,\
+         label='Quantity*', required=True)
