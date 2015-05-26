@@ -401,5 +401,4 @@ class SignUpForm(forms.Form):
 
 class GuestForm(forms.Form):
     """GuestForm"""
-    first_name = forms.CharField(max_length=255, required=True, label='First Name')
-    last_name = forms.CharField(max_length=255, required=True, label='Last Name')
+    dce = forms.CharField(max_length=255, required=True)
