@@ -21,18 +21,18 @@ class ProductForm(forms.ModelForm):
 
 class ProductForm1(forms.Form):
     """ProductForm1"""
-    nsn = forms.CharField(label='NSN *', max_length=10)
-    product_number = forms.CharField(label='Product number *', max_length=10)
-    generic_name = forms.CharField(label='Generic name *', max_length=25)
-    item_name = forms.CharField(label='Item name*', max_length=10)
-    brand = forms.CharField(label='Brand *', max_length=25)
-    part_number = forms.CharField(label='Part number *', max_length=8)
+    nsn = forms.CharField(label='NSN *', max_length=10, required=True)
+    product_number = forms.CharField(label='Product number *', max_length=10, required=True)
+    generic_name = forms.CharField(label='Generic name *', max_length=25, required=True)
+    item_name = forms.CharField(label='Item name*', max_length=10, required=True)
+    brand = forms.CharField(label='Brand *', max_length=25, required=True)
+    part_number = forms.CharField(label='Part number *', max_length=8, required=True)
     manufacture_date = forms.DateField(label='Manufacture date *',\
         widget=DateTimePicker(options={"format": "YYYY-MM-DD",\
-         "pickTime": False}))
+         "pickTime": False}), required=True)
     inv_station_no = forms.ModelChoiceField(label=\
         'Inventory station *', queryset=\
-        InventoryStat.objects.filter(is_delete=False))
+        InventoryStat.objects.filter(is_delete=False), required=True)
 
 class ProductForm2(forms.Form):
     """ProductForm2"""
@@ -51,25 +51,25 @@ class ProductForm2(forms.Form):
 
     expiry_date = forms.DateField(widget=DateTimePicker(\
         options={"format": "YYYY-MM-DD", "pickTime": False}), required=False)
-    unit_cost = forms.DecimalField(label='Unit cost*', decimal_places=2)
-    quantity = forms.IntegerField(min_value=0, initial='1', label='Quantity *')
-    classification = forms.CharField(label='Classification*', max_length=30)
-    stock = forms.CharField(label='Stock *', max_length=10)
-    block = forms.CharField(label='Block *', max_length=10)
+    unit_cost = forms.DecimalField(label='Unit cost*', decimal_places=2, required=True)
+    quantity = forms.IntegerField(min_value=0, initial='1', label='Quantity *', required=True)
+    classification = forms.CharField(label='Classification*', max_length=30, required=True)
+    stock = forms.CharField(label='Stock *', max_length=10, required=True)
+    block = forms.CharField(label='Block *', max_length=10, required=True)
     unit_measure = forms.ChoiceField(label='Unit measure *',\
-     choices=UNIT_CHOICES)
-    status = forms.ChoiceField(label='Status *', choices=STATUS_CHOICES)
+     choices=UNIT_CHOICES, required=True)
+    status = forms.ChoiceField(label='Status *', choices=STATUS_CHOICES, required=True)
 
 class ProductForm3(forms.Form):
     """ProductForm3"""
     purchased_from = forms.ModelChoiceField(\
         queryset=Supplier.objects.filter(is_delete=False), \
-        label='Purchased from *')
-    average_amount = forms.FloatField(label='Average amount *')
-    balance_limit = forms.FloatField(label='Balance limit *')
+        label='Purchased from *', required=True)
+    average_amount = forms.FloatField(label='Average amount *', required=True)
+    balance_limit = forms.FloatField(label='Balance limit *', required=True)
     serial_number = forms.CharField(max_length=15, required=False)
-    model = forms.CharField(label='Model *', max_length=25)
-    description = forms.CharField(label='Description*', max_length=25)
+    model = forms.CharField(label='Model *', max_length=25, required=True)
+    description = forms.CharField(label='Description*', max_length=25, required=True)
     remarks = forms.CharField(max_length=25, required=False)
 
 class ProductForm5(forms.ModelForm):
@@ -107,14 +107,14 @@ class IRRentryForm1(forms.Form):
             queryset=InventoryStat.objects.filter(\
         cost_center_no=Employee.objects.get(name=name).cost_center_no).filter(\
             id__in=[p.inv_station_no.id for p in Product.objects.filter\
-            (is_irr=False)]), label='Inventory Station *')
+            (is_irr=False)]), label='Inventory Station *', required=True)
 
     supplier = forms.ModelChoiceField(label='Supplier *',\
-     queryset=Supplier.objects.filter(is_delete=False))
-    reference = forms.CharField(label='Reference *')
-    invoice_number = forms.CharField(label='Invoice number *')
-    po_number = forms.CharField(label='PO number *')
-    dr_number = forms.CharField(label='DR number *')
+     queryset=Supplier.objects.filter(is_delete=False), required=True)
+    reference = forms.CharField(label='Reference *', required=True)
+    invoice_number = forms.CharField(label='Invoice number *', required=True)
+    po_number = forms.CharField(label='PO number *', required=True)
+    dr_number = forms.CharField(label='DR number *', required=True)
 
 
 class IRRentryForm2(forms.Form):
@@ -127,22 +127,22 @@ class IRRentryForm2(forms.Form):
         self.fields['dce_user'] = forms.ModelChoiceField(\
             queryset=Employee.objects.filter(\
             is_delete=False).filter(cost_center_no=Employee.objects.get(\
-                name=name).cost_center_no), label='User *')
+                name=name).cost_center_no), label='User *', required=True)
         self.fields['dce_approved'] = forms.ModelChoiceField(\
             queryset=Employee.objects.filter(\
             is_delete=False).filter(cost_center_no=Employee.objects.get(\
-                name=name).cost_center_no), label='Approved by *')
+                name=name).cost_center_no), label='Approved by *', required=True)
         self.fields['proc_date'] = forms.DateField(widget=DateTimePicker(\
         options={"format": "YYYY-MM-DD", "pickTime": False}), \
-        label='Proc date *')
+        label='Proc date *', required=True)
         self.fields['approved_date'] = forms.DateField(widget=DateTimePicker(\
         options={"format": "YYYY-MM-DD", "pickTime": False}),\
-         label='Approved date*')
+         label='Approved date*', required=True)
         self.fields['date_dlvrd'] = forms.DateField(widget=DateTimePicker(\
         options={"format": "YYYY-MM-DD", "pickTime": False}), \
-        label='Delivery date *')
+        label='Delivery date *', required=True)
 
-    pr_number = forms.CharField(label='PR number *')
+    pr_number = forms.CharField(label='PR number *', required=True)
 
 class IRRentrycontForm(forms.ModelForm):
     """IRR_entry_cont_Form"""
@@ -155,11 +155,11 @@ class IRRentrycontForm(forms.ModelForm):
             queryset=CostCenter.objects.filter(\
             is_delete=False).filter(cc_iFK__in=[i.cost_center_no.id \
             for i in (InventoryStat.objects.filter(inv_station_no=inv))]),\
-            label='Cost center *')
+            label='Cost center *', required=True)
 
     date_recv = forms.DateField(widget=DateTimePicker(options=\
-        {"format": "YYYY-MM-DD", "pickTime": False}), label='Date received *')
-    wo_no = forms.CharField(label='WO number *')
+        {"format": "YYYY-MM-DD", "pickTime": False}), label='Date received *', required=True)
+    wo_no = forms.CharField(label='WO number *', required=True)
 
     class Meta:
         model = IRR
@@ -206,15 +206,15 @@ class PARForm(forms.ModelForm):
             queryset=Employee.objects.filter(\
             cost_center_no=IRR.objects.get(irr_no=inv).\
             irr_headkey.inv_station_no.cost_center_no.id),\
-            label='Accountable Employee*')
+            label='Accountable Employee*', required=True)
         self.fields['approved_by'] = forms.ModelChoiceField(\
             queryset=Employee.objects.filter(\
         cost_center_no=IRR.objects.get(irr_no=inv)\
-        .irr_headkey.inv_station_no.cost_center_no.id), label='Approved by*')
+        .irr_headkey.inv_station_no.cost_center_no.id), label='Approved by*', required=True)
 
     date_acquired = forms.DateField(widget=DateTimePicker(\
         options={"format": "YYYY-MM-DD", "pickTime": False}),\
-         label='Date acquired*')
+         label='Date acquired*', required=True)
 
     class Meta:
         """Meta"""
@@ -232,8 +232,8 @@ class ProducttoPARForm(forms.Form):
             queryset=Product.objects.all().filter(id__in=\
         [Product.objects.get(id=p).id for p in prodlist])\
         , label='Product *', required=True)
-        self.fields['quantity'] = forms.IntegerField\
-        (min_value=0, required=True, label='Quantity *')
+        self.fields['quantity'] = forms.IntegerField(\
+            min_value=0, required=True, label='Quantity *')
 
 class GARVentryForm(forms.ModelForm):
     """GARV_entryForm"""
@@ -245,26 +245,26 @@ class GARVentryForm(forms.ModelForm):
         self.fields['cc_number'] = forms.ModelChoiceField(\
             queryset=CostCenter.objects.filter(\
             id=PAR.objects.get(par_no=pk).inv_stat_no.cost_center_no.id)\
-        , label='CC number *')
+        , label='CC number *', required=True)
 
         self.fields['inspected_by'] = forms.ModelChoiceField(\
             queryset=Employee.objects.filter(\
                 cost_center_no=IRR.objects.get(irr_no=PAR.objects.get(\
             par_no=pk).wo_number).irr_headkey.inv_station_no.cost_center_no.id\
-                ), label='Inspected by *')
+                ), label='Inspected by *', required=True)
 
         self.fields['noted_by'] = forms.ModelChoiceField(\
             queryset=Employee.objects.filter(\
                 cost_center_no=IRR.objects.get(irr_no=PAR.objects.get(\
             par_no=pk).wo_number).irr_headkey.inv_station_no.cost_center_no.id\
-                ), label='Noted by *')
+                ), label='Noted by *', required=True)
 
     date_inspected = forms.DateField(widget=DateTimePicker\
         (options={"format": "YYYY-MM-DD", "pickTime": False}), \
-        label='Date inspected*')
+        label='Date inspected*', required=True)
     date_confirmed = forms.DateField(widget=DateTimePicker\
         (options={"format": "YYYY-MM-DD", "pickTime": False}), \
-        label='Date confirmed *')
+        label='Date confirmed *', required=True)
 
     class Meta:
         """Meta"""
@@ -291,10 +291,10 @@ class ProducttoGARVform(forms.Form):
 class Statlib(forms.ModelForm):
     """Stat_lib"""
 
-    inv_station_no = forms.CharField(label='Inventory station no*')
+    inv_station_no = forms.CharField(label='Inventory station no*', required=True)
     cost_center_no = forms.ModelChoiceField(\
-        queryset=CostCenter.objects.filter(is_delete=False), label='Cost center no*')
-    station_description = forms.CharField(label='Station description*')
+        queryset=CostCenter.objects.filter(is_delete=False), label='Cost center no*', required=True)
+    station_description = forms.CharField(label='Station description*', required=True)
 
     class Meta:
         model = InventoryStat
@@ -304,8 +304,8 @@ class Statlib1(forms.ModelForm):
     """Stat_lib"""
 
     cost_center_no = forms.ModelChoiceField(\
-        queryset=CostCenter.objects.filter(is_delete=False), label='Cost center no*')
-    station_description = forms.CharField(label='Station description*')
+        queryset=CostCenter.objects.filter(is_delete=False), label='Cost center no*', required=True)
+    station_description = forms.CharField(label='Station description*', required=True)
 
     class Meta:
         model = InventoryStat
@@ -315,8 +315,8 @@ class Statlib1(forms.ModelForm):
 class CClib(forms.ModelForm):
     """CC_lib"""
 
-    cost_center_name = forms.CharField(label='Cost center name*')
-    functional_group = forms.CharField(label='Functional group*')
+    cost_center_name = forms.CharField(label='Cost center name*', required=True)
+    functional_group = forms.CharField(label='Functional group*', required=True)
 
     class Meta:
         """Meta"""
@@ -372,7 +372,7 @@ class Suplib2(forms.ModelForm):
 class Employeelib(forms.ModelForm):
     """Employee_lib"""
     cost_center_no = forms.ModelChoiceField(\
-        queryset=CostCenter.objects.filter(is_delete=False))
+        queryset=CostCenter.objects.filter(is_delete=False), required=True)
     class Meta:
         model = Employee
         fields = ('name', 'position', 'cost_center_no', 'charging_cc_no',)
@@ -380,7 +380,7 @@ class Employeelib(forms.ModelForm):
 class Emlib(forms.ModelForm):
     """Em_lib"""
     cost_center_no = forms.ModelChoiceField(\
-        queryset=CostCenter.objects.filter(is_delete=False))
+        queryset=CostCenter.objects.filter(is_delete=False), required=True)
     class Meta:
         model = Employee
         fields = ('dce', 'name', 'position', 'cost_center_no',\
