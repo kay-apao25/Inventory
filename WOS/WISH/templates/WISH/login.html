@@ -45,6 +45,12 @@
                 $('#smallModal').modal({show:true});
             });
         </script>
+        {% elif error2 or form2.errors %}
+        <script type="text/javascript">
+            $( document ).ready( function() {
+                $('#otherModal').modal({show:true});
+            });
+        </script>
         {% endif %}
         <script type="text/javascript">
         $( document ).ready( function() {
@@ -69,8 +75,8 @@
                 <img src={% static 'images/header1.png' %}></img>
 
                 <span class="right">
-                        <!--<a href="#popup" id="g_in" class="login" data-toggle="modal" data-target="#otherModal"
-                            style="text-decoration:none;margin-right:10px">Guest</a-->
+                        <a href="#popup" id="g_in" class="login" data-toggle="modal" data-target="#otherModal"
+                            style="text-decoration:none;margin-right:10px">Guest</a>
                         <a href="#popup" id="s_in" class="login" data-toggle="modal" data-target="#anotherModal"
                             style="text-decoration:none;margin-right:10px">Sign Up</a>
                         <a href="#popup" id="l_in" class="login" data-toggle="modal" data-target="#smallModal"
@@ -175,14 +181,9 @@
 
                       </div>
                       <div class="modal-body" id="mycontent" style="padding-top: 0px;">
-                        {% if msg %}
-                            <div class="alert alert-success" style="width:270px; height:50px">
-                                <strong><p style="font-size:12px; text-align:center;">{{ msg }}</p></strong>
-                            </div>
-                        {% endif %}
-                        {% if error1 %}
+                        {% if error2 %}
                             <div class="alert alert-danger" style="width:270px; height:50px">
-                                <strong><p style="font-size:12px; text-align:center;">{{ error1 }}</p></strong>
+                                <strong><p style="font-size:12px; text-align:center;">{{ error2 }}</p></strong>
                             </div>
                         {% endif %}
 

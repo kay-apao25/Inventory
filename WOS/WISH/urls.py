@@ -27,8 +27,8 @@ urlpatterns = [
     url(r'^miv_entry_f/$', login_required(cviews.MivF.as_view()), name='new_miv'),
     url(r'^miv_entry/(?P<pk>[0-9]+)/$', login_required(views.miv_entry), \
         name='new_miv_s'),
-    url(r'^garv_entry_f/$', login_required(cviews.GarvF.as_view()), name='new_garv_s'),
-    url(r'^product_to_garv/(?P<pk>[0-9]+)/$', login_required(views.product_to_garv),\
+    url(r'^garv_entry_f/$', cviews.GarvF.as_view(), name='new_garv_s'),
+    url(r'^product_to_garv/(?P<pk>[0-9]+)/$', views.product_to_garv,\
         name='new_garv'),
     url(r'^product_to_irr/(?P<pk>[0-9]+)/(?P<inv>[0-9]+)/$', login_required(\
         views.product_to_irr), name='new_irr_cont'),

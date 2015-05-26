@@ -37,10 +37,12 @@ def log_in(request):
                         emp.save()
                         form = forms.LoginForm()
                         form1 = forms.SignUpForm()
+                        form2 = forms.GuestForm()
                         return render(request, 'WISH/login.html', {'form':form, \
                          'form1': form1, 'msg': "You've successfully created an account.", 'form2':form2})
                     except:
                         form = forms.LoginForm()
+                        form2 = forms.GuestForm()
                         return render(request, 'WISH/login.html', \
                         {'error1': 'Username already exists.',\
                          'form':form, 'form1': form1, 'form2':form2})
@@ -52,6 +54,7 @@ def log_in(request):
         elif 'login' in request.POST:
             form1 = forms.SignUpForm(request.POST or None)
             form = forms.LoginForm(request.POST or None)
+            form2 = forms.GuestForm(request.POST or None)
             if form.is_valid():
                 user = authenticate(username=form.data['username'], \
                     password=form.data['password'])
@@ -66,6 +69,23 @@ def log_in(request):
                     form2 = forms.GuestForm()
                     return render(request, 'WISH/login.html', \
                         {'error': 'Username and password does not match.',\
+                         'form':form, 'form1': form1, 'form2':form2})
+        elif 'guest' in request.POST:
+            form1 = forms.SignUpForm(request.POST or None)
+            form = forms.LoginForm(request.POST or None)
+            form2 = forms.GuestForm(request.POST or None)
+            if form2.is_valid():
+                if len(Employee.objects.filter(dce=int(form2.data['dce']))) != 0:
+                    name = Employee.objects.get(dce=int(form2.data['dce'])).name
+                    form1 = forms.SignUpForm()
+                    form = forms.LoginForm()
+                    form2 = forms.GuestForm()
+                    return redirect('guest', user=name)
+                else:
+                    form1 = forms.SignUpForm()
+                    form = forms.LoginForm()
+                    return render(request, 'WISH/login.html', \
+                        {'error2': 'Employee does not exist.',\
                          'form':form, 'form1': form1, 'form2':form2})
     else:
         form = forms.LoginForm()
@@ -117,6 +137,36 @@ def index(request):
 
 def guest(request):
     """function"""
+    try:
+        product = Product.objects.order_by('id')[:3]
+    except:
+        product = []
+    try:
+        irr = IRR.objects.latest('wrs_number')
+    except:
+        irr = None
+    try:
+        par = PAR.objects.latest('par_no')
+    except:
+        par = None
+    try:
+        garv = GARV.objects.latest('garv_no')
+    except:
+        garv = None
+    try:
+        inv = InventoryStat.objects.latest('id')
+    except:
+        inv = None
+    try:
+        sup = Supplier.objects.latest('id')
+    except:
+        sup = None
+    try:
+        cc = CostCenter.objects.latest('id')
+    except:
+        cc = None
+    return render(request, 'WISH/index.html', {'product': product, 'irr': irr, \
+    'par': par, 'garv': garv, 'inv': inv, 'sup': sup, 'cc': cc})
     return render(request, 'WISH/index.html', {})
 
 def aboutus(request):

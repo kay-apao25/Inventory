@@ -28,9 +28,7 @@ class GarvF(ListView):
     template_name = 'WISH/garv_entry_f.html'
 
     def get_queryset(self):
-        return models.PAR.objects.filter(issued_by=(models.Employee.objects.get(\
-        name=str(self.request.user.first_name) + ' ' + str(self.request.user.\
-        last_name)))).filter(is_garv=False)
+        return models.PAR.objects.filter(is_garv=False)
 
 class IRRRep(ListView):
     context_object_name='irr_list' 
