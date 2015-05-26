@@ -3,13 +3,14 @@
 {% block content %}
 {% if irr_list|length == 0 %}
   <div class="alert alert-warning" style="width:400px">
-    No IRR Record(s) to be made with MIV Record.
+    No IRR Record(s) to be made with PAR Record.
+  </div>
   <div align="center"><a href= "{% url 'index' %}"><i class="glyphicon glyphicon-share-alt"></i> Exit </a></div>
 {% else %}
   <div class="page-header">
     <h2 align="center">Select IRR Record to be created with PAR Report</h2>
   </div>
-  {% if irr_list|length <= 10 %}
+  {% if irr_list|length <= 20 %}
     <div class="col-md-2" style="margin-left: 130px"></div>
   {% else %}
     <div class="col-md-2" style="padding-right: 0px; margin-left: 300px; padding-left: 0px;">
