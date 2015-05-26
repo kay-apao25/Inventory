@@ -50,10 +50,17 @@
         $( document ).ready( function() {
             $('#l_in').click(function(){
                 $('#anotherModal').modal('hide');
+                $('#otherModal').modal('hide');
             });
             $('#s_in').click(function(){
                 $('#smallModal').modal('hide');
+                $('#otherModal').modal('hide');
             });
+            $('#g_in').click(function(){
+                $('#smallModal').modal('hide');
+                $('#anotherModal').modal('hide');
+            });
+
          });
         </script>
         <div class="container1">
@@ -62,7 +69,7 @@
                 <img src={% static 'images/header1.png' %}></img>
 
                 <span class="right">
-                        <a href="#popup" id="s_in" class="login" data-toggle="modal" data-target="#otherModal"
+                        <a href="#popup" id="g_in" class="login" data-toggle="modal" data-target="#otherModal"
                             style="text-decoration:none;margin-right:10px">Guest</a>
                         <a href="#popup" id="s_in" class="login" data-toggle="modal" data-target="#anotherModal"
                             style="text-decoration:none;margin-right:10px">Sign Up</a>
