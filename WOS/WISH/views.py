@@ -135,7 +135,7 @@ def index(request):
     return render(request, 'WISH/index.html', {'product': product, 'irr': irr, \
     'par': par, 'garv': garv, 'inv': inv, 'sup': sup, 'cc': cc})
 
-def guest(request):
+def guest(request, user):
     """function"""
     try:
         product = Product.objects.order_by('id')[:3]
@@ -166,8 +166,34 @@ def guest(request):
     except:
         cc = None
     return render(request, 'WISH/index.html', {'product': product, 'irr': irr, \
-    'par': par, 'garv': garv, 'inv': inv, 'sup': sup, 'cc': cc})
-    return render(request, 'WISH/index.html', {})
+    'par': par, 'garv': garv, 'inv': inv, 'sup': sup, 'cc': cc, 'user': user})
+
+def wrs_entry(request, user):
+    inv = InventoryStat.objects.get(cost_center_no=(\
+        Employee.objects.get(name=str(user)).cost_center_no)).\
+        inv_station_no
+    if request.method == 'POST':
+        form = forms.ProducttoIRRForm(request.POST)
+        if form.is_valid():
+            wrs = form.save(commit=False)
+            if len(IRR.objects.all()) != 0:
+                no = int((IRR.objects.latest\
+                   ('wrs_number')).wrs_number) + 1
+                wrs.wrs_number = str(no)
+            else:
+                wrs.wrs_number = InventoryStat.objects.filter(cost_center_no=(\
+                Employee.objects.get(name=str(request.name)).cost_center_no)).\
+                inv_station_no + '000000'
+            
+            return render(request, 'WISH/wrs_entry.html', \
+              {'form1': form1, 'form2': form2, 'msg':'Supplier ' +\
+              'was added successfully.'})
+    else:
+        form = forms.ProducttoIRRForm(inv=inv)
+       
+    return render(request, 'WISH/wrs_entry.html', \
+        {'form': form})
+
 
 def aboutus(request):
     """function"""

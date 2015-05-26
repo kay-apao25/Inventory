@@ -180,7 +180,7 @@ Image placeholders: placemi.com
                 {% if request.user.is_superuser %}
 	               <li><a href="{% url 'index' %}">Dashboard</a></li>
                 {% else %}
-                    <li><a href="{% url 'guest' %}">Dashboard</a></li>
+                    <li><a href="{% url 'guest' user=request.name%}">Dashboard</a></li>
                 {% endif %}
 
 							<li id="addrec" class="dropdown">
@@ -192,7 +192,7 @@ Image placeholders: placemi.com
 	                		<li><a href="{% url 'new_irr' %}">Add IRR Record</a></li>
 	                		<li><a href="{% url 'new_miv' %}">Add MIV Record</a></li>
 	                		<li><a href="{% url 'new_par_s' %}">Add PAR Record</a></li>
-	                		<li><a href="{% url 'new_garv_s'%}">Add GARV Record</a></li>
+	                		<li><a href="{% url 'new_garv_s' user=user%}">Add GARV Record</a></li>
 	                	</ul>
 	                </li>
 	              </ul>
@@ -211,8 +211,8 @@ Image placeholders: placemi.com
                 <li id="addrec" class="dropdown">
                   <a class="dropdown-toggle" data-toggle="dropdown" href="#">Add Request<span class="caret"></span></a>
                   <ul class="dropdown-menu">
-                    <li><a href="{% url 'new_product' %}">WRS</a></li>
-                    <li><a href="{% url 'new_garv_s'%}">Return of Item</a></li>
+                    <li><a href="{% url 'wrs_entry' user=user%}">WRS</a></li>
+                    <li><a href="{% url 'new_garv_s' user=user%}">Return of Item</a></li>
                   </ul>
                 </li>
                 
@@ -231,7 +231,7 @@ Image placeholders: placemi.com
 								<li><a href="{% url 'logout' %}"><span class="glyphicon glyphicon-log-out"></span>
 									 Log out</a></li>
 							{% elif user %}
-								<li><a>Hi, Guest</a></li>
+								<li><a>Hi, {{user}}</a></li>
 								<li><a href="{% url 'login' %}"><span class="glyphicon glyphicon-log-out"></span> Exit</a></li>
 							{% endif %}
 

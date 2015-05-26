@@ -14,7 +14,7 @@ urlpatterns = [
     url(r'^log_in/$', views.log_in, name='login'),
     url(r'^logout/$', login_required(views.log_out), \
         name='logout'),
-    url(r'^guest/$', views.guest, name='guest'),
+    url(r'^guest/(?P<user>.*)/$', views.guest, name='guest'),
     #URL patterns for Log In and Out (end)
 
     #URL patterns for File and Product Fill-Up Forms (start)
@@ -27,7 +27,7 @@ urlpatterns = [
      name='new_miv'),
     url(r'^miv_entry/(?P<pk>[0-9]+)/$', login_required(views.miv_entry), \
         name='new_miv_s'),
-    url(r'^garv_entry_f/$', login_required(cviews.GarvF.as_view()), \
+    url(r'^garv_entry_f/(?P<user>.*)/$', login_required(cviews.GarvF.as_view()), \
     name='new_garv_s'),
     url(r'^product_to_garv/(?P<pk>[0-9]+)/$', login_required(views.\
         product_to_garv), name='new_garv'),
@@ -117,9 +117,7 @@ urlpatterns = [
     url(r'^product_reports/$', login_required(cviews.ProdRep.as_view()),\
      name='product_reports'),
     #for guest (start)
-    url(r'^wrs_reports1/$', ListView.as_view\
-    (model=models.IRR, context_object_name='irr_list', template_name=\
-        'WISH/wrs_reports1.html'), name='wrs_reports1'),
+    url(r'^wrs_entry/(?P<user>.*)/$', views.wrs_entry, name='wrs_entry'),
     #for guest (end)
     #URL patterns for File and Product Reports (end)
 

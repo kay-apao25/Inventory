@@ -158,7 +158,6 @@ class MIV(models.Model):
     """MIV models"""
     miv_no = models.CharField(max_length=10)
     irr_no = models.ForeignKey(IRR, related_name="i_mFK")
-    wrs_number = models.CharField(max_length=10)
     date_issued = models.DateField()
     doc_date = models.DateField()
     remarks = models.CharField(max_length=40, null=True, blank=True)
@@ -201,7 +200,18 @@ class GARV(models.Model):
     confirmed_by = models.ForeignKey(Employee, related_name='dce_FK5')
     date_confirmed = models.DateField(null=True, blank=True)
     noted_by = models.ForeignKey(Employee, related_name='dce_FK6')
+    is_approved = models.BooleanField(default=False)
     history = HistoricalRecords()
 
     def __unicode__(self):
         return str(self.garv_no)
+
+class WRSPending(models.Model):
+    """WRSPending models"""
+    product = JSONField()
+    inv_station_no = models.ForeignKey(InventoryStat, related_name="inv_wFK")
+    cost_center_no = models.ForeignKey(CostCenter, related_name="cc_wFK")
+    wrs_number = models.CharField(max_length=8)
+
+    def __unicode__(self):
+        return str(self.inv_station_no)
