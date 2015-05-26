@@ -24,6 +24,7 @@ def log_in(request):
         if 'signup' in request.POST:
             form1 = forms.SignUpForm(request.POST or None)
             form = forms.LoginForm(request.POST or None)
+            form2 = forms.GuestForm(request.POST or None)
             if form1.is_valid():
                 dce = form1.data['dce']
                 emp = Employee.objects.get(dce=dce)
@@ -72,8 +73,9 @@ def log_in(request):
     else:
         form = forms.LoginForm()
         form1 = forms.SignUpForm()
+        form2 = forms.GuestForm()
         return render(request, 'WISH/login.html', \
-            {'form': form, 'form1': form1})
+            {'form': form, 'form1': form1, 'form2':form2})
 
 @login_required
 def log_out(request):

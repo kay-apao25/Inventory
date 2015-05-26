@@ -388,3 +388,7 @@ class SignUpForm(forms.Form):
     username1 = forms.CharField(label='Username', max_length=255, required=True)
     password1 = forms.CharField(widget=forms.PasswordInput, required=True, label='Password')
 
+class GuestForm(forms.Form):
+    """GuestForm"""
+    first_name = forms.CharField(max_length=255, required=True, label='First Name')
+    last_name = forms.CharField(max_length=255, required=True, label='Last Name')
