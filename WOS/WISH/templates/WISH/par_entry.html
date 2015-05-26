@@ -30,12 +30,13 @@
       <table width="90%">
     <tr>
     <td width="30%">
-            
+      <h4>Added item/s:</h4>
+
             {% if product|length != 0%}
-            <h4>Added item/s:</h4>
+
             {% for prod in product %}
             <div>
-            <span align:"center" > 
+            <span align:"center" >
              <button type="submit" name="delete" value="{{forloop.counter|add:'-1'}}" class="save btn btn-default">Delete</button>
               Product: {{prod.pros.item_name}} - {{prod.pros.description}},<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
               Quantity: {{prod.Quantity}},<br>
