@@ -15,6 +15,7 @@ import json
 prod_to_par = []
 prod_to_irr = []
 prod_to_garv = []
+prod_to_wrs = []
 
 def log_in(request):
     """function"""
@@ -172,10 +173,12 @@ def wrs_entry(request, user):
     inv = InventoryStat.objects.get(cost_center_no=(\
         Employee.objects.get(name=str(user)).cost_center_no)).\
         inv_station_no
+    cc_num = Employee.objects.get(name=str(user)).cost_center_no
     if request.method == 'POST':
-        form = forms.ProducttoIRRForm(request.POST)
-        if form.is_valid():
-            wrs = form.save(commit=False)
+        form = forms.ProductWRS(request.POST, inv=inv)
+        form1 = forms.WRSPendingForm(request.POST)
+        if form1.is_valid():
+            wrs = form1.save(commit=False)
             if len(IRR.objects.all()) != 0:
                 no = int((IRR.objects.latest\
                    ('wrs_number')).wrs_number) + 1
@@ -184,15 +187,27 @@ def wrs_entry(request, user):
                 wrs.wrs_number = InventoryStat.objects.filter(cost_center_no=(\
                 Employee.objects.get(name=str(request.name)).cost_center_no)).\
                 inv_station_no + '000000'
-            
+
+            if 'save' in request.POST:
+                prod_to_wrs.append({'product': form.data['product'], 'qty': form.data['qty']})
+                wrs.product = prod_to_wrs
+                wrs.inv_station_no_id = inv
+                wrs.cost_center_no = cc_num
+                form = forms.ProductWRS(inv=inv)
+                form1 = forms.WRSPendingForm()
+                wrs.save()
+                del prod_to_wrs[:]
+
+            else:
+                prod_to_wrs.append({'product': form.data['product'], 'qty': form.data['qty']})
             return render(request, 'WISH/wrs_entry.html', \
-              {'form1': form1, 'form2': form2, 'msg':'Supplier ' +\
-              'was added successfully.'})
+              {'form': form, 'form1': form1,})
+
     else:
-        form = forms.ProducttoIRRForm(inv=inv)
-       
+        form = forms.ProductWRS(inv=inv)
+        form1 = forms.WRSPendingForm()
     return render(request, 'WISH/wrs_entry.html', \
-        {'form': form})
+        {'form': form, 'form1': form1})
 
 
 def aboutus(request):
