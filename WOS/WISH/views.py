@@ -169,9 +169,8 @@ def guest(request, user):
     'par': par, 'garv': garv, 'inv': inv, 'sup': sup, 'cc': cc, 'user': user})
 
 def wrs_entry(request, user):
-    inv = InventoryStat.objects.get(cost_center_no=(\
-        Employee.objects.get(name=str(user)).cost_center_no)).\
-        inv_station_no
+    inv = InventoryStat.objects.get(id=InventoryStat.objects.filter(cost_center_no=(\
+        Employee.objects.get(name=str(user)).cost_center_no))[:1]).inv_station_no
     if request.method == 'POST':
         form = forms.ProducttoIRRForm(request.POST)
         if form.is_valid():

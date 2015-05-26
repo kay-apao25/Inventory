@@ -27,7 +27,9 @@ urlpatterns = [
      name='new_miv'),
     url(r'^miv_entry/(?P<pk>[0-9]+)/$', login_required(views.miv_entry), \
         name='new_miv_s'),
-    url(r'^garv_entry_f/(?P<user>.*)/$', login_required(cviews.GarvF.as_view()), \
+    url(r'^garv_entry_f/(?P<user>.*)/$', cviews.GarvF.as_view(), \
+    name='new_garv_s'),
+    url(r'^garv_entry_f/$', login_required(cviews.GarvF.as_view()), \
     name='new_garv_s'),
     url(r'^product_to_garv/(?P<pk>[0-9]+)/$', login_required(views.\
         product_to_garv), name='new_garv'),
@@ -110,9 +112,13 @@ urlpatterns = [
      name='miv_reports'),
     url(r'^wrs_reports/$', login_required(cviews.WRSRep.as_view()),\
      name='wrs_reports'),
+    url(r'^wrs_reports/(?P<user>.*)$', login_required(cviews.WRSRep.as_view()),\
+     name='wrs_reports'),
     url(r'^par_reports/$', login_required(cviews.PARRep.as_view()),\
      name='par_reports'),
     url(r'^garv_reports/$', login_required(cviews.GARVRep.as_view()),\
+     name='garv_reports'),
+    url(r'^garv_reports/(?P<user>.*)$', login_required(cviews.GARVRep.as_view()),\
      name='garv_reports'),
     url(r'^product_reports/$', login_required(cviews.ProdRep.as_view()),\
      name='product_reports'),

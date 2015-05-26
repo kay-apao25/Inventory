@@ -192,7 +192,7 @@ Image placeholders: placemi.com
 	                		<li><a href="{% url 'new_irr' %}">Add IRR Record</a></li>
 	                		<li><a href="{% url 'new_miv' %}">Add MIV Record</a></li>
 	                		<li><a href="{% url 'new_par_s' %}">Add PAR Record</a></li>
-	                		<li><a href="{% url 'new_garv_s' user=user%}">Add GARV Record</a></li>
+	                		<li><a href="{% url 'new_garv_s' %}">Add GARV Record</a></li>
 	                	</ul>
 	                </li>
 	              </ul>
@@ -213,6 +213,13 @@ Image placeholders: placemi.com
                   <ul class="dropdown-menu">
                     <li><a href="{% url 'wrs_entry' user=user%}">WRS</a></li>
                     <li><a href="{% url 'new_garv_s' user=user%}">Return of Item</a></li>
+                  </ul>
+                </li>
+                 <li id="addrec" class="dropdown">
+                  <a class="dropdown-toggle" data-toggle="dropdown" href="#">File Report<span class="caret"></span></a>
+                  <ul class="dropdown-menu">
+                    <li><a href="{% url 'wrs_reports' user=user%}">WRS Report</a></li>
+                    <li><a href="{% url 'garv_reports' user=user%}">GARV Report</a></li>
                   </ul>
                 </li>
                 
