@@ -4,17 +4,11 @@
 {% block content %}
 
 <style type="text/css">
-        .form-group{
-          width:400px;
-        }
-      </style>
-
-
-     <!--<div class="page-header">
-          <img src=""></img>-->
-         <!-- <h2 align="center">Fill for IRR Record (continuation)</h2>
-      </div>-->
-    <form method="POST" class="irr_entry">{% csrf_token %}
+  .form-group{
+    width:400px;
+  }
+</style>
+   <form method="POST" class="irr_entry">{% csrf_token %}
     {% if exit %}
       <div class="alert alert-success" style="width:400px">
         {{ msg }}
@@ -36,34 +30,34 @@
         </div>
       {% endif %}
         <table width="90%">
-          <tr>
-          
-          <td width="30%">
-            
-            {% if product|length != 0%}
-            <h4>Added item/s:</h4>
-            {% for prod in product %}
-            <div>
-            <span align:"center" > 
-             <button type="submit" name="delete" value="{{forloop.counter|add:'-1'}}" class="save btn btn-default">Delete</button>
-              Product: {{prod.pros.item_name}} - {{prod.pros.description}},<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-              Quantity Accepted: {{prod.quantity_accepted}},<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-              Quantity Rejected: {{prod.quantity_rejected}},<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-              Quantity Balance: {{prod.quantity_balance}} <br>
-           </span>
-            </div>
-            {% endfor %}
-            {% endif %}
+          <tr> 
+            <td width="30%">
+              <h4>Added item/s:</h4>
+              {% if product|length != 0%}
+                {% for prod in product %}
+                  <div>
+                    <span align:"center" > 
+                      <button type="submit" name="delete" value="{{forloop.counter|add:'-1'}}" class="save btn btn-default">Delete</button>
+                        Product: {{prod.pros.item_name}} - {{prod.pros.description}},<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        Quantity Accepted: {{prod.quantity_accepted}},<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        Quantity Rejected: {{prod.quantity_rejected}},<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        Quantity Balance: {{prod.quantity_balance}} <br>
+                    </span>
+                  </div>
+                {% endfor %}
+              {% endif %}
             </td>
+            
             <td style="padding:25px">
               {% for field in form %}
                 &nbsp;&nbsp;{{field | bootstrap_horizontal:'col-lg-4'}}&nbsp;&nbsp;&nbsp;
               {%endfor%}
-          {% if remove_add == 1%}
-          {% else %}
-              <div align="center"><button type="submit" class="save btn btn-default">Add Another Item</button></div>
-          {% endif %}
+              {% if remove_add == 1%}
+              {% else %}
+                <div align="center"><button type="submit" class="save btn btn-default">Add Another Item</button></div>
+              {% endif %}
             </td>
+            
             <td style="padding:20px">
               {% for field in iform %}
                  &nbsp;&nbsp;{{field | bootstrap_horizontal:'col-lg-4'}}&nbsp;&nbsp;&nbsp;

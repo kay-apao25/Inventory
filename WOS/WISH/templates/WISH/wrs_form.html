@@ -78,13 +78,13 @@
 					    	<table style="width: 90%" class="tbl3">
 					    		<tr>
 					    			<td width="300px" class="wrs_va"><strong>Requisitioned by: </strong><br><br>
-											<u><center>{{ wrss.irr_headkey.dce_custodian.name }}</center></u>
-											<center>Name , Signature and Date</center>
-											<center>DCE No.: </span>{{ wrss.irr_headkey.dce_custodian.dce }}</center></td>
-					    			<td class="wrs"><strong>Approved by: (Requisitioning CCH)</strong><br><br>
-											<u><center> {{ wrss.irr_headkey.dce_user.name}} </center></u>
+											<u><center>{{ wrss.irr_headkey.dce_user.name}}</center></u>
 											<center>Name , Signature and Date</center>
 											<center>DCE No.: </span>{{ wrss.irr_headkey.dce_user.dce }}</center></td>
+					    			<td class="wrs"><strong>Approved by: (Requisitioning CCH)</strong><br><br>
+											<u><center> {{ wrss.irr_headkey.dce_custodian.name }} </center></u>
+											<center>Name , Signature and Date</center>
+											<center>DCE No.: {{ wrss.irr_headkey.dce_custodian.dce}}</center></td>
 					    			<td width="180px"><strong>WRS forwarded to MRC-<br>Central Warehouse on:</strong><br><br>
 					    				<li>Date: </li>
 					    				<li>Time: </li>
@@ -103,20 +103,18 @@
      						{% endif %}
 		    </div>
 			<br><br>
-
-		    <style type="text/css">
-		        @page { margin: 0; }
-		      </style>
-		      <script>
-		    function myFunction() {
-		      var printButton = document.getElementById("printpagebutton");
-		      printButton.style.visibility = 'hidden';
-
-		      window.print();
-		      printButton.style.visibility = 'visible';
-		    }
-		</script>
-		</center>
+			
+<style type="text/css">
+	@page { margin: 0; }
+</style>
+<script>
+    function myFunction() {
+        var printButton = document.getElementById("printpagebutton");
+        printButton.style.visibility = 'hidden';
+        window.print();
+        printButton.style.visibility = 'visible';
+    }
+</script>
 	</body>
 </html>
 {%endfor%}

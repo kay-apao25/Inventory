@@ -9,9 +9,9 @@
 	    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 	    <script src="{% static 'js/bootstrap.min.js' %}"></script>
 	    <script src="{% static 'js/dropdown.min.js' %}"></script>
-			{% if request.user.is_anonymous %}
+		{% if request.user.is_anonymous %}
 			<script src="{% static 'js/index.js' %}"></script>
-			{% endif %}
+		{% endif %}
 
 			<!--Datepicker-->
       <link href="{% static 'css/bootstrap-datetimepicker.min.css' %}" type="text/css" media="all" rel="stylesheet">
@@ -151,10 +151,8 @@ Image placeholders: placemi.com
     -webkit-transition: padding 400ms ease-in-out;
             transition: padding 400ms ease-in-out;
 }
-	  </style>
-
-
-	</head>
+</style>
+</head>
 
 	<body style="padding-right:0px; padding-left:0px; padding-top: 0px">
 		<div>
@@ -210,7 +208,14 @@ Image placeholders: placemi.com
 	              </ul>
 	            </li>
                 {% else %}
-                <li><a href="{% url 'wrs_reports1' %}">WRS Reports</a></li>
+                <li id="addrec" class="dropdown">
+                  <a class="dropdown-toggle" data-toggle="dropdown" href="#">Add Request<span class="caret"></span></a>
+                  <ul class="dropdown-menu">
+                    <li><a href="{% url 'new_product' %}">WRS</a></li>
+                    <li><a href="{% url 'new_garv_s' %}">Return of Item</a></li>
+                  </ul>
+                </li>
+                
                 {% endif %}
 
 				<li>
@@ -227,7 +232,7 @@ Image placeholders: placemi.com
 									 Log out</a></li>
 							{% else %}
 								<li><a>Hi, Guest!</a></li>
-								<li><a href="{% url 'index' %}"><span class="glyphicon glyphicon-log-out"></span> Exit</a></li>
+								<li><a href="{% url 'login' %}"><span class="glyphicon glyphicon-log-out"></span> Exit</a></li>
 							{% endif %}
 
 
@@ -237,11 +242,7 @@ Image placeholders: placemi.com
 	    </nav>
 			<div align="center">
 				{% block content %}
-
-	    <h1 align="center">Welcome</h1>
-
-			<br>
-			<section id="t-cards">
+	    	<section id="t-cards">
     <div class="container" align="center">
         <div class="row" align="center">
              <div class="col-sm-6 col-md-4">
@@ -296,7 +297,7 @@ Image placeholders: placemi.com
                         <div class="row">
                             <div align="center">
                                  <div class="thumbnail" style="width:500px; height:86px;">
-                                 	{% if irr|length != 0 %}
+                                 	{% if irr != null %}
                                 		<a href="{% url 'irr_form' pk=irr.pk%}">
                                     		IRR Record: {{irr.irr_no}} - {{irr.date_recv}}
                                     	</a>
@@ -304,7 +305,7 @@ Image placeholders: placemi.com
                                     	<strong>IRR Record: No new report recorded.</strong>
                                     {% endif %}
                                     <br>
-                                    {% if par|length != 0 %}
+                                    {% if par != null %}
                                         <a href="{% url 'par_form' pk=par.pk%}">
                                             PAR Record: {{par.par_no}} - {{par.date_acquired}}
                                         </a>
@@ -312,7 +313,7 @@ Image placeholders: placemi.com
                                         <strong>PAR Record: No new report recorded.</strong>
                                     {% endif %}
                                     <br> 
-                                    {% if garv|length != 0 %}
+                                    {% if garv != null %}
                                         <a href="{% url 'garv_form' pk=garv.pk%}">
                                             GARV Record: {{garv.garv_no}} - {{garv.garv_date}}
                                         </a>

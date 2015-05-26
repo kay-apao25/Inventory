@@ -1,27 +1,26 @@
 {% extends 'WISH/index.html' %}
 
 {% block content %}
-{% if exit %}
+{% if irr_list|length == 0 %}
   <div class="alert alert-warning" style="width:400px">
-    {{ exit }}
-  </div>
+    No IRR Record(s) to be made with MIV Record.
   <div align="center"><a href= "{% url 'index' %}"><i class="glyphicon glyphicon-share-alt"></i> Exit </a></div>
 {% else %}
   <div class="page-header">
     <h2 align="center">Select IRR Record to be created with PAR Report</h2>
   </div>
-  {% if small_entry %}
+  {% if irr_list|length <= 10 %}
     <div class="col-md-2" style="margin-left: 130px"></div>
-   {% else %}
+  {% else %}
     <div class="col-md-2" style="padding-right: 0px; margin-left: 300px; padding-left: 0px;">
-    <form action="#" method="get">
-      <div class="input-group">
-        <!-- USE TWITTER TYPEAHEAD JSON WITH API TO SEARCH -->
-        <input class="form-control" id="system-search2" name="q" placeholder="Search for" required>
-      </div>
-    </form>
-  </div>
-   {% endif %}
+      <form action="#" method="get">
+        <div class="input-group">
+          <!-- USE TWITTER TYPEAHEAD JSON WITH API TO SEARCH -->
+          <input class="form-control" id="system-search2" name="q" placeholder="Search for" required>
+        </div>
+      </form>
+    </div>
+  {% endif %}
   <div class="col-md-5" style="padding-left: 10px;">
    <table class="table table-list-search2" style="text-align:center">
     <thead>
@@ -31,7 +30,7 @@
        <th>Work Order No.</th>
 
     </thead>
-      {% for irr in irrs %}
+      {% for irr in irr_list %}
         <tr>
           <td>
             <a href="{% url 'new_par' inv=irr.irr_no%}">
@@ -49,7 +48,7 @@
           </td>
         </tr>
       {% endfor %}
-  </table>
+   </table>
   </div>
   {% endif %}
   <script type="text/javascript">

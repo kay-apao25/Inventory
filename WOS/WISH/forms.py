@@ -19,7 +19,6 @@ class ProductForm(forms.ModelForm):
             'slc_number', 'amount', 'balance', 'is_irr')
 
 
-
 class ProductForm1(forms.Form):
     """ProductForm1"""
     nsn = forms.CharField(label='NSN *', max_length=10)
@@ -300,6 +299,18 @@ class Statlib(forms.ModelForm):
     class Meta:
         model = InventoryStat
         fields = ('inv_station_no', 'station_description', 'cost_center_no',)
+
+class Statlib1(forms.ModelForm):
+    """Stat_lib"""
+
+    cost_center_no = forms.ModelChoiceField(\
+        queryset=CostCenter.objects.filter(is_delete=False), label='Cost center no*')
+    station_description = forms.CharField(label='Station description*')
+
+    class Meta:
+        model = InventoryStat
+        fields = ( 'station_description', 'cost_center_no',)
+
 
 class CClib(forms.ModelForm):
     """CC_lib"""
