@@ -158,7 +158,7 @@ Image placeholders: placemi.com
 		<div>
     </div>
 		<header id="headerback">
-      		<img src ="{% static 'images/header.png' %}" style="width:100%">
+      		<img src ="{% static 'images/header.png' %}" style="width:100%" >
     	</header>
 
 		<!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~NAVIGATION~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
@@ -192,7 +192,7 @@ Image placeholders: placemi.com
 	                		<li><a href="{% url 'new_irr' %}">Add IRR Record</a></li>
 	                		<li><a href="{% url 'new_miv' %}">Add MIV Record</a></li>
 	                		<li><a href="{% url 'new_par_s' %}">Add PAR Record</a></li>
-	                		<li><a href="{% url 'new_garv_s' user=user%}">Add GARV Record</a></li>
+	                		<li><a href="{% url 'new_garv_s' %}">Add GARV Record</a></li>
 	                	</ul>
 	                </li>
 	              </ul>
@@ -215,6 +215,13 @@ Image placeholders: placemi.com
                     <li><a href="{% url 'new_garv_s' user=user%}">Return of Item</a></li>
                   </ul>
                 </li>
+                 <li id="addrec" class="dropdown">
+                  <a class="dropdown-toggle" data-toggle="dropdown" href="#">File Report<span class="caret"></span></a>
+                  <ul class="dropdown-menu">
+                    <li><a href="{% url 'wrs_reports1' user=user%}">WRS Report</a></li>
+                    <li><a href="{% url 'garv_reports1' user=user%}">GARV Report</a></li>
+                  </ul>
+                </li>
                 
                 {% endif %}
 
@@ -231,7 +238,7 @@ Image placeholders: placemi.com
 								<li><a href="{% url 'logout' %}"><span class="glyphicon glyphicon-log-out"></span>
 									 Log out</a></li>
 							{% elif user %}
-								<li><a>Hi, {{user}}</a></li>
+								<li><a>Hi, Guest!</a></li>
 								<li><a href="{% url 'login' %}"><span class="glyphicon glyphicon-log-out"></span> Exit</a></li>
 							{% endif %}
 
@@ -359,7 +366,7 @@ Image placeholders: placemi.com
                         <div class="row">
                             <div align="center">
                                 <div class="thumbnail" style="width:500px; height:86px;">
-                                	{% if inv|length != 0 %}
+                                	{% if inv != null %}
                                 		<a href="{% url 'invstat_details' pk=inv.pk%}">
                                     		Inventory Station: {{inv.inv_station_no}} - {{inv.station_description}}
                                     	</a>
@@ -367,17 +374,17 @@ Image placeholders: placemi.com
                                     	<strong>No new inventory station added.</strong>
                                    	{% endif %}
                                     <br>
-                                    {% if cc|length != 0 %}
+                                    {% if cc != null %}
                                         <a href="{% url 'costcen_details' pk=cc.pk%}">
-                                            Cost Center: {{cc.id}} - <br> {{cc.functional_group}}
+                                            Cost Center: {{cc.id}} - {{cc.functional_group}}
                                         </a>
                                     {%else%}
                                         <strong>No new cost center added.</strong>
                                     {% endif %}
                                     <br>
-                                    {% if sup|length != 0 %}
+                                    {% if sup != null %}
                                         <a href="{% url 'supplier_details' pk=sup.pk%}">
-                                            Supplier: {{sup.supplier_number}} - <br> {{sup.supplier_name}}
+                                            Supplier: {{sup.supplier_number}} - {{sup.supplier_name}}
                                         </a>
                                     {%else%}
                                         <strong>No new supplier added.</strong>
