@@ -112,9 +112,12 @@ class IRRentryForm1(forms.Form):
     supplier = forms.ModelChoiceField(label='Supplier *',\
      queryset=Supplier.objects.filter(is_delete=False), required=True)
     reference = forms.CharField(label='Reference *', required=True)
-    invoice_number = forms.CharField(label='Invoice number *', required=True)
     po_number = forms.CharField(label='PO number *', required=True)
     dr_number = forms.CharField(label='DR number *', required=True)
+    pr_number = forms.CharField(label='PR number *', required=True)
+
+    class Meta:
+        unique_together = (('supplier', 'po_number', 'pr_number'), )
 
 
 class IRRentryForm2(forms.Form):
@@ -142,7 +145,7 @@ class IRRentryForm2(forms.Form):
         options={"format": "YYYY-MM-DD", "pickTime": False}), \
         label='Delivery date *', required=True)
 
-    pr_number = forms.CharField(label='PR number *', required=True)
+    invoice_number = forms.CharField(label='Invoice number *', required=True)
 
 class IRRentrycontForm(forms.ModelForm):
     """IRR_entry_cont_Form"""

@@ -1,0 +1,110 @@
+{% extends 'WISH/index.html' %}
+{% load staticfiles %}
+ {% block content %}
+<html>
+    <head>
+        <title>Supplier details</title>
+        <style type="text/css" >
+        	table, th, td{
+        		text-align: left;
+        	}
+        	th, td {
+        		padding: 5px
+        	}
+        </style>
+    </head>
+<br><br>
+    <body>
+      <link rel="stylesheet" href="{% static 'css/font-awesome.min.css' %} ">
+      <link rel="stylesheet" href="{% static 'css/details.css' %}">
+      <div class="container">
+              <div class="row text-center">
+                  <div class="col-md-12" style="margin-top: 20px;">
+                      <div class="pricing-table">
+                          <div class="panel panel-primary" style="border: none;">
+                              <div class="controle-header panel-heading panel-heading-landing">
+                                  <h1 class="panel-title panel-title-landing">
+                                    Supplier
+                                  </h1>
+                              </div>
+                              <div class="controle-panel-heading panel-heading panel-heading-landing-box">
+                                  Details
+                              </div>
+                              <div class="panel-body panel-body-landing">
+                                  <table class="table">
+                                      <tr>
+                                          <td width="50%">Supplier Number :</td>
+                                          <td>{{sup.supplier_number}}</td>
+                                      </tr>
+
+                                      <tr>
+
+                                          <td width="200px">Supplier Name :</td>
+                                          <td>{{sup.supplier_name}}</td>
+
+                                      </tr>
+
+                                      <tr>
+                                          <td width="200px">Supplier Address: </td>
+                                          <td>{{sup.supplier_address}}</td>
+                                      </tr>
+
+                                      <tr>
+
+                                          <td width="200px">Telephone Number:</td>
+                                          <td>{{sup.telephone_number}}</td>
+
+                                      </tr>
+
+                                      <tr>
+                                          <td width="200px">Credit Limit:</td>
+                                          <td>{{sup.credit_limit}}</td>
+                                      </tr>
+
+                                      <tr>
+
+                                          <td width="200px">Debit Amount:</td>
+                                          <td>{{sup.debit_amount}}</td>
+
+                                      </tr>
+
+                                      <tr>
+                                          <td width="200px">Credit Amount:</td>
+                                          <td>{{sup.credit_amount}}</td>
+                                      </tr>
+
+                                      <tr>
+
+                                          <td width="200px">Balance Amount:</td>
+                                          <td>{{sup.balance_amount}}</td>
+
+                                      </tr>
+
+                                      <tr>
+                                          <td width="200px">Contact Person:</td>
+                                          <td>{{sup.contact_person}}</td>
+                                      </tr>
+
+                                      <tr>
+
+                                          <td width="200px">Remark:</td>
+                                          <td>{{sup.remarks}}</td>
+
+                                      </tr>
+                                </table>
+                              </div>
+                              <div class="panel-footer panel-footer-landing">
+                                  <a href="#" class="btn btn-price btn-info btn-lg">Restore</a>
+
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+    </body>
+
+
+</html>
+
+{% endblock %}

@@ -210,6 +210,13 @@ class CCRes(ListView):
     def get_queryset(self):
         return models.CostCenter.objects.filter(is_delete=True)
 
+class SupRes(ListView):
+    context_object_name='sup_list' 
+    template_name = 'WISH/supplier_res.html'
+
+    def get_queryset(self):
+        return models.Supplier.objects.filter(is_delete=True)
+
 class InvStatDetailsRes(DetailView):
     model = models.InventoryStat
     context_object_name = 'invs'
@@ -219,3 +226,8 @@ class CCDetailsRes(DetailView):
     model = models.CostCenter
     context_object_name = 'cc'
     template_name = 'WISH/costcenter_detail_res.html'
+
+class SupDetailsRes(DetailView):
+    model = models.Supplier
+    context_object_name = 'sup'
+    template_name = 'WISH/supplier_detail_res.html'
