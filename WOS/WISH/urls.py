@@ -140,12 +140,18 @@ urlpatterns = [
     #URL patterns for view restore libraries
     url(r'^inv_stat_res/$', login_required(cviews.InvStatRes.as_view()),\
      name='inv_stat_res'),
+    url(r'^cost_center_res/$', login_required(cviews.CCRes.as_view()),\
+     name='cost_center_res'),
+
 
 
     #URL patterns for details of restore libraries
     url(r'^inv_stat_details_res/(?P<pk>[0-9]+)/$', \
     login_required(cviews.InvStatDetailsRes.as_view()),\
         name='invstat_details_res'),
+    url(r'^cost_center_details_res/(?P<pk>[0-9]+)/$',\
+     login_required(cviews.CCDetailsRes.as_view()), \
+        name='costcenter_details_res'),
 
 
 

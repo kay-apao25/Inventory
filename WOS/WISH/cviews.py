@@ -203,7 +203,19 @@ class InvStatRes(ListView):
         request.user.first_name) + ' ' + str(self.request.user.last_name\
         )).cost_center_no_id))
 
+class CCRes(ListView):
+    context_object_name='cc_list' 
+    template_name = 'WISH/cost_center_res.html'
+
+    def get_queryset(self):
+        return models.CostCenter.objects.filter(is_delete=True)
+
 class InvStatDetailsRes(DetailView):
     model = models.InventoryStat
     context_object_name = 'invs'
     template_name = 'WISH/inv_stat_details_res.html'
+
+class CCDetailsRes(DetailView):
+    model = models.CostCenter
+    context_object_name = 'cc'
+    template_name = 'WISH/costcenter_detail_res.html'

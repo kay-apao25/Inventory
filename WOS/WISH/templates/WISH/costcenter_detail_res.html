@@ -1,0 +1,59 @@
+{% extends 'WISH/index.html' %}
+{% load staticfiles %}
+ {% block content %}
+<html>
+    <head>
+        <title>Cost Center details</title>
+        <style type="text/css" >
+        	table, th, td{
+        		text-align: left;
+        	}
+        	th, td {
+        		padding: 5px
+        	}
+        </style>
+    </head>
+<br><br>
+    <body>
+      <link rel="stylesheet" href="{% static 'css/font-awesome.min.css' %}">
+      <link rel="stylesheet" href="{% static 'css/details.css' %}">
+      <div class="container">
+              <div class="row text-center">
+                  <div class="col-md-12" style="margin-top: 20px;">
+                      <div class="pricing-table">
+                          <div class="panel panel-primary" style="border: none;">
+                              <div class="controle-header panel-heading panel-heading-landing">
+                                  <h1 class="panel-title panel-title-landing">
+                                    Cost Center
+                                  </h1>
+                              </div>
+                              <div class="controle-panel-heading panel-heading panel-heading-landing-box">
+                                  Details
+                              </div>
+                              <div class="panel-body panel-body-landing">
+                                  <table class="table">
+                                      <tr>
+                                          <td width="50%">Cost Center Name :</td>
+                                          <td>{{cc.cost_center_name}}</td>
+                                      </tr>
+                                      <tr>
+                                          <td width="50px">Functional Group : </td>
+                                          <td>{{cc.functional_group}}</td>
+                                      </tr>
+
+                                  </table>
+                              </div>
+                              <div class="panel-footer panel-footer-landing">
+                                  <a href="#" class="btn btn-price btn-info btn-lg">Restore</a>
+
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+    </body>
+
+</html>
+
+{% endblock %}
