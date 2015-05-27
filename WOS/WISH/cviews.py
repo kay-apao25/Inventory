@@ -62,7 +62,7 @@ class WRSRep(ListView):
 
 class WRSRep1(ListView):
     context_object_name='wrs_list' 
-    template_name = 'WISH/wrs_reports.html'
+    template_name = 'WISH/wrs_reports1.html'
     extra_context={'user': 'user'}
 
     def get_queryset(self):
@@ -107,14 +107,9 @@ class ProdRep(ListView):
         + ' ' + str(self.request.user.last_name)).cost_center_no)))])
 
 class InvStatRep(ListView):
+    model = models.InventoryStat
     context_object_name='inv_list' 
     template_name = 'WISH/inv_stat.html'
-
-    def get_queryset(self):
-        return models.InventoryStat.objects.filter(is_delete=False).filter(\
-        cost_center_no_id=(models.Employee.objects.get(name=str(self.\
-        request.user.first_name) + ' ' + str(self.request.user.last_name\
-        )).cost_center_no_id))
 
 class CCRep(ListView):
     context_object_name='cc_list' 

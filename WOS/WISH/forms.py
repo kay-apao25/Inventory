@@ -9,7 +9,7 @@ class ProductForm(forms.ModelForm):
     class Meta:
         """Meta"""
         model = Product
-        exclude = ('product_number', 'item_name', 'nsn', \
+        exclude = ('item_name', 'nsn', \
             'generic_name', 'brand', 'part_number', 'manufacture_date',\
              'expiry_date', 'classification', \
             'stock', 'block', 'unit_measure', 'unit_cost', 'quantity', \
@@ -22,7 +22,6 @@ class ProductForm(forms.ModelForm):
 class ProductForm1(forms.Form):
     """ProductForm1"""
     nsn = forms.CharField(label='NSN *', max_length=10, required=True)
-    product_number = forms.CharField(label='Product number *', max_length=10, required=True)
     generic_name = forms.CharField(label='Generic name *', max_length=25, required=True)
     item_name = forms.CharField(label='Item name*', max_length=10, required=True)
     brand = forms.CharField(label='Brand *', max_length=25, required=True)
@@ -30,6 +29,8 @@ class ProductForm1(forms.Form):
     manufacture_date = forms.DateField(label='Manufacture date *',\
         widget=DateTimePicker(options={"format": "YYYY-MM-DD",\
          "pickTime": False}), required=True)
+    expiry_date = forms.DateField(widget=DateTimePicker(\
+        options={"format": "YYYY-MM-DD", "pickTime": False}), required=False)
     inv_station_no = forms.ModelChoiceField(label=\
         'Inventory station *', queryset=\
         InventoryStat.objects.filter(is_delete=False), required=True)
@@ -49,8 +50,6 @@ class ProductForm2(forms.Form):
         ('Pending', 'Pending'),
     )
 
-    expiry_date = forms.DateField(widget=DateTimePicker(\
-        options={"format": "YYYY-MM-DD", "pickTime": False}), required=False)
     unit_cost = forms.DecimalField(label='Unit cost*', decimal_places=2, required=True)
     quantity = forms.IntegerField(min_value=0, initial='1', label='Quantity *', required=True)
     classification = forms.CharField(label='Classification*', max_length=30, required=True)
@@ -78,7 +77,7 @@ class ProductForm5(forms.ModelForm):
     class Meta:
         """Meta"""
         model = Product
-        fields = ('product_number', 'item_name', 'nsn', 'generic_name',\
+        fields = ('item_name', 'nsn', 'generic_name',\
          'brand', 'part_number', 'manufacture_date', \
          'expiry_date', 'classification', \
         'stock', 'block', 'unit_measure', 'unit_cost', 'quantity', \
@@ -100,21 +99,12 @@ class IRRentryForm(forms.ModelForm):
 class IRRentryForm1(forms.Form):
     """IRR_entryForm1"""
 
-    def __init__(self, *args, **kwargs):
-        name = kwargs.pop('name')
-        super(IRRentryForm1, self).__init__(*args, **kwargs)
-        self.fields['inv_station_no'] = forms.ModelChoiceField(\
-            queryset=InventoryStat.objects.filter(\
-        cost_center_no=Employee.objects.get(name=name).cost_center_no).filter(\
-            id__in=[p.inv_station_no.id for p in Product.objects.filter\
-            (is_irr=False)]), label='Inventory Station *', required=True)
-
     supplier = forms.ModelChoiceField(label='Supplier *',\
      queryset=Supplier.objects.filter(is_delete=False), required=True)
     reference = forms.CharField(label='Reference *', required=True)
     invoice_number = forms.CharField(label='Invoice number *', required=True)
     po_number = forms.CharField(label='PO number *', required=True)
-    dr_number = forms.CharField(label='DR number *', required=True)
+    pr_number = forms.CharField(label='PR number *', required=True)
 
 
 class IRRentryForm2(forms.Form):
@@ -127,7 +117,7 @@ class IRRentryForm2(forms.Form):
         self.fields['dce_user'] = forms.ModelChoiceField(\
             queryset=Employee.objects.filter(\
             is_delete=False).filter(cost_center_no=Employee.objects.get(\
-                name=name).cost_center_no), label='User *', required=True)
+                name=name).cost_center_no), label='End User *', required=True)
         self.fields['dce_approved'] = forms.ModelChoiceField(\
             queryset=Employee.objects.filter(\
             is_delete=False).filter(cost_center_no=Employee.objects.get(\
@@ -142,20 +132,10 @@ class IRRentryForm2(forms.Form):
         options={"format": "YYYY-MM-DD", "pickTime": False}), \
         label='Delivery date *', required=True)
 
-    pr_number = forms.CharField(label='PR number *', required=True)
+    dr_number = forms.CharField(label='DR number *', required=True)
 
 class IRRentrycontForm(forms.ModelForm):
     """IRR_entry_cont_Form"""
-
-    def __init__(self, *args, **kwargs):
-        inv = kwargs.pop('inv')
-        super(IRRentrycontForm, self).__init__(*args, **kwargs)
-
-        self.fields['cost_center_no'] = forms.ModelChoiceField(\
-            queryset=CostCenter.objects.filter(\
-            is_delete=False).filter(cc_iFK__in=[i.cost_center_no.id \
-            for i in (InventoryStat.objects.filter(inv_station_no=inv))]),\
-            label='Cost center *', required=True)
 
     date_recv = forms.DateField(widget=DateTimePicker(options=\
         {"format": "YYYY-MM-DD", "pickTime": False}), label='Date received *', required=True)
@@ -163,7 +143,7 @@ class IRRentrycontForm(forms.ModelForm):
 
     class Meta:
         model = IRR
-        fields = ('cost_center_no', 'date_recv', 'wo_no', 'remarks',)
+        fields = ('date_recv', 'wo_no', 'remarks',)
 
 class ProducttoIRRForm(forms.Form):
     """Product_to_IRRForm"""
@@ -174,7 +154,7 @@ class ProducttoIRRForm(forms.Form):
 
         self.fields['product'] = forms.ModelChoiceField(\
             queryset=Product.objects.filter(\
-            inv_station_no=inv).filter(is_irr=False), label='Product *',\
+            inv_station_no=inv).filter(quantity__gt=0), label='Product *',\
              required=True)
         self.fields['quantity_accepted'] = forms.IntegerField(min_value=0,\
          label='Quantity accepted *', required=True)
@@ -417,7 +397,7 @@ class ProductWRS(forms.Form):
 
         self.fields['product'] = forms.ModelChoiceField(\
             queryset=Product.objects.filter(\
-            inv_station_no=inv).filter(is_irr=True), label='Product *',\
+            inv_station_no=inv).filter(quantity__gt=0), label='Product *',\
              required=True)
         self.fields['qty'] = forms.IntegerField(min_value=0,\
          label='Quantity*', required=True)

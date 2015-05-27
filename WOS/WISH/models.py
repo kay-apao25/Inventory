@@ -38,7 +38,7 @@ class InventoryStat(models.Model):
     """Inventory_stat models"""
     inv_station_no = models.CharField(max_length=40)
     station_description = models.CharField(max_length=20)
-    cost_center_no = models.ForeignKey(CostCenter, related_name="cc_iFK")
+    cost_center_no = models.ManyToManyField(CostCenter, related_name="cc_iFK")
     is_delete = models.BooleanField(default=False)
     history = HistoricalRecords()
 
@@ -56,9 +56,6 @@ class Employee(models.Model):
     position = models.CharField(max_length=20)
     history = HistoricalRecords()
     is_delete = models.BooleanField(default=False)
-    user = User.objects.create_user(username='guest',
-                                 email='', id=1,
-                                 password='guest')
     user_id = models.ForeignKey(User, default=1) 
 
     def __unicode__(self):
@@ -82,7 +79,6 @@ class Product(models.Model):
     """Product models"""
     nsn = models.CharField(max_length=15)
     slc_number = models.CharField(max_length=15)
-    product_number = models.CharField(max_length=15)
     generic_name = models.CharField(max_length=40)
     item_name = models.CharField(max_length=40)
     brand = models.CharField(max_length=40)
@@ -107,8 +103,7 @@ class Product(models.Model):
     history = HistoricalRecords()
     inv_station_no = models.ForeignKey(InventoryStat, related_name="inv_iFK")
     balance = models.PositiveIntegerField(default=0, null=True, blank=True)
-    is_irr = models.BooleanField(default=False)
-
+    
     def __unicode__(self):
         return self.item_name + " , " + self.description
 

@@ -21,8 +21,8 @@ def log_in(request):
     """function"""
     if request.method == 'POST':
         if 'signup' in request.POST:
-            form1 = forms.SignUpForm(request.POST or None)
             form = forms.LoginForm()
+            form1 = forms.SignUpForm(request.POST or None)
             form2 = forms.GuestForm()
             if form1.is_valid():
                 dce = form1.data['dce']
@@ -63,8 +63,8 @@ def log_in(request):
                         {'error': 'Username and password does not match.',\
                          'form':form, 'form1': form1, 'form2':form2})
         elif 'guest' in request.POST:
-            form1 = forms.SignUpForm()
             form = forms.LoginForm()
+            form1 = forms.SignUpForm()
             form2 = forms.GuestForm(request.POST or None)
             if form2.is_valid():
                 if len(Employee.objects.filter(dce=int(form2.data['dce']))) != 0:
@@ -311,8 +311,8 @@ def product_new(request):
             form3 = forms.ProductForm3()
 
             return render(request, 'WISH/product_add.html', {'form3': form3,\
-             'form1':form1, 'form2': form2, 'msg': 'Product (' + \
-             product.item_name + ') was added successfully.'})
+             'form1':form1, 'form2': form2, 'msg': 'Product -' + product.item_name \
+             + '- (SLC No: ' + product.slc_number + ') was added successfully.'})
     else:
         #Displaying of blank forms
         form1 = forms.ProductForm1()
@@ -325,27 +325,30 @@ def product_new(request):
 
 def irr_entry(request):
     """function"""
+    name = str(request.user.get_full_name())
+    inv = InventoryStat.objects.get(cost_center_no=\
+        Employee.objects.get(name=name).cost_center_no)
 
-    name = str(request.user.first_name) + ' ' + str(request.user.last_name)
     if request.method == "POST":
 
         #Forms containing the entries entered by the user
         form = forms.IRRentryForm(request.POST)
-        form1 = forms.IRRentryForm1(request.POST, name=name)
+        form1 = forms.IRRentryForm1(request.POST)
         form2 = forms.IRRentryForm2(request.POST, name=name)
 
         #Non-empty forms are to be validated.
-        if form1.is_valid() and form2.is_valid():
+        if form.is_valid() and form1.is_valid() and form2.is_valid():
             irr_entry = form.save(commit=False)
 
             #Assignment of values in IRR header model
             for key in form.data.keys():
                 key1 = key
-                if key == 'supplier' or key == 'inv_station_no' \
-                or key == 'dce_user' or key == 'dce_approved':
+                if key == 'supplier' or key == 'dce_user' or \
+                key == 'inv_station_no' or key == 'dce_approved':
                     key = key + '_id'
                 setattr(irr_entry, key, form1.data[key1])
                 setattr(irr_entry, key, form2.data[key1])
+            setattr(irr_entry, 'inv_station_no', inv)
 
             irr_entry.dce_custodian = Employee.objects.get(name=name)
             irr_entry.save()
@@ -353,7 +356,7 @@ def irr_entry(request):
             return redirect('new_irr_cont',\
              pk=irr_entry.pk, inv=int(irr_entry.inv_station_no_id))
     else:
-        prodlist = Product.objects.filter(is_irr=False)
+        prodlist = Product.objects.filter(inv_station_no=inv)
 
         if len(prodlist) == 0:
             #If true return this exit message
@@ -361,8 +364,8 @@ def irr_entry(request):
               {'exit': 'No available products to be made with IRR record.'})
         else:
             #else display blank forms.
-            form1 = forms.IRRentryForm1(name=name)
-            form2 = forms.IRRentryForm2(name=name)
+            form1 = forms.IRRentryForm1()
+            form2 = forms.IRRentryForm2(name=str(name))
             return render(request, 'WISH/irr_entry.html',\
                 {'form1': form1, 'form2': form2})
 
@@ -373,7 +376,7 @@ def product_to_irr(request, pk, inv):
 
         #Forms containing the entries entered by the user
         form = forms.ProducttoIRRForm(request.POST, inv=inv)
-        iform = forms.IRRentrycontForm(request.POST, inv=inv)
+        iform = forms.IRRentrycontForm(request.POST)
 
         if 'delete' in request.POST:
             k = int(request.POST['delete'])
@@ -403,10 +406,7 @@ def product_to_irr(request, pk, inv):
                     'is_par':False, 'quantity_par': int(form.data['quantity_accepted'])})
 
                 p = Product.objects.get(id=int(form.data['product']))
-                p.quantity = int(form.data['quantity_accepted'])
-                p.balance = int(form.data['quantity_balance'])
-                p.is_irr = True
-
+                
                 irr = iform.save(commit=False)
 
                 #Generation of IRR number
@@ -421,6 +421,8 @@ def product_to_irr(request, pk, inv):
                     irr.irr_no = '000000'
 
                 irr.irr_headkey_id = pk
+                irr.cost_center_no = Employee.objects.get(name=str(\
+                    request.user.get_full_name())).cost_center_no
 
                 #Generation of WRS number
                 if len(IRR.objects.all()) != 0:
@@ -441,10 +443,12 @@ def product_to_irr(request, pk, inv):
                 if 'save' in request.POST:
                     msg = 'IRR record (IRR No. - ' + \
                         irr.irr_no + ') was successfully added.'
-                    iform = forms.IRRentrycontForm(inv=inv)
                     del prod_to_irr[:]
                     irr.save()
                     p.save()
+                    return render(request, 'WISH/product_to_irr.html', \
+                    {'msg': 'IRR record (IRR No. - ' + \
+                        irr.irr_no + ') was successfully added.'})
                 else:
                     msg = 'Item (' + str(Product.objects.\
                         get(id=int(form.data['product'])).\
@@ -456,10 +460,10 @@ def product_to_irr(request, pk, inv):
         form = forms.ProducttoIRRForm(inv=inv)
     else:
         form = forms.ProducttoIRRForm(inv=inv)
-        iform = forms.IRRentrycontForm(inv=inv)
+        iform = forms.IRRentrycontForm()
 
-    prodlist = Product.objects.filter(inv_station_no=inv).\
-    filter(is_irr=False)
+    prodlist = Product.objects.filter(inv_station_no=inv).filter(\
+        quantity__gt=0)
     if len(prodlist) == 0:
         #If true return this exit message
         msg = 'IRR record (IRR No. - ' + str(IRR.objects.latest\
@@ -471,7 +475,7 @@ def product_to_irr(request, pk, inv):
     #Rendering of forms and/or messages and/or errors
     try:
         return render(request, 'WISH/product_to_irr.html', \
-            {'exit': exit, 'remove_add': remove_add, 'msg': msg})
+            {'exit': exit, 'msg': msg})
     except:
         try:
             return render(request, 'WISH/product_to_irr.html', \
@@ -595,8 +599,7 @@ def product_to_garv(request, pk):
 
             garv.product_to_GARV = json.dumps(prod_to_garv)
             garv.confirmed_by = Employee.objects.get\
-            (name=(str(request.user.first_name) + ' ' + \
-                str(request.user.last_name)))
+            (name=(str(request.user.get_full_name())))
 
             if len(prod_list) == 0:
                 products.is_garv = True
@@ -711,8 +714,7 @@ def par(request, inv):
             irr_headkey.inv_station_no.id
 
             par_entry.issued_by = Employee.objects.get\
-            (name=(str(request.user.first_name) + ' ' + \
-                str(request.user.last_name)))
+            (name=(str(request.user.get_full_name())))
 
             if len(prod_list) == 0:
                 products.is_par = True

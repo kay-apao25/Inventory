@@ -234,7 +234,7 @@ Image placeholders: placemi.com
 	          <ul class="nav navbar-nav navbar-right">
 							<li><a href="#"><span></span> About Us</a></li>
 							{% if request.user.is_superuser %}
-								<li><a>Hi, {{ user.username }}!</a></li>
+								<li><a>Hi, {{ request.user.get_full_name }}!</a></li>
 								<li><a href="{% url 'logout' %}"><span class="glyphicon glyphicon-log-out"></span>
 									 Log out</a></li>
 							{% elif user %}
