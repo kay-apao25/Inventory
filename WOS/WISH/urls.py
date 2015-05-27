@@ -136,6 +136,7 @@ urlpatterns = [
      name='supplier'),
     url(r'^employee/$', login_required(cviews.EmpRep.as_view()),\
      name='employee'),
+    #URL patterns for Viewing Libraries (end)
 
     #URL patterns for view restore libraries
     url(r'^inv_stat_res/$', login_required(cviews.InvStatRes.as_view()),\
@@ -153,7 +154,10 @@ urlpatterns = [
      login_required(cviews.CCDetailsRes.as_view()), \
         name='costcenter_details_res'),
 
+    #URL patterns for restoring Libraries (start)
+    url(r'^inv_stat_res/(?P<pk>[0-9]+)/$', login_required(views.inv_stat_res),\
+        name='invstat_res'),
+    #URL patterns for restoring Libraries (end)
 
 
-    #URL patterns for Viewing Libraries (end)
 ]
