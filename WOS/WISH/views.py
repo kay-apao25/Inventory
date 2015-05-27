@@ -229,6 +229,13 @@ def employee_del(request, pk):
     em_del.save()
     return redirect('employee')
 
+def inv_stat_res(request, pk):
+    """function"""
+    inv_del = get_object_or_404(InventoryStat, pk=pk)
+    inv_del.is_delete = False
+    inv_del.save()
+    return redirect('inv_stat')
+
 def add_supplier(request):
     """function"""
     if request.method == 'POST':
