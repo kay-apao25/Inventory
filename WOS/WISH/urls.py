@@ -160,4 +160,8 @@ urlpatterns = [
 
 
     #URL patterns for Viewing Libraries (end)
+
+    url(r'^inv_stat_res/(?P<pk>[0-9]+)/$', login_required(views.inv_stat_res),\
+        name='invstat_res'),
+
 ]
