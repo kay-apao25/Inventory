@@ -362,7 +362,7 @@ def irr_entry(request):
             try:
                 irr_entry.save()
             except IntegrityError as e:
-                form1 = forms.IRRentryForm1(name=name)
+                form1 = forms.IRRentryForm1()
                 form2 = forms.IRRentryForm2(name=name)
                 return render(request, 'WISH/irr_entry.html', {"error": "Record already exist.", 'form1': form1, 'form2': form2})
 
