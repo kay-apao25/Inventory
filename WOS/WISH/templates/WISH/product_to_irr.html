@@ -9,12 +9,17 @@
   }
 </style>
    <form method="POST" class="irr_entry">{% csrf_token %}
-    {% if exit %}
+    {% if exit and msg%}
       <div class="alert alert-success" style="width:400px">
         {{ msg }}
       </div>
       <div class="alert alert-warning" style="width:400px">
         {{ exit }}
+      </div>
+      <div align="center"><a href= "{% url 'index' %}"><i class="glyphicon glyphicon-share-alt"></i> Exit</a></div>
+    {% elif 'Item' not in msg %}
+      <div class="alert alert-success" style="width:400px">
+        {{ msg }}
       </div>
       <div align="center"><a href= "{% url 'index' %}"><i class="glyphicon glyphicon-share-alt"></i> Exit</a></div>
     {% else %}
