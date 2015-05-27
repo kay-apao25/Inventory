@@ -25,10 +25,7 @@
       </li>
     </ul>
 <br>
-<div align="right"><a href="{% url 'add_employee' %}" class="save btn btn-info">
-    <i class="glyphicon glyphicon-plus"></i> Add Employee</a>
-    <a href="{% url 'employee_res' %}" class="save btn btn-info">
-    <i class="glyphicon glyphicon"></i> Restore Employee</a></div><br>
+<div align="center"><h3>deleted employee</h3></div><br>
 <div id="employee">
 {% if em_list|length == 0 %}
 <br>
@@ -60,7 +57,7 @@
 {% for ems in em_list %}
   <tr>
    <td>
-     <a href="{% url 'emp_details' pk=ems.pk %}">
+     <a href="{% url 'emp_details_res' pk=ems.pk %}">
        {{ems.dce}}
      </a>
    </td>

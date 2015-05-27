@@ -214,6 +214,13 @@ class SupRes(ListView):
     def get_queryset(self):
         return models.Supplier.objects.filter(is_delete=True)
 
+class EmpRes(ListView):
+    context_object_name='em_list' 
+    template_name = 'WISH/employee_res.html'
+
+    def get_queryset(self):
+        return models.Employee.objects.filter(is_delete=True)
+
 class InvStatDetailsRes(DetailView):
     model = models.InventoryStat
     context_object_name = 'invs'
@@ -228,3 +235,8 @@ class SupDetailsRes(DetailView):
     model = models.Supplier
     context_object_name = 'sup'
     template_name = 'WISH/supplier_detail_res.html'
+
+class EmpDetailsRes(DetailView):
+    model = models.Employee
+    context_object_name = 'em'
+    template_name = 'WISH/employee_detail_res.html'

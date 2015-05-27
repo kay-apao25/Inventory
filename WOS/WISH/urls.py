@@ -144,6 +144,8 @@ urlpatterns = [
      name='cost_center_res'),
     url(r'^supplier_res/$', login_required(cviews.SupRes.as_view()),\
      name='supplier_res'),
+    url(r'^employee_res/$', login_required(cviews.EmpRes.as_view()),\
+     name='employee_res'),
 
 
 
@@ -157,6 +159,9 @@ urlpatterns = [
     url(r'^supplier_details_res/(?P<pk>[0-9]+)/$',\
      login_required(cviews.SupDetailsRes.as_view()),\
         name='supplier_details_res'),
+    url(r'^employee_details_res/(?P<pk>[0-9]+)/$', \
+    login_required(cviews.EmpDetailsRes.as_view()),\
+        name='emp_details_res'),
 
 
     #URL patterns for Viewing Libraries (end)
