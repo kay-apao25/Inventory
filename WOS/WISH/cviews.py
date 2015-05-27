@@ -107,9 +107,11 @@ class ProdRep(ListView):
         + ' ' + str(self.request.user.last_name)).cost_center_no)))])
 
 class InvStatRep(ListView):
-    model = models.InventoryStat
     context_object_name='inv_list' 
     template_name = 'WISH/inv_stat.html'
+
+    def get_queryset(self):
+        return models.InventoryStat.objects.filter(is_delete=False)
 
 class CCRep(ListView):
     context_object_name='cc_list' 
