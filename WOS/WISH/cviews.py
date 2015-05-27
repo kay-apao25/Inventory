@@ -193,3 +193,17 @@ class AddEmp(CreateView):
     template_name='WISH/add_employee.html'
     success_url = reverse_lazy('employee')
 
+class InvStatRes(ListView):
+    context_object_name='inv_list_res' 
+    template_name = 'WISH/inv_stat_res.html'
+
+    def get_queryset(self):
+        return models.InventoryStat.objects.filter(is_delete=True).filter(\
+        cost_center_no_id=(models.Employee.objects.get(name=str(self.\
+        request.user.first_name) + ' ' + str(self.request.user.last_name\
+        )).cost_center_no_id))
+
+class InvStatDetailsRes(DetailView):
+    model = models.InventoryStat
+    context_object_name = 'invs'
+    template_name = 'WISH/inv_stat_details_res.html'

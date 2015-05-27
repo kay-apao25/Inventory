@@ -27,18 +27,18 @@
 <br>
 <div align="right"><a href="{% url 'add_inv_stat' %}" class="save btn btn-info">
     <i class="glyphicon glyphicon-plus"></i> Add Inventory station</a>
-    <a href="{% url 'inv_stat_res' %}" class="save btn btn-info">
-    <i class="glyphicon glyphicon"></i> Restore Inventory station</a></div><br>
+    <span href="{% url 'inv_stat_res' %}" class="save btn btn-info">
+    <i class="glyphicon glyphicon"></i> Restore Inventory station</span></div><br>
 <div id="invs">
 
-{% if inv_list|length == 0 %}
+{% if inv_list_res|length == 0 %}
 <br>
 <br>
   <div class="alert alert-warning" style="width:400px">
     No records found.
   </div>
 {% else %}
-{% if inv_list|length <= 15  %}
+{% if inv_list_res|length <= 15  %}
   <div class="col-md-2"></div>
   {% else %}
   <div class="col-md-4">
@@ -56,10 +56,10 @@
           <th><center>Inventory station no</center></th>
           <th><center>Inventory station name</center></th>
         </thead>
-      {% for invs in inv_list %}
+      {% for invs in inv_list_res %}
       <tr>
         <td>
-          <a href="{% url 'invstat_details' pk=invs.pk %}">
+          <a href="{% url 'invstat_details_res' pk=invs.pk %}">
             <center>{{ invs.inv_station_no }}</center>
           </a>
         </td>

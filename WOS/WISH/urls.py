@@ -136,5 +136,18 @@ urlpatterns = [
      name='supplier'),
     url(r'^employee/$', login_required(cviews.EmpRep.as_view()),\
      name='employee'),
+
+    #URL patterns for view restore libraries
+    url(r'^inv_stat_res/$', login_required(cviews.InvStatRes.as_view()),\
+     name='inv_stat_res'),
+
+
+    #URL patterns for details of restore libraries
+    url(r'^inv_stat_details_res/(?P<pk>[0-9]+)/$', \
+    login_required(cviews.InvStatDetailsRes.as_view()),\
+        name='invstat_details_res'),
+
+
+
     #URL patterns for Viewing Libraries (end)
 ]
