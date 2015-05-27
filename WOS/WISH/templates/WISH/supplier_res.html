@@ -25,10 +25,9 @@
       </li>
     </ul>
 <br>
-<div align="right"><a href="{% url 'add_supplier' %}" class="save btn btn-info">
-    <i class="glyphicon glyphicon-plus"></i> Add Supplier</a>
-    <a href="{% url 'supplier_res' %}" class="save btn btn-info">
-    <i class="glyphicon glyphicon"></i> Restore Supplier</a></div><br>
+<div align="center">
+  <h3>Deleted Supplier</h3>
+</div>
 <div id="supplier">
 {% if sup_list|length == 0 %}
 <br>
@@ -58,7 +57,7 @@
    {% for sups in sup_list %}
      <tr>
        <td>
-         <a href="{% url 'supplier_details' pk=sups.pk %}">
+         <a href="{% url 'supplier_details_res' pk=sups.pk %}">
            {{sups.supplier_number}}
          </a>
        </td>
