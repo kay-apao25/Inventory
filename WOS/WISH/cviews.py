@@ -2,6 +2,7 @@ from django.views.generic import ListView, DetailView, CreateView, UpdateView
 from django.core.urlresolvers import reverse_lazy
 from . import models
 from . import forms
+import datetime
 
 class ParF(ListView):
     context_object_name='irr_list' 
@@ -35,10 +36,15 @@ class IRRRep(ListView):
     template_name = 'WISH/irr_reports.html'
 
     def get_queryset(self):
+        today = datetime.datetime.now()
+        this_year = today.year
+        this_month = today.month
+
+
         return models.IRR.objects.filter(irr_headkey__in=[i.id for i in (\
         models.IRRHeader.objects.filter(dce_custodian=(models.Employee.objects.get(\
         name=str(self.request.user.first_name) + ' ' + str(self.request.user.last_name\
-        )))))])
+        )))))]).filter(date_recv__year=str(this_year), date_recv__month=str(this_month))
 
 class MIVRep(ListView):
     context_object_name='miv_list' 
