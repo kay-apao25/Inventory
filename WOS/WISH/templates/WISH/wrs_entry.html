@@ -1,20 +1,21 @@
 {% extends 'WISH/index.html' %}
+{% block content %}
 {% load bootstrap %}
 <style type="text/css">
   .form-group{
     width:200px;
   }
 </style>
-{% block content %}
+
     <form method="POST" class="get-form">{% csrf_token %}
       <table width="50%" align="center" >
 
          {% for field in form %}
-          {{field | bootstrap_horizontal:'col-lg-4'}}&nbsp;&nbsp;&nbsp;
+          &nbsp;&nbsp;{{field | bootstrap}}&nbsp;&nbsp;&nbsp;
          {%endfor%}
 
       </table>
-         <div align="center"><button name="add" type="submit" class="save btn btn-default">Add Item</button></div>
-         <div align="center"><button name="save" type="submit" class="save btn btn-default">Save</button></div>
+         <div align="center"><button name="add" type="submit" class="save btn btn-default">Add Item</button></div><br>
+         <div align="center"><button name="save" type="submit" class="save btn btn-default">Submit</button></div>
       </form>
 {% endblock %}

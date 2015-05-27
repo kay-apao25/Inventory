@@ -106,6 +106,8 @@ class IRRentryForm1(forms.Form):
     po_number = forms.CharField(label='PO number *', required=True)
     pr_number = forms.CharField(label='PR number *', required=True)
 
+    class Meta:
+        unique_together = (('supplier', 'po_number', 'pr_number'), )
 
 class IRRentryForm2(forms.Form):
     """IRR_entryForm2"""

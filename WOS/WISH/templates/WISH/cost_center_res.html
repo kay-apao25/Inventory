@@ -25,10 +25,8 @@
       </li>
     </ul>
 <br>
-<div align="right"><a href="{% url 'add_cost_center' %}" class="save btn btn-info">
-    <i class="glyphicon glyphicon-plus"></i> Add Cost Center</a>
-    <a href="{% url 'cost_center_res' %}" class="save btn btn-info">
-    <i class="glyphicon glyphicon"></i> Restore Cost Center</a></div><br>
+<div align="center">
+    <h3>Deleted Cost Center</h3></div>
 <div id="cc">
 {% if cc_list|length == 0 %}
 <br>
@@ -60,7 +58,7 @@
   <tr>
    <td>
 
-     <center><a href="{% url 'costcen_details' pk=coss.pk %}">{{coss.cost_center_name}}</a></center>
+     <center><a href="{% url 'costcenter_details_res' pk=coss.pk %}">{{coss.cost_center_name}}</a></center>
      </a>
    </td>
 

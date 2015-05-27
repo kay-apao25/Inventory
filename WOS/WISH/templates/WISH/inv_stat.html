@@ -26,8 +26,11 @@
     </ul>
 <br>
 <div align="right"><a href="{% url 'add_inv_stat' %}" class="save btn btn-info">
-    <i class="glyphicon glyphicon-plus"></i> Add Inventory station</a></div><br>
+    <i class="glyphicon glyphicon-plus"></i> Add Inventory station</a>
+    <a href="{% url 'inv_stat_res' %}" class="save btn btn-info">
+    <i class="glyphicon glyphicon"></i> Restore Inventory station</a></div><br>
 <div id="invs">
+
 {% if inv_list|length == 0 %}
 <br>
 <br>

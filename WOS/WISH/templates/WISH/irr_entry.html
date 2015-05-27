@@ -19,6 +19,11 @@
         {{ msg }}
     </div>
     {% endif %}
+    {% if error %}
+    <div class="alert alert-success" style="width:400px">
+        {{ error }}
+    </div>
+    {% endif %}
     <strong><p style="font-size:15px">Fields with asterisk are required.</p></strong>
      <table width="50%">
     <tr>
@@ -33,7 +38,7 @@
      {% for field in form2 %}
 
       &nbsp;&nbsp;{{field | bootstrap_horizontal:'col-lg-4'}}&nbsp;&nbsp;&nbsp;
-      
+
      {%endfor%}
      </td>
      </tr>

@@ -57,6 +57,10 @@ class Employee(models.Model):
     history = HistoricalRecords()
     is_delete = models.BooleanField(default=False)
     user_id = models.ForeignKey(User, default=1) 
+    """user = User.objects.create_user(username='guest',
+                                 email='', id=1,
+                                 password='guest')"""
+    user_id = models.ForeignKey(User, default=1)
 
     def __unicode__(self):
         return self.name
@@ -128,6 +132,9 @@ class IRRHeader(models.Model):
 
     def __unicode__(self):
         return str(self.id)
+
+    class Meta:
+        unique_together = (("po_number", "pr_number", "supplier"),)
 
 
 class IRR(models.Model):

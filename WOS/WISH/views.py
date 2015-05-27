@@ -8,6 +8,7 @@ from WISH.models import Supplier, Product, PAR, GARV, CostCenter, \
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
+from django.db import IntegrityError
 from WISH import forms
 import time
 import json
@@ -351,7 +352,13 @@ def irr_entry(request):
             setattr(irr_entry, 'inv_station_no', inv)
 
             irr_entry.dce_custodian = Employee.objects.get(name=name)
-            irr_entry.save()
+            try:
+                irr_entry.save()
+            except IntegrityError as e:
+                form1 = forms.IRRentryForm1(name=name)
+                form2 = forms.IRRentryForm2(name=name)
+                return render(request, 'WISH/irr_entry.html', {"error": "Record already exist.", 'form1': form1, 'form2': form2})
+
 
             return redirect('new_irr_cont',\
              pk=irr_entry.pk, inv=int(irr_entry.inv_station_no_id))
