@@ -237,6 +237,27 @@ def inv_stat_res(request, pk):
     inv_del.save()
     return redirect('inv_stat')
 
+def cost_center_res(request, pk):
+    """function"""
+    cc_del = get_object_or_404(CostCenter, pk=pk)
+    cc_del.is_delete = False
+    cc_del.save()
+    return redirect('cost_center')
+
+def supplier_res(request, pk):
+    """function"""
+    sup_del = get_object_or_404(Supplier, pk=pk)
+    sup_del.is_delete = False
+    sup_del.save()
+    return redirect('supplier')
+
+def employee_res(request, pk):
+    """function"""
+    em_del = get_object_or_404(Employee, pk=pk)
+    em_del.is_delete = False
+    em_del.save()
+    return redirect('employee')
+
 def add_supplier(request):
     """function"""
     if request.method == 'POST':
@@ -420,7 +441,7 @@ def product_to_irr(request, pk, inv):
                     'is_par':False, 'quantity_par': int(form.data['quantity_accepted'])})
 
                 p = Product.objects.get(id=int(form.data['product']))
-                
+
                 irr = iform.save(commit=False)
 
                 #Generation of IRR number
