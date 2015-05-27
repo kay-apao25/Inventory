@@ -194,7 +194,7 @@ class InvStatRes(ListView):
 
     def get_queryset(self):
         return models.InventoryStat.objects.filter(is_delete=True).filter(\
-        cost_center_no_id=(models.Employee.objects.get(name=str(self.\
+        cost_center_no=(models.Employee.objects.get(name=str(self.\
         request.user.first_name) + ' ' + str(self.request.user.last_name\
         )).cost_center_no_id))
 
