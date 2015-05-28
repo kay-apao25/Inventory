@@ -3,11 +3,11 @@
  {% block content %}
 <html>
     <head>
-        <title>Cost Center details</title>
+        <title>Employee Details</title>
         <style type="text/css" >
         	table, th, td{
         		text-align: left;
-        	}
+            }
         	th, td {
         		padding: 5px
         	}
@@ -24,7 +24,7 @@
                           <div class="panel panel-primary" style="border: none;">
                               <div class="controle-header panel-heading panel-heading-landing">
                                   <h1 class="panel-title panel-title-landing">
-                                    Cost Center
+                                    Employee
                                   </h1>
                               </div>
                               <div class="controle-panel-heading panel-heading panel-heading-landing-box">
@@ -33,18 +33,34 @@
                               <div class="panel-body panel-body-landing">
                                   <table class="table">
                                       <tr>
-                                          <td width="50%">Cost Center Name :</td>
-                                          <td>{{cc.cost_center_name}}</td>
+                                          <td width="50%">DCE :</td>
+                                          <td>{{em.dce}}</td>
                                       </tr>
                                       <tr>
-                                          <td width="50px">Functional Group : </td>
-                                          <td>{{cc.functional_group}}</td>
+                                          <td width="200px">Name : </td>
+                                          <td>{{em.name}}</td>
+                                      </tr>
+
+                                      <tr>
+                                          <td width="200px">Charging CC No.:</td>
+                                          <td>{{em.charging_cc_no}}</td>
+                                      </tr>
+
+                                      <tr>
+                                          <td width="50px">Position:</td>
+                                          <td>{{em.position}}</td>
+                                      </tr>
+
+                                      <tr>
+                                          <td width="200px">Cost Center Number:</td>
+                                          <td>{{em.cost_center_no}}</td>
                                       </tr>
 
                                   </table>
                               </div>
                               <div class="panel-footer panel-footer-landing">
-                                  <a href="{% url 'costcenter_res' pk=cc.id %}" class="btn btn-price btn-info btn-lg">Restore</a>
+                                  <a href="{% url 'employee_res' pk=em.pk %}" class="btn btn-price btn-info btn-lg">Restore</a>
+
 
                               </div>
                           </div>

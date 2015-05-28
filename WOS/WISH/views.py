@@ -2,12 +2,12 @@
 # pylint: disable=bare-except,invalid-name, too-many-branches, unused-variable, too-many-statements, too-many-locals
 
 """views"""
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import render, redirect, get_object_or_404, HttpResponse
 from WISH.models import Supplier, Product, PAR, GARV, CostCenter, \
         InventoryStat, Employee, IRR, MIV
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-from django.forms.formsets import formset_factory
+from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.models import User
 from django.db import IntegrityError
 from WISH import forms
@@ -238,6 +238,27 @@ def inv_stat_res(request, pk):
     inv_del.save()
     return redirect('inv_stat')
 
+def cost_center_res(request, pk):
+    """function"""
+    cc_del = get_object_or_404(CostCenter, pk=pk)
+    cc_del.is_delete = False
+    cc_del.save()
+    return redirect('cost_center')
+
+def supplier_res(request, pk):
+    """function"""
+    sup_del = get_object_or_404(Supplier, pk=pk)
+    sup_del.is_delete = False
+    sup_del.save()
+    return redirect('supplier')
+
+def employee_res(request, pk):
+    """function"""
+    em_del = get_object_or_404(Employee, pk=pk)
+    em_del.is_delete = False
+    em_del.save()
+    return redirect('employee')
+
 def add_supplier(request):
     """function"""
     if request.method == 'POST':
@@ -443,7 +464,7 @@ def product_to_irr(request, pk, prodlist):
                     'is_par':False, 'quantity_par': int(form.data['quantity_accepted'])})
 
                 p = Product.objects.get(id=int(form.data['product']))
-                
+
                 irr = iform.save(commit=False)
 
                 #Generation of IRR number
@@ -984,3 +1005,18 @@ def wrs_form(request, pk):
         remain = 3 - len(pros)
         return render(request, 'WISH/wrs_form.html', {'wrss': wrss, \
             'pros': pros, 'remain': range(remain), 'loop': range(loop)})
+
+def handson(request):
+    prods = Product.objects.all()
+    return render(request, 'WISH/handsontable.html', {'prods': prods})
+
+@csrf_exempt
+def create_post(request):
+    if request.method == 'POST':
+        post_text = request.POST.get('handson')
+        prod_to_irr = json.loads(post_text)
+        return HttpResponse(json.dumps(post_text), content_type="application/json")
+    else:
+        #prods = Product.objects.all()
+        #return render(request, 'WISH/handsontable.html', {'prods': prods})
+        return HttpResponse(json.dumps({"error": "error"}), content_type="application/json")
