@@ -174,5 +174,7 @@ urlpatterns = [
         name='employee_res'),
 
     #URL patterns for Viewing Libraries (end)
+    url(r'^handson/$', login_required(views.handson),\
+        name='handson'),
 
 ]
