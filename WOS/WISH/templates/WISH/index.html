@@ -222,7 +222,7 @@ Image placeholders: placemi.com
                     <li><a href="{% url 'garv_reports1' user=user%}">GARV Report</a></li>
                   </ul>
                 </li>
-                
+
                 {% endif %}
 
 				<li>
@@ -232,7 +232,7 @@ Image placeholders: placemi.com
 	          </ul>
 
 	          <ul class="nav navbar-nav navbar-right">
-							<li><a href="#"><span></span> About Us</a></li>
+							<li><a href="{% url 'handson' %}"><span></span> About Us</a></li>
 							{% if request.user.is_superuser %}
 								<li><a>Hi, {{ request.user.get_full_name }}!</a></li>
 								<li><a href="{% url 'logout' %}"><span class="glyphicon glyphicon-log-out"></span>
@@ -314,7 +314,7 @@ Image placeholders: placemi.com
                                     		IRR Record: {{irr.irr_no}} - {{irr.date_recv}}
                                     	</a>
                                         {% else %}
-                                            IRR Record: {{irr.irr_no}} - {{irr.date_recv}}  
+                                            IRR Record: {{irr.irr_no}} - {{irr.date_recv}}
                                         {% endif %}
                                     {%else%}
                                     	<strong>IRR Record: No new report recorded.</strong>
@@ -331,7 +331,7 @@ Image placeholders: placemi.com
                                     {%else%}
                                         <strong>PAR Record: No new report recorded.</strong>
                                     {% endif %}
-                                    <br> 
+                                    <br>
                                     {% if garv != null %}
                                         {% if request.user.is_superuser %}
                                         <a href="{% url 'garv_form' pk=garv.pk%}">
