@@ -7,6 +7,7 @@ from WISH.models import Supplier, Product, PAR, GARV, CostCenter, \
         InventoryStat, Employee, IRR, MIV
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
+from django.forms.formsets import formset_factory
 from django.contrib.auth.models import User
 from django.db import IntegrityError
 from WISH import forms
@@ -362,13 +363,13 @@ def irr_entry(request):
             try:
                 irr_entry.save()
             except IntegrityError as e:
-                form1 = forms.IRRentryForm1(name=name)
+                form1 = forms.IRRentryForm1()
                 form2 = forms.IRRentryForm2(name=name)
-                return render(request, 'WISH/irr_entry.html', {"error": "Record already exist.", 'form1': form1, 'form2': form2})
+                return render(request, 'WISH/irr_entry.html', {"error": "Record already exists.", 'form1': form1, 'form2': form2})
 
 
             return redirect('new_irr_cont',\
-             pk=irr_entry.pk, inv=int(irr_entry.inv_station_no_id))
+             pk=irr_entry.pk, inv=int(irr_entry.inv_station_no_id), sup=irr_entry.supplier_id)
     else:
         prodlist = Product.objects.filter(inv_station_no=inv)
 
@@ -383,27 +384,49 @@ def irr_entry(request):
             return render(request, 'WISH/irr_entry.html',\
                 {'form1': form1, 'form2': form2})
 
-def product_to_irr(request, pk, inv):
+def addproduct_to_irr(request, pk, inv, sup):
     """function"""
-    remove_add = 0
     if request.method == "POST":
-
         #Forms containing the entries entered by the user
-        form = forms.ProducttoIRRForm(request.POST, inv=inv)
-        iform = forms.IRRentrycontForm(request.POST)
+        if 'add' in request.POST:
+            prodlist = request.POST.getlist('product')
+            pform = forms.ProductCheckForm(request.POST, inv=inv, sup=sup)
+            if pform.is_valid():
+                return redirect('new_irr_cont1', pk=pk, prodlist=prodlist)
+    else:
+        pform = forms.ProductCheckForm(inv=inv, sup=sup)
+        iform = forms.IRRentrycontForm()
 
+    return render(request, 'WISH/product_to_irr.html', \
+        {'pform': pform, 'iform': iform, 'remove_add': \
+        0, 'product': prod_to_irr})
+
+def product_to_irr(request, pk, prodlist):
+    """function"""
+    remove_add = 1
+    try:
+        prodlist = prodlist.replace('[', '')
+        prodlist = prodlist.replace(']', '')
+        prodlist = prodlist.replace('u', '')
+        prodlist = prodlist.replace(',', '')
+        prodlist = prodlist.replace("'", '')
+        prodlist = prodlist.split()
+    except:
+        pass
+    if request.method == "POST":
+        #Forms containing the entries entered by the user
+        form = forms.ProducttoIRRForm(request.POST, prodlist=prodlist)
+        iform = forms.IRRentrycontForm(request.POST)
+                
         if 'delete' in request.POST:
             k = int(request.POST['delete'])
-            prod = Product.objects.get(id=prod_to_irr[k]['Product'])
-            prod.is_irr = False
-            prod.save()
             prod_to_irr.remove(prod_to_irr[k])
 
         #Non-empty forms are to be validated.
         elif form.is_valid() and iform.is_valid():
 
-            #To check if quantity accepted entered is
-                #less than the present stocked items.
+        #To check if quantity accepted entered is
+            #less than the present stocked items.
             if Product.objects.get(id=int(form.data['product'])).quantity \
             < int(form.data['quantity_accepted']):
                 return render(request, 'WISH/product_to_irr.html', \
@@ -468,24 +491,19 @@ def product_to_irr(request, pk, inv):
                         get(id=int(form.data['product'])).\
                         item_name) + ') was successfully added.'
                     p.save()
+                    for p in prod_to_irr:
+                        prodlist.remove(str(p['Product']))
                     for prod in prod_to_irr:
                         pro = Product.objects.get(id=prod['Product'])
                         prod['pros'] = pro
-        form = forms.ProducttoIRRForm(inv=inv)
+            form = forms.ProducttoIRRForm(prodlist=prodlist)
     else:
-        form = forms.ProducttoIRRForm(inv=inv)
+        form = forms.ProducttoIRRForm(prodlist=prodlist)
         iform = forms.IRRentrycontForm()
 
-    prodlist = Product.objects.filter(inv_station_no=inv).filter(\
-        quantity__gt=0)
-    if len(prodlist) == 0:
-        #If true return this exit message
-        msg = 'IRR record (IRR No. - ' + str(IRR.objects.latest\
-            ('wrs_number')) + ') was successfully added.'
-        exit = 'No available products to be made with IRR Record.'
-    elif len(prodlist) == 1:
-        remove_add = 1
-
+    if len(prodlist) == 1:
+        remove_add = 2
+    
     #Rendering of forms and/or messages and/or errors
     try:
         return render(request, 'WISH/product_to_irr.html', \

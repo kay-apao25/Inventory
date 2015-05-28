@@ -3,6 +3,9 @@ from django import forms
 from WISH.models import Supplier, Product, PAR, GARV, CostCenter, \
         InventoryStat, Employee, IRRHeader, IRR, MIV, WRSPending
 from bootstrap3_datetime.widgets import DateTimePicker
+from django.forms.models import BaseInlineFormSet
+from django.forms.models import inlineformset_factory
+
 class ProductForm(forms.ModelForm):
     """ProductForm"""
 
@@ -151,19 +154,27 @@ class ProducttoIRRForm(forms.Form):
     """Product_to_IRRForm"""
 
     def __init__(self, *args, **kwargs):
-        inv = kwargs.pop('inv')
+        prodlist = kwargs.pop('prodlist')
         super(ProducttoIRRForm, self).__init__(*args, **kwargs)
 
         self.fields['product'] = forms.ModelChoiceField(\
-            queryset=Product.objects.filter(\
-            inv_station_no=inv).filter(quantity__gt=0), label='Product *',\
-             required=True)
+            queryset=Product.objects.filter(id__in=[int(p) for p in prodlist]),\
+            label='Product *', required=True)
         self.fields['quantity_accepted'] = forms.IntegerField(min_value=0,\
          label='Quantity accepted *', required=True)
         self.fields['quantity_rejected'] = forms.IntegerField(min_value=0,\
          label='Quantity rejected *', required=True)
         self.fields['quantity_balance'] = forms.IntegerField(min_value=0,\
          label='Quantity balance *', required=True)
+
+class ProductCheckForm(forms.Form):
+    def __init__(self, *args, **kwargs):
+        inv = kwargs.pop('inv')
+        sup = kwargs.pop('sup')
+        super(ProductCheckForm, self).__init__(*args, **kwargs)
+
+        self.fields['product'] = forms.ModelMultipleChoiceField(widget=forms.CheckboxSelectMultiple,\
+            required=True, queryset=Product.objects.filter(inv_station_no=inv).filter(purchased_from=sup).filter(quantity__gt=0))
 
 class MIVentryForm(forms.ModelForm):
     """MIV_entryForm"""

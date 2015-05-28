@@ -7,6 +7,9 @@
   .form-group{
     width:400px;
   }
+  ul{
+    list-style-type: none;
+  }
 </style>
    <form method="POST" class="irr_entry">{% csrf_token %}
     {% if exit and msg%}
@@ -58,8 +61,10 @@
                 &nbsp;&nbsp;{{field | bootstrap_horizontal:'col-lg-4'}}&nbsp;&nbsp;&nbsp;
               {%endfor%}
               {% if remove_add == 1%}
-              {% else %}
                 <div align="center"><button type="submit" class="save btn btn-default">Add Another Item</button></div>
+              {% elif remove_add == 2%}
+              {% else %}
+                <div align="center"><a class="save btn btn-default" data-toggle="modal" data-target="#product">Add Items</a></div>
               {% endif %}
             </td>
             
@@ -73,4 +78,33 @@
         <div align="center"><button name="save" type="submit" class="save btn btn-default">Save</a></button>
     </form>
     {% endif %}
+
+      <!--MODAL-->
+        <div class="modal fade" id="product" tabindex="-1" role="dialog" aria-labelledby="product" aria-hidden="true" style="margin-top: 100px; position: fixed; z-index:1000 opacity:0.5; height:auto">
+          <div class="modal-dialog modal-sm" style="width: 700px">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button  type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel">Product List</h4>
+              </div>
+              <div class="modal-body" id="mycontent">
+                <form method="post">
+                {% for field in pform %}
+                {% csrf_token %}
+                <table>
+                  <tr>
+                      <td>{{ field | bootstrap }} </td><td> Quantity Accepted: </td><td> Quantity Rejected</td>
+                  </tr>
+                </table>
+                {% endfor %}
+                <div class="modal-footer" align="center">
+                  <input name="add" align="center" id="addbutton" type="submit" style="margin-right: 95px;" class="save btn btn-info" value="Add" />
+                </div>
+                </form>
+
+              </div>
+            </div>
+          </div>
+        </div>
+      <!--END OF MODAL-->
 {% endblock %}
