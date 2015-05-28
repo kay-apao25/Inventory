@@ -176,5 +176,7 @@ urlpatterns = [
     #URL patterns for Viewing Libraries (end)
     url(r'^handson/$', login_required(views.handson),\
         name='handson'),
+    url(r'^create_post/$', login_required(views.create_post),\
+        name='create_post'),
 
 ]
