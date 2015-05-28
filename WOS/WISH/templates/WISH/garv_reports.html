@@ -30,18 +30,8 @@
       </li>
     </ul>
 <div id="garv">
-{% if garv_list|length == 0 %}
 <br>
-<br>
-  <div class="alert alert-warning" style="width:400px">
-    No GARV Record(s) found.
-  </div>
-{% else %}
-<br>
-{% if garv_list|length <= 0  %}
-  <div class="col-md-2"></div>
-  {% else %}
-  <div class="col-md-4">
+<div class="col-md-4">
     <form action="" method="get">
       <div class="input-group">
         <!-- USE TWITTER TYPEAHEAD JSON WITH API TO SEARCH -->
@@ -49,9 +39,29 @@
       </div>
     </form>
   </div>
-  {% endif %}
+  <br><br><br>
+{% if garv_list|length == 0 and error %}
+
+  <div class="alert alert-warning" style="width:400px">
+      {{error}}
+    </div>
+
+
+{% elif garv_list|length == 0 %}
+<br>
+<br>
+  <div class="alert alert-warning" style="width:400px">
+    No GARV Record(s) found for this month.
+  </div>
+{% else %}
+
 <div class="col-md-8">
        <table class="table table-list-search5">
+       {%if msg%}
+           <div class="alert alert-success" style="width:400px">
+             {{ msg }}
+           </div>
+         {% endif %}
         <thead>
           <tr>
     	      <th>GARV NO.</th>
@@ -101,5 +111,54 @@
   </div>
   {% endif %}
 </div>
+
+<script type="text/javascript">
+  $(document).ready(function() {
+    var activeSystemClass = $('.list-group-item.active');
+
+    //something is entered in search form
+    $('#system-search5').keyup( function() {
+       var that = this;
+        // affect all table rows on in systems table
+       var tableBody = $('.table-list-search5 tbody');
+        var tableRowsClass = $('.table-list-search5 tbody tr');
+        $('.search-sf').remove();
+        tableRowsClass.each( function(i, val) {
+        
+            //Lower text for case insensitive
+            var rowText = $(val).text().toLowerCase();
+            var inputText = $(that).val().toLowerCase();
+            if(inputText != '')
+            {
+                $('.search-query-sf').remove();
+                tableBody.prepend('<tr class="search-query-sf"><td colspan="6"><strong>Searching for: "'
+                    + $(that).val()
+                    + '"</strong></td></tr>');
+            }
+            else
+            {
+                $('.search-query-sf').remove();
+            }
+
+            if( rowText.indexOf( inputText ) == -1 )
+            {
+                //hide rows
+                tableRowsClass.eq(i).hide();
+                
+            }
+            else
+            {
+                $('.search-sf').remove();
+                tableRowsClass.eq(i).show();
+            }
+        });
+        //all tr elements are hidden
+        if(tableRowsClass.children(':visible').length == 0)
+        {
+            tableBody.append('<tr class="search-sf"><td class="text-muted" colspan="6">No such IRR entry found for this MONTH.</td></tr>');
+        }
+    });
+});
+  </script>
   
 {% endblock %}
