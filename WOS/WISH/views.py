@@ -987,12 +987,3 @@ def wrs_form(request, pk):
         remain = 3 - len(pros)
         return render(request, 'WISH/wrs_form.html', {'wrss': wrss, \
             'pros': pros, 'remain': range(remain), 'loop': range(loop)})
-
-def search(request):
-    if 'q' in request.GET and request.GET['q']:
-        q = request.GET['q']
-        irr_search = IRR.objects.filter(irr_no__icontains=q)
-        return render(request, 'irr_reports.html',
-            {'irr_list': irr_search})
-    else:
-        return HttpResponse('Please submit a search term.')

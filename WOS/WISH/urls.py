@@ -173,9 +173,6 @@ urlpatterns = [
     url(r'^employee_res/(?P<pk>[0-9]+)/$', login_required(views.employee_res),\
         name='employee_res'),
 
-    #URL patterns for search
-    url(r'^search/$', views.search),
-
     #URL patterns for Viewing Libraries (end)
 
 ]
