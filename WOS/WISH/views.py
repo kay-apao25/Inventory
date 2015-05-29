@@ -384,11 +384,9 @@ def irr_entry(request):
             try:
                 irr_entry.save()
             except IntegrityError as e:
-                form1 = forms.IRRentryForm1()
-                form2 = forms.IRRentryForm2(name=name)
                 return render(request, 'WISH/irr_entry.html', {"error": "Record already exists.", 'form1': form1, 'form2': form2})
 
-
+            del prods[:]
             return redirect('new_irr_cont',\
              pk=irr_entry.pk, inv=int(irr_entry.inv_station_no_id), sup=irr_entry.supplier_id)
     else:
@@ -404,23 +402,98 @@ def irr_entry(request):
             form2 = forms.IRRentryForm2(name=str(name))
             return render(request, 'WISH/irr_entry.html',\
                 {'form1': form1, 'form2': form2})
-
+prods = []
+@csrf_exempt
 def addproduct_to_irr(request, pk, inv, sup):
     """function"""
-    if request.method == "POST":
+    if 'q' in request.GET and request.GET['q']:
+        q = request.GET['q']
+        prodlist = Product.objects.filter(inv_station_no=inv).filter(\
+            purchased_from=sup).filter(quantity__gt=0).filter(slc_number__contains=q)
+        pform = forms.ProductCheckForm(inv=inv, sup=sup, q=q, plist=prods)
+        #pform = forms.ProductCheckForm(inv=inv, sup=sup)
+        iform = forms.IRRentrycontForm()
+    if 'add' in request.GET:
+        q = request.GET.getlist('product')
+        for q in q:
+            prods.append(Product.objects.get(id=q))
+        iform = forms.IRRentrycontForm()
+        return render(request, 'WISH/product_to_irr.html', \
+                {'iform': iform, 'remove_add': \
+                0, 'pk': pk, 'prods': prods, 'inv': inv, 'sup': sup})
+    elif request.method == "POST":
+        iform = forms.IRRentrycontForm(request.POST)
         #Forms containing the entries entered by the user
-        if 'add' in request.POST:
-            prodlist = request.POST.getlist('product')
-            pform = forms.ProductCheckForm(request.POST, inv=inv, sup=sup)
-            if pform.is_valid():
-                return redirect('new_irr_cont1', pk=pk, prodlist=prodlist)
+        if iform.is_valid():
+            prodlist = request.POST.get('handson')
+            prod_to_irr = json.loads(prodlist)
+        #To check if quantity accepted entered is
+            #less than the present stocked items.
+            for p in prod_to_irr:
+                if Product.objects.get(slc_number=p['slc']).quantity\
+                < int(p['qty_a']):
+                    return render(request, 'WISH/product_to_irr.html', \
+                    {'iform': iform, 'error': 'Accepted quantity is greater than ' + \
+                    'the number of stocked items.'})
+                else:
+                
+                    p = Product.objects.get(id=int(form.data['product']))
+
+                    irr = iform.save(commit=False)
+
+                    #Generation of IRR number
+                    if len(IRR.objects.all()) != 0:
+                        no = int((IRR.objects.latest\
+                            ('wrs_number')).irr_no) + 1
+                        irr.irr_no = str(no)
+                        if (6-len(irr.irr_no)) > 0:
+                            for i in range(6-len(irr.irr_no)):
+                                irr.irr_no = '0' + irr.irr_no
+                    else:
+                        irr.irr_no = '000000'
+
+                    irr.irr_headkey_id = pk
+                    irr.cost_center_no = Employee.objects.get(name=str(\
+                        request.user.get_full_name())).cost_center_no
+
+                    #Generation of WRS number
+                    if len(IRR.objects.all()) != 0:
+                        no = int((IRR.objects.latest\
+                            ('wrs_number')).wrs_number) + 1
+                        irr.wrs_number = str(no)
+                    else:
+                        irr.wrs_number = str(irr.irr_headkey.\
+                            inv_station_no.id) + '000000'
+
+                    irr.product = json.dumps(prod_to_irr)
+
+                    #To check if all entries for the IRR form is filled.
+                    #if 'save' in request.POST:
+                    msg = 'IRR record (IRR No. - ' + \
+                        irr.irr_no + ') was successfully added.'
+                    del prod_to_irr[:]
+                    irr.save()
+                    return render(request, 'WISH/product_to_irr.html', \
+                    {'msg': 'IRR record (IRR No. - ' + \
+                        irr.irr_no + ') was successfully added.'})
+        else:
+            iform = forms.IRRentrycontForm(request.POST)
+        
     else:
-        pform = forms.ProductCheckForm(inv=inv, sup=sup)
+        prodlist = Product.objects.filter(inv_station_no=inv).filter(purchased_from=sup).filter(quantity__gt=0)
+        #pform = forms.ProductCheckForm(inv=inv, sup=sup)
         iform = forms.IRRentrycontForm()
 
-    return render(request, 'WISH/product_to_irr.html', \
-        {'pform': pform, 'iform': iform, 'remove_add': \
-        0, 'product': prod_to_irr})
+    try:
+        return render(request, 'WISH/product_to_irr.html', \
+                        {'iform': iform, 'remove_add': \
+                        0, 'pk': pk, 'prodlist': prodlist, 'prods': prods, 'pform': pform, 'inv': inv, 'sup': sup})
+            
+    except:
+        return render(request, 'WISH/product_to_irr.html', \
+                        {'iform': iform, 'remove_add': \
+                        0, 'pk': pk, 'inv': inv, 'sup': sup})
+        
 
 def product_to_irr(request, pk, prodlist):
     """function"""
@@ -1008,14 +1081,18 @@ def wrs_form(request, pk):
 
 def handson(request):
     prods = Product.objects.all()
-    return render(request, 'WISH/handsontable.html', {'prods': prods})
+    iform = forms.IRRentrycontForm()
+    return render(request, 'WISH/handsontable.html', {'prods': prods, 'iform': iform})
 
 @csrf_exempt
-def create_post(request):
-    if request.method == 'POST':
-        post_text = request.POST.get('handson')
-        prod_to_irr = json.loads(post_text)
-        return HttpResponse(json.dumps(post_text), content_type="application/json")
+def create_post(request, pk):
+    if request.method == 'POST' and request.is_ajax:
+        prodlist = request.POST.get('handson')
+        prod_to_irr = json.loads(prodlist)
+        post = Post(text=post_text, author=request.user)
+        post.save()
+
+        return redirect('new_irr_cont1', pk=pk, prodlist=json.dumps)
     else:
         #prods = Product.objects.all()
         #return render(request, 'WISH/handsontable.html', {'prods': prods})

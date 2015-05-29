@@ -1,5 +1,11 @@
-{% extends 'WISH/index.html' %}
+{% extends 'WISH/index.html'%}
 {% load bootstrap %}
+{% load staticfiles%}
+
+<script src="{% static 'js/jquery.js' %}"></script>
+<script src="{% static 'js/jquery.min.js' %}"></script>
+
+<br><br>
 
 {% block content %}
 
@@ -11,8 +17,14 @@
     list-style-type: none;
   }
 </style>
-   <form method="POST" class="irr_entry">{% csrf_token %}
-    {% if exit and msg%}
+   {% if prodlist|length != 0 %}
+     <script type="text/javascript">
+            $( document ).ready( function() {
+                $('#product').modal({show:true});
+            });
+        </script>
+   {% endif %}
+   {% if exit and msg%}
       <div class="alert alert-success" style="width:400px">
         {{ msg }}
       </div>
@@ -37,10 +49,8 @@
           {{ error }}
         </div>
       {% endif %}
-        <table width="90%">
-          <tr> 
-            <td width="30%">
-              <h4>Added item/s:</h4>
+      {% include 'WISH/handsontable.html'%}
+              <!--<h4>Added item/s:</h4>
               {% if product|length != 0%}
                 {% for prod in product %}
                   <div>
@@ -53,31 +63,9 @@
                     </span>
                   </div>
                 {% endfor %}
-              {% endif %}
-            </td>
-            
-            <td style="padding:25px">
-              {% for field in form %}
-                &nbsp;&nbsp;{{field | bootstrap_horizontal:'col-lg-4'}}&nbsp;&nbsp;&nbsp;
-              {%endfor%}
-              {% if remove_add == 1%}
-                <div align="center"><button type="submit" class="save btn btn-default">Add Another Item</button></div>
-              {% elif remove_add == 2%}
-              {% else %}
-                <div align="center"><a class="save btn btn-default" data-toggle="modal" data-target="#product">Add Items</a></div>
-              {% endif %}
-            </td>
-            
-            <td style="padding:20px">
-              {% for field in iform %}
-                 &nbsp;&nbsp;{{field | bootstrap_horizontal:'col-lg-4'}}&nbsp;&nbsp;&nbsp;
-              {%endfor%}
-            </td>
-          </tr>
-        </table>
-        <div align="center"><button name="save" type="submit" class="save btn btn-default">Save</a></button>
-    </form>
+              {% endif %}-->
     {% endif %}
+
 
       <!--MODAL-->
         <div class="modal fade" id="product" tabindex="-1" role="dialog" aria-labelledby="product" aria-hidden="true" style="margin-top: 100px; position: fixed; z-index:1000 opacity:0.5; height:auto">
@@ -88,23 +76,25 @@
                 <h4 class="modal-title" id="myModalLabel">Product List</h4>
               </div>
               <div class="modal-body" id="mycontent">
-                <form method="post">
-                {% for field in pform %}
-                {% csrf_token %}
-                <table>
-                  <tr>
-                      <td>{{ field | bootstrap }} </td><td> Quantity Accepted: </td><td> Quantity Rejected</td>
-                  </tr>
-                </table>
-                {% endfor %}
-                <div class="modal-footer" align="center">
-                  <input name="add" align="center" id="addbutton" type="submit" style="margin-right: 95px;" class="save btn btn-info" value="Add" />
-                </div>
+                <form action="" method="get">
+                    <div class="input-group">
+                      <!-- USE TWITTER TYPEAHEAD JSON WITH API TO SEARCH -->
+                      <input class="form-control" id="system-search" name="q" placeholder="Search for" >
+                    </div>
+                    {% if prodlist|length != 0 %} 
+                 
+                  {% for field in pform %}
+                    &nbsp;&nbsp;{{field | bootstrap}}&nbsp;&nbsp;&nbsp;
+                  {%endfor%}
+                  <div align="center"><button name="add" value="{{prodlist}}" class="save btn btn-default">Ok</button></div>
+                 
+                 {% endif %}
                 </form>
-
+                
               </div>
             </div>
           </div>
         </div>
       <!--END OF MODAL-->
+
 {% endblock %}

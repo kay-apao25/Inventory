@@ -1,28 +1,39 @@
-
 {% block content %}
 {% load staticfiles %}
+{% load bootstrap %}
 
-<script src="{% static 'js/jquery.js' %}"></script>
-<script src="{% static 'js/jquery.min.js' %}"></script>
 <link href="{% static 'css/handsontable.full.css' %}" rel="stylesheet">
 <script src="{% static 'js/handsontable.full.js' %}"></script>
 <script src="{% static 'js/main.js' %}"></script>
 <link href="{% static 'css/handsontable.full.min.css' %}" rel="stylesheet">
 <script src="{% static 'js/handsontable.full.min.js' %}"></script>
-
-<form action="/create_post/" method="POST" id="post-form">
-{% csrf_token %}
-    <div id="handson">
-    </div>
-    <div align="center"><input value="Post" type="submit" class="save btn btn-default"/>Save</div>
-</form>
+<br><br>
+  <form method="POST" id="post-form">{% csrf_token %}
+    <table style="margin-left:90px">
+      <tr>
+        <td width="30%">
+          <div id="handson">
+          </div>
+          <br><br>
+          <div align="center"><a class="save btn btn-default" data-toggle="modal" data-target="#product">Add Items</a></div>
+        </td>
+        <td style="padding:20px">
+          {% for field in iform %}
+             &nbsp;&nbsp;{{field | bootstrap_horizontal:'col-lg-4'}}&nbsp;&nbsp;&nbsp;
+          {%endfor%}
+        </td>
+      </tr>
+    </table>
+    <div align="center"><button name="save" type="submit" class="save btn btn-default">Save</button></div>
+  </form>
+    <br><br>
 
 <script type="text/javascript">
 
     var
       nestedObjects = [
         {% for prod in prods %}
-          {slc: '{{prod.nsn}}', name: '{{prod.generic_name}}', select: false},
+          {id: '{{prod.id}}'},//, select: false},
         {% endfor %}
       ],
       container4 = document.getElementById('handson'),
@@ -31,20 +42,18 @@
       hot4 = new Handsontable(container4, {
       data: nestedObjects,
       colHeaders: [
-        'SLC NUMBER',
-        'PRODUCT NAME',
+        'PRODUCT ID',
         'QUANTITY ACCEPTED',
         'QUANTITY REJECTED',
-        'QUANTITY BALANCE',
-        'SELECT',
+        'QUANTITY BALANCE'//,
+        //'SELECT',
       ],
       columns: [
-        {data: 'slc'},
-        {data: 'name'},
+        {data: 'id'},
         {data: 'qty_a'},
         {data: 'qty_r'},
-        {data: 'qty_b'},
-        {data: 'select', type: 'checkbox'}
+        {data: 'qty_b'}//,
+       // {data: 'select', type: 'checkbox'}
       ],
       minSpareRows: 1,
     });
@@ -58,19 +67,18 @@ $('#post-form').on('submit', function(event){
 function create_post(){
   console.log("Create post is working!");
   $.ajax({
-    url: "{% url 'create_post' %}",
+    url: "{% url 'create_post' pk=pk%}",
     type: "POST",
     data: {
       handson : JSON.stringify(hot4.getData())
     },
-    success: function (json){
+    /*success: function (json){
       console.log(json);
       console.log("success");
     },
     error: function (xhr, errmsg, err){
       console.log("error");
-      console.log(hot4.getData());
-    }
+    }*/
   });
 
 };
