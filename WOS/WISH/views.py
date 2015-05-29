@@ -358,7 +358,7 @@ def miv_entry(request, pk):
 
             #Deducting the number of quantities to be pulled out by the user
             for prod in miv_entry.irr_no.product:
-                p = Product.objects.get(id=(prod['Product']))
+                p = Product.objects.get(id=(prod['product']))
                 p.quantity = int(p.quantity) - \
                 int(prod['quantity_accepted'])
                 p.amount = int(p.unit_cost) * int(p.quantity)
@@ -737,8 +737,8 @@ def irr_form(request, pk):
     products = irs.product
     total = 0
     for product in products:
-        pro = Product.objects.get(id=product['Product'])
-        amount = float(product['quantity_accepted']) * int(pro.unit_cost)
+        pro = Product.objects.get(id=product['product'])
+        amount = float(product['qty_a']) * int(pro.unit_cost)
         product['amount'] = amount
         product['pros'] = pro
         total = total + amount
@@ -762,8 +762,8 @@ def miv_form(request, pk):
     mivs = get_object_or_404(MIV, miv_no=pk)
     products = mivs.irr_no.product
     for product in products:
-        pro = Product.objects.get(id=product['Product'])
-        amount = float(product['quantity_accepted']) * int(pro.unit_cost)
+        pro = Product.objects.get(id=product['product'])
+        amount = float(product['qty_a']) * int(pro.unit_cost)
         product['amount'] = amount
         product['pros'] = pro
     if len(products) > 6:
@@ -784,7 +784,7 @@ def wrs_form(request, pk):
     wrss = get_object_or_404(IRR, wrs_number=pk)
     pros = wrss.product
     for pro in pros:
-        pro['product'] = Product.objects.get(id=pro['Product'])
+        pro['product'] = Product.objects.get(id=pro['product'])
     if len(pros) > 3:
         loop = len(pros) / 3
         if len(pros) % 3 != 0:
