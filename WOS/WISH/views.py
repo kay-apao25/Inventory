@@ -921,58 +921,53 @@ def product_to_irr(request, pk, inv, sup):
                 {'iform': iform, 'pk': pk, 'prods': prods, 'inv': inv, 'sup': sup, 'irr': 1})
     elif request.method == "POST":
         iform = forms.IRRentrycontForm(request.POST)
-        #Forms containing the entries entered by the user
         if iform.is_valid():
-        #To check if quantity accepted entered is
-            #less than the present stocked items.
             for p in prod_to_irr:
-                try:
-                    if p['qty_a'] and p['qty_r'] and p['qty_b']:  
-                        if Product.objects.get(id=p['product']).quantity < int(p['qty_a']):
-                            return render(request, 'WISH/product_to_irr.html', \
-                            {'iform': iform, 'error': 'Accepted quantity is greater than ' + \
-                            'the number of stocked items.', 'pk': pk, 'inv':inv, 'sup':sup, 'irr': 1})
-                        else:
-                            p = Product.objects.get(id=p['product'])
-                            p.is_irr = True
-                            p.save()
-                except:
+                if 'qty_a' and 'qty_b' and 'qty_r' in p:  
+                    if Product.objects.get(id=p['product']).quantity < int(p['qty_a']):
+                        return render(request, 'WISH/product_to_irr.html', \
+                        {'iform': iform, 'error': 'Accepted quantity is greater than ' + \
+                        'the number of stocked items.', 'pk': pk, 'inv':inv, 'sup':sup, 'irr': 1})   
+                else:
                     return render(request, 'WISH/product_to_irr.html', \
                         {'iform': iform, 'error': 'No entry for quantity accepted, ' +
                         'rejected and balance', 'pk': pk, 'inv':inv, 'sup':sup, 'prods': prods, 'irr': 1})
+                p = Product.objects.get(id=p['product'])
+                p.is_irr = True
+                p.save()
     
-                irr = iform.save(commit=False)
+            irr = iform.save(commit=False)
 
-                #Generation of IRR number
-                if len(IRR.objects.all()) != 0:
-                    no = int((IRR.objects.latest\
-                        ('wrs_number')).irr_no) + 1
-                    irr.irr_no = str(no)
-                    if (6-len(irr.irr_no)) > 0:
-                        for i in range(6-len(irr.irr_no)):
-                            irr.irr_no = '0' + irr.irr_no
-                else:
-                    irr.irr_no = '000000'
+            #Generation of IRR number
+            if len(IRR.objects.all()) != 0:
+                no = int((IRR.objects.latest\
+                    ('wrs_number')).irr_no) + 1
+                irr.irr_no = str(no)
+                if (6-len(irr.irr_no)) > 0:
+                    for i in range(6-len(irr.irr_no)):
+                        irr.irr_no = '0' + irr.irr_no
+            else:
+                irr.irr_no = '000000'
 
-                irr.irr_headkey_id = pk
-                irr.cost_center_no = Employee.objects.get(name=str(\
-                    request.user.get_full_name())).cost_center_no
+            irr.irr_headkey_id = pk
+            irr.cost_center_no = Employee.objects.get(name=str(\
+                request.user.get_full_name())).cost_center_no
 
-                #Generation of WRS number
-                if len(IRR.objects.all()) != 0:
-                    no = int((IRR.objects.latest\
-                        ('wrs_number')).wrs_number) + 1
-                    irr.wrs_number = str(no)
-                else:
-                    irr.wrs_number = str(irr.irr_headkey.\
-                        inv_station_no.id) + '000000'
+            #Generation of WRS number
+            if len(IRR.objects.all()) != 0:
+                no = int((IRR.objects.latest\
+                    ('wrs_number')).wrs_number) + 1
+                irr.wrs_number = str(no)
+            else:
+                irr.wrs_number = str(irr.irr_headkey.\
+                    inv_station_no.id) + '000000'
 
-                irr.product = json.dumps(prod_to_irr)
-                del prod_to_irr[:]
-                irr.save()
-                return render(request, 'WISH/product_to_irr.html', \
-                {'msg': 'IRR record (IRR No. - ' + \
-                    irr.irr_no + ') was successfully added.'})
+            irr.product = json.dumps(prod_to_irr)
+            del prod_to_irr[:]
+            irr.save()
+            return render(request, 'WISH/product_to_irr.html', \
+            {'msg': 'IRR record (IRR No. - ' + \
+                irr.irr_no + ') was successfully added.'})
         
     else:
         if len(prodlist) != 0:
@@ -980,7 +975,7 @@ def product_to_irr(request, pk, inv, sup):
         else:
             return render(request, 'WISH/product_to_irr.html', \
                 {'msg': 'IRR record (IRR No. - ' + \
-                irr.irr_no + ') was successfully added.', 'exit': \
+                IRR.objects.latest('wrs_number') + ') was successfully added.', 'exit': \
                 'No products to be made with IRR'})
 
     return render(request, 'WISH/product_to_irr.html', \
