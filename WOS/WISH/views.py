@@ -9,15 +9,18 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.models import User
+from django_ajax.decorators import ajax
 from django.db import IntegrityError
 from WISH import forms
 import time
+import ast
 import json
 
 prod_to_par = []
 prod_to_irr = []
 prod_to_garv = []
 prod_to_wrs = []
+prods = []
 
 def log_in(request):
     """function"""
@@ -402,216 +405,6 @@ def irr_entry(request):
             form2 = forms.IRRentryForm2(name=str(name))
             return render(request, 'WISH/irr_entry.html',\
                 {'form1': form1, 'form2': form2})
-prods = []
-@csrf_exempt
-def addproduct_to_irr(request, pk, inv, sup):
-    """function"""
-    if 'q' in request.GET and request.GET['q']:
-        q = request.GET['q']
-        prodlist = Product.objects.filter(inv_station_no=inv).filter(\
-            purchased_from=sup).filter(quantity__gt=0).filter(slc_number__contains=q)
-        pform = forms.ProductCheckForm(inv=inv, sup=sup, q=q, plist=prods)
-        #pform = forms.ProductCheckForm(inv=inv, sup=sup)
-        iform = forms.IRRentrycontForm()
-    if 'add' in request.GET:
-        q = request.GET.getlist('product')
-        for q in q:
-            prods.append(Product.objects.get(id=q))
-        iform = forms.IRRentrycontForm()
-        return render(request, 'WISH/product_to_irr.html', \
-                {'iform': iform, 'remove_add': \
-                0, 'pk': pk, 'prods': prods, 'inv': inv, 'sup': sup})
-    elif request.method == "POST":
-        iform = forms.IRRentrycontForm(request.POST)
-        #Forms containing the entries entered by the user
-        if iform.is_valid():
-            prodlist = request.POST.get('handson')
-            prod_to_irr = json.loads(prodlist)
-        #To check if quantity accepted entered is
-            #less than the present stocked items.
-            for p in prod_to_irr:
-                if Product.objects.get(slc_number=p['slc']).quantity\
-                < int(p['qty_a']):
-                    return render(request, 'WISH/product_to_irr.html', \
-                    {'iform': iform, 'error': 'Accepted quantity is greater than ' + \
-                    'the number of stocked items.'})
-                else:
-                
-                    p = Product.objects.get(id=int(form.data['product']))
-
-                    irr = iform.save(commit=False)
-
-                    #Generation of IRR number
-                    if len(IRR.objects.all()) != 0:
-                        no = int((IRR.objects.latest\
-                            ('wrs_number')).irr_no) + 1
-                        irr.irr_no = str(no)
-                        if (6-len(irr.irr_no)) > 0:
-                            for i in range(6-len(irr.irr_no)):
-                                irr.irr_no = '0' + irr.irr_no
-                    else:
-                        irr.irr_no = '000000'
-
-                    irr.irr_headkey_id = pk
-                    irr.cost_center_no = Employee.objects.get(name=str(\
-                        request.user.get_full_name())).cost_center_no
-
-                    #Generation of WRS number
-                    if len(IRR.objects.all()) != 0:
-                        no = int((IRR.objects.latest\
-                            ('wrs_number')).wrs_number) + 1
-                        irr.wrs_number = str(no)
-                    else:
-                        irr.wrs_number = str(irr.irr_headkey.\
-                            inv_station_no.id) + '000000'
-
-                    irr.product = json.dumps(prod_to_irr)
-
-                    #To check if all entries for the IRR form is filled.
-                    #if 'save' in request.POST:
-                    msg = 'IRR record (IRR No. - ' + \
-                        irr.irr_no + ') was successfully added.'
-                    del prod_to_irr[:]
-                    irr.save()
-                    return render(request, 'WISH/product_to_irr.html', \
-                    {'msg': 'IRR record (IRR No. - ' + \
-                        irr.irr_no + ') was successfully added.'})
-        else:
-            iform = forms.IRRentrycontForm(request.POST)
-        
-    else:
-        prodlist = Product.objects.filter(inv_station_no=inv).filter(purchased_from=sup).filter(quantity__gt=0)
-        #pform = forms.ProductCheckForm(inv=inv, sup=sup)
-        iform = forms.IRRentrycontForm()
-
-    try:
-        return render(request, 'WISH/product_to_irr.html', \
-                        {'iform': iform, 'remove_add': \
-                        0, 'pk': pk, 'prodlist': prodlist, 'prods': prods, 'pform': pform, 'inv': inv, 'sup': sup})
-            
-    except:
-        return render(request, 'WISH/product_to_irr.html', \
-                        {'iform': iform, 'remove_add': \
-                        0, 'pk': pk, 'inv': inv, 'sup': sup})
-        
-
-def product_to_irr(request, pk, prodlist):
-    """function"""
-    remove_add = 1
-    try:
-        prodlist = prodlist.replace('[', '')
-        prodlist = prodlist.replace(']', '')
-        prodlist = prodlist.replace('u', '')
-        prodlist = prodlist.replace(',', '')
-        prodlist = prodlist.replace("'", '')
-        prodlist = prodlist.split()
-    except:
-        pass
-    if request.method == "POST":
-        #Forms containing the entries entered by the user
-        form = forms.ProducttoIRRForm(request.POST, prodlist=prodlist)
-        iform = forms.IRRentrycontForm(request.POST)
-                
-        if 'delete' in request.POST:
-            k = int(request.POST['delete'])
-            prod_to_irr.remove(prod_to_irr[k])
-
-        #Non-empty forms are to be validated.
-        elif form.is_valid() and iform.is_valid():
-
-        #To check if quantity accepted entered is
-            #less than the present stocked items.
-            if Product.objects.get(id=int(form.data['product'])).quantity \
-            < int(form.data['quantity_accepted']):
-                return render(request, 'WISH/product_to_irr.html', \
-                {'form': form, 'iform': iform, 'remove_add': \
-                remove_add, 'error': 'Accepted quantity is greater than ' + \
-                'the number of stocked items.', 'product': prod_to_irr})
-
-            else:
-                #Storing of products for this specific IRR form.
-                prod_to_irr.append({'Product': form.data['product'], \
-                    'quantity_accepted': int(form.data['quantity_accepted']), \
-                    'quantity_rejected':int(form.data['quantity_rejected']), \
-                    'quantity_balance': int(form.data['quantity_balance']), \
-                    'is_par':False, 'quantity_par': int(form.data['quantity_accepted'])})
-
-                p = Product.objects.get(id=int(form.data['product']))
-
-                irr = iform.save(commit=False)
-
-                #Generation of IRR number
-                if len(IRR.objects.all()) != 0:
-                    no = int((IRR.objects.latest\
-                        ('wrs_number')).irr_no) + 1
-                    irr.irr_no = str(no)
-                    if (6-len(irr.irr_no)) > 0:
-                        for i in range(6-len(irr.irr_no)):
-                            irr.irr_no = '0' + irr.irr_no
-                else:
-                    irr.irr_no = '000000'
-
-                irr.irr_headkey_id = pk
-                irr.cost_center_no = Employee.objects.get(name=str(\
-                    request.user.get_full_name())).cost_center_no
-
-                #Generation of WRS number
-                if len(IRR.objects.all()) != 0:
-                    no = int((IRR.objects.latest\
-                        ('wrs_number')).wrs_number) + 1
-                    irr.wrs_number = str(no)
-                else:
-                    irr.wrs_number = str(irr.irr_headkey.\
-                        inv_station_no.id) + '000000'
-
-                for prod in prod_to_irr:
-                    if 'pros' in prod:
-                        del prod['pros']
-
-                irr.product = json.dumps(prod_to_irr)
-
-                #To check if all entries for the IRR form is filled.
-                if 'save' in request.POST:
-                    msg = 'IRR record (IRR No. - ' + \
-                        irr.irr_no + ') was successfully added.'
-                    del prod_to_irr[:]
-                    irr.save()
-                    p.save()
-                    return render(request, 'WISH/product_to_irr.html', \
-                    {'msg': 'IRR record (IRR No. - ' + \
-                        irr.irr_no + ') was successfully added.'})
-                else:
-                    msg = 'Item (' + str(Product.objects.\
-                        get(id=int(form.data['product'])).\
-                        item_name) + ') was successfully added.'
-                    p.save()
-                    for p in prod_to_irr:
-                        prodlist.remove(str(p['Product']))
-                    for prod in prod_to_irr:
-                        pro = Product.objects.get(id=prod['Product'])
-                        prod['pros'] = pro
-            form = forms.ProducttoIRRForm(prodlist=prodlist)
-    else:
-        form = forms.ProducttoIRRForm(prodlist=prodlist)
-        iform = forms.IRRentrycontForm()
-
-    if len(prodlist) == 1:
-        remove_add = 2
-    
-    #Rendering of forms and/or messages and/or errors
-    try:
-        return render(request, 'WISH/product_to_irr.html', \
-            {'exit': exit, 'msg': msg})
-    except:
-        try:
-            return render(request, 'WISH/product_to_irr.html', \
-                {'form': form, 'iform': iform, 'msg': msg, \
-                'remove_add': remove_add, 'product': prod_to_irr})
-        except:
-            return render(request, 'WISH/product_to_irr.html', \
-                {'form': form, 'iform': iform, 'remove_add': \
-                remove_add, 'product': prod_to_irr})
-
 def miv_entry(request, pk):
     """function"""
     if request.method == "POST":
@@ -1097,3 +890,99 @@ def create_post(request, pk):
         #prods = Product.objects.all()
         #return render(request, 'WISH/handsontable.html', {'prods': prods})
         return HttpResponse(json.dumps({"error": "error"}), content_type="application/json")
+
+@ajax
+def list_view(request):
+    c = request.POST.get('data')
+    del prod_to_irr[:]
+    for c in json.loads(c):
+        prod_to_irr.append(c)
+    return c
+
+def product_to_irr(request, pk, inv, sup):
+    """function"""
+    prodlist = Product.objects.filter(inv_station_no=inv).filter(purchased_from=sup).filter(quantity__gt=0)
+    if 'q' in request.GET and request.GET['q']:
+        q = request.GET['q']
+        pform = forms.ProductCheckForm(inv=inv, sup=sup, q=q, plist=prods)
+        #pform = forms.ProductCheckForm(inv=inv, sup=sup)
+        iform = forms.IRRentrycontForm()
+        return render(request, 'WISH/product_to_irr.html', \
+        {'iform': iform, 'remove_add': 0, 'pk': pk,'prods': prods,\
+        'pform': pform, 'inv': inv, 'sup': sup, 'prodlist': prodlist})
+    if 'add' in request.GET:
+        q = request.GET.getlist('product')
+        for q in q:
+            prods.append(Product.objects.get(id=q))
+        iform = forms.IRRentrycontForm()
+        return render(request, 'WISH/product_to_irr.html', \
+                {'iform': iform, 'pk': pk, 'prods': prods, 'inv': inv, 'sup': sup})
+    elif request.method == "POST":
+        iform = forms.IRRentrycontForm(request.POST)
+        #Forms containing the entries entered by the user
+        if iform.is_valid():
+
+        #To check if quantity accepted entered is
+            #less than the present stocked items.
+            for p in prod_to_irr:
+                try:
+                    if p['qty_a'] and p['qty_r'] and p['qty_b']:  
+                        if Product.objects.get(id=p['product']).quantity < int(p['qty_a']):
+                            return render(request, 'WISH/product_to_irr.html', \
+                            {'iform': iform, 'error': 'Accepted quantity is greater than ' + \
+                            'the number of stocked items.', 'pk': pk, 'inv':inv, 'sup':sup})
+                        else:
+                            p = Product.objects.get(id=p['product'])
+                            p.is_irr = True
+                            p.save()
+                except:
+                    return render(request, 'WISH/product_to_irr.html', \
+                        {'iform': iform, 'error': 'No entry for quantity accepted, ' +
+                        'rejected and balance', 'pk': pk, 'inv':inv, 'sup':sup, 'prods': prods})
+    
+                irr = iform.save(commit=False)
+
+                #Generation of IRR number
+                if len(IRR.objects.all()) != 0:
+                    no = int((IRR.objects.latest\
+                        ('wrs_number')).irr_no) + 1
+                    irr.irr_no = str(no)
+                    if (6-len(irr.irr_no)) > 0:
+                        for i in range(6-len(irr.irr_no)):
+                            irr.irr_no = '0' + irr.irr_no
+                else:
+                    irr.irr_no = '000000'
+
+                irr.irr_headkey_id = pk
+                irr.cost_center_no = Employee.objects.get(name=str(\
+                    request.user.get_full_name())).cost_center_no
+
+                #Generation of WRS number
+                if len(IRR.objects.all()) != 0:
+                    no = int((IRR.objects.latest\
+                        ('wrs_number')).wrs_number) + 1
+                    irr.wrs_number = str(no)
+                else:
+                    irr.wrs_number = str(irr.irr_headkey.\
+                        inv_station_no.id) + '000000'
+
+                irr.product = json.dumps(prod_to_irr)
+                del prod_to_irr[:]
+                irr.save()
+                return render(request, 'WISH/product_to_irr.html', \
+                {'msg': 'IRR record (IRR No. - ' + \
+                    irr.irr_no + ') was successfully added.'})
+        
+    else:
+        if len(prodlist) != 0:
+            iform = forms.IRRentrycontForm()
+        else:
+            return render(request, 'WISH/product_to_irr.html', \
+                {'msg': 'IRR record (IRR No. - ' + \
+                irr.irr_no + ') was successfully added.', 'exit': \
+                'No products to be made with IRR'})
+
+    return render(request, 'WISH/product_to_irr.html', \
+        {'iform': iform, 'remove_add': 0, 'pk': pk,'prods': prods,\
+        'inv': inv, 'sup': sup})
+        

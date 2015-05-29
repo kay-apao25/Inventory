@@ -34,9 +34,7 @@ urlpatterns = [
     url(r'^product_to_garv/(?P<pk>[0-9]+)/$', views.\
         product_to_garv, name='new_garv'),
     url(r'^product_to_irr/(?P<pk>[0-9]+)/(?P<inv>[0-9]+)/(?P<sup>[0-9]+)/$', login_required(\
-        views.addproduct_to_irr), name='new_irr_cont'),
-    url(r'^product_to_irr/(?P<pk>[0-9]+)/(?P<prodlist>.*)/$', login_required(\
-        views.product_to_irr), name='new_irr_cont1'),
+        views.product_to_irr), name='new_irr_cont'),
     #URL patterns for File and Product Fill-Up Forms (end)
 
     #URL patterns for File Forms (start)
@@ -180,5 +178,7 @@ urlpatterns = [
         name='handson'),
     url(r'^create_post/(?P<pk>[0-9]+)/$', login_required(views.create_post),\
         name='create_post'),
+    url(r'^list_view/$', login_required(views.list_view),\
+        name='my_view'),
 
 ]

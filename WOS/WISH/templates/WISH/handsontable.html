@@ -7,13 +7,20 @@
 <script src="{% static 'js/main.js' %}"></script>
 <link href="{% static 'css/handsontable.full.min.css' %}" rel="stylesheet">
 <script src="{% static 'js/handsontable.full.min.js' %}"></script>
+<!--AJAX request and response-->
+<script type="text/javascript" src="{% static 'js/jquery.ajax.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/jquery.ajax-plugin.min.js' %}"></script>
 <br><br>
-  <form method="POST" id="post-form">{% csrf_token %}
+  <form method="POST" id="post-form" action="{% url 'new_irr_cont' inv=inv sup=sup pk=pk%}">{% csrf_token %}
     <table style="margin-left:90px">
       <tr>
         <td width="30%">
+          {% if prods|length != 0%}
           <div id="handson">
           </div>
+          {% else %}
+          No products added yet.
+          {% endif %}
           <br><br>
           <div align="center"><a class="save btn btn-default" data-toggle="modal" data-target="#product">Add Items</a></div>
         </td>
@@ -28,12 +35,16 @@
   </form>
     <br><br>
 
+
+
+
+
 <script type="text/javascript">
 
     var
       nestedObjects = [
         {% for prod in prods %}
-          {id: '{{prod.id}}'},//, select: false},
+          {product: '{{prod.id}}'},//, select: false},
         {% endfor %}
       ],
       container4 = document.getElementById('handson'),
@@ -42,29 +53,28 @@
       hot4 = new Handsontable(container4, {
       data: nestedObjects,
       colHeaders: [
-        'PRODUCT ID',
-        'QUANTITY ACCEPTED',
-        'QUANTITY REJECTED',
-        'QUANTITY BALANCE'//,
+        'PRODUCT ID *',
+        'QUANTITY ACCEPTED *',
+        'QUANTITY REJECTED *',
+        'QUANTITY BALANCE *'//,
         //'SELECT',
       ],
       columns: [
-        {data: 'id'},
+        {data: 'product'},
         {data: 'qty_a'},
         {data: 'qty_r'},
         {data: 'qty_b'}//,
        // {data: 'select', type: 'checkbox'}
       ],
-      minSpareRows: 1,
     });
 
-$('#post-form').on('submit', function(event){
+/*$('#post-form').on('submit', function(event){
   event.preventDefault();
   console.log("form submitted!");
   create_post();
-});
+});*/
 
-function create_post(){
+/*function create_post(){
   console.log("Create post is working!");
   $.ajax({
     url: "{% url 'create_post' pk=pk%}",
@@ -79,10 +89,21 @@ function create_post(){
     error: function (xhr, errmsg, err){
       console.log("error");
     }*/
-  });
+  //});
 
-};
+//};
 
 </script>
+
+<script type="text/javascript">
+$('#post-form').on('submit', function(event){
+    ajaxPost("{% url 'my_view' %}", {"data": JSON.stringify(hot4.getData())},
+      function(content){
+            alert(content);
+        });
+});
+</script>
+
+<!--<a href="/handson/" class="btn btn-primary" data-ajax="true" data-success="processResponse">Show Alert</a>-->
 
 {% endblock %}

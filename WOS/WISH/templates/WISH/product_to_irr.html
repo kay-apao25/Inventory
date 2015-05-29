@@ -28,42 +28,23 @@
       <div class="alert alert-success" style="width:400px">
         {{ msg }}
       </div>
-      <div class="alert alert-warning" style="width:400px">
-        {{ exit }}
+      <div class="alert alert-danger" style="width:400px">
+          {{ exit }}
       </div>
       <div align="center"><a href= "{% url 'index' %}"><i class="glyphicon glyphicon-share-alt"></i> Exit</a></div>
-    {% elif 'Item' not in msg %}
+   {% elif msg %}
       <div class="alert alert-success" style="width:400px">
         {{ msg }}
       </div>
       <div align="center"><a href= "{% url 'index' %}"><i class="glyphicon glyphicon-share-alt"></i> Exit</a></div>
-    {% else %}
-      <strong><p style="font-size:15px">Fields with asterisk are required.</p></strong>
-      {%if msg%}
-        <div class="alert alert-success" style="width:400px">
-          {{ msg }}
-        </div>
-      {% endif %}
+   {% else %}
       {%if error%}
         <div class="alert alert-danger" style="width:400px">
           {{ error }}
         </div>
       {% endif %}
+      <strong><p style="font-size:15px">Fields with asterisk are required.</p></strong>
       {% include 'WISH/handsontable.html'%}
-              <!--<h4>Added item/s:</h4>
-              {% if product|length != 0%}
-                {% for prod in product %}
-                  <div>
-                    <span align:"center" > 
-                      <button type="submit" name="delete" value="{{forloop.counter|add:'-1'}}" class="save btn btn-default">Delete</button>
-                        Product: {{prod.pros.item_name}} - {{prod.pros.description}},<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                        Quantity Accepted: {{prod.quantity_accepted}},<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                        Quantity Rejected: {{prod.quantity_rejected}},<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                        Quantity Balance: {{prod.quantity_balance}} <br>
-                    </span>
-                  </div>
-                {% endfor %}
-              {% endif %}-->
     {% endif %}
 
 
@@ -82,13 +63,11 @@
                       <input class="form-control" id="system-search" name="q" placeholder="Search for" >
                     </div>
                     {% if prodlist|length != 0 %} 
-                 
-                  {% for field in pform %}
-                    &nbsp;&nbsp;{{field | bootstrap}}&nbsp;&nbsp;&nbsp;
-                  {%endfor%}
-                  <div align="center"><button name="add" value="{{prodlist}}" class="save btn btn-default">Ok</button></div>
-                 
-                 {% endif %}
+                      {% for field in pform %}
+                        &nbsp;&nbsp;{{field | bootstrap}}&nbsp;&nbsp;&nbsp;
+                      {%endfor%}
+                      <div align="center"><button name="add" class="save btn btn-default">Ok</button></div>
+                    {% endif %}
                 </form>
                 
               </div>

@@ -107,6 +107,7 @@ class Product(models.Model):
     history = HistoricalRecords()
     inv_station_no = models.ForeignKey(InventoryStat, related_name="inv_iFK")
     balance = models.PositiveIntegerField(default=0, null=True, blank=True)
+    is_irr = models.BooleanField(default=False)
     
     def __unicode__(self):
         return self.item_name + " , " + self.description
