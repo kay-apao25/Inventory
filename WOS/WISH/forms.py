@@ -150,23 +150,6 @@ class IRRentrycontForm(forms.ModelForm):
         model = IRR
         fields = ('date_recv', 'wo_no', 'remarks',)
 
-class ProducttoIRRForm(forms.Form):
-    """Product_to_IRRForm"""
-
-    def __init__(self, *args, **kwargs):
-        prodlist = kwargs.pop('prodlist')
-        super(ProducttoIRRForm, self).__init__(*args, **kwargs)
-
-        self.fields['product'] = forms.ModelChoiceField(\
-            queryset=Product.objects.filter(id__in=[int(p) for p in prodlist]),\
-            label='Product *', required=True)
-        self.fields['quantity_accepted'] = forms.IntegerField(min_value=0,\
-         label='Quantity accepted *', required=True)
-        self.fields['quantity_rejected'] = forms.IntegerField(min_value=0,\
-         label='Quantity rejected *', required=True)
-        self.fields['quantity_balance'] = forms.IntegerField(min_value=0,\
-         label='Quantity balance *', required=True)
-
 class ProductCheckForm(forms.Form):
     def __init__(self, *args, **kwargs):
         inv = kwargs.pop('inv')
@@ -176,8 +159,9 @@ class ProductCheckForm(forms.Form):
         super(ProductCheckForm, self).__init__(*args, **kwargs)
 
         self.fields['product'] = forms.ModelMultipleChoiceField(widget=forms.CheckboxSelectMultiple,\
-            required=True, queryset=Product.objects.filter(inv_station_no=inv).filter(\
+            required=True, label='', queryset=Product.objects.filter(inv_station_no=inv).filter(\
             purchased_from=sup).filter(quantity__gt=0).filter(slc_number__contains=q).exclude(id__in=[p.id for p in plist]))
+        self.fields['product'].widget.attrs = {'id': 'myCustomId'}
 
 class MIVentryForm(forms.ModelForm):
     """MIV_entryForm"""
@@ -288,8 +272,6 @@ class Statlib(forms.ModelForm):
     """Stat_lib"""
 
     inv_station_no = forms.CharField(label='Inventory station no*', required=True)
-    cost_center_no = forms.ModelChoiceField(\
-        queryset=CostCenter.objects.filter(is_delete=False), label='Cost center no*', required=True)
     station_description = forms.CharField(label='Station description*', required=True)
 
     class Meta:
@@ -299,8 +281,6 @@ class Statlib(forms.ModelForm):
 class Statlib1(forms.ModelForm):
     """Stat_lib"""
 
-    cost_center_no = forms.ModelChoiceField(\
-        queryset=CostCenter.objects.filter(is_delete=False), label='Cost center no*', required=True)
     station_description = forms.CharField(label='Station description*', required=True)
 
     class Meta:
