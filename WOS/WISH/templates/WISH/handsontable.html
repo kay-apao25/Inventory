@@ -34,11 +34,7 @@
     <div align="center"><button name="save" type="submit" class="save btn btn-default">Save</button></div>
   </form>
     <br><br>
-
-
-
-
-
+{% if irr %}
 <script type="text/javascript">
 
     var
@@ -56,54 +52,53 @@
         'PRODUCT ID *',
         'QUANTITY ACCEPTED *',
         'QUANTITY REJECTED *',
-        'QUANTITY BALANCE *'//,
-        //'SELECT',
+        'QUANTITY BALANCE *'
       ],
       columns: [
         {data: 'product'},
         {data: 'qty_a'},
         {data: 'qty_r'},
-        {data: 'qty_b'}//,
-       // {data: 'select', type: 'checkbox'}
+        {data: 'qty_b'}
       ],
     });
-
-/*$('#post-form').on('submit', function(event){
-  event.preventDefault();
-  console.log("form submitted!");
-  create_post();
-});*/
-
-/*function create_post(){
-  console.log("Create post is working!");
-  $.ajax({
-    url: "{% url 'create_post' pk=pk%}",
-    type: "POST",
-    data: {
-      handson : JSON.stringify(hot4.getData())
-    },
-    /*success: function (json){
-      console.log(json);
-      console.log("success");
-    },
-    error: function (xhr, errmsg, err){
-      console.log("error");
-    }*/
-  //});
-
-//};
-
-</script>
-
-<script type="text/javascript">
-$('#post-form').on('submit', function(event){
-    ajaxPost("{% url 'my_view' %}", {"data": JSON.stringify(hot4.getData())},
+    
+    $('#post-form').on('submit', function(event){
+    ajaxPost("{% url 'list_view' %}", {"data": JSON.stringify(hot4.getData())},
       function(content){
             alert(content);
         });
-});
+    });
 </script>
+<!-- FOR PAR RECORD -->
+{% else %}
+<script type="text/javascript">
+    var
+      nestedObjects = [
+        {% for prod in prods %}
+          {product: '{{prod.id}}'},//, select: false},
+        {% endfor %}
+      ],
+      container4 = document.getElementById('handson'),
+      hot4;
 
-<!--<a href="/handson/" class="btn btn-primary" data-ajax="true" data-success="processResponse">Show Alert</a>-->
-
+      hot4 = new Handsontable(container4, {
+      data: nestedObjects,
+      colHeaders: [
+        'PRODUCT ID *',
+        'QUANTITY *',
+      ],
+      columns: [
+        {data: 'product'},
+        {data: 'qty'}
+      ],
+    });
+    
+    $('#post-form').on('submit', function(event){
+    ajaxPost("{% url 'list_view' %}", {"data": JSON.stringify(hot4.getData())},
+      function(content){
+            alert(content);
+        });
+    });
+</script>
+{% endif %}
 {% endblock %}

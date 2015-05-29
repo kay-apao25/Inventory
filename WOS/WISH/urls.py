@@ -179,6 +179,6 @@ urlpatterns = [
     url(r'^create_post/(?P<pk>[0-9]+)/$', login_required(views.create_post),\
         name='create_post'),
     url(r'^list_view/$', login_required(views.list_view),\
-        name='my_view'),
+        name='list_view'),
 
 ]

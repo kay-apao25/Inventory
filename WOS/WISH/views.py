@@ -894,10 +894,12 @@ def create_post(request, pk):
 @ajax
 def list_view(request):
     c = request.POST.get('data')
-    del prod_to_irr[:]
-    for c in json.loads(c):
-        prod_to_irr.append(c)
-    return c
+    if 'qty_a' in json.loads(c)[0]:   
+        for c in json.loads(c):
+            prod_to_irr.append(c)
+    else:
+        for c in json.loads(c):
+            prod_to_par.append(c)
 
 def product_to_irr(request, pk, inv, sup):
     """function"""
@@ -909,19 +911,18 @@ def product_to_irr(request, pk, inv, sup):
         iform = forms.IRRentrycontForm()
         return render(request, 'WISH/product_to_irr.html', \
         {'iform': iform, 'remove_add': 0, 'pk': pk,'prods': prods,\
-        'pform': pform, 'inv': inv, 'sup': sup, 'prodlist': prodlist})
+        'pform': pform, 'inv': inv, 'sup': sup, 'prodlist': prodlist, 'irr': 1})
     if 'add' in request.GET:
         q = request.GET.getlist('product')
         for q in q:
             prods.append(Product.objects.get(id=q))
         iform = forms.IRRentrycontForm()
         return render(request, 'WISH/product_to_irr.html', \
-                {'iform': iform, 'pk': pk, 'prods': prods, 'inv': inv, 'sup': sup})
+                {'iform': iform, 'pk': pk, 'prods': prods, 'inv': inv, 'sup': sup, 'irr': 1})
     elif request.method == "POST":
         iform = forms.IRRentrycontForm(request.POST)
         #Forms containing the entries entered by the user
         if iform.is_valid():
-
         #To check if quantity accepted entered is
             #less than the present stocked items.
             for p in prod_to_irr:
@@ -930,7 +931,7 @@ def product_to_irr(request, pk, inv, sup):
                         if Product.objects.get(id=p['product']).quantity < int(p['qty_a']):
                             return render(request, 'WISH/product_to_irr.html', \
                             {'iform': iform, 'error': 'Accepted quantity is greater than ' + \
-                            'the number of stocked items.', 'pk': pk, 'inv':inv, 'sup':sup})
+                            'the number of stocked items.', 'pk': pk, 'inv':inv, 'sup':sup, 'irr': 1})
                         else:
                             p = Product.objects.get(id=p['product'])
                             p.is_irr = True
@@ -938,7 +939,7 @@ def product_to_irr(request, pk, inv, sup):
                 except:
                     return render(request, 'WISH/product_to_irr.html', \
                         {'iform': iform, 'error': 'No entry for quantity accepted, ' +
-                        'rejected and balance', 'pk': pk, 'inv':inv, 'sup':sup, 'prods': prods})
+                        'rejected and balance', 'pk': pk, 'inv':inv, 'sup':sup, 'prods': prods, 'irr': 1})
     
                 irr = iform.save(commit=False)
 
@@ -984,5 +985,5 @@ def product_to_irr(request, pk, inv, sup):
 
     return render(request, 'WISH/product_to_irr.html', \
         {'iform': iform, 'remove_add': 0, 'pk': pk,'prods': prods,\
-        'inv': inv, 'sup': sup})
+        'inv': inv, 'sup': sup, 'irr': 1})
         
