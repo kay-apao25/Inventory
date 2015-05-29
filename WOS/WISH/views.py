@@ -9,6 +9,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.models import User
+from django_ajax.decorators import ajax
 from django.db import IntegrityError
 from WISH import forms
 import time
@@ -1003,3 +1004,10 @@ def create_post(request):
         #prods = Product.objects.all()
         #return render(request, 'WISH/handsontable.html', {'prods': prods})
         return HttpResponse(json.dumps({"error": "error"}), content_type="application/json")
+
+@ajax
+@login_required
+def my_view(request):
+    c = request.POST.get('data')
+
+    return c

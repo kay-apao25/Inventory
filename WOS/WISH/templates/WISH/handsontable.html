@@ -10,6 +10,10 @@
 <link href="{% static 'css/handsontable.full.min.css' %}" rel="stylesheet">
 <script src="{% static 'js/handsontable.full.min.js' %}"></script>
 
+<!--AJAX request and response-->
+<script type="text/javascript" src="{% static 'js/jquery.ajax.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/jquery.ajax-plugin.min.js' %}"></script>
+
 <form action="/create_post/" method="POST" id="post-form">
 {% csrf_token %}
     <div id="handson">
@@ -46,7 +50,6 @@
         {data: 'qty_b'},
         {data: 'select', type: 'checkbox'}
       ],
-      minSpareRows: 1,
     });
 
 $('#post-form').on('submit', function(event){
@@ -76,5 +79,14 @@ function create_post(){
 };
 
 </script>
+
+<script type="text/javascript">
+    ajaxPost("{% url 'my_view' %}", {"data": JSON.stringify(hot4.getData())},
+      function(content){
+            alert(content);
+        });
+</script>
+
+<a href="/handson/" class="btn btn-primary" data-ajax="true" data-success="processResponse">Show Alert</a>
 
 {% endblock %}

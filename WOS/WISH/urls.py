@@ -178,5 +178,7 @@ urlpatterns = [
         name='handson'),
     url(r'^create_post/$', login_required(views.create_post),\
         name='create_post'),
+    url(r'^my_view/$', login_required(views.my_view),\
+        name='my_view'),
 
 ]

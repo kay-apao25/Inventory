@@ -61,6 +61,7 @@ INSTALLED_APPS = (
     'bootstrapform',
     'bootstrap3_datetime',
     'endless_pagination',
+    'django_ajax',
 )
 
 MIDDLEWARE_CLASSES = (
