@@ -128,80 +128,6 @@ def index(request):
     return render(request, 'WISH/index.html', {'product': product, 'irr': irr, \
     'par': par, 'garv': garv, 'inv': inv, 'sup': sup, 'cc': cc})
 
-def guest(request, user):
-    """function"""
-    try:
-        product = Product.objects.order_by('id')[:3]
-    except:
-        product = []
-    try:
-        irr = IRR.objects.latest('wrs_number')
-    except:
-        irr = None
-    try:
-        par = PAR.objects.latest('par_no')
-    except:
-        par = None
-    try:
-        garv = GARV.objects.latest('garv_no')
-    except:
-        garv = None
-    try:
-        inv = InventoryStat.objects.latest('id')
-    except:
-        inv = None
-    try:
-        sup = Supplier.objects.latest('id')
-    except:
-        sup = None
-    try:
-        cc = CostCenter.objects.latest('id')
-    except:
-        cc = None
-    return render(request, 'WISH/index.html', {'product': product, 'irr': irr, \
-    'par': par, 'garv': garv, 'inv': inv, 'sup': sup, 'cc': cc, 'user': user})
-
-def wrs_entry(request, user):
-    #if len(Employee.objects.filter(name=user)) != 0:
-    cc_num = Employee.objects.get(name=str(user)).cost_center_no
-    inv = InventoryStat.objects.get(id=InventoryStat.objects.filter(cost_center_no=(\
-        Employee.objects.get(name=str(user)).cost_center_no))[:1]).inv_station_no
-
-    if request.method == 'POST':
-        form = forms.ProductWRS(request.POST, inv=inv)
-        form1 = forms.WRSPendingForm(request.POST)
-        if form1.is_valid():
-            wrs = form1.save(commit=False)
-            if len(IRR.objects.all()) != 0:
-                no = int((IRR.objects.latest\
-                   ('wrs_number')).wrs_number) + 1
-                wrs.wrs_number = str(no)
-            else:
-                wrs.wrs_number = InventoryStat.objects.filter(cost_center_no=(\
-                Employee.objects.get(name=str(request.name)).cost_center_no)).\
-                inv_station_no + '000000'
-
-            if 'save' in request.POST:
-                prod_to_wrs.append({'product': form.data['product'], 'qty': form.data['qty']})
-                wrs.product = prod_to_wrs
-                wrs.inv_station_no_id = inv
-                wrs.cost_center_no = cc_num
-                form = forms.ProductWRS(inv=inv)
-                form1 = forms.WRSPendingForm()
-                wrs.save()
-                del prod_to_wrs[:]
-
-            else:
-                prod_to_wrs.append({'product': form.data['product'], 'qty': form.data['qty']})
-            return render(request, 'WISH/wrs_entry.html', \
-              {'form': form, 'form1': form1, 'msg':'Supplier ' +\
-              'was added successfully.', 'user': user})
-    else:
-        form = forms.ProductWRS(inv=inv)
-        form1 = forms.WRSPendingForm()
-    return render(request, 'WISH/wrs_entry.html', \
-        {'form': form, 'form1': form1, 'user': user})
-
 def aboutus(request):
     """function"""
     return render(request, 'WISH/AboutUs.html', {})
@@ -894,7 +820,8 @@ def create_post(request, pk):
 @ajax
 def list_view(request):
     c = request.POST.get('data')
-    if 'qty_a' in json.loads(c)[0]:   
+    if 'qty_a' in json.loads(c)[0]:
+        del prod_to_irr[:]     
         for c in json.loads(c):
             prod_to_irr.append(c)
     else:
@@ -927,7 +854,7 @@ def product_to_irr(request, pk, inv, sup):
                     if Product.objects.get(id=p['product']).quantity < int(p['qty_a']):
                         return render(request, 'WISH/product_to_irr.html', \
                         {'iform': iform, 'error': 'Accepted quantity is greater than ' + \
-                        'the number of stocked items.', 'pk': pk, 'inv':inv, 'sup':sup, 'irr': 1})   
+                        'the number of stocked items.', 'pk': pk, 'inv':inv, 'sup':sup, 'irr': 1}) 
                 else:
                     return render(request, 'WISH/product_to_irr.html', \
                         {'iform': iform, 'error': 'No entry for quantity accepted, ' +
