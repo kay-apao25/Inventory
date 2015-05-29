@@ -966,17 +966,15 @@ def product_to_irr(request, pk, inv, sup):
             del prod_to_irr[:]
             irr.save()
             return render(request, 'WISH/product_to_irr.html', \
-            {'msg': 'IRR record (IRR No. - ' + \
-                irr.irr_no + ') was successfully added.'})
+            {'msg': 'IRR record (IRR No. - '+ irr.irr_no + \
+            ') was successfully added.'})
         
     else:
         if len(prodlist) != 0:
             iform = forms.IRRentrycontForm()
         else:
             return render(request, 'WISH/product_to_irr.html', \
-                {'msg': 'IRR record (IRR No. - ' + \
-                IRR.objects.latest('wrs_number') + ') was successfully added.', 'exit': \
-                'No products to be made with IRR'})
+                {'exit': 'No products to be made with IRR'})
 
     return render(request, 'WISH/product_to_irr.html', \
         {'iform': iform, 'remove_add': 0, 'pk': pk,'prods': prods,\

@@ -28,13 +28,18 @@
       <div class="alert alert-success" style="width:400px">
         {{ msg }}
       </div>
-      <div class="alert alert-danger" style="width:400px">
+      <div class="alert alert-warning" style="width:400px">
           {{ exit }}
       </div>
       <div align="center"><a href= "{% url 'index' %}"><i class="glyphicon glyphicon-share-alt"></i> Exit</a></div>
    {% elif msg %}
       <div class="alert alert-success" style="width:400px">
         {{ msg }}
+      </div>
+      <div align="center"><a href= "{% url 'index' %}"><i class="glyphicon glyphicon-share-alt"></i> Exit</a></div>
+   {% elif exit %}
+      <div class="alert alert-danger" style="width:400px">
+          {{ exit }}
       </div>
       <div align="center"><a href= "{% url 'index' %}"><i class="glyphicon glyphicon-share-alt"></i> Exit</a></div>
    {% else %}
