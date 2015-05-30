@@ -56,7 +56,7 @@ class Employee(models.Model):
     position = models.CharField(max_length=20)
     history = HistoricalRecords()
     is_delete = models.BooleanField(default=False)
-    user_id = models.ForeignKey(User, default=1) 
+    user_id = models.ForeignKey(User, default=1)
     """user = User.objects.create_user(username='guest',
                                  email='', id=1,
                                  password='guest')"""
@@ -108,7 +108,8 @@ class Product(models.Model):
     inv_station_no = models.ForeignKey(InventoryStat, related_name="inv_iFK")
     balance = models.PositiveIntegerField(default=0, null=True, blank=True)
     is_irr = models.BooleanField(default=False)
-    
+    is_par = models.BooleanField(default=False)
+
     def __unicode__(self):
         return self.item_name + " , " + self.description
 
