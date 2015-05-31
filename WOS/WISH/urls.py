@@ -14,13 +14,13 @@ urlpatterns = [
     url(r'^log_in/$', views.log_in, name='login'),
     url(r'^logout/$', login_required(views.log_out), \
         name='logout'),
-    url(r'^guest/(?P<user>.*)/$', views.guest, name='guest'),
+    #url(r'^guest/(?P<user>.*)/$', views.guest, name='guest'),
     #URL patterns for Log In and Out (end)
 
     #URL patterns for File and Product Fill-Up Forms (start)
     url(r'^product/new/$', login_required(views.product_new), \
     name='new_product'),
-    url(r'^par/(?P<inv>[0-9]+)/$', login_required(views.par), name='new_par'),
+    url(r'^par/$', login_required(views.par), name='new_par'),
     url(r'^par_f/$', login_required(cviews.ParF.as_view()), name='new_par_s'),
     url(r'^irr_entry/$', login_required(views.irr_entry), name='new_irr'),
     url(r'^miv_entry_f/$', login_required(cviews.MivF.as_view()),\
@@ -123,7 +123,7 @@ urlpatterns = [
     url(r'^product_reports/$', login_required(cviews.ProdRep.as_view()),\
      name='product_reports'),
     #for guest (start)
-    url(r'^wrs_entry/(?P<user>.*)/$', views.wrs_entry, name='wrs_entry'),
+    #url(r'^wrs_entry/(?P<user>.*)/$', views.wrs_entry, name='wrs_entry'),
     #for guest (end)
     #URL patterns for File and Product Reports (end)
 
