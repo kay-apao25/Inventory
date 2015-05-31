@@ -239,21 +239,13 @@ class GARVentryForm(forms.ModelForm):
         super(GARVentryForm, self).__init__(*args, **kwargs)
 
         self.fields['cc_number'] = forms.ModelChoiceField(\
-            queryset=CostCenter.objects.filter(\
-            id=PAR.objects.get(par_no=pk).inv_stat_no.cost_center_no.id)\
-        , label='CC number *', required=True)
+            queryset=CostCenter.objects.all(), label='CC number *', required=True)
 
         self.fields['inspected_by'] = forms.ModelChoiceField(\
-            queryset=Employee.objects.filter(\
-                cost_center_no=IRR.objects.get(irr_no=PAR.objects.get(\
-            par_no=pk).wo_number).irr_headkey.inv_station_no.cost_center_no.id\
-                ), label='Inspected by *', required=True)
+            queryset=Employee.objects.all(), label='Inspected by *', required=True)
 
         self.fields['noted_by'] = forms.ModelChoiceField(\
-            queryset=Employee.objects.filter(\
-                cost_center_no=IRR.objects.get(irr_no=PAR.objects.get(\
-            par_no=pk).wo_number).irr_headkey.inv_station_no.cost_center_no.id\
-                ), label='Noted by *', required=True)
+            queryset=Employee.objects.all(), label='Noted by *', required=True)
 
     date_inspected = forms.DateField(widget=DateTimePicker\
         (options={"format": "YYYY-MM-DD", "pickTime": False}), \
