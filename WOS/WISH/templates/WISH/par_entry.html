@@ -7,20 +7,11 @@
 
 {% block content %}
 <style type="text/css">
-  .form-group{
-    width:400px;
-  }
-  ul{
-    list-style-type: none;
-  }
+        .form-group{
+          width:400px;
+        }
 </style>
-{% if prodlist|length != 0 %}
-  <script type="text/javascript">
-         $( document ).ready( function() {
-             $('#product').modal({show:true});
-         });
-     </script>
-{% endif %}
+    <form method="POST" class="post-form">{% csrf_token %}
     {% if exit %}
       {%if msg%}
         <div class="alert alert-success" style="width:400px">
@@ -29,6 +20,7 @@
         <div align="center"><a href= "{% url 'index' %}"><i class="glyphicon glyphicon-share-alt"></i> {{ exit }}</a></div>
       {% endif %}
     {% else %}
+    <strong><p style="font-size:15px">Fields with asterisk are required.</p></strong>
     {%if msg%}
         <div class="alert alert-success" style="width:400px">
     {{ msg }}
@@ -39,52 +31,42 @@
     {{ error }}
         </div>
     {% endif %}
-    <strong><p style="font-size:15px">Fields with asterisk are required.</p></strong>
-    {% include 'WISH/handsontable.html'%}
-     {% endif %}
+    <table width="90%">
+    <tr>
+    <td width="30%">
+      <h4>Added item/s:</h4>
 
-     <!--MODAL-->
-       <div class="modal fade" id="product" tabindex="-1" role="dialog" aria-labelledby="product" aria-hidden="true" style="margin-top: 100px; position: fixed; z-index:1000 opacity:0.5; height:auto">
-         <div class="modal-dialog modal-sm" style="width: 526px">
-           <div class="modal-content">
-             <div class="modal-header">
-               <button  type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-               <h4 class="modal-title" id="myModalLabel">Product List</h4>
-             </div>
-             <div class="modal-body" id="mycontent">
-               <form action="" method="get">
-                   <div class="input-group">
-                     <!-- USE TWITTER TYPEAHEAD JSON WITH API TO SEARCH -->
-                     <input class="form-control" id="system-search" name="q" placeholder="Search for" >
-                   </div>
-                   {% if prodlist|length != 0 %} 
-                    <br>
-                    <p style="font-size:15px"><strong>Mark the items to be included in this PAR record.</strong></p>
-                    <div align="center">
-                    <table style="text-align:center">
-                      {% for field in pform %}
-                        <tr><td>
-                        {% for f in field %}
-                          {{ f }}&nbsp;&nbsp;
-                          {% if forloop.counter|divisibleby:"3"%}
-                            </td></tr><tr><td>
-                          {% endif %}
-                          {% if forloop.last %}
-                            </td></tr>
-                          {% endif %}
-                        {% endfor %}
-                      {%endfor%}
-                    </table>
-                    </div>
-                      <br>
-                      <div align="center"><button name="add" class="save btn btn-default">Ok</button></div>
-                    {% endif %}
-               </form>
+            {% if product|length != 0%}
 
-             </div>
-           </div>
-         </div>
-       </div>
-     <!--END OF MODAL-->
-
+            {% for prod in product %}
+            <div>
+            <span align:"center" >
+             <button type="submit" name="delete" value="{{forloop.counter|add:'-1'}}" class="save btn btn-default">Delete</button>
+              Product: {{prod.pros.item_name}} - {{prod.pros.description}},<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              Quantity: {{prod.Quantity}},<br>
+           </span>
+            </div>
+            {% endfor %}
+            {% endif %}
+            </td>
+    <td style="padding:25px">
+     {% for field in iform %}
+      &nbsp;&nbsp;{{field | bootstrap_horizontal:'col-lg-4'}} &nbsp;&nbsp;&nbsp;
+     {%endfor%}
+     <br>
+     {% if remove_add == 1%}
+     {% else %}
+        <div align="center"><button name="add" type="submit" class="save btn btn-default">Add Another Item</button></div>
+   {% endif %}
+  </td>
+  <td style="padding:25px">
+    {% for field in form %}
+     &nbsp;&nbsp;{{field | bootstrap_horizontal:'col-lg-4'}} &nbsp;&nbsp;&nbsp;
+    {%endfor%}
+    <br>
+  </td>
+</tr>
+</table>
+<div align="center"><button name="add" type="submit" class="save btn btn-default">Save</button></div>
+{% endif %}
 {% endblock %}
