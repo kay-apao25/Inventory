@@ -819,14 +819,20 @@ def create_post(request, pk):
 
 @ajax
 def list_view(request):
-    c = request.POST.get('data')
-    if 'qty_a' in json.loads(c)[0]:
-        del prod_to_irr[:]     
-        for c in json.loads(c):
-            prod_to_irr.append(c)
+    c = request.POST.get('data1')
+    if 'delete' in request.POST:
+        d = request.POST.get('data2')
+        #return c, d
+        del prods[int(c):(int(d)+1)]
     else:
-        for c in json.loads(c):
-            prod_to_par.append(c)
+        if 'qty_a' in json.loads(c)[0]:
+            del prod_to_irr[:]     
+            for c in json.loads(c):
+                prod_to_irr.append(c)
+        else:
+            del prod_to_par[:]
+            for c in json.loads(c):
+                prod_to_par.append(c)
 
 def product_to_irr(request, pk, inv, sup):
     """function"""
@@ -837,16 +843,16 @@ def product_to_irr(request, pk, inv, sup):
         #pform = forms.ProductCheckForm(inv=inv, sup=sup)
         iform = forms.IRRentrycontForm()
         return render(request, 'WISH/product_to_irr.html', \
-        {'iform': iform, 'remove_add': 0, 'pk': pk,'prods': prods,\
+        {'iform': iform,  'pk': pk,'prods': prods,\
         'pform': pform, 'inv': inv, 'sup': sup, 'prodlist': prodlist, 'irr': 1})
-    if 'add' in request.GET:
+    elif 'add' in request.GET:
         q = request.GET.getlist('product')
         for q in q:
             prods.append(Product.objects.get(id=q))
         iform = forms.IRRentrycontForm()
         return render(request, 'WISH/product_to_irr.html', \
                 {'iform': iform, 'pk': pk, 'prods': prods, 'inv': inv, 'sup': sup, 'irr': 1})
-    elif request.method == "POST":
+    elif 'save' in request.POST:
         iform = forms.IRRentrycontForm(request.POST)
         if iform.is_valid():
             for p in prod_to_irr:
@@ -891,11 +897,16 @@ def product_to_irr(request, pk, inv, sup):
 
             irr.product = json.dumps(prod_to_irr)
             del prod_to_irr[:]
+            del prods[:]
             irr.save()
             return render(request, 'WISH/product_to_irr.html', \
             {'msg': 'IRR record (IRR No. - '+ irr.irr_no + \
             ') was successfully added.'})
-        
+    elif 'cancel' in request.POST:
+        del prod_to_irr[:]
+        del prods[:]
+        return render(request, 'WISH/product_to_irr.html', \
+            {'msg': 'Making of IRR Record was cancelled.'})
     else:
         if len(prodlist) != 0:
             iform = forms.IRRentrycontForm()
@@ -904,6 +915,6 @@ def product_to_irr(request, pk, inv, sup):
                 {'exit': 'No products to be made with IRR'})
 
     return render(request, 'WISH/product_to_irr.html', \
-        {'iform': iform, 'remove_add': 0, 'pk': pk,'prods': prods,\
+        {'iform': iform, 'pk': pk,'prods': prods,\
         'inv': inv, 'sup': sup, 'irr': 1})
         

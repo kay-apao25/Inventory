@@ -10,33 +10,39 @@
 <!--AJAX request and response-->
 <script type="text/javascript" src="{% static 'js/jquery.ajax.min.js' %}"></script>
 <script type="text/javascript" src="{% static 'js/jquery.ajax-plugin.min.js' %}"></script>
-<br><br>
+<br>
   <form method="POST" id="post-form" action="{% url 'new_irr_cont' inv=inv sup=sup pk=pk%}">{% csrf_token %}
-    <table style="margin-left:90px">
+    {% if prods|length != 0%}
+    <table style="margin-left:170px">
+    {% else %}
+    <table>
+    {% endif %}
       <tr>
+        {% if prods|length != 0%}
         <td width="30%">
-          {% if prods|length != 0%}
           <div id="handson">
           </div>
-          {% else %}
-          No products added yet.
-          {% endif %}
-          <br><br>
-          <div align="center"><a class="save btn btn-default" data-toggle="modal" data-target="#product">Add Items</a></div>
         </td>
+        {% endif %}
         <td style="padding:20px">
           {% for field in iform %}
-             &nbsp;&nbsp;{{field | bootstrap_horizontal:'col-lg-4'}}&nbsp;&nbsp;&nbsp;
+             {{field | bootstrap_horizontal:'col-lg-4'}}<br><br>
           {%endfor%}
         </td>
       </tr>
     </table>
-    <div align="center"><button name="save" type="submit" class="save btn btn-default">Save</button></div>
+    <div align="center">
+      <a class="save btn btn-default" data-toggle="modal" data-target="#product">Add Items</a>
+      {% if prods|length != 0%}
+      <a class="save btn btn-default" id="delete" name="delete">Delete Items</a>
+      {% endif %}
+      <button name="save" type="submit" class="save btn btn-default">Save</button>
+      <button name="cancel" type="submit" class="save btn btn-default">Cancel</button>
+    </div>
   </form>
     <br><br>
 {% if irr %}
 <script type="text/javascript">
-
     var
       nestedObjects = [
         {% for prod in prods %}
@@ -60,6 +66,7 @@
         {data: 'qty_r'},
         {data: 'qty_b'}
       ],
+      outsideClickDeselects: false//,
     });
     
     $('#post-form').on('submit', function(event){
@@ -68,6 +75,23 @@
             console.log(content)
         });
     });
+    $('#delete').on('click', function () {    
+      var selection = hot4.getSelected();
+      console.log(selection);
+      if (selection[0] == 0){
+        hot4.alter('remove_row', selection[0], (parseInt(selection[2])+1));
+      }
+      else{
+        hot4.alter('remove_row', selection[0], selection[2]);
+      }
+      ajaxPost("{% url 'list_view' %}", {"data1": JSON.stringify(selection[0]), 
+                              "data2": JSON.stringify(selection[2]), "delete":1},
+      function(content){
+        console.log(content)
+      });
+    });
+
+
 </script>
 <!-- FOR PAR RECORD -->
 {% else %}

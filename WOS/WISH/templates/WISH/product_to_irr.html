@@ -13,16 +13,19 @@
   .form-group{
     width:400px;
   }
+  #myCustomId{
+    padding-right: 173px;
+  }
   ul{
     list-style-type: none;
   }
 </style>
    {% if prodlist|length != 0 %}
      <script type="text/javascript">
-            $( document ).ready( function() {
-                $('#product').modal({show:true});
-            });
-        </script>
+        $( document ).ready( function() {
+            $('#product').modal({show:true});
+        });
+      </script>
    {% endif %}
    {% if exit and msg%}
       <div class="alert alert-success" style="width:400px">
@@ -55,22 +58,38 @@
 
       <!--MODAL-->
         <div class="modal fade" id="product" tabindex="-1" role="dialog" aria-labelledby="product" aria-hidden="true" style="margin-top: 100px; position: fixed; z-index:1000 opacity:0.5; height:auto">
-          <div class="modal-dialog modal-sm" style="width: 700px">
+          <div class="modal-dialog modal-sm" style="width: 526px">
             <div class="modal-content">
               <div class="modal-header">
                 <button  type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title" id="myModalLabel">Product List</h4>
+                <h4 class="modal-title" id="myModalLabel">Product Search</h4>
               </div>
               <div class="modal-body" id="mycontent">
                 <form action="" method="get">
                     <div class="input-group">
                       <!-- USE TWITTER TYPEAHEAD JSON WITH API TO SEARCH -->
-                      <input class="form-control" id="system-search" name="q" placeholder="Search for" >
+                      <input class="form-control" id="system-search" name="q" placeholder="SLC No." >
                     </div>
                     {% if prodlist|length != 0 %} 
+                    <br>
+                    <p style="font-size:15px"><strong>Mark the items to be included in this IRR record.</strong></p>
+                    <div align="center">
+                    <table style="text-align:center">
                       {% for field in pform %}
-                        &nbsp;&nbsp;{{field | bootstrap}}&nbsp;&nbsp;&nbsp;
+                        <tr><td>
+                        {% for f in field %}
+                          {{ f }}&nbsp;&nbsp;
+                          {% if forloop.counter|divisibleby:"3"%}
+                            </td></tr><tr><td>
+                          {% endif %}
+                          {% if forloop.last %}
+                            </td></tr>
+                          {% endif %}
+                        {% endfor %}
                       {%endfor%}
+                    </table>
+                    </div>
+                      <br>
                       <div align="center"><button name="add" class="save btn btn-default">Ok</button></div>
                     {% endif %}
                 </form>
