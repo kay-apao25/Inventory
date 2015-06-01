@@ -35,22 +35,22 @@
 								{% for pro in pros|slice:"-3:" %}
 								{% if forloop.counter == 1%}
 					    		<tr>
-					    			<td>{{ pro.product.slc_number }} </td> <!--NSN-->
+					    			<td><center>{{ pro.prod.slc_number }}</center></td> <!--NSN-->
 					    			<td><b><u>&nbsp;&nbsp;&nbsp;&nbsp;PR # {{ wrss.irr_headkey.pr_number }}, PO #
 						        {{ wrss.irr_headkey.po_number }}&nbsp;&nbsp;&nbsp;&nbsp;</u></b><br><br>
-						        	<center>{{ pro.product.item_name }}, {{ pro.product.description }}</center>
+						        	<center>{{ pro.prod.item_name }}, {{ pro.prod.description }}</center>
 										</td> <!--PARTICULARS-->
-					    			<td>{{ pro.quantity_accepted }}</td> <!--QUANTITY-->
-					    			<td>{{ pro.product.unit_measure }}</td> <!--UNIT OF MEASURE-->
+					    			<td><center>{{ pro.qty_a }}</center></td> <!--QUANTITY-->
+					    			<td><center>{{ pro.prod.unit_measure }}</center></td> <!--UNIT OF MEASURE-->
 					    		</tr>
 						        {% else %}
 						        <tr>
-						        	<td>{{ pro.product.slc_number }} </td>
+						        	<td><center>{{ pro.prod.slc_number }}</center></td>
 						        	<td><br><br>
-						        	<center>{{ pro.product.item_name }}, {{ pro.product.description }}</center>
+						        	<center>{{ pro.prod.item_name }}, {{ pro.prod.description }}</center>
 										</td> <!--PARTICULARS-->
-					    			<td>{{ pro.quantity_accepted }}</td> <!--QUANTITY-->
-					    			<td>{{ pro.product.unit_measure }}</td> <!--UNIT OF MEASURE-->
+					    			<td><center>{{ pro.qty_a }}</center></td> <!--QUANTITY-->
+					    			<td><center>{{ pro.prod.unit_measure }}</center></td> <!--UNIT OF MEASURE-->
 						        	
 						        </tr>
 										
@@ -97,8 +97,7 @@
 					    			</td>
 					    		</tr>
 					    	</table>
-					    	<br>
-							{% if forloop.last %}
+					    	{% if forloop.last %}
       							<button id="printpagebutton" onclick="myFunction()" >Print this Form</button>
      						{% endif %}
 		    </div>

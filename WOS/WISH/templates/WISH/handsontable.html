@@ -65,7 +65,7 @@
     $('#post-form').on('submit', function(event){
     ajaxPost("{% url 'list_view' %}", {"data": JSON.stringify(hot4.getData())},
       function(content){
-            alert(content)
+            console.log(content)
         });
     });
     $('#delete').on('click', function () {

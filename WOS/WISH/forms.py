@@ -275,7 +275,7 @@ class Statlib(forms.ModelForm):
 
     class Meta:
         model = InventoryStat
-        fields = ('inv_station_no', 'station_description', 'cost_center_no',)
+        fields = ('inv_station_no', 'station_description',)
 
 class Statlib1(forms.ModelForm):
     """Stat_lib"""
@@ -284,7 +284,7 @@ class Statlib1(forms.ModelForm):
 
     class Meta:
         model = InventoryStat
-        fields = ( 'station_description', 'cost_center_no',)
+        fields = ( 'station_description',)
 
 
 class CClib(forms.ModelForm):
