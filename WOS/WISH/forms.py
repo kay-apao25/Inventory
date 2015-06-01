@@ -34,9 +34,9 @@ class ProductForm1(forms.Form):
          "pickTime": False}), required=True)
     expiry_date = forms.DateField(widget=DateTimePicker(\
         options={"format": "YYYY-MM-DD", "pickTime": False}), required=False)
-    inv_station_no = forms.ModelChoiceField(label=\
+    """inv_station_no = forms.ModelChoiceField(label=\
         'Inventory station *', queryset=\
-        InventoryStat.objects.filter(is_delete=False), required=True)
+        InventoryStat.objects.filter(is_delete=False), required=True)"""
 
 class ProductForm2(forms.Form):
     """ProductForm2"""
@@ -53,6 +53,8 @@ class ProductForm2(forms.Form):
         ('Pending', 'Pending'),
     )
 
+    
+
     unit_cost = forms.DecimalField(label='Unit cost*', decimal_places=2, required=True)
     quantity = forms.IntegerField(min_value=0, initial='1', label='Quantity *', required=True)
     classification = forms.CharField(label='Classification*', max_length=30, required=True)
@@ -64,9 +66,9 @@ class ProductForm2(forms.Form):
 
 class ProductForm3(forms.Form):
     """ProductForm3"""
-    purchased_from = forms.ModelChoiceField(\
+    """purchased_from = forms.ModelChoiceField(\
         queryset=Supplier.objects.filter(is_delete=False), \
-        label='Purchased from *', required=True)
+        label='Purchased from *', required=True)"""
     average_amount = forms.FloatField(label='Average amount *', required=True)
     balance_limit = forms.FloatField(label='Balance limit *', required=True)
     serial_number = forms.CharField(max_length=15, required=False)
@@ -158,6 +160,16 @@ class ProductCheckForm(forms.Form):
         self.fields['product'] = forms.ModelMultipleChoiceField(widget=forms.CheckboxSelectMultiple,\
             required=True, label='', queryset=plist)
         self.fields['product'].widget.attrs = {'id': 'myCustomId'}
+
+class SupplierCheckForm(forms.Form):
+    def __init__(self, *args, **kwargs):
+        inv = kwargs.pop('inv')
+        q = kwargs.pop('q')
+        super(SupplierCheckForm, self).__init__(*args, **kwargs)
+
+        self.fields['purchased_from'] = forms.ModelMultipleChoiceField(widget=forms.CheckboxSelectMultiple,\
+            required=True, label='', queryset=Supplier.objects.filter(supplier_name__contains=q))
+        self.fields['purchased_from'].widget.attrs = {'id': 'myCustomId'}
 
 class ProductCheckForm1(forms.Form):
     def __init__(self, *args, **kwargs):
