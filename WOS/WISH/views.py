@@ -317,7 +317,26 @@ def irr_entry(request):
     name = str(request.user.get_full_name())
     inv = Employee.objects.get(name=name).cost_center_no.inv_station_no
 
-    if request.method == "POST":
+    if 'q' in request.GET and request.GET['q']:
+        q = request.GET['q']
+        pform = forms.SupplierCheckForm1(inv=inv, q=q)
+        form1 = forms.IRRentryForm1()
+        form2 = forms.IRRentryForm2(name=str(name))
+        return render(request, 'WISH/irr_entry.html', \
+        {'form1': form1, 'form2': form2, 'pform': pform, 'inv': inv, 'name':name})
+
+
+    elif 'add' in request.GET:
+        q = request.GET.getlist('supplier')
+        prods.append(int(q[0]))
+        #pform = forms.(inv=inv, q=q)
+        form1 = forms.IRRentryForm1()
+        form2 = forms.IRRentryForm2(name=str(name))
+        return render(request, 'WISH/irr_entry.html', \
+                {'form1': form1, 'form2': form2, 'q':q, 'inv':inv})
+
+
+    elif request.method == "POST":
 
         #Forms containing the entries entered by the user
         form = forms.IRRentryForm(request.POST)
@@ -337,6 +356,7 @@ def irr_entry(request):
                 setattr(irr_entry, key, form1.data[key1])
                 setattr(irr_entry, key, form2.data[key1])
             setattr(irr_entry, 'inv_station_no', inv)
+            setattr(irr_entry, 'supplier', q)
 
             irr_entry.dce_custodian = Employee.objects.get(name=name)
             try:
