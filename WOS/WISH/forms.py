@@ -152,15 +152,11 @@ class IRRentrycontForm(forms.ModelForm):
 
 class ProductCheckForm(forms.Form):
     def __init__(self, *args, **kwargs):
-        inv = kwargs.pop('inv')
-        sup = kwargs.pop('sup')
-        q = kwargs.pop('q')
         plist = kwargs.pop('plist')
         super(ProductCheckForm, self).__init__(*args, **kwargs)
 
         self.fields['product'] = forms.ModelMultipleChoiceField(widget=forms.CheckboxSelectMultiple,\
-            required=True, label='', queryset=Product.objects.filter(inv_station_no=inv).filter(\
-            purchased_from=sup).filter(quantity__gt=0).filter(slc_number__contains=q).exclude(id__in=[p.id for p in plist]))
+            required=True, label='', queryset=plist)
         self.fields['product'].widget.attrs = {'id': 'myCustomId'}
 
 class ProductCheckForm1(forms.Form):

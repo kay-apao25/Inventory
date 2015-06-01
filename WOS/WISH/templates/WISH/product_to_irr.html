@@ -20,7 +20,7 @@
     list-style-type: none;
   }
 </style>
-   {% if prodlist|length != 0 %}
+   {% if q %}
      <script type="text/javascript">
         $( document ).ready( function() {
             $('#product').modal({show:true});
@@ -54,27 +54,24 @@
       <strong><p style="font-size:15px">Fields with asterisk are required.</p></strong>
       {% include 'WISH/handsontable.html'%}
     {% endif %}
-    {% if prod_to_irr %}
-      {{prod_to_irr}}
-    {% endif %}
-
 
       <!--MODAL-->
         <div class="modal fade" id="product" tabindex="-1" role="dialog" aria-labelledby="product" aria-hidden="true" style="margin-top: 100px; position: fixed; z-index:1000 opacity:0.5; height:auto">
           <div class="modal-dialog modal-sm" style="width: 526px">
             <div class="modal-content">
               <div class="modal-header">
-                <button  type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <button id="close" type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                 <h4 class="modal-title" id="myModalLabel">Product Search</h4>
               </div>
               <div class="modal-body" id="mycontent">
-                <form action="" method="get">
+                <form action="{% url 'new_irr_cont' inv=inv sup=sup pk=pk%}" method="get">
                     <div class="input-group">
                       <!-- USE TWITTER TYPEAHEAD JSON WITH API TO SEARCH -->
                       <input class="form-control" id="system-search" name="q" placeholder="SLC No." >
                     </div>
-                    {% if prodlist|length != 0 %} 
                     <br>
+                    {% if q %}
+                    {% if prodlist|length %}
                     <p style="font-size:15px"><strong>Mark the items to be included in this IRR record.</strong></p>
                     <div align="center">
                     <table style="text-align:center">
@@ -91,9 +88,14 @@
                         {% endfor %}
                       {%endfor%}
                     </table>
-                    </div>
-                      <br>
+                     <br>
                       <div align="center"><button name="add" class="save btn btn-default">Ok</button></div>
+                    </div>
+                    {% else %}
+                    <table style="text-align:center">
+                      <p style="font-size:15px" id="none"><strong>No product matches this query.</strong></p>
+                    </table>
+                    {% endif %}
                     {% endif %}
                 </form>
                 

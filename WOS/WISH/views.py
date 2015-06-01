@@ -575,8 +575,8 @@ def par_form(request, pk):
     parss = get_object_or_404(PAR, pk=pk)
     products = parss.product
     for product in products:
-        pro = Product.objects.get(id=product['Product'])
-        amount = float(product['Quantity']) * int(pro.unit_cost)
+        pro = Product.objects.get(id=product['product'])
+        amount = float(product['qty']) * int(pro.unit_cost)
         product['amount'] = amount
         product['pros'] = pro
         product['description'] = pro.description
@@ -703,18 +703,7 @@ def create_post(request, pk):
         return HttpResponse(json.dumps({"error": "error"}), content_type="application/json")
 
 @ajax
-def plist_view(request):
-    c = request.POST.get('data')
-    if 'delete' in request.POST:
-        d = request.POST.get('data2')
-        #return c, d
-        del prods[int(c):(int(d)+1)]
-    else:
-        del prod_to_par[:]
-        for c in json.loads(c):
-            prod_to_par.append(c)
-@ajax
-def ilist_view(request):
+def list_view(request):
     c = request.POST.get('data')
     if 'delete' in request.POST:
         d = request.POST.get('data2')
@@ -727,22 +716,24 @@ def ilist_view(request):
 
 def product_to_irr(request, pk, inv, sup):
     """function"""
-    prodlist = Product.objects.filter(inv_station_no=inv).filter(purchased_from=sup).filter(quantity__gt=0)
     if 'q' in request.GET and request.GET['q']:
         q = request.GET['q']
-        pform = forms.ProductCheckForm(inv=inv, sup=sup, q=q, plist=prods)
-        #pform = forms.ProductCheckForm(inv=inv, sup=sup)
+        prodlist = Product.objects.filter(inv_station_no=inv).filter(\
+            purchased_from=sup).filter(quantity__gt=0).\
+            filter(slc_number__contains=q).exclude(\
+            id__in=[p.id for p in prods])
+        pform = forms.ProductCheckForm(plist=prodlist)
         iform = forms.IRRentrycontForm()
         return render(request, 'WISH/product_to_irr.html', \
-        {'iform': iform,  'pk': pk,'prods': prods,\
-        'pform': pform, 'inv': inv, 'sup': sup, 'prodlist': prodlist, 'irr': 1})
+        {'iform': iform,  'pk': pk,'prods': prods, 'q': 1,\
+        'pform': pform, 'inv': inv, 'sup': sup, 'prodlist': prodlist})
     elif 'add' in request.GET:
         q = request.GET.getlist('product')
         for q in q:
             prods.append(Product.objects.get(id=q))
         iform = forms.IRRentrycontForm()
         return render(request, 'WISH/product_to_irr.html', \
-                {'iform': iform, 'pk': pk, 'prods': prods, 'inv': inv, 'sup': sup, 'irr': 1})
+                {'iform': iform, 'pk': pk, 'prods': prods, 'inv': inv, 'sup': sup})
     elif 'save' in request.POST:
         iform = forms.IRRentrycontForm(request.POST)
         if iform.is_valid():
@@ -799,11 +790,8 @@ def product_to_irr(request, pk, inv, sup):
         return render(request, 'WISH/product_to_irr.html', \
             {'msg': 'Making of IRR Record was cancelled.'})
     else:
-        if len(prodlist) != 0:
-            iform = forms.IRRentrycontForm()
-        else:
-            return render(request, 'WISH/product_to_irr.html', \
-                {'exit': 'No products to be made with IRR'})
+        iform = forms.IRRentrycontForm()
+
 
     return render(request, 'WISH/product_to_irr.html', \
         {'iform': iform, 'pk': pk,'prods': prods,\
