@@ -11,12 +11,16 @@
 <script type="text/javascript" src="{% static 'js/jquery.ajax.min.js' %}"></script>
 <script type="text/javascript" src="{% static 'js/jquery.ajax-plugin.min.js' %}"></script>
 <br>
-  <form method="POST" id="post-form" action="{% url 'new_irr_cont' inv=inv sup=sup pk=pk%}">{% csrf_token %}
-    {% if prods|length != 0%}
+  {% if irr %}
+    <form method="POST" id="post-form" action="{% url 'new_irr_cont' inv=inv sup=sup pk=pk%}">{% csrf_token %}
+  {% else %}
+    <form method="POST" id="post-form" action="{% url 'new_par' %}">{% csrf_token %}
+  {% endif %}
+  {% if prods|length != 0%}
     <table style="margin-left:170px">
-    {% else %}
+  {% else %}
     <table>
-    {% endif %}
+  {% endif %}
       <tr>
         {% if prods|length != 0%}
         <td width="30%">
@@ -41,6 +45,7 @@
     </div>
   </form>
     <br><br>
+
 {% if irr %}
 <script type="text/javascript">
     var
@@ -68,7 +73,7 @@
       ],
       outsideClickDeselects: false//,
     });
-    
+
     $('#post-form').on('submit', function(event){
     ajaxPost("{% url 'list_view' %}", {"data": JSON.stringify(hot4.getData())},
       function(content){
@@ -93,6 +98,7 @@
 
 
 </script>
+
 <!-- FOR PAR RECORD -->
 {% else %}
 <script type="text/javascript">
@@ -116,11 +122,11 @@
         {data: 'qty'}
       ],
     });
-    
+
     $('#post-form').on('submit', function(event){
     ajaxPost("{% url 'list_view' %}", {"data": JSON.stringify(hot4.getData())},
       function(content){
-            console.log(content);
+            alert(content);
         });
     });
 </script>

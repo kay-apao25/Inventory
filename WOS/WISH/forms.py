@@ -155,13 +155,24 @@ class ProductCheckForm(forms.Form):
         inv = kwargs.pop('inv')
         sup = kwargs.pop('sup')
         q = kwargs.pop('q')
-        plist = kwargs.pop('plist') 
+        plist = kwargs.pop('plist')
         super(ProductCheckForm, self).__init__(*args, **kwargs)
 
         self.fields['product'] = forms.ModelMultipleChoiceField(widget=forms.CheckboxSelectMultiple,\
             required=True, label='', queryset=Product.objects.filter(inv_station_no=inv).filter(\
             purchased_from=sup).filter(quantity__gt=0).filter(slc_number__contains=q).exclude(id__in=[p.id for p in plist]))
         self.fields['product'].widget.attrs = {'id': 'myCustomId'}
+
+class ProductCheckForm1(forms.Form):
+    def __init__(self, *args, **kwargs):
+        inv = kwargs.pop('inv')
+        q = kwargs.pop('q')
+        plist = kwargs.pop('plist')
+        super(ProductCheckForm1, self).__init__(*args, **kwargs)
+
+        self.fields['product'] = forms.ModelMultipleChoiceField(widget=forms.CheckboxSelectMultiple,\
+            required=True, queryset=Product.objects.filter(inv_station_no=inv).\
+            filter(slc_number__contains=q).filter(is_irr=True).exclude(id__in=[p.id for p in plist]))
 
 class MIVentryForm(forms.ModelForm):
     """MIV_entryForm"""
@@ -179,18 +190,17 @@ class PARForm(forms.ModelForm):
     """PAR_Form"""
 
     def __init__(self, *args, **kwargs):
-        inv = kwargs.pop('inv')
+        name = kwargs.pop('name')
         super(PARForm, self).__init__(*args, **kwargs)
 
         self.fields['dce'] = forms.ModelChoiceField(\
             queryset=Employee.objects.filter(\
-            cost_center_no=IRR.objects.get(irr_no=inv).\
-            irr_headkey.inv_station_no.cost_center_no.id),\
+            cost_center_no=Employee.objects.get(name=name).cost_center_no.id),
             label='Accountable Employee*', required=True)
         self.fields['approved_by'] = forms.ModelChoiceField(\
             queryset=Employee.objects.filter(\
-        cost_center_no=IRR.objects.get(irr_no=inv)\
-        .irr_headkey.inv_station_no.cost_center_no.id), label='Approved by*', required=True)
+        cost_center_no=Employee.objects.get(name=name).cost_center_no.id),
+        label='Approved by*', required=True)
 
     date_acquired = forms.DateField(widget=DateTimePicker(\
         options={"format": "YYYY-MM-DD", "pickTime": False}),\
@@ -223,21 +233,13 @@ class GARVentryForm(forms.ModelForm):
         super(GARVentryForm, self).__init__(*args, **kwargs)
 
         self.fields['cc_number'] = forms.ModelChoiceField(\
-            queryset=CostCenter.objects.filter(\
-            id=PAR.objects.get(par_no=pk).inv_stat_no.cost_center_no.id)\
-        , label='CC number *', required=True)
+            queryset=CostCenter.objects.all(), label='CC number *', required=True)
 
         self.fields['inspected_by'] = forms.ModelChoiceField(\
-            queryset=Employee.objects.filter(\
-                cost_center_no=IRR.objects.get(irr_no=PAR.objects.get(\
-            par_no=pk).wo_number).irr_headkey.inv_station_no.cost_center_no.id\
-                ), label='Inspected by *', required=True)
+            queryset=Employee.objects.all(), label='Inspected by *', required=True)
 
         self.fields['noted_by'] = forms.ModelChoiceField(\
-            queryset=Employee.objects.filter(\
-                cost_center_no=IRR.objects.get(irr_no=PAR.objects.get(\
-            par_no=pk).wo_number).irr_headkey.inv_station_no.cost_center_no.id\
-                ), label='Noted by *', required=True)
+            queryset=Employee.objects.all(), label='Noted by *', required=True)
 
     date_inspected = forms.DateField(widget=DateTimePicker\
         (options={"format": "YYYY-MM-DD", "pickTime": False}), \
