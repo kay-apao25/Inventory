@@ -11,11 +11,7 @@
 <script type="text/javascript" src="{% static 'js/jquery.ajax.min.js' %}"></script>
 <script type="text/javascript" src="{% static 'js/jquery.ajax-plugin.min.js' %}"></script>
 <br>
-  {% if irr %}
     <form method="POST" id="post-form" action="{% url 'new_irr_cont' inv=inv sup=sup pk=pk%}">{% csrf_token %}
-  {% else %}
-    <form method="POST" id="post-form1" action="{% url 'new_par' %}">{% csrf_token %}
-  {% endif %}
   <table style="margin-left:170px">
       <tr>
         <td width="30%">
@@ -39,7 +35,6 @@
   </form>
     <br><br>
 
-{% if irr %}
 <script type="text/javascript">
     var
       nestedObjects = [
@@ -73,7 +68,7 @@
             alert(content)
         });
     });
-    $('#delete').on('click', function () {    
+    $('#delete').on('click', function () {
       var selection = hot4.getSelected();
       console.log(selection);
       if (selection[0] == 0){
@@ -82,61 +77,11 @@
       else{
         hot4.alter('remove_row', selection[0], selection[2]);
       }
-      ajaxPost("{% url 'ilist_view' %}", {"data": JSON.stringify(selection[0]), 
+      ajaxPost("{% url 'ilist_view' %}", {"data": JSON.stringify(selection[0]),
                               "data2": JSON.stringify(selection[2]), "delete":1},
       function(content){
         console.log(content)
       });
     });
 </script>
-
-<!-- FOR PAR RECORD -->
-{% else %}
-<script type="text/javascript">
-    var
-      nestedObjects = [
-        {% for prod in prods %}
-          {product: '{{prod.id}}'},//, select: false},
-        {% endfor %}
-      ],
-      container4 = document.getElementById('handson'),
-      hot4;
-
-      hot4 = new Handsontable(container4, {
-      data: nestedObjects,
-      colHeaders: [
-        'PRODUCT ID *',
-        'QUANTITY *',
-      ],
-      columns: [
-        {data: 'product'},
-        {data: 'qty'}
-      ],
-      outsideClickDeselects: false
-    });
-
-    $('#post-form1').on('submit', function(event){
-    ajaxPost("{% url 'plist_view' %}", {"data": JSON.stringify(hot4.getData()), "par":1},
-      function(content){
-            console.log(content);
-        });
-    });
-
-    $('#delete').on('click', function () {    
-      var selection = hot4.getSelected();
-      console.log(selection);
-      if (selection[0] == 0){
-        hot4.alter('remove_row', selection[0], (parseInt(selection[2])+1));
-      }
-      else{
-        hot4.alter('remove_row', selection[0], selection[2]);
-      }
-      ajaxPost("{% url 'plist_view' %}", {"data": JSON.stringify(selection[0]), 
-                              "data2": JSON.stringify(selection[2]), "delete":1},
-      function(content){
-        console.log(content)
-      });
-    });
-</script>
-{% endif %}
 {% endblock %}
