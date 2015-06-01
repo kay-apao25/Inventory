@@ -703,21 +703,27 @@ def create_post(request, pk):
         return HttpResponse(json.dumps({"error": "error"}), content_type="application/json")
 
 @ajax
-def list_view(request):
-    c = request.POST.get('data1')
+def plist_view(request):
+    c = request.POST.get('data')
     if 'delete' in request.POST:
         d = request.POST.get('data2')
         #return c, d
         del prods[int(c):(int(d)+1)]
     else:
-        if 'qty_a' in json.loads(c)[0]:
-            del prod_to_irr[:]     
-            for c in json.loads(c):
-                prod_to_irr.append(c)
-        else:
-            del prod_to_par[:]
-            for c in json.loads(c):
-                prod_to_par.append(c)
+        del prod_to_par[:]
+        for c in json.loads(c):
+            prod_to_par.append(c)
+@ajax
+def ilist_view(request):
+    c = request.POST.get('data')
+    if 'delete' in request.POST:
+        d = request.POST.get('data2')
+        #return c, d
+        del prods[int(c):(int(d)+1)]
+    else:
+        del prod_to_irr[:]
+        for c in json.loads(c):
+            prod_to_irr.append(c)
 
 def product_to_irr(request, pk, inv, sup):
     """function"""
@@ -810,18 +816,7 @@ def par(request):
     prodlist = Product.objects.filter(inv_station_no=inv).filter(is_irr=True)
     products = Product.objects.filter(is_irr=True)
 
-    if 'delete' in request.POST:
-        k = int(request.POST['delete'])
-        for prod in products.product:
-            if prod['Product'] == prod_to_par[k]['Product']:
-                prod['quantity_par'] = prod_to_par[k]['Quantity']
-                prod['is_par'] = False
-                prod_list.append(int(prod['Product']))
-        products.is_par = False
-        products.save()
-        prod_to_par.remove(prod_to_par[k])
-
-    elif 'q' in request.GET and request.GET['q']:
+    if 'q' in request.GET and request.GET['q']:
         q = request.GET['q']
         pform = forms.ProductCheckForm1(inv=inv, q=q, plist=prods)
         #pform = forms.ProductCheckForm(inv=inv, sup=sup)
@@ -838,8 +833,8 @@ def par(request):
         return render(request, 'WISH/par_entry.html', \
                 {'iform': iform, 'prods': prods, 'inv': inv})
 
-    elif request.method == "POST":
-        iform = forms.PARForm(name=name)
+    elif 'save' in request.POST:
+        iform = forms.PARForm(request.POST, name=name)
         if iform.is_valid():
             for p in prod_to_par:
                 if 'qty' in p:
@@ -854,10 +849,9 @@ def par(request):
                 p.is_par = True
                 p.save()
 
-            par_entry = form.save(commit=False)
+            par_entry = iform.save(commit=False)
 
-            par_no = form.data['par_no']
-            par_entry.wo_number = IRR.objects.get(irr_no=inv)
+            par_no = iform.data['par_no']
             par_entry.par_date = time.strftime("%Y-%m-%d")
 
             par_entry.amt_cost = 0
@@ -868,19 +862,25 @@ def par(request):
                 par_entry.amt_cost = par_entry.amt_cost + amount
 
             par_entry.product = json.dumps(prod_to_par)
-            par_entry.inv_stat_no_id = IRR.objects.get(irr_no=inv).\
-            irr_headkey.inv_station_no.id
+            par_entry.inv_stat_no = inv
 
             par_entry.issued_by = Employee.objects.get\
             (name=(str(request.user.get_full_name())))
             par_entry.save()
+            iform = forms.PARForm(name=name)
             del prod_to_par[:]
             del prods[:]
             return render(request, 'WISH/par_entry.html', \
-                {'form': form, 'iform': iform, 'remove_add': remove_add, \
+                {'iform': iform, \
                 'msg': 'PAR Record (PAR No. - ' + str(par_no) + ') \
                 is successfully added.'})
-
+        else:
+            return redirect('index')
+    elif 'cancel' in request.POST:
+        del prod_to_par[:]
+        del prods[:]
+        return render(request, 'WISH/product_to_irr.html', \
+            {'msg': 'Making of PAR Record was cancelled.'})
     else:
         iform = forms.PARForm(name=name)
 

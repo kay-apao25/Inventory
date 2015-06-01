@@ -182,9 +182,8 @@ class PAR(models.Model):
     approved_by = models.ForeignKey(Employee, related_name='dce_FK2')
     issued_by = models.ForeignKey(Employee, related_name='dce_FK3')
     inv_stat_no = models.ForeignKey(InventoryStat, related_name="is_pFK")
-    #PO_number = models.CharField(null=True, blank=True)
     date_acquired = models.DateField()
-    wo_number = models.ForeignKey(IRR, related_name="wo_pFK")
+    wo_number = models.PositiveIntegerField(default=0)
     is_garv = models.BooleanField(default=False)
     history = HistoricalRecords()
 

@@ -176,9 +176,11 @@ urlpatterns = [
     #URL patterns for Viewing Libraries (end)
     url(r'^handson/$', login_required(views.handson),\
         name='handson'),
-    url(r'^create_post/(?P<pk>[0-9]+)/$', login_required(views.create_post),\
-        name='create_post'),
-    url(r'^list_view/$', login_required(views.list_view),\
-        name='list_view'),
+    #url(r'^create_post/(?P<pk>[0-9]+)/$', login_required(views.create_post),\
+    #    name='create_post'),
+    url(r'^ilist_view/$', login_required(views.ilist_view),\
+        name='ilist_view'),
+    url(r'^plist_view/$', login_required(views.plist_view),\
+        name='plist_view')
 
 ]

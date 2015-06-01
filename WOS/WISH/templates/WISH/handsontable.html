@@ -14,20 +14,13 @@
   {% if irr %}
     <form method="POST" id="post-form" action="{% url 'new_irr_cont' inv=inv sup=sup pk=pk%}">{% csrf_token %}
   {% else %}
-    <form method="POST" id="post-form" action="{% url 'new_par' %}">{% csrf_token %}
+    <form method="POST" id="post-form1" action="{% url 'new_par' %}">{% csrf_token %}
   {% endif %}
-  {% if prods|length != 0%}
-    <table style="margin-left:170px">
-  {% else %}
-    <table>
-  {% endif %}
+  <table style="margin-left:170px">
       <tr>
-        {% if prods|length != 0%}
         <td width="30%">
-          <div id="handson">
-          </div>
+        <div id="handson" style="margin-right:30px"></div>
         </td>
-        {% endif %}
         <td style="padding:20px">
           {% for field in iform %}
              {{field | bootstrap_horizontal:'col-lg-4'}}<br><br>
@@ -71,13 +64,13 @@
         {data: 'qty_r'},
         {data: 'qty_b'}
       ],
-      outsideClickDeselects: false//,
+      outsideClickDeselects: false
     });
 
     $('#post-form').on('submit', function(event){
-    ajaxPost("{% url 'list_view' %}", {"data": JSON.stringify(hot4.getData())},
+    ajaxPost("{% url 'ilist_view' %}", {"data": JSON.stringify(hot4.getData()), "irr":1},
       function(content){
-            console.log(content)
+            alert(content)
         });
     });
     $('#delete').on('click', function () {    
@@ -89,14 +82,12 @@
       else{
         hot4.alter('remove_row', selection[0], selection[2]);
       }
-      ajaxPost("{% url 'list_view' %}", {"data1": JSON.stringify(selection[0]), 
+      ajaxPost("{% url 'ilist_view' %}", {"data": JSON.stringify(selection[0]), 
                               "data2": JSON.stringify(selection[2]), "delete":1},
       function(content){
         console.log(content)
       });
     });
-
-
 </script>
 
 <!-- FOR PAR RECORD -->
@@ -121,13 +112,30 @@
         {data: 'product'},
         {data: 'qty'}
       ],
+      outsideClickDeselects: false
     });
 
-    $('#post-form').on('submit', function(event){
-    ajaxPost("{% url 'list_view' %}", {"data": JSON.stringify(hot4.getData())},
+    $('#post-form1').on('submit', function(event){
+    ajaxPost("{% url 'plist_view' %}", {"data": JSON.stringify(hot4.getData()), "par":1},
       function(content){
-            alert(content);
+            console.log(content);
         });
+    });
+
+    $('#delete').on('click', function () {    
+      var selection = hot4.getSelected();
+      console.log(selection);
+      if (selection[0] == 0){
+        hot4.alter('remove_row', selection[0], (parseInt(selection[2])+1));
+      }
+      else{
+        hot4.alter('remove_row', selection[0], selection[2]);
+      }
+      ajaxPost("{% url 'plist_view' %}", {"data": JSON.stringify(selection[0]), 
+                              "data2": JSON.stringify(selection[2]), "delete":1},
+      function(content){
+        console.log(content)
+      });
     });
 </script>
 {% endif %}

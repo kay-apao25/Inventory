@@ -54,6 +54,9 @@
       <strong><p style="font-size:15px">Fields with asterisk are required.</p></strong>
       {% include 'WISH/handsontable.html'%}
     {% endif %}
+    {% if prod_to_irr %}
+      {{prod_to_irr}}
+    {% endif %}
 
 
       <!--MODAL-->

@@ -205,11 +205,12 @@ class PARForm(forms.ModelForm):
     date_acquired = forms.DateField(widget=DateTimePicker(\
         options={"format": "YYYY-MM-DD", "pickTime": False}),\
          label='Date acquired*', required=True)
+    wo_number = forms.IntegerField( label='WO number*', required=True, min_value=0)
 
     class Meta:
         """Meta"""
         model = PAR
-        fields = ('par_no', 'dce', 'approved_by', 'date_acquired', 'remarks',)
+        fields = ('par_no', 'dce', 'approved_by', 'date_acquired', 'remarks', 'wo_number',)
 
 
 class ProducttoPARForm(forms.Form):
