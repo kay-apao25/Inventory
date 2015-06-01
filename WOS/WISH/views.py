@@ -219,7 +219,33 @@ def add_supplier(request):
 
 def product_new(request):
     """function"""
-    if request.method == "POST":
+
+    name = str(request.user.get_full_name())
+    inv = InventoryStat.objects.get(cost_center_no=\
+        Employee.objects.get(name=name).cost_center_no)
+
+    if 'q' in request.GET and request.GET['q']:
+        q = request.GET['q']
+        pform = forms.SupplierCheckForm(inv=inv, q=q)
+        form1 = forms.ProductForm1()
+        form2 = forms.ProductForm2()
+        form3 = forms.ProductForm3()
+        return render(request, 'WISH/product_add.html', \
+        {'form1': form1, 'form2': form2, 'form3': form3, 'pform': pform, 'inv': inv, 'name':name})
+
+
+    elif 'add' in request.GET:
+        q = request.GET.getlist('purchased_from')
+        prods.append(int(q[0]))
+        #pform = forms.(inv=inv, q=q)
+        form1 = forms.ProductForm1()
+        form2 = forms.ProductForm2()
+        form3 = forms.ProductForm3()
+        return render(request, 'WISH/product_add.html', \
+                {'form1': form1, 'form2': form2, 'form3': form3, 'q':q, 'inv':inv})
+
+
+    elif 'save' in request.POST:
 
         #Forms containing the entries entered by the user
         form = forms.ProductForm(request.POST)
@@ -244,12 +270,12 @@ def product_new(request):
 
             #Assignment of values in Product model
             for key in form.data.keys():
-                key1 = key
-                if key == 'inv_station_no' or key == 'purchased_from':
-                    key = key + '_id'
-                setattr(product, key, form1.data[key1])
-                setattr(product, key, form2.data[key1])
-                setattr(product, key, form3.data[key1])
+                setattr(product, key, form1.data[key])
+                setattr(product, key, form2.data[key])
+                setattr(product, key, form3.data[key])
+            setattr(product, 'inv_station_no', inv)
+            setattr(product, 'purchased_from_id', prods[0])
+            del prods[:]
 
             if form2.data['expiry_date'] == '':
                 product.expiry_date = None
@@ -272,6 +298,10 @@ def product_new(request):
             return render(request, 'WISH/product_add.html', {'form3': form3,\
              'form1':form1, 'form2': form2, 'msg': 'Product -' + product.item_name \
              + '- (SLC No: ' + product.slc_number + ') was added successfully.'})
+        else:
+            return redirect('index')
+
+
     else:
         #Displaying of blank forms
         form1 = forms.ProductForm1()

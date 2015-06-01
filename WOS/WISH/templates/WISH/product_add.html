@@ -7,20 +7,32 @@
         .form-group{
           width:300px;
         }
+        ul{
+    list-style-type: none;
+  }
       </style>
+
+  {% if name|length != 0 %}
+     <script type="text/javascript">
+            $( document ).ready( function() {
+                $('#prod').modal({show:true});
+            });
+        </script>
+   {% endif %}
+
     <div class="page-header">
         	<!--<img src=""></img>-->
        	<h2 align="center">Fill for Product Record</h2>
 	</div>
-    {% if form.non_field_errors %}
-    <ul>
-      {% for error in form.non_field_errors %}
-        <li>{{ error }}</li>
-      {% endfor %}
-    </ul>
-  {% endif %}
-    <form method="POST" class="product-form">{% csrf_token %}
-    <strong><p style="font-size:15px">Fields with asterisk are required.</p></strong>
+   
+  <div align="center"><a class="save btn btn-default" data-toggle="modal" data-target="#prod">Add Supplier</a></div>
+    
+    <form action="{% url 'new_product' %}" method="POST" class="product-form">{% csrf_token %}
+    <strong><p style="font-size:15px">Fields with asterisk are required.</p></strong><br><br>
+
+    
+
+
     {%if msg%}
     <div class="alert alert-success" style="width:400px">
         {{ msg }}
@@ -51,6 +63,41 @@
     </td>
     </tr>
   </table>
-     <div align="center"><button type="submit" class="save btn btn-default">Save</button></div>
+
+    {% if q %}
+    <div align="center"> <button value="{{q}}" name="save" type="submit" class="save btn btn-default">Save</button></div>
+    {% else %}
+    <div align="center"> <button name="save" type="submit" class="save btn btn-default">Save</button></div>
+    {% endif %}
+
     </form>
+    <!--MODAL-->
+
+        <div class="modal fade" id="prod" tabindex="-1" role="dialog" aria-labelledby="product" aria-hidden="true" style="margin-top: 100px; position: fixed; z-index:1000 opacity:0.5; height:auto">
+          <div class="modal-dialog modal-sm" style="width: 700px">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button  type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel">Supplier List</h4>
+              </div>
+              <div class="modal-body" id="mycontent">
+                <form action="" method="get">
+                    <div class="input-group">
+                      <!-- USE TWITTER TYPEAHEAD JSON WITH API TO SEARCH -->
+                      <input class="form-control" id="system-search" name="q" placeholder="Search for" >
+                    </div>
+                      {% for field in pform %}
+                        &nbsp;&nbsp;{{field | bootstrap}}&nbsp;&nbsp;&nbsp;
+                      {%endfor%}
+                      <div align="center"><button name="add" class="save btn btn-default">Ok</button></div>
+                </form>
+                
+              </div>
+            </div>
+          </div>
+        </div>
+      <!--END OF MODAL-->
+
+
+
 {% endblock %}
