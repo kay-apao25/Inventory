@@ -712,6 +712,8 @@ def list_view(request):
     else:
         del prod_to_irr[:]
         for c in json.loads(c):
+            c['is_par'] = False
+            c['quantity_par'] = c['qty_a']
             prod_to_irr.append(c)
 
 def product_to_irr(request, pk, inv, sup):
@@ -783,7 +785,7 @@ def product_to_irr(request, pk, inv, sup):
             irr.save()
             return render(request, 'WISH/product_to_irr.html', \
             {'msg': 'IRR record (IRR No. - '+ irr.irr_no + \
-            ') was successfully added.'})
+            ') was successfully added.', 'inv': inv, 'sup':sup, 'pk':pk})
     elif 'cancel' in request.POST:
         del prod_to_irr[:]
         del prods[:]
@@ -806,7 +808,7 @@ def par(request, inv):
     products = IRR.objects.get(irr_no=inv)
     for prod in products.product:
         if prod['is_par'] == False:
-            prod_list.append(int(prod['Product']))
+            prod_list.append(int(prod['product']))
     if request.method == "POST":
         form = forms.PARForm(request.POST, name=name)
         iform = forms.ProducttoPARForm(request.POST, prodlist=prod_list)
@@ -814,10 +816,10 @@ def par(request, inv):
         if 'delete' in request.POST:
             k = int(request.POST['delete'])
             for prod in products.product:
-                if prod['Product'] == prod_to_par[k]['Product']:
+                if prod['product'] == prod_to_par[k]['Product']:
                     prod['quantity_par'] = prod_to_par[k]['Quantity']
                     prod['is_par'] = False
-                    prod_list.append(int(prod['Product']))
+                    prod_list.append(int(prod['product']))
             products.is_par = False
             products.save()
             prod_to_par.remove(prod_to_par[k])
@@ -829,7 +831,7 @@ def par(request, inv):
             par_no = form.data['par_no']
 
             for prod in products.product:
-                if prod['Product'] == str(iform.data['product']):
+                if prod['product'] == str(iform.data['product']):
                     prod['quantity_par'] = int(prod['quantity_par'])\
                      - int(iform.data['quantity'])
                     if int(prod['quantity_par']) < 0:
@@ -842,12 +844,11 @@ def par(request, inv):
                     elif int(prod['quantity_par']) == 0:
                         prod['quantity_par'] = 0
                         prod['is_par'] = True
-                        prod_list.remove(int(prod['Product']))
+                        prod_list.remove(int(prod['product']))
                         products.save()
                     else:
                         prod['quantity_par'] = prod['quantity_par']
 
-            par_entry.wo_number = IRR.objects.get(irr_no=inv)
             par_entry.par_date = time.strftime("%Y-%m-%d")
             prod_to_par.append({'Product': iform.data['product'], 'Quantity':\
              iform.data['quantity'], 'quantity_garv': iform.data['quantity'],\
