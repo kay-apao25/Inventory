@@ -154,7 +154,7 @@ Image placeholders: placemi.com
 </style>
 </head>
 
-	<body style="padding-right:0px; padding-left:0px; padding-top: 0px">
+	<body style="padding-right:0px; padding-left:0px; padding-top: 0px;">
 		<div>
     </div>
 		<header id="headerback">
@@ -344,6 +344,17 @@ Image placeholders: placemi.com
                                         <strong>GARV Record: No new report recorded.</strong>
                                     {% endif %}
                                     <br>
+                                    {% if miv != null %}
+                                        {% if request.user.is_superuser %}
+                                        <a href="{% url 'miv_form' pk=miv.pk%}">
+                                            MIV Record: {{miv.miv_no}} - {{miv.date_issued}}
+                                        </a>
+                                        {% else %}
+                                            MIV Record: {{miv.miv_no}} - {{miv.date_issued}}
+                                        {% endif %}
+                                    {%else%}
+                                        <strong>MIV Record: No new report recorded.</strong>
+                                    {% endif %}
                                 </div>
                             </div>
                         </div>

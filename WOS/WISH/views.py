@@ -114,6 +114,10 @@ def index(request):
     except:
         garv = None
     try:
+        miv = MIV.objects.latest('miv_no')
+    except:
+        miv = None
+    try:
         inv = InventoryStat.objects.latest('id')
     except:
         inv = None
@@ -126,7 +130,7 @@ def index(request):
     except:
         cc = None
     return render(request, 'WISH/index.html', {'product': product, 'irr': irr, \
-    'par': par, 'garv': garv, 'inv': inv, 'sup': sup, 'cc': cc})
+    'par': par, 'garv': garv, 'miv': miv, 'inv': inv, 'sup': sup, 'cc': cc})
 
 def aboutus(request):
     """function"""
