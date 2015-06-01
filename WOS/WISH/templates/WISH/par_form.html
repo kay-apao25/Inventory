@@ -50,7 +50,7 @@
 		    			<td ><br><center>{{ product.amount }}</center><br><br><br></td>
 							<td ><br><center>{{ parss.date_acquired }}</center><br><br><br></td>
 							<td ><br><center>{{ parss.remarks }}</center><br><br><br></td>
-		    			<td ><br><center>{{ parss.wo_number.wo_no }}</center><br><br><br></td>
+		    			<td ><br><center>{{ parss.wo_number }}</center><br><br><br></td>
 
 		    		</tr>
 						{{products.pop.0}}
@@ -59,7 +59,7 @@
             				<tr>
       							<td colspan="8">
       			 					{% for i in remain %}
-										<br><br><br><br><br>
+										<br><br><br><br><br><br><br>
       			 					{% endfor %}
       							</td>
       						</tr>
@@ -90,6 +90,7 @@
 					</table>
 					
 						{% if forloop.last %}
+						<br>
       						<button id="printpagebutton" onclick="myFunction()" >Print this Form</button>
      					{% endif %}
 			</div>

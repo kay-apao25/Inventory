@@ -23,28 +23,26 @@ class Supplier(models.Model):
     def __unicode__(self):
         return self.supplier_name + ", " + self.supplier_address
 
-class CostCenter(models.Model):
-    """Cost_center models"""
-    cost_center_name = models.CharField(max_length=40)
-    functional_group = models.CharField(max_length=40)
-    is_delete = models.BooleanField(default=False)
-    history = HistoricalRecords()
-
-    def __unicode__(self):
-        return self.cost_center_name
-
-
 class InventoryStat(models.Model):
     """Inventory_stat models"""
     inv_station_no = models.CharField(max_length=40)
     station_description = models.CharField(max_length=20)
-    cost_center_no = models.ManyToManyField(CostCenter, related_name="cc_iFK")
     is_delete = models.BooleanField(default=False)
     history = HistoricalRecords()
 
     def __unicode__(self):
         return self.station_description
 
+class CostCenter(models.Model):
+    """Cost_center models"""
+    cost_center_name = models.CharField(max_length=40)
+    inv_station_no = models.ForeignKey(InventoryStat, related_name="i_ccFK")
+    functional_group = models.CharField(max_length=40)
+    is_delete = models.BooleanField(default=False)
+    history = HistoricalRecords()
+
+    def __unicode__(self):
+        return self.cost_center_name
 
 
 class Employee(models.Model):
@@ -108,7 +106,6 @@ class Product(models.Model):
     inv_station_no = models.ForeignKey(InventoryStat, related_name="inv_iFK")
     balance = models.PositiveIntegerField(default=0, null=True, blank=True)
     is_irr = models.BooleanField(default=False)
-    is_par = models.BooleanField(default=False)
 
     def __unicode__(self):
         return self.item_name + " , " + self.description
@@ -182,9 +179,8 @@ class PAR(models.Model):
     approved_by = models.ForeignKey(Employee, related_name='dce_FK2')
     issued_by = models.ForeignKey(Employee, related_name='dce_FK3')
     inv_stat_no = models.ForeignKey(InventoryStat, related_name="is_pFK")
-    #PO_number = models.CharField(null=True, blank=True)
     date_acquired = models.DateField()
-    wo_number = models.ForeignKey(IRR, related_name="wo_pFK")
+    wo_number = models.PositiveIntegerField(default=0)
     is_garv = models.BooleanField(default=False)
     history = HistoricalRecords()
 
@@ -198,7 +194,7 @@ class GARV(models.Model):
     garv_date = models.DateField()
     garv_no = models.CharField(max_length=10, primary_key=True)
     cc_number = models.ForeignKey(CostCenter, related_name="cc_gFK")
-    wo_number = models.ForeignKey(IRR, related_name="wo_gFK")
+    wo_number = models.PositiveIntegerField()
     inspected_by = models.ForeignKey(Employee, related_name='dce_FK4')
     date_inspected = models.DateField(null=True, blank=True)
     confirmed_by = models.ForeignKey(Employee, related_name='dce_FK5')

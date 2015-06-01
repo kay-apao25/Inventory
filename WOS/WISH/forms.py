@@ -154,15 +154,11 @@ class IRRentrycontForm(forms.ModelForm):
 
 class ProductCheckForm(forms.Form):
     def __init__(self, *args, **kwargs):
-        inv = kwargs.pop('inv')
-        sup = kwargs.pop('sup')
-        q = kwargs.pop('q')
         plist = kwargs.pop('plist')
         super(ProductCheckForm, self).__init__(*args, **kwargs)
 
         self.fields['product'] = forms.ModelMultipleChoiceField(widget=forms.CheckboxSelectMultiple,\
-            required=True, label='', queryset=Product.objects.filter(inv_station_no=inv).filter(\
-            purchased_from=sup).filter(quantity__gt=0).filter(slc_number__contains=q).exclude(id__in=[p.id for p in plist]))
+            required=True, label='', queryset=plist)
         self.fields['product'].widget.attrs = {'id': 'myCustomId'}
 
 class SupplierCheckForm(forms.Form):
@@ -217,11 +213,12 @@ class PARForm(forms.ModelForm):
     date_acquired = forms.DateField(widget=DateTimePicker(\
         options={"format": "YYYY-MM-DD", "pickTime": False}),\
          label='Date acquired*', required=True)
+    wo_number = forms.IntegerField( label='WO number*', required=True, min_value=0)
 
     class Meta:
         """Meta"""
         model = PAR
-        fields = ('par_no', 'dce', 'approved_by', 'date_acquired', 'remarks',)
+        fields = ('par_no', 'dce', 'approved_by', 'date_acquired', 'remarks', 'wo_number',)
 
 
 class ProducttoPARForm(forms.Form):
@@ -290,7 +287,7 @@ class Statlib(forms.ModelForm):
 
     class Meta:
         model = InventoryStat
-        fields = ('inv_station_no', 'station_description', 'cost_center_no',)
+        fields = ('inv_station_no', 'station_description',)
 
 class Statlib1(forms.ModelForm):
     """Stat_lib"""
@@ -299,7 +296,7 @@ class Statlib1(forms.ModelForm):
 
     class Meta:
         model = InventoryStat
-        fields = ( 'station_description', 'cost_center_no',)
+        fields = ( 'station_description',)
 
 
 class CClib(forms.ModelForm):

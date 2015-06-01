@@ -226,10 +226,8 @@ class ProdRep(ListView):
     template_name = 'WISH/product_reports.html'
 
     def get_queryset(self):
-        return models.Product.objects.filter(inv_station_no__in=[i.inv_station_no \
-        for i in (models.InventoryStat.objects.filter(cost_center_no=(\
-        models.Employee.objects.get(name=str(self.request.user.first_name) \
-        + ' ' + str(self.request.user.last_name)).cost_center_no)))])
+        return models.Product.objects.filter(inv_station_no=(models.Employee.objects.get(\
+            name=str(self.request.user.get_full_name())).cost_center_no.inv_station_no))
 
 class InvStatRep(ListView):
     context_object_name='inv_list'
