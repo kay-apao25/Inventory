@@ -1,4 +1,6 @@
-from django.views.generic import ListView, DetailView, CreateView, UpdateView
+from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
+from WISH.models import Supplier, CostCenter, InventoryStat, Employee, MIV, GARV, IRR, PAR, Product
+from django.shortcuts import get_object_or_404, redirect, render
 from django.core.urlresolvers import reverse_lazy
 from . import models
 from . import forms
@@ -65,8 +67,6 @@ class IRRRep(ListView):
         else:
             context = super(IRRRep, self).get_context_data(**kwargs)
             return context
-
-
 
 class MIVRep(ListView):
     context_object_name='miv_list'
@@ -226,8 +226,7 @@ class ProdRep(ListView):
     template_name = 'WISH/product_reports.html'
 
     def get_queryset(self):
-        return models.Product.objects.filter(inv_station_no=(models.Employee.objects.get(\
-            name=str(self.request.user.get_full_name())).cost_center_no.inv_station_no))
+        return models.Product.objects.filter(inv_station_no=(models.Employee.objects.get(name=str(self.request.user.get_full_name())).cost_center_no.inv_station_no))
 
 class InvStatRep(ListView):
     context_object_name='inv_list'
@@ -360,3 +359,102 @@ class EmpDetailsRes(DetailView):
     model = models.Employee
     context_object_name = 'em'
     template_name = 'WISH/employee_detail_res.html'
+
+""" Non-classes """
+
+def inv_stat_del(request, pk):
+    """function"""
+    inv_del = get_object_or_404(InventoryStat, pk=pk)
+    inv_del.is_delete = True
+    inv_del.save()
+    return redirect('inv_stat')
+
+def cost_center_del(request, pk):
+    """function"""
+    cos_del = get_object_or_404(CostCenter, pk=pk)
+    cos_del.is_delete = True
+    cos_del.save()
+    return redirect('cost_center')
+
+def supplier_del(request, pk):
+    """function"""
+    sup_del = get_object_or_404(Supplier, pk=pk)
+    sup_del.is_delete = True
+    sup_del.save()
+    return redirect('supplier')
+
+def employee_del(request, pk):
+    """function"""
+    em_del = get_object_or_404(Employee, pk=pk)
+    em_del.is_delete = True
+    em_del.save()
+    return redirect('employee')
+
+def inv_stat_res(request, pk):
+    """function"""
+    inv_del = get_object_or_404(InventoryStat, pk=pk)
+    inv_del.is_delete = False
+    inv_del.save()
+    return redirect('inv_stat')
+
+def cost_center_res(request, pk):
+    """function"""
+    cc_del = get_object_or_404(CostCenter, pk=pk)
+    cc_del.is_delete = False
+    cc_del.save()
+    return redirect('cost_center')
+
+def supplier_res(request, pk):
+    """function"""
+    sup_del = get_object_or_404(Supplier, pk=pk)
+    sup_del.is_delete = False
+    sup_del.save()
+    return redirect('supplier')
+
+def employee_res(request, pk):
+    """function"""
+    em_del = get_object_or_404(Employee, pk=pk)
+    em_del.is_delete = False
+    em_del.save()
+    return redirect('employee')
+
+def index(request):
+    """function"""
+    try:
+        product = Product.objects.order_by('id')[:4]
+    except:
+        product = []
+    try:
+        irr = IRR.objects.latest('wrs_number')
+    except:
+        irr = None
+    try:
+        par = PAR.objects.latest('par_no')
+    except:
+        par = None
+    try:
+        garv = GARV.objects.latest('garv_no')
+    except:
+        garv = None
+    try:
+        miv = MIV.objects.latest('miv_no')
+    except:
+        miv = None
+    try:
+        inv = InventoryStat.objects.latest('id')
+    except:
+        inv = None
+    try:
+        sup = Supplier.objects.latest('id')
+    except:
+        sup = None
+    try:
+        cc = CostCenter.objects.latest('id')
+    except:
+        cc = None
+    return render(request, 'WISH/index.html', {'product': product, 'irr': irr, \
+    'par': par, 'garv': garv, 'miv': miv, 'inv': inv, 'sup': sup, 'cc': cc})
+
+def aboutus(request):
+    """function"""
+    return render(request, 'WISH/AboutUs.html', {})
