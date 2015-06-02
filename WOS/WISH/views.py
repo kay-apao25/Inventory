@@ -241,7 +241,6 @@ def product_new(request):
     elif 'add' in request.GET:
         q = request.GET.getlist('purchased_from')
         if len(q) != 0:
-            #pform = forms.(inv=inv, q=q)
             form1 = forms.ProductForm1()
             form2 = forms.ProductForm2()
             form3 = forms.ProductForm3()
@@ -803,7 +802,7 @@ def product_to_irr(request, pk, inv, sup):
             prods.append(Product.objects.get(id=q))
         iform = forms.IRRentrycontForm()
         return render(request, 'WISH/product_to_irr.html', \
-            {'iform': iform, 'pk': pk, 'prods': prods, 'prodlist': prodlist, \
+            {'iform': iform, 'pk': pk, 'prods': prods, \
             'inv': inv, 'sup': sup})
     elif 'save' in request.POST:
         iform = forms.IRRentrycontForm(request.POST)
