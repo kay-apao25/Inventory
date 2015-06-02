@@ -7,8 +7,8 @@ from . import models
 from . import cviews
 
 urlpatterns = [
-    url(r'^$', login_required(views.index), name='index'),
-    url(r'^Aboutus/$', login_required(views.aboutus), name='aboutus'),
+    url(r'^$', login_required(cviews.index), name='index'),
+    url(r'^Aboutus/$', login_required(cviews.aboutus), name='aboutus'),
 
     #URL patterns for Log In and Out (start)
     url(r'^log_in/$', views.log_in, name='login'),
@@ -85,13 +85,13 @@ urlpatterns = [
     #URL patterns for Library Details (end)
 
     #URL patterns for Deleting Libraries (start)
-    url(r'^inv_stat_del/(?P<pk>[0-9]+)/$', login_required(views.inv_stat_del),\
+    url(r'^inv_stat_del/(?P<pk>[0-9]+)/$', login_required(cviews.inv_stat_del),\
         name='invstat_del'),
     url(r'^cost_center_del/(?P<pk>[0-9]+)/$', \
-        views.cost_center_del, name='costcen_del'),
-    url(r'^supplier_del/(?P<pk>[0-9]+)/$', login_required(views.supplier_del),\
+        login_required(cviews.cost_center_del), name='costcen_del'),
+    url(r'^supplier_del/(?P<pk>[0-9]+)/$', login_required(cviews.supplier_del),\
         name='supplier_del'),
-    url(r'^employee_del/(?P<pk>[0-9]+)/$', login_required(views.employee_del),\
+    url(r'^employee_del/(?P<pk>[0-9]+)/$', login_required(cviews.employee_del),\
         name='emp_del'),
     #URL patterns for Deleting Libraries (end)
 
@@ -164,13 +164,13 @@ urlpatterns = [
         name='emp_details_res'),
 
     #URL patterns for restore functionality
-    url(r'^inv_stat_res/(?P<pk>[0-9]+)/$', login_required(views.inv_stat_res),\
+    url(r'^inv_stat_res/(?P<pk>[0-9]+)/$', login_required(cviews.inv_stat_res),\
         name='invstat_res'),
-    url(r'^cost_center_res/(?P<pk>[0-9]+)/$', login_required(views.cost_center_res),\
+    url(r'^cost_center_res/(?P<pk>[0-9]+)/$', login_required(cviews.cost_center_res),\
         name='costcenter_res'),
-    url(r'^supplier_res/(?P<pk>[0-9]+)/$', login_required(views.supplier_res),\
+    url(r'^supplier_res/(?P<pk>[0-9]+)/$', login_required(cviews.supplier_res),\
         name='supplier_res'),
-    url(r'^employee_res/(?P<pk>[0-9]+)/$', login_required(views.employee_res),\
+    url(r'^employee_res/(?P<pk>[0-9]+)/$', login_required(cviews.employee_res),\
         name='employee_res'),
 
     #URL patterns for Viewing Libraries (end)

@@ -3,31 +3,36 @@
 {% block content %}
 {% load bootstrap %}
 
+<!--Start Style-->
 <style type="text/css">
-        .form-group{
-          width:300px;
-        }
-      </style>
-    <div class="page-header">
-        	<!--<img src=""></img>-->
-       	<h2 align="center">Cost Center Record</h2>
-	</div>
-  {%if msg%}
-  <div class="alert alert-success" style="width:400px">
-      {{ msg }}
-  </div>
-  {% endif %}
+  .form-group{
+    width:300px;
+  }
+</style>
+<!--End Style-->
 
-    <form method="POST" class="product-form">{% csrf_token %}
+<!--Start Header-->
+<div class="page-header">
+   	<h2 align="center">Cost Center Record</h2>
+</div>
+<!--End Header-->
 
+<!--Start Message-->
+{%if msg%}
+<div class="alert alert-success" style="width:400px">
+    {{ msg }}
+</div>
+{% endif %}
+<!--End Message-->
+
+<!--Start Form-->
+<form method="POST" class="product-form">{% csrf_token %}
   <table width="50%" align="center" >
-
-     {% for field in form %}
+      {% for field in form %}
       {{field | bootstrap}}&nbsp;&nbsp;&nbsp;
-     {%endfor%}
-
-
+      {%endfor%}
   </table>
-     <div align="center"><button type="submit" class="save btn btn-default">Save</button></div>
-    </form>
+  <div align="center"><button type="submit" class="save btn btn-default">Save</button></div>
+</form>
+<!--End Form-->
 {% endblock %}

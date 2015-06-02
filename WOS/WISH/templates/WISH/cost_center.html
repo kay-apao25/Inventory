@@ -43,7 +43,7 @@
           <div class="alert alert-warning" style="width:400px">
             No records found.
           </div>
-        {% endif %}
+        {% else %}
 
         {% if cc_list|length <= 15  %}
           <div class="col-md-2"></div>
@@ -78,6 +78,7 @@
               {% endfor %}
             </table>
         </div>
+        {% endif %}
         <!--End Getter-->
     </div>
 </div>

@@ -1,6 +1,7 @@
 {% extends 'WISH/index.html' %}
 
 {% block content %}
+<br><br>
 <div class="container" style="width:60%;">
 
 <ul class="nav nav-tabs" role="tablist">
@@ -30,10 +31,10 @@
           </a>
       </li>
     </ul>
-
+<br>
 <div id="irr">
   <br>
-  <div class="col-md-4" align='left'>
+  <div class="col-md-2" align='left'>
     <form action="" method="get">
       <div class="input-group">
         <!-- USE TWITTER TYPEAHEAD JSON WITH API TO SEARCH -->
@@ -42,7 +43,6 @@
     </form>
 
   </div>
-<br><br><br>
 {% if irr_list|length == 0 and error %}
 
 
