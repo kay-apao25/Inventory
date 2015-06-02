@@ -7,10 +7,11 @@
   </div>
   <div align="center"><a href= "{% url 'index' %}"><i class="glyphicon glyphicon-share-alt"></i> Exit </a></div>
 {% else %}
-  <h2 align="center"> Select the PAR Record to be created with GARV Report </h2>
-  <br><br>
+  <div class="page-header">
+    <h2 align="center"> Select the PAR Record to be created with GARV Report </h2>
+  </div>
   {% if par_list|length <= 20 %}
-    <div class="col-md-2" style="margin-left: 130px"></div>
+    <div class="col-md-2" style="margin-left: 165px"></div>
    {% else %}
     <div class="col-md-2" style="padding-right: 0px; margin-left: 300px; padding-left: 0px;">
     <form action="#" method="get">

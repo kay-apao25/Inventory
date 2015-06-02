@@ -96,103 +96,6 @@ def log_out(request):
     form2 = forms.GuestForm()
     return render(request, 'WISH/login.html', {'form': form, 'form1': form1, 'form2':form2})
 
-def index(request):
-    """function"""
-    try:
-        product = Product.objects.order_by('id')[:3]
-    except:
-        product = []
-    try:
-        irr = IRR.objects.latest('wrs_number')
-    except:
-        irr = None
-    try:
-        par = PAR.objects.latest('par_no')
-    except:
-        par = None
-    try:
-        garv = GARV.objects.latest('garv_no')
-    except:
-        garv = None
-    try:
-        miv = MIV.objects.latest('miv_no')
-    except:
-        miv = None
-    try:
-        inv = InventoryStat.objects.latest('id')
-    except:
-        inv = None
-    try:
-        sup = Supplier.objects.latest('id')
-    except:
-        sup = None
-    try:
-        cc = CostCenter.objects.latest('id')
-    except:
-        cc = None
-    return render(request, 'WISH/index.html', {'product': product, 'irr': irr, \
-    'par': par, 'garv': garv, 'miv': miv, 'inv': inv, 'sup': sup, 'cc': cc})
-
-def aboutus(request):
-    """function"""
-    return render(request, 'WISH/AboutUs.html', {})
-
-def inv_stat_del(request, pk):
-    """function"""
-    inv_del = get_object_or_404(InventoryStat, pk=pk)
-    inv_del.is_delete = True
-    inv_del.save()
-    return redirect('inv_stat')
-
-def cost_center_del(request, pk):
-    """function"""
-    cos_del = get_object_or_404(CostCenter, pk=pk)
-    cos_del.is_delete = True
-    cos_del.save()
-    return redirect('cost_center')
-
-def supplier_del(request, pk):
-    """function"""
-    sup_del = get_object_or_404(Supplier, pk=pk)
-    sup_del.is_delete = True
-    sup_del.save()
-    return redirect('supplier')
-
-def employee_del(request, pk):
-    """function"""
-    em_del = get_object_or_404(Employee, pk=pk)
-    em_del.is_delete = True
-    em_del.save()
-    return redirect('employee')
-
-def inv_stat_res(request, pk):
-    """function"""
-    inv_del = get_object_or_404(InventoryStat, pk=pk)
-    inv_del.is_delete = False
-    inv_del.save()
-    return redirect('inv_stat')
-
-def cost_center_res(request, pk):
-    """function"""
-    cc_del = get_object_or_404(CostCenter, pk=pk)
-    cc_del.is_delete = False
-    cc_del.save()
-    return redirect('cost_center')
-
-def supplier_res(request, pk):
-    """function"""
-    sup_del = get_object_or_404(Supplier, pk=pk)
-    sup_del.is_delete = False
-    sup_del.save()
-    return redirect('supplier')
-
-def employee_res(request, pk):
-    """function"""
-    em_del = get_object_or_404(Employee, pk=pk)
-    em_del.is_delete = False
-    em_del.save()
-    return redirect('employee')
-
 def add_supplier(request):
     """function"""
     if request.method == 'POST':
@@ -209,6 +112,7 @@ def add_supplier(request):
 
             sup.supplier_name = form.data['supplier_name']
             sup.save()
+
             form = forms.Suplib()
             form1 = forms.Suplib1()
             form2 = forms.Suplib2()
@@ -258,7 +162,6 @@ def product_new(request):
                 'slist':slist, 'error1': 'No supplier selected.'})
 
     elif request.method == 'POST':
-
         #Forms containing the entries entered by the user
         form = forms.ProductForm(request.POST)
         form1 = forms.ProductForm1(request.POST)
@@ -313,7 +216,6 @@ def product_new(request):
             else:
                 return render(request, 'WISH/product_add.html', {'form3': form3,\
                  'form1':form1, 'form2': form2, 'error': 'No supplier added.'})
-
     else:
         #Displaying of blank forms
         form1 = forms.ProductForm1()
@@ -337,19 +239,17 @@ def irr_entry(request):
         form1 = forms.IRRentryForm1()
         form2 = forms.IRRentryForm2(name=str(name))
         return render(request, 'WISH/irr_entry.html', \
-        {'form1': form1, 'form2': form2, 'pform': pform, 'inv': inv, 'name':name, 'entry':1, 'slist':slist})
-
+        {'form1': form1, 'form2': form2, 'pform': pform, 'inv': inv, 'name':name, \
+        'entry':1, 'slist':slist})
 
     elif 'add' in request.GET:
         q = request.GET.getlist('supplier')
         if len(q) != 0:
             prods.append(int(q[0]))
-            #pform = forms.(inv=inv, q=q)
             form1 = forms.IRRentryForm1()
             form2 = forms.IRRentryForm2(name=str(name))
             return render(request, 'WISH/irr_entry.html', \
                     {'form1': form1, 'form2': form2, 'q':int(q[0])})
-
         else:
             slist = Supplier.objects.filter(supplier_name__contains=query)
             pform = forms.SupplierCheckForm1(q=slist)
@@ -360,9 +260,7 @@ def irr_entry(request):
                 'pform': pform, 'inv': inv, 'name':name, 'entry': 1, \
                 'slist':slist, 'error1': 'No supplier selected.'})
 
-
     elif 'fsave' in request.POST:
-
         #Forms containing the entries entered by the user
         form = forms.IRRentryForm(request.POST)
         form1 = forms.IRRentryForm1(request.POST)
@@ -384,13 +282,14 @@ def irr_entry(request):
 
                 irr_entry.supplier = Supplier.objects.get(id=request.POST['fsave'])
                 irr_entry.inv_station_no = inv
-
                 irr_entry.dce_custodian = Employee.objects.get(name=name)
+
                 try:
                     irr_entry.save()
                 except IntegrityError as e:
-                    return render(request, 'WISH/irr_entry.html', {"error": "Record already exists.", 'form1': form1, 'form2': form2})
-
+                    return render(request, 'WISH/irr_entry.html', {"error": "Record already exists."\
+                        , 'form1': form1, 'form2': form2})
+                del prods[:]
                 return redirect('new_irr_cont',\
                  pk=irr_entry.pk, inv=int(irr_entry.inv_station_no_id), sup=irr_entry.supplier_id)
             else:
@@ -418,7 +317,6 @@ def miv_entry(request, pk):
 
         #Non-empty forms are to be validated.
         if form.is_valid():
-
             miv_entry = form.save(commit=False)
             miv_entry.irr_no_id = pk
 
@@ -452,7 +350,6 @@ def miv_entry(request, pk):
             return render(request, 'WISH/miv_entry.html', \
                 {'msg': 'MIV record (MIV No. - ' + miv_entry.miv_no \
                 + ') was successfully added.', 'exit': 'Exit'})
-
     else:
         form = forms.MIVentryForm()
 
