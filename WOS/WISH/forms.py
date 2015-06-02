@@ -171,12 +171,11 @@ class SupplierCheckForm(forms.Form):
 
 class SupplierCheckForm1(forms.Form):
     def __init__(self, *args, **kwargs):
-        inv = kwargs.pop('inv')
         q = kwargs.pop('q')
         super(SupplierCheckForm1, self).__init__(*args, **kwargs)
 
         self.fields['supplier'] = forms.ModelMultipleChoiceField(widget=forms.CheckboxSelectMultiple,\
-            required=True, label='', queryset=Supplier.objects.filter(supplier_name__contains=q))
+            required=True, label='', queryset=q)
         self.fields['supplier'].widget.attrs = {'id': 'myCustomId'}
 
 class ProductCheckForm1(forms.Form):

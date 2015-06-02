@@ -327,29 +327,42 @@ def product_new(request):
 
 def irr_entry(request):
     """function"""
+    global query
     name = str(request.user.get_full_name())
     inv = Employee.objects.get(name=name).cost_center_no.inv_station_no
 
     if 'q' in request.GET and request.GET['q']:
-        q = request.GET['q']
-        pform = forms.SupplierCheckForm1(inv=inv, q=q)
+        query = request.GET['q']
+        slist = Supplier.objects.filter(supplier_name__contains=query)
+        pform = forms.SupplierCheckForm1(q=slist)
         form1 = forms.IRRentryForm1()
         form2 = forms.IRRentryForm2(name=str(name))
         return render(request, 'WISH/irr_entry.html', \
-        {'form1': form1, 'form2': form2, 'pform': pform, 'inv': inv, 'name':name})
+        {'form1': form1, 'form2': form2, 'pform': pform, 'inv': inv, 'name':name, 'entry':1, 'slist':slist})
 
 
     elif 'add' in request.GET:
         q = request.GET.getlist('supplier')
-        prods.append(int(q[0]))
-        #pform = forms.(inv=inv, q=q)
-        form1 = forms.IRRentryForm1()
-        form2 = forms.IRRentryForm2(name=str(name))
-        return render(request, 'WISH/irr_entry.html', \
-                {'form1': form1, 'form2': form2, 'q':q, 'inv':inv})
+        if len(q) != 0:
+            prods.append(int(q[0]))
+            #pform = forms.(inv=inv, q=q)
+            form1 = forms.IRRentryForm1()
+            form2 = forms.IRRentryForm2(name=str(name))
+            return render(request, 'WISH/irr_entry.html', \
+                    {'form1': form1, 'form2': form2, 'q':int(q[0])})
+
+        else:
+            slist = Supplier.objects.filter(supplier_name__contains=query)
+            pform = forms.SupplierCheckForm1(q=slist)
+            form1 = forms.IRRentryForm1()
+            form2 = forms.IRRentryForm2(name=str(name))
+            return render(request, 'WISH/irr_entry.html', \
+                {'form1': form1, 'form2': form2, \
+                'pform': pform, 'inv': inv, 'name':name, 'entry': 1, \
+                'slist':slist, 'error1': 'No supplier selected.'})
 
 
-    elif request.method == "POST":
+    elif 'fsave' in request.POST:
 
         #Forms containing the entries entered by the user
         form = forms.IRRentryForm(request.POST)
@@ -357,29 +370,33 @@ def irr_entry(request):
         form2 = forms.IRRentryForm2(request.POST, name=name)
 
         #Non-empty forms are to be validated.
-        if form.is_valid() and form1.is_valid() and form2.is_valid():
-            irr_entry = form.save(commit=False)
+        if form1.is_valid() and form2.is_valid():
+            if len(request.POST['fsave']) != 0:
+                irr_entry = form.save(commit=False)
 
-            #Assignment of values in IRR header model
-            for key in form.data.keys():
-                key1 = key
-                if key == 'supplier' or key == 'dce_user' or \
-                key == 'inv_station_no' or key == 'dce_approved':
-                    key = key + '_id'
-                setattr(irr_entry, key, form1.data[key1])
-                setattr(irr_entry, key, form2.data[key1])
-            setattr(irr_entry, 'inv_station_no', inv)
-            setattr(irr_entry, 'supplier', q)
+                #Assignment of values in IRR header model
+                for key in form.data.keys():
+                    key1 = key
+                    if key == 'supplier' or key == 'dce_user' or \
+                    key == 'inv_station_no' or key == 'dce_approved':
+                        key = key + '_id'
+                    setattr(irr_entry, key, form1.data[key1])
+                    setattr(irr_entry, key, form2.data[key1])
 
-            irr_entry.dce_custodian = Employee.objects.get(name=name)
-            try:
-                irr_entry.save()
-            except IntegrityError as e:
-                return render(request, 'WISH/irr_entry.html', {"error": "Record already exists.", 'form1': form1, 'form2': form2})
+                irr_entry.supplier = Supplier.objects.get(id=request.POST['fsave'])
+                irr_entry.inv_station_no = inv
 
-            del prods[:]
-            return redirect('new_irr_cont',\
-             pk=irr_entry.pk, inv=int(irr_entry.inv_station_no_id), sup=irr_entry.supplier_id)
+                irr_entry.dce_custodian = Employee.objects.get(name=name)
+                try:
+                    irr_entry.save()
+                except IntegrityError as e:
+                    return render(request, 'WISH/irr_entry.html', {"error": "Record already exists.", 'form1': form1, 'form2': form2})
+
+                return redirect('new_irr_cont',\
+                 pk=irr_entry.pk, inv=int(irr_entry.inv_station_no_id), sup=irr_entry.supplier_id)
+            else:
+                return render(request, 'WISH/irr_entry.html', {\
+                 'form1':form1, 'form2': form2, 'error': 'No supplier added.'})
     else:
         prodlist = Product.objects.filter(inv_station_no=inv)
 
@@ -765,9 +782,10 @@ def list_view(request):
 
 def product_to_irr(request, pk, inv, sup):
     """function"""
-    prodlist = Product.objects.filter(inv_station_no=inv).filter(\
-            purchased_from=sup).filter(quantity__gt=0).exclude(\
-            id__in=[p.id for p in prods])
+    if len(prods) != 0:
+        prodlist = Product.objects.filter(inv_station_no=inv).filter(\
+                purchased_from=sup).filter(quantity__gt=0).exclude(\
+                id__in=[p.id for p in prods])
     if 'q' in request.GET and request.GET['q']:
         q = request.GET['q']
         prodlist = Product.objects.filter(inv_station_no=inv).filter(\
