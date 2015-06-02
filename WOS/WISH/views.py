@@ -241,7 +241,6 @@ def product_new(request):
     elif 'add' in request.GET:
         q = request.GET.getlist('purchased_from')
         if len(q) != 0:
-            #pform = forms.(inv=inv, q=q)
             form1 = forms.ProductForm1()
             form2 = forms.ProductForm2()
             form3 = forms.ProductForm3()

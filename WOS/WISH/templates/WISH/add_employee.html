@@ -2,37 +2,41 @@
 {% load bootstrap %}
 
 {% block content %}
-	<style type="text/css">
-        .form-group{
-          width:400px;
-        }
-      </style>
-    <div class="page-header">
-      <h2 align="center">Add another employee</h2>
-    </div>
-		{%if msg%}
-    <div class="alert alert-success" style="width:400px">
-        {{ msg }}
-    </div>
-    {% endif %}
-    <br>
-    <br>
-    <form method="POST" class="irr_entry">{% csrf_token %}
-    <table width="10%">
-    <tr>
-    <td colspan="2">
 
-     <td style="padding:20px">
-     {% for field in form %}
+<!--Start Style-->
+<style type="text/css">
+  .form-group{
+    width:400px;
+  }
+</style>
+<!--End Style-->
 
-   		&nbsp;&nbsp;{{field | bootstrap_horizontal:'col-lg-4'}}&nbsp;&nbsp;&nbsp;
+<!--Start Header-->
+<div class="page-header">
+  <h2 align="center">Add another employee</h2>
+</div>
+<!--End Header-->
 
-     {%endfor%}
-     <br>
-     <br>
-     </td>
-     </tr>
-     </table>
+<!--Start Message-->
+{%if msg%}
+<div class="alert alert-success" style="width:400px">
+    {{ msg }}
+</div>
+{% endif %}<br><br>
+<!--End Message-->
+
+<!--Start Form-->
+<form method="POST" class="irr_entry">{% csrf_token %}
+		<table width="10%">
+				<tr>
+						<td style="padding:20px">
+								 {% for field in form %}
+										&nbsp;&nbsp;{{field | bootstrap_horizontal:'col-lg-4'}}&nbsp;&nbsp;&nbsp;
+								 {%endfor%}<br><br>
+						 </td>
+				 </tr>
+		 </table>
 		<div align="center"><button type="submit" class="save btn btn-default">Save</button></div>
-   </form>
+</form>
+<!--End Form-->
 {% endblock %}
