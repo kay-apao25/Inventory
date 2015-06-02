@@ -2,81 +2,88 @@
 {% block content %}
 <div class="container" style="width:50%;">
 
-<ul class="nav nav-tabs" role="tablist">
-      <li>
-          <a id='inv_stat' href="{% url 'inv_stat' %}">
-              Inventory Station
-          </a>
-      </li>
-      <li class="active">
-          <a id='cc' href="{% url 'cost_center' %}" >
-              Cost Center
-          </a>
-      </li>
-       <li>
-          <a id='supplier' href="{% url 'supplier' %}">
-              Supplier
-          </a>
-      </li>
-      <li>
-          <a id='employee' href="{% url 'employee' %}">
-              Employee
-          </a>
-      </li>
+    <!--Start Tabing-->
+    <ul class="nav nav-tabs" role="tablist">
+          <li>
+              <a id='inv_stat' href="{% url 'inv_stat' %}">
+                  Inventory Station
+              </a>
+          </li>
+          <li class="active">
+              <a id='cc' href="{% url 'cost_center' %}" >
+                  Cost Center
+              </a>
+          </li>
+           <li>
+              <a id='supplier' href="{% url 'supplier' %}">
+                  Supplier
+              </a>
+          </li>
+          <li>
+              <a id='employee' href="{% url 'employee' %}">
+                  Employee
+              </a>
+          </li>
     </ul>
-<br>
-<div align="right"><a href="{% url 'add_cost_center' %}" class="save btn btn-info">
-    <i class="glyphicon glyphicon-plus"></i> Add Cost Center</a>
-    <a href="{% url 'cost_center_res' %}" class="save btn btn-info">
-    <i class="glyphicon glyphicon"></i> Restore Cost Center</a></div><br>
-<div id="cc">
-{% if cc_list|length == 0 %}
-<br>
-<br>
-  <div class="alert alert-warning" style="width:400px">
-    No records found.
-  </div>
-{% else %}
-{% if cc_list|length <= 15  %}
-  <div class="col-md-2"></div>
-  {% else %}
-  <div class="col-md-4">
-    <form action="#" method="get">
-      <div class="input-group">
-        <!-- USE TWITTER TYPEAHEAD JSON WITH API TO SEARCH -->
-          <input class="form-control" id="system-search" name="q" placeholder="Search for" required>
-      </div>
-    </form>
-  </div>
-  {% endif %}
-<div class="col-md-8">
-  <table class="table table-list-search2">
+    <br>
+    <!--End Tabing-->
 
-<thead>
- <th><center>Cost Center Name</center></th>
- <th><center>Functional Group</center></th>
-</thead>
- {% for coss in cc_list %}
-  <tr>
-   <td>
+    <!--Start Buttons-->
+    <div align="right"><a href="{% url 'add_cost_center' %}" class="save btn btn-info">
+        <i class="glyphicon glyphicon-plus"></i> Add Cost Center</a>
+        <a href="{% url 'cost_center_res' %}" class="save btn btn-info">
+        <i class="glyphicon glyphicon"></i> Restore Cost Center</a></div><br>
+    <!--End Buttons-->
 
-     <center><a href="{% url 'costcen_details' pk=coss.pk %}">{{coss.cost_center_name}}</a></center>
-     </a>
-   </td>
+        <!--Start Getter-->
+        <div id="cc">
+        {% if cc_list|length == 0 %}
+          <br>
+          <br>
+          <div class="alert alert-warning" style="width:400px">
+            No records found.
+          </div>
+        {% endif %}
 
-   <td>
-   <center>{{coss.functional_group}}</center>
-   </td>
+        {% if cc_list|length <= 15  %}
+          <div class="col-md-2"></div>
+        {% else %}
+          <div class="col-md-4">
+            <form action="#" method="get">
+              <div class="input-group">
+                <!-- USE TWITTER TYPEAHEAD JSON WITH API TO SEARCH -->
+                  <input class="form-control" id="system-search" name="q" placeholder="Search for" required>
+              </div>
+            </form>
+          </div>
+        {% endif %}
 
- </tr>
- {% endfor %}
-</table>
-  </div>
-  {% endif %}
-  </div>
-  </div>
+        <div class="col-md-8">
+            <table class="table table-list-search2">
 
-  <script type="text/javascript">
+              <thead>
+                <th><center>Cost Center Name</center></th>
+                <th><center>Functional Group</center></th>
+              </thead>
+              {% for coss in cc_list %}
+              <tr>
+                 <td>
+                   <center><a href="{% url 'costcen_details' pk=coss.pk %}">{{coss.cost_center_name}}</a></center>
+                 </td>
+
+                 <td>
+                 <center>{{coss.functional_group}}</center>
+                 </td>
+              </tr>
+              {% endfor %}
+            </table>
+        </div>
+        <!--End Getter-->
+    </div>
+</div>
+
+<!--Start JavaScripts-->
+<script type="text/javascript">
   $(document).ready(function() {
     var activeSystemClass = $('.list-group-item.active');
 
@@ -123,5 +130,6 @@
         }
     });
 });
-  </script>
+</script>
+<!--End JavaScripts-->
 {% endblock %}
