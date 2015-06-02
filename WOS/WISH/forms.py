@@ -109,6 +109,8 @@ class IRRentryForm1(forms.Form):
     invoice_number = forms.CharField(label='Invoice number *', required=True)
     po_number = forms.CharField(label='PO number *', required=True)
     pr_number = forms.CharField(label='PR number *', required=True)
+    date_dlvrd = forms.DateField(widget=DateTimePicker(\
+        options={"format": "YYYY-MM-DD", "pickTime": False}), required=True, label='Delivery date *')
 
     class Meta:
         unique_together = (('supplier', 'po_number', 'pr_number'), )
@@ -134,9 +136,9 @@ class IRRentryForm2(forms.Form):
         self.fields['approved_date'] = forms.DateField(widget=DateTimePicker(\
         options={"format": "YYYY-MM-DD", "pickTime": False}),\
          label='Approved date*', required=True)
-        self.fields['date_dlvrd'] = forms.DateField(widget=DateTimePicker(\
+        """self.fields['date_dlvrd'] = forms.DateField(widget=DateTimePicker(\
         options={"format": "YYYY-MM-DD", "pickTime": False}), \
-        label='Delivery date *', required=True)
+        label='Delivery date *', required=True)"""
 
     dr_number = forms.CharField(label='DR number *', required=True)
 
@@ -174,8 +176,9 @@ class SupplierCheckForm1(forms.Form):
         q = kwargs.pop('q')
         super(SupplierCheckForm1, self).__init__(*args, **kwargs)
 
-        self.fields['supplier'] = forms.ModelMultipleChoiceField(widget=forms.CheckboxSelectMultiple,\
+        self.fields['supplier'] = forms.ModelChoiceField(widget=forms.RadioSelect,\
             required=True, label='', queryset=q)
+        self.fields['supplier'].empty_label = None
         self.fields['supplier'].widget.attrs = {'id': 'myCustomId'}
 
 class ProductCheckForm1(forms.Form):

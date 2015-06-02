@@ -1,112 +1,115 @@
 {% extends 'WISH/index.html' %}
 {% block content %}
-{% if product_list|length == 0 %}
-<br>
-<br>
-  <div class="alert alert-warning" style="width:400px">
-     No Product Record(s) found.
-  </div>
-{% else %}
-   <div class="page-header">
-      <h2 align="center">Product Reports</h2>
-   </div>
-   {% if product_list|length <= 15  %}
-    <div class="col-md-2" style="margin-left: 130px"></div>
-   {% else %}
-    <div class="col-md-2" style="padding-right: 0px; margin-left: 300px; padding-left: 0px;">
-    <form action="#" method="get">
-      <div class="input-group">
-        <!-- USE TWITTER TYPEAHEAD JSON WITH API TO SEARCH -->
-        <input class="form-control" id="system-search" name="q" placeholder="Search for" required>
+
+    <!-- condition for no products or there are product -->
+    {% if product_list|length == 0 %}
+        <br>
+        <br>
+          <div class="alert alert-warning" style="width:400px">
+             No Product Record(s) found.
+          </div>
+    {% else %}
+       <div class="page-header">
+          <h2 align="center">Product Reports</h2>
+       </div>
+       {% if product_list|length <= 15  %}
+          <div class="col-md-2" style="margin-left: 130px"></div>
+       {% else %}
+          <div class="col-md-2" style="padding-right: 0px; margin-left: 300px; padding-left: 0px;">
+          <form action="#" method="get">
+            <div class="input-group">
+              <!-- USE TWITTER TYPEAHEAD JSON WITH API TO SEARCH -->
+              <input class="form-control" id="system-search" name="q" placeholder="Search for" required>
+            </div>
+          </form>
+        </div>
+       {% endif %}
+       <!--end of condition-->
+         <div class="col-md-5" style="padding-left: 10px;">
+           <table class="table table-list-search">
+          <thead>
+          	<th><center>Item name w/ description</center></th>
+            <th><center>Product number</center></th>
+            <th><center>Model and Brand</center></th>
+            <th><center>Serial number</center></th>
+            <th><center>NSN</center></th>
+            <th><center>Puchased from</center></th>
+
+          </thead>
+          	{% for product in product_list %}
+          		<tr>
+                <td>
+                  <a href="{% url 'prod_details' pk=product.pk %}">
+                  <center>{{ product.item_name}}-{{product.description}}</center></a>
+                </td>
+                <td>
+                  <center>{{ product.product_number }}</center>
+                </a>
+              </td>
+              <td>
+                <center>{{ product.model}}-{{product.brand}}</center>
+              </td>
+              <td>
+                <center>{{ product.serial_number}}</center>
+              </td>
+              <td>
+                <center>{{ product.nsn}}</center>
+              </td>
+              <td>
+                <center>{{ product.purchased_from}}</center>
+              </td>
+
+          		</tr>
+          	{% endfor %}
+       </table>
       </div>
-    </form>
-  </div>
-   {% endif %}
-     <div class="col-md-5" style="padding-left: 10px;">
-       <table class="table table-list-search">
-      <thead>
-      	<th><center>Item name w/ description</center></th>
-        <th><center>Product number</center></th>
-        <th><center>Model and Brand</center></th>
-        <th><center>Serial number</center></th>
-        <th><center>NSN</center></th>
-        <th><center>Puchased from</center></th>
+      {% endif %}
+      <script type="text/javascript">
+      $(document).ready(function() {
+        var activeSystemClass = $('.list-group-item.active');
 
-      </thead>
-      	{% for product in product_list %}
-      		<tr>
-            <td>
-              <a href="{% url 'prod_details' pk=product.pk %}">
-              <center>{{ product.item_name}}-{{product.description}}</center></a>
-            </td>
-            <td>
-              <center>{{ product.product_number }}</center>
-            </a>
-          </td>
-          <td>
-            <center>{{ product.model}}-{{product.brand}}</center>
-          </td>
-          <td>
-            <center>{{ product.serial_number}}</center>
-          </td>
-          <td>
-            <center>{{ product.nsn}}</center>
-          </td>
-          <td>
-            <center>{{ product.purchased_from}}</center>
-          </td>
+        //something is entered in search form
+        $('#system-search').keyup( function() {
+           var that = this;
+            // affect all table rows on in systems table
+            var tableBody = $('.table-list-search tbody');
+            var tableRowsClass = $('.table-list-search tbody tr');
+            $('.search-sf').remove();
+            tableRowsClass.each( function(i, val) {
+            
+                //Lower text for case insensitive
+                var rowText = $(val).text().toLowerCase();
+                var inputText = $(that).val().toLowerCase();
+                if(inputText != '')
+                {
+                    $('.search-query-sf').remove();
+                    tableBody.prepend('<tr class="search-query-sf"><td colspan="6"><strong>Searching for: "'
+                        + $(that).val()
+                        + '"</strong></td></tr>');
+                }
+                else
+                {
+                    $('.search-query-sf').remove();
+                }
 
-      		</tr>
-      	{% endfor %}
-   </table>
-  </div>
-  {% endif %}
-  <script type="text/javascript">
-  $(document).ready(function() {
-    var activeSystemClass = $('.list-group-item.active');
-
-    //something is entered in search form
-    $('#system-search').keyup( function() {
-       var that = this;
-        // affect all table rows on in systems table
-        var tableBody = $('.table-list-search tbody');
-        var tableRowsClass = $('.table-list-search tbody tr');
-        $('.search-sf').remove();
-        tableRowsClass.each( function(i, val) {
-        
-            //Lower text for case insensitive
-            var rowText = $(val).text().toLowerCase();
-            var inputText = $(that).val().toLowerCase();
-            if(inputText != '')
+                if( rowText.indexOf( inputText ) == -1 )
+                {
+                    //hide rows
+                    tableRowsClass.eq(i).hide();
+                    
+                }
+                else
+                {
+                    $('.search-sf').remove();
+                    tableRowsClass.eq(i).show();
+                }
+            });
+            //all tr elements are hidden
+            if(tableRowsClass.children(':visible').length == 0)
             {
-                $('.search-query-sf').remove();
-                tableBody.prepend('<tr class="search-query-sf"><td colspan="6"><strong>Searching for: "'
-                    + $(that).val()
-                    + '"</strong></td></tr>');
-            }
-            else
-            {
-                $('.search-query-sf').remove();
-            }
-
-            if( rowText.indexOf( inputText ) == -1 )
-            {
-                //hide rows
-                tableRowsClass.eq(i).hide();
-                
-            }
-            else
-            {
-                $('.search-sf').remove();
-                tableRowsClass.eq(i).show();
+                tableBody.append('<tr class="search-sf"><td class="text-muted" colspan="6">No entries found.</td></tr>');
             }
         });
-        //all tr elements are hidden
-        if(tableRowsClass.children(':visible').length == 0)
-        {
-            tableBody.append('<tr class="search-sf"><td class="text-muted" colspan="6">No entries found.</td></tr>');
-        }
     });
-});
-  </script>
+      </script>
 {% endblock %}
