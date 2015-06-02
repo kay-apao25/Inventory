@@ -157,7 +157,7 @@ class IRR(models.Model):
 
 class MIV(models.Model):
     """MIV models"""
-    miv_no = models.CharField(max_length=10)
+    miv_no = models.CharField(max_length=10, primary_key=True)
     irr_no = models.ForeignKey(IRR, related_name="i_mFK")
     date_issued = models.DateField()
     doc_date = models.DateField()
