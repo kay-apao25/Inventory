@@ -103,8 +103,8 @@ class IRRentryForm(forms.ModelForm):
 class IRRentryForm1(forms.Form):
     """IRR_entryForm1"""
 
-    supplier = forms.ModelChoiceField(label='Supplier *',\
-     queryset=Supplier.objects.filter(is_delete=False), required=True)
+    """supplier = forms.ModelChoiceField(label='Supplier *',\
+     queryset=Supplier.objects.filter(is_delete=False), required=True)"""
     reference = forms.CharField(label='Reference *', required=True)
     invoice_number = forms.CharField(label='Invoice number *', required=True)
     po_number = forms.CharField(label='PO number *', required=True)
@@ -168,6 +168,26 @@ class SupplierCheckForm(forms.Form):
         self.fields['purchased_from'] = forms.ModelMultipleChoiceField(widget=forms.CheckboxSelectMultiple,\
             required=True, label='', queryset=q)
         self.fields['purchased_from'].widget.attrs = {'id': 'myCustomId'}
+
+class SupplierCheckForm1(forms.Form):
+    def __init__(self, *args, **kwargs):
+        q = kwargs.pop('q')
+        super(SupplierCheckForm1, self).__init__(*args, **kwargs)
+
+        self.fields['supplier'] = forms.ModelMultipleChoiceField(widget=forms.CheckboxSelectMultiple,\
+            required=True, label='', queryset=q)
+        self.fields['supplier'].widget.attrs = {'id': 'myCustomId'}
+
+class ProductCheckForm1(forms.Form):
+    def __init__(self, *args, **kwargs):
+        inv = kwargs.pop('inv')
+        q = kwargs.pop('q')
+        plist = kwargs.pop('plist')
+        super(ProductCheckForm1, self).__init__(*args, **kwargs)
+
+        self.fields['product'] = forms.ModelMultipleChoiceField(widget=forms.CheckboxSelectMultiple,\
+            required=True, queryset=Product.objects.filter(inv_station_no=inv).\
+            filter(slc_number__contains=q).filter(is_irr=True).exclude(id__in=[p.id for p in plist]))
 
 class MIVentryForm(forms.ModelForm):
     """MIV_entryForm"""
