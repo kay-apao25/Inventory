@@ -1,19 +1,20 @@
+<!DOCTYPE html>
+
 {% load staticfiles %}
 {% for i in loop %}
-<!DOCTYPE html>
-<html>
-	<head>
-		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<link rel="stylesheet" type="text/css" href="{% static 'css/forms_style.css' %}">
 
-		<title>WRS</title>
-	</head>
+	<html>
+		<head>
+			<meta name="viewport" content="width=device-width, initial-scale=1">
+			<link rel="stylesheet" type="text/css" href="{% static 'css/forms_style.css' %}">
+			<title>WRS</title>
+		</head>
 
-	<body>
-		<center>
-		    <div style="width:1169px;height:826px;border:1px solid #000;">
-			    <img src="{% static 'css/npclogo.png' %}" align="left" style="margin-top: 50px; margin-left: 275px">
-
+		<body>
+			<center>
+			    <div style="width:1169px;height:826px;border:1px solid #000;">
+				    <img src="{% static 'css/npclogo.png' %}" align="left" style="margin-top: 50px; margin-left: 275px">
+				    		<!--header of wrs form-->
 					    	<p align="left" class="left_marg_wrs">
 					    		National Power Corporation<br>
 					    		Mindanao Generation<br>
@@ -24,96 +25,123 @@
 
 					    	<p align="right" class="right_marg_norm">Date: {% now "DATE_FORMAT" %}</p>
 					    	<p align="left" class="left_marg_norm"> Cost Center: {{ wrss.cost_center_no }}</p>
+					    	<!-- end header of wrs form-->
 
-					    	<table style="width:90%">
-					    		<tr>
-					    			<th style="text-align: center" width="125px">NAPOCOR<br>SUPPLY NO.<br>(NSN) SLC</th>
-					    			<th style="text-align: center">PARTICULARS</th>
-					    			<th style="text-align: center" width="150px">QUANTITY</th>
-					    			<th style="text-align: center" width="100px">UNIT OF MEASURE</th>
-					    		</tr>
-								{% for pro in pros|slice:"-3:" %}
-								{% if forloop.counter == 1%}
-					    		<tr>
-					    			<td><center>{{ pro.prod.slc_number }}</center></td> <!--NSN-->
-					    			<td><b><u>&nbsp;&nbsp;&nbsp;&nbsp;PR # {{ wrss.irr_headkey.pr_number }}, PO #
-						        {{ wrss.irr_headkey.po_number }}&nbsp;&nbsp;&nbsp;&nbsp;</u></b><br><br>
-						        	<center>{{ pro.prod.item_name }}, {{ pro.prod.description }}</center>
-										</td> <!--PARTICULARS-->
-					    			<td><center>{{ pro.qty_a }}</center></td> <!--QUANTITY-->
-					    			<td><center>{{ pro.prod.unit_measure }}</center></td> <!--UNIT OF MEASURE-->
-					    		</tr>
-						        {% else %}
-						        <tr>
-						        	<td><center>{{ pro.prod.slc_number }}</center></td>
-						        	<td><br><br>
-						        	<center>{{ pro.prod.item_name }}, {{ pro.prod.description }}</center>
-										</td> <!--PARTICULARS-->
-					    			<td><center>{{ pro.qty_a }}</center></td> <!--QUANTITY-->
-					    			<td><center>{{ pro.prod.unit_measure }}</center></td> <!--UNIT OF MEASURE-->
-						        	
-						        </tr>
-										
-								{% endif %}
-								{{pros.pop.0}}
-      	  						{% endfor %}
-      	  						{% if forloop.last %}
-            					<tr>
-      								<td colspan="4">
-      			 						{% for i in remain %}
-											<br><br><br>
-      			 						{% endfor %}
-      								</td>
-      							</tr>
-      	  						{% endif %}
-					    	</table>
+					    		<!--start of table body in wrs form-->
+						    	<table style="width:90%">
+						    		<tr>
+						    			<th style="text-align: center" width="125px">NAPOCOR<br>SUPPLY NO.<br>(NSN) SLC</th>
+						    			<th style="text-align: center">PARTICULARS</th>
+						    			<th style="text-align: center" width="150px">QUANTITY</th>
+						    			<th style="text-align: center" width="100px">UNIT OF MEASURE</th>
+						    		</tr>
+									{% for pro in pros|slice:"-3:" %}
+										{% if forloop.counter == 1%}
+								    		<tr>
+								    			<td>
+								    				<center>
+								    					{{ pro.prod.slc_number }}
+								    				</center>
+								    			</td> <!--NSN-->
+									    		<td>
+									    			<b><u>
+										    			&nbsp;&nbsp;&nbsp;&nbsp;PR # {{ wrss.irr_headkey.pr_number }}, PO #
+											        	{{ wrss.irr_headkey.po_number }}&nbsp;&nbsp;&nbsp;&nbsp;
+											        </u></b>
+										        	<br><br>
+										        	<center>
+										        		{{ pro.prod.item_name }}, {{ pro.prod.description }}
+										        	</center>
+												</td> <!--PARTICULARS-->
+								    			<td>
+								    				<center>
+								    					{{ pro.qty_a }}
+								    				</center>
+								    			</td> <!--QUANTITY-->
+								    			<td>
+								    				<center>
+								    					{{ pro.prod.unit_measure }}
+								    				</center>
+								    			</td> <!--UNIT OF MEASURE-->
+								    		</tr>
+								        {% else %}
+									        <tr>
+									        	<td>
+									        		<center>
+									        			{{ pro.prod.slc_number }}
+									        		</center>
+									        	</td>
+									        	<td><br><br>
+									        		<center>{{ pro.prod.item_name }}, {{ pro.prod.description }}</center>
+												</td> <!--PARTICULARS-->
+								    			<td><center>{{ pro.qty_a }}</center></td> <!--QUANTITY-->
+								    			<td><center>{{ pro.prod.unit_measure }}</center></td> <!--UNIT OF MEASURE-->						        	
+									        </tr>
+												
+										{% endif %}
 
-					    	<table style="width: 90%" class="tbl3">
-					    		<tr>
-					    			<td width="750px">Remarks:{{ wrss.remarks }} </td>
-					    			<td class="wrs">WRS NO. {{ wrss.wrs_number }} </td>
-					    		</tr>
-					    	</table>
+										{{pros.pop.0}}
+	      	  						{% endfor %}
+	      	  						{% if forloop.last %}
+		            					<tr>
+		      								<td colspan="4">
+		      			 						{% for i in remain %}
+													<br><br><br>
+		      			 						{% endfor %}
+		      								</td>
+		      							</tr>
+	      	  						{% endif %}
+						    	</table>
+						    	<!--end of table body in wrs form-->
+						    	<!--start of table footer in wrs form-->
+						    	<table style="width: 90%" class="tbl3">
+						    		<tr>
+						    			<td width="750px">Remarks:{{ wrss.remarks }} </td>
+						    			<td class="wrs">WRS NO. {{ wrss.wrs_number }} </td>
+						    		</tr>
+						    	</table>
 
-					    	<table style="width: 90%" class="tbl3">
-					    		<tr>
-					    			<td width="300px" class="wrs_va"><strong>Requisitioned by: </strong><br><br>
-											<u><center>{{ wrss.irr_headkey.dce_user.name}}</center></u>
-											<center>Name , Signature and Date</center>
-											<center>DCE No.: </span>{{ wrss.irr_headkey.dce_user.dce }}</center></td>
-					    			<td class="wrs"><strong>Approved by: (Requisitioning CCH)</strong><br><br>
-											<u><center> {{ wrss.irr_headkey.dce_custodian.name }} </center></u>
-											<center>Name , Signature and Date</center>
-											<center>DCE No.: {{ wrss.irr_headkey.dce_custodian.dce}}</center></td>
-					    			<td width="180px"><strong>WRS forwarded to MRC-<br>Central Warehouse on:</strong><br><br>
-					    				<li>Date: </li>
-					    				<li>Time: </li>
-					    				<li>Rec'd: </li>
-					    			</td>
-					    			<td width="150px"><strong>Item/s issued to the<br>end-user on:</strong><br><br>
-					    				<li>Date: </li>
-					    				<li>Time: </li>
-					    				<li>Rec'd: </li>
-					    			</td>
-					    		</tr>
-					    	</table>
-					    	{% if forloop.last %}
-      							<button id="printpagebutton" onclick="myFunction()" >Print this Form</button>
-     						{% endif %}
-		    </div>
+						    	<table style="width: 90%" class="tbl3">
+						    		<tr>
+						    			<td width="300px" class="wrs_va"><strong>Requisitioned by: </strong><br><br>
+												<u><center>{{ wrss.irr_headkey.dce_user.name}}</center></u>
+												<center>Name , Signature and Date</center>
+												<center>DCE No.: </span>{{ wrss.irr_headkey.dce_user.dce }}</center></td>
+						    			<td class="wrs"><strong>Approved by: (Requisitioning CCH)</strong><br><br>
+												<u><center> {{ wrss.irr_headkey.dce_custodian.name }} </center></u>
+												<center>Name , Signature and Date</center>
+												<center>DCE No.: {{ wrss.irr_headkey.dce_custodian.dce}}</center></td>
+						    			<td width="180px"><strong>WRS forwarded to MRC-<br>Central Warehouse on:</strong><br><br>
+						    				<li>Date: </li>
+						    				<li>Time: </li>
+						    				<li>Rec'd: </li>
+						    			</td>
+						    			<td width="150px"><strong>Item/s issued to the<br>end-user on:</strong><br><br>
+						    				<li>Date: </li>
+						    				<li>Time: </li>
+						    				<li>Rec'd: </li>
+						    			</td>
+						    		</tr>
+						    	</table>
+						    	<!--start of table footer in wrs form-->
+						    	{% if forloop.last %}
+	      							<button id="printpagebutton" onclick="myFunction()" >Print this Form</button>
+	     						{% endif %}
+			    </div>
 			<br><br>
-			
-<style type="text/css">
-	@page { margin: 0; }
-</style>
-<script>
-    function myFunction() {
-        var printButton = document.getElementById("printpagebutton");
-        printButton.style.visibility = 'hidden';
-        window.print();
-        printButton.style.visibility = 'visible';
-    }
-</script>
-	</body>
-</html>
+				
+			<style type="text/css">
+				@page { margin: 0; }
+			</style>
+
+			<script>
+			    function myFunction() {
+			        var printButton = document.getElementById("printpagebutton");
+			        printButton.style.visibility = 'hidden';
+			        window.print();
+			        printButton.style.visibility = 'visible';
+			    }
+			</script>
+		</body>
+	</html>
 {%endfor%}

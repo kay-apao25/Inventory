@@ -4,6 +4,7 @@
 {% block content %}
 {% load selectable_tags %}
 {% load bootstrap %}
+<<<<<<< HEAD
     
     <style type="text/css">
         .form-group{
@@ -18,42 +19,41 @@
     <div class="page-header">
         	<!--<img src=""></img>-->
        	<h2 align="center">Fill for Product Record</h2>
-	</div>   
+  	</div>   
     <form action="{% url 'new_product' %}" method="POST" class="product-form">{% csrf_token %}
     <strong><p style="font-size:15px">Fields with asterisk are required.</p></strong><br><br>
 
-    {%if msg%}
-    <div class="alert alert-success" style="width:400px">
-        {{ msg }}
-    </div>
-    {% endif %}
-    {%if error%}
-    <div class="alert alert-danger" style="width:400px">
-        {{ error }}
-    </div>
-    {% endif %}
-  <table width="50%" id="fields">
-    <tr>
-    <td>
-     {% for field in form1 %}
-      {{field | bootstrap_horizontal:'col-lg-4'}}&nbsp;&nbsp;&nbsp;
-     {%endfor%}
-     </div>
-    </td>
-    
-    <td style="padding:5px">
-     {% for field in form2 %}
-      &nbsp;&nbsp;{{field | bootstrap_horizontal:'col-lg-4'}}&nbsp;&nbsp;&nbsp;
-     {%endfor%}
-     <br><br><br>
-    </td>
-    
-    <td style="padding:5px">
-     {% for field in form3 %}
-      &nbsp;&nbsp;{{field | bootstrap_horizontal:'col-lg-4'}}&nbsp;&nbsp;&nbsp;
-
-     {%endfor%}
-     <br><br><br>
+        {%if msg%}
+        <div class="alert alert-success" style="width:400px">
+            {{ msg }}
+        </div>
+        {% endif %}
+        {%if error%}
+        <div class="alert alert-danger" style="width:400px">
+            {{ error }}
+        </div>
+        {% endif %}
+      <table width="50%" id="fields">
+        <tr>
+        <td>
+         {% for field in form1 %}
+          {{field | bootstrap_horizontal:'col-lg-4'}}&nbsp;&nbsp;&nbsp;
+         {%endfor%}
+         </div>
+        </td>
+        
+        <td style="padding:5px">
+         {% for field in form2 %}
+          &nbsp;&nbsp;{{field | bootstrap_horizontal:'col-lg-4'}}&nbsp;&nbsp;&nbsp;
+         {%endfor%}
+         <br><br><br>
+        </td>
+        
+        <td style="padding:5px">
+         {% for field in form3 %}
+          &nbsp;&nbsp;{{field | bootstrap_horizontal:'col-lg-4'}}&nbsp;&nbsp;&nbsp;
+         {%endfor%}
+       <br><br><br>
     </td>
     </tr>
   </table>
