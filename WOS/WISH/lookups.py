@@ -1,30 +1,18 @@
-"""models"""
-from django.db import models
-from django.contrib.auth.models import User
-from simple_history.models import HistoricalRecords
-from json_field import JSONField
+"""lookups"""
+from selectable.base import ModelLookup
+from selectable.registry import registry
+from WISH.models import Supplier, Product, PAR, GARV, CostCenter, \
+        InventoryStat, Employee, IRRHeader, IRR, MIV
 
-
-class Supplier(models.Model):
+class SupplierLookUp(ModelLookup):
     """Supplier model"""
-    supplier_number = models.CharField(max_length=8)
-    supplier_name = models.CharField(max_length=40)
-    supplier_address = models.CharField(max_length=40)
-    telephone_number = models.CharField(max_length=11)
-    credit_limit = models.FloatField()
-    debit_amount = models.FloatField()
-    credit_amount = models.FloatField()
-    balance_amount = models.FloatField()
-    contact_person = models.CharField(max_length=20)
-    remarks = models.CharField(max_length=20)
-    is_delete = models.BooleanField(default=False)
-    history = HistoricalRecords()
+    model = Supplier
+    search_fields = ('supplier_name__icontains',)
 
-    def __unicode__(self):
-        return self.supplier_number + ", " + self.supplier_name
+registry.register(SupplierLookUp)
 
-class InventoryStat(models.Model):
-    """Inventory_stat models"""
+"""class InventoryStat(ModelLookup):
+    """"Inventory_stat models""""
     inv_station_no = models.CharField(max_length=40)
     station_description = models.CharField(max_length=20)
     is_delete = models.BooleanField(default=False)
@@ -33,8 +21,8 @@ class InventoryStat(models.Model):
     def __unicode__(self):
         return self.station_description
 
-class CostCenter(models.Model):
-    """Cost_center models"""
+class CostCenter(ModelLookup):
+    """"Cost_center models""""
     cost_center_name = models.CharField(max_length=40)
     inv_station_no = models.ForeignKey(InventoryStat, related_name="i_ccFK")
     functional_group = models.CharField(max_length=40)
@@ -45,8 +33,8 @@ class CostCenter(models.Model):
         return self.cost_center_name
 
 
-class Employee(models.Model):
-    """Employee models"""
+class Employee(ModelLookup):
+    """"Employee models""""
     dce = models.CharField(max_length=8, primary_key=True)
     name = models.CharField(max_length=40)
     cost_center_no = models.ForeignKey(CostCenter, related_name="cc_eFK")
@@ -55,17 +43,15 @@ class Employee(models.Model):
     history = HistoricalRecords()
     is_delete = models.BooleanField(default=False)
     user_id = models.ForeignKey(User, default=1)
-    """user = User.objects.create_user(username='guest',
-                                 email='', id=1,
-                                 password='guest')"""
+    
     user_id = models.ForeignKey(User, default=1)
 
     def __unicode__(self):
         return self.name
 
 
-class Customer(models.Model):
-    """Customer models"""
+class Customer(ModelLookup):
+    """"Customer models""""
     dce = models.ForeignKey(Employee, related_name="d_cFK")
     credit_limit = models.FloatField()
     debit_amount = models.FloatField()
@@ -77,8 +63,8 @@ class Customer(models.Model):
         return self.dce
 
 
-class Product(models.Model):
-    """Product models"""
+class Product(ModelLookup):
+    """"Product models""""
     nsn = models.CharField(max_length=15)
     slc_number = models.CharField(max_length=15)
     generic_name = models.CharField(max_length=40)
@@ -111,8 +97,8 @@ class Product(models.Model):
         return self.item_name + " , " + self.description
 
 
-class IRRHeader(models.Model):
-    """IRR_header models"""
+class IRRHeader(ModelLookup):
+    """"IRR_header models""""
     inv_station_no = models.ForeignKey(InventoryStat, related_name="is_iFK")
     reference = models.CharField(max_length=20)
     invoice_number = models.CharField(max_length=20)
@@ -136,8 +122,8 @@ class IRRHeader(models.Model):
         unique_together = (("po_number", "pr_number", "supplier"),)
 
 
-class IRR(models.Model):
-    """IRR models"""
+class IRR(ModelLookup):
+    """"IRR models""""
     product = JSONField()
     irr_headkey = models.ForeignKey(IRRHeader, related_name="ih_iFK")
     irr_no = models.CharField(max_length=10, primary_key=True)
@@ -155,8 +141,8 @@ class IRR(models.Model):
 
 
 
-class MIV(models.Model):
-    """MIV models"""
+class MIV(ModelLookup):
+    """"MIV models""""
     miv_no = models.CharField(max_length=10)
     irr_no = models.ForeignKey(IRR, related_name="i_mFK")
     date_issued = models.DateField()
@@ -168,8 +154,8 @@ class MIV(models.Model):
         return str(self.irr_no)
 
 
-class PAR(models.Model):
-    """PAR models"""
+class PAR(ModelLookup):
+    """"PAR models""""
     product = JSONField()
     dce = models.ForeignKey(Employee, related_name="d_pFK")
     par_date = models.DateField()
@@ -187,8 +173,8 @@ class PAR(models.Model):
     def __unicode__(self):
         return self.par_no
 
-class GARV(models.Model):
-    """GARV models"""
+class GARV(ModelLookup):
+    """"GARV models""""
     product_to_GARV = JSONField()
     dce = models.ForeignKey(Employee, related_name="d_gFK")
     garv_date = models.DateField()
@@ -204,14 +190,4 @@ class GARV(models.Model):
     history = HistoricalRecords()
 
     def __unicode__(self):
-        return str(self.garv_no)
-
-class WRSPending(models.Model):
-    """WRSPending models"""
-    product = JSONField()
-    inv_station_no = models.ForeignKey(InventoryStat, related_name="inv_wFK")
-    cost_center_no = models.ForeignKey(CostCenter, related_name="cc_wFK")
-    wrs_number = models.CharField(max_length=8)
-
-    def __unicode__(self):
-        return str(self.inv_station_no)
+        return str(self.garv_no)"""

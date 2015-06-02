@@ -1,5 +1,5 @@
 """urls"""
-from django.conf.urls import url
+from django.conf.urls import url, include
 from django.contrib.auth.decorators import login_required
 from django.views.generic import ListView
 from . import views
@@ -177,5 +177,6 @@ urlpatterns = [
     url(r'^handson/$', login_required(views.handson),\
         name='handson'),
     url(r'^list_view/$', login_required(views.list_view),\
-        name='list_view')    
+        name='list_view'),
+    url(r'^selectable/', include('selectable.urls'))    
 ]

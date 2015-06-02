@@ -5,6 +5,8 @@ from WISH.models import Supplier, Product, PAR, GARV, CostCenter, \
 from bootstrap3_datetime.widgets import DateTimePicker
 from django.forms.models import BaseInlineFormSet
 from django.forms.models import inlineformset_factory
+import selectable.forms as selectable
+from WISH.lookups import SupplierLookUp
 
 class ProductForm(forms.ModelForm):
     """ProductForm"""
@@ -64,9 +66,11 @@ class ProductForm2(forms.Form):
 
 class ProductForm3(forms.Form):
     """ProductForm3"""
-    """purchased_from = forms.ModelChoiceField(\
-        queryset=Supplier.objects.filter(is_delete=False), \
-        label='Purchased from *', required=True)"""
+    purchased_from = forms.CharField(
+        label='Purchased from *', 
+        widget=selectable.AutoCompleteWidget(SupplierLookUp),
+        required=True
+    )
     average_amount = forms.FloatField(label='Average amount *', required=True)
     balance_limit = forms.FloatField(label='Balance limit *', required=True)
     serial_number = forms.CharField(max_length=15, required=False)
@@ -103,8 +107,11 @@ class IRRentryForm(forms.ModelForm):
 class IRRentryForm1(forms.Form):
     """IRR_entryForm1"""
 
-    """supplier = forms.ModelChoiceField(label='Supplier *',\
-     queryset=Supplier.objects.filter(is_delete=False), required=True)"""
+    supplier = forms.CharField(
+        label='Supplier *', 
+        widget=selectable.AutoCompleteWidget(SupplierLookUp),
+        required=True
+    )
     reference = forms.CharField(label='Reference *', required=True)
     invoice_number = forms.CharField(label='Invoice number *', required=True)
     po_number = forms.CharField(label='PO number *', required=True)
