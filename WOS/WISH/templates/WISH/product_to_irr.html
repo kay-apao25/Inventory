@@ -2,24 +2,21 @@
 {% load bootstrap %}
 {% load staticfiles%}
 
-<script src="{% static 'js/jquery.js' %}"></script>
-<script src="{% static 'js/jquery.min.js' %}"></script>
-
 <br><br>
 
 {% block content %}
 
-<style type="text/css">
-  .form-group{
-    width:400px;
-  }
-  #myCustomId{
-    padding-right: 173px;
-  }
-  ul{
-    list-style-type: none;
-  }
-</style>
+    <style type="text/css">
+      .form-group{
+        width:400px;
+      }
+      #myCustomId{
+        padding-right: 173px;
+      }
+      ul{
+        list-style-type: none;
+      }
+    </style>
    {% if q %}
      <script type="text/javascript">
         $( document ).ready( function() {
@@ -109,5 +106,8 @@
           </div>
         </div>
       <!--END OF MODAL-->
+
+      <script src="{% static 'js/jquery.js' %}"></script>
+      <script src="{% static 'js/jquery.min.js' %}"></script>
 
 {% endblock %}

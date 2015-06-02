@@ -2,41 +2,42 @@
 {% extends 'WISH/index.html' %}
 {% block content %}
 {% load bootstrap %}
-
-<style type="text/css">
-        .form-group{
-          width:400px;
-        }
-      </style>
+    <!-- style css -->
+    <style type="text/css">
+      .form-group{
+        width:400px;
+      }
+    </style>
+    <!-- end style css -->
     <div class="page-header">
         	<!--<img src=""></img>-->
        	<h2 align="center">Supplier Record</h2>
-	</div>
-  {%if msg%}
-  <div class="alert alert-success" style="width:400px">
-      {{ msg }}
-  </div>
-  {% endif %}
+	  </div>
+    {%if msg%}
+      <div class="alert alert-success" style="width:400px">
+          {{ msg }}
+      </div>
+    {% endif %}
 
-    <form method="POST" class="product-form">{% csrf_token %}
+        <form method="POST" class="product-form">{% csrf_token %}
 
-      <table width="50%" >
-        <tr>
-        <td>
-         {% for field in form1 %}
-          {{field | bootstrap_horizontal:'col-lg-4'}}&nbsp;&nbsp;&nbsp;
-         {%endfor%}
-         </div>
-        </td>
-
-        <td style="padding:5px">
-         {% for field in form2 %}
-          &nbsp;&nbsp;{{field | bootstrap_horizontal:'col-lg-4'}}&nbsp;&nbsp;&nbsp;
-         {%endfor%}
-         <br><br><br>
-        </td>
-        </tr>
-      </table>
-     <div align="center"><button type="submit" class="save btn btn-default">Save</button></div>
-    </form>
+          <table width="50%" >
+            <tr>
+              <td>
+               {% for field in form1 %}
+                {{field | bootstrap_horizontal:'col-lg-4'}}&nbsp;&nbsp;&nbsp;
+               {%endfor%}
+               </div>
+              </td>
+              <td style="padding:5px">
+                {% for field in form2 %}
+                  &nbsp;&nbsp;{{field | bootstrap_horizontal:'col-lg-4'}}&nbsp;&nbsp;&nbsp;
+                {%endfor%}
+                <br><br><br>
+              </td>
+            </tr>
+          </table>
+          <div align="center"><button type="submit" class="save btn btn-default">Save</button></div>
+          
+        </form>
 {% endblock %}
