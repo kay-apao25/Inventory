@@ -803,7 +803,7 @@ def product_to_irr(request, pk, inv, sup):
             prods.append(Product.objects.get(id=q))
         iform = forms.IRRentrycontForm()
         return render(request, 'WISH/product_to_irr.html', \
-            {'iform': iform, 'pk': pk, 'prods': prods, 'prodlist': prodlist, \
+            {'iform': iform, 'pk': pk, 'prods': prods, \
             'inv': inv, 'sup': sup})
     elif 'save' in request.POST:
         iform = forms.IRRentrycontForm(request.POST)
