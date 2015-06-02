@@ -241,7 +241,6 @@ def product_new(request):
     elif 'add' in request.GET:
         q = request.GET.getlist('purchased_from')
         if len(q) != 0:
-            #pform = forms.(inv=inv, q=q)
             form1 = forms.ProductForm1()
             form2 = forms.ProductForm2()
             form3 = forms.ProductForm3()
@@ -338,7 +337,7 @@ def irr_entry(request):
         form2 = forms.IRRentryForm2(request.POST, name=name)
 
         #Non-empty forms are to be validated.
-        if form.is_valid() and form1.is_valid() and form2.is_valid():
+        if form1.is_valid() and form2.is_valid():
             irr_entry = form.save(commit=False)
 
             #Assignment of values in IRR header model
