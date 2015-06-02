@@ -70,6 +70,11 @@
                       <input class="form-control" id="system-search" name="q" placeholder="SLC No." >
                     </div>
                     <br>
+                    {%if error1%}
+                      <div class="alert alert-danger" style="width:400px">
+                      {{ error1 }}
+                      </div>
+                    {% endif %}
                     {% if q %}
                     {% if prodlist|length %}
                     <p style="font-size:15px"><strong>Mark the items to be included in this IRR record.</strong></p>

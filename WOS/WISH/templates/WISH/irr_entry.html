@@ -6,7 +6,19 @@
         .form-group{
           width:400px;
         }
+        ul{
+    list-style-type: none;
+  }
       </style>
+    {% if name|length != 0 %}
+     <script type="text/javascript">
+            $( document ).ready( function() {
+                $('#prod').modal({show:true});
+            });
+        </script>
+   {% endif %}
+
+      <div align="center"><a class="save btn btn-default" data-toggle="modal" data-target="#prod">Add Supplier</a></div>
     <form method="POST" class="irr_entry">{% csrf_token %}
     {% if exit %}
       <div class="alert alert-warning" style="width:400px">
@@ -46,4 +58,31 @@
     <div align="center"><button type="submit" class="save btn btn-default" id="save">Save</button></div>
     </form>
     {% endif %}
+
+    <!--MODAL-->
+
+        <div class="modal fade" id="prod" tabindex="-1" role="dialog" aria-labelledby="product" aria-hidden="true" style="margin-top: 100px; position: fixed; z-index:1000 opacity:0.5; height:auto">
+          <div class="modal-dialog modal-sm" style="width: 700px">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button  type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel">Supplier List</h4>
+              </div>
+              <div class="modal-body" id="mycontent">
+                <form action="" method="get">
+                    <div class="input-group">
+                      <!-- USE TWITTER TYPEAHEAD JSON WITH API TO SEARCH -->
+                      <input class="form-control" id="system-search" name="q" placeholder="Search for" >
+                    </div>
+                      {% for field in pform %}
+                        &nbsp;&nbsp;{{field | bootstrap}}&nbsp;&nbsp;&nbsp;
+                      {%endfor%}
+                      <div align="center"><button name="add" class="save btn btn-default">Ok</button></div>
+                </form>
+                
+              </div>
+            </div>
+          </div>
+        </div>
+      <!--END OF MODAL-->
 {% endblock %}

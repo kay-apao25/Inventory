@@ -21,6 +21,7 @@ prod_to_irr = []
 prod_to_garv = []
 prod_to_wrs = []
 prods = []
+query = 0
 
 def log_in(request):
     """function"""
@@ -114,6 +115,10 @@ def index(request):
     except:
         garv = None
     try:
+        miv = MIV.objects.latest('miv_no')
+    except:
+        miv = None
+    try:
         inv = InventoryStat.objects.latest('id')
     except:
         inv = None
@@ -126,7 +131,7 @@ def index(request):
     except:
         cc = None
     return render(request, 'WISH/index.html', {'product': product, 'irr': irr, \
-    'par': par, 'garv': garv, 'inv': inv, 'sup': sup, 'cc': cc})
+    'par': par, 'garv': garv, 'miv': miv, 'inv': inv, 'sup': sup, 'cc': cc})
 
 def aboutus(request):
     """function"""
@@ -219,33 +224,41 @@ def add_supplier(request):
 
 def product_new(request):
     """function"""
-
+    global query
     name = str(request.user.get_full_name())
-    inv = InventoryStat.objects.get(cost_center_no=\
-        Employee.objects.get(name=name).cost_center_no)
+    inv = Employee.objects.get(name=name).cost_center_no.inv_station_no
 
     if 'q' in request.GET and request.GET['q']:
-        q = request.GET['q']
-        pform = forms.SupplierCheckForm(inv=inv, q=q)
+        query = request.GET['q']
+        slist = Supplier.objects.filter(supplier_name__contains=query)
+        pform = forms.SupplierCheckForm(q=slist)
         form1 = forms.ProductForm1()
         form2 = forms.ProductForm2()
         form3 = forms.ProductForm3()
         return render(request, 'WISH/product_add.html', \
-        {'form1': form1, 'form2': form2, 'form3': form3, 'pform': pform, 'inv': inv, 'name':name})
-
+        {'form1': form1, 'form2': form2, 'form3': form3, 'pform': pform, 'inv': inv, 'name':name, 'entry': 1, 'slist':slist})
 
     elif 'add' in request.GET:
         q = request.GET.getlist('purchased_from')
-        prods.append(int(q[0]))
-        #pform = forms.(inv=inv, q=q)
-        form1 = forms.ProductForm1()
-        form2 = forms.ProductForm2()
-        form3 = forms.ProductForm3()
-        return render(request, 'WISH/product_add.html', \
-                {'form1': form1, 'form2': form2, 'form3': form3, 'q':q, 'inv':inv})
+        if len(q) != 0:
+            #pform = forms.(inv=inv, q=q)
+            form1 = forms.ProductForm1()
+            form2 = forms.ProductForm2()
+            form3 = forms.ProductForm3()
+            return render(request, 'WISH/product_add.html', \
+                    {'form1': form1, 'form2': form2, 'form3': form3, 'q':int(q[0])})
+        else:
+            slist = Supplier.objects.filter(supplier_name__contains=query)
+            pform = forms.SupplierCheckForm(q=slist)
+            form1 = forms.ProductForm1()
+            form2 = forms.ProductForm2()
+            form3 = forms.ProductForm3()
+            return render(request, 'WISH/product_add.html', \
+                {'form1': form1, 'form2': form2, 'form3': form3, \
+                'pform': pform, 'inv': inv, 'name':name, 'entry': 1, \
+                'slist':slist, 'error1': 'No supplier selected.'})
 
-
-    elif 'save' in request.POST:
+    elif request.method == 'POST':
 
         #Forms containing the entries entered by the user
         form = forms.ProductForm(request.POST)
@@ -256,51 +269,51 @@ def product_new(request):
         #Non-empty forms are to be validated.
         if form.is_valid() and form1.is_valid() \
         and form2.is_valid() and form3.is_valid():
+            if len(request.POST['fsave']) != 0:
 
-            product = form.save(commit=False)
+                product = form.save(commit=False)
 
-            #Generation of SLC number
-            if len(Product.objects.all()) != 0:
-                no = int((Product.objects.latest('id')).slc_number) + 1
-                product.slc_number = str(no)
-                for i in range(6-len(product.slc_number)):
-                    product.slc_number = '0' + product.slc_number
-            else:
-                product.slc_number = '000000'
-
-            #Assignment of values in Product model
-            for key in form.data.keys():
-                setattr(product, key, form1.data[key])
-                setattr(product, key, form2.data[key])
-                setattr(product, key, form3.data[key])
-            setattr(product, 'inv_station_no', inv)
-            setattr(product, 'purchased_from_id', prods[0])
-            del prods[:]
-
-            if form2.data['expiry_date'] == '':
-                product.expiry_date = None
-
-            if int(form2.data['quantity']) > 1:
-                if form2.data['unit_measure'] == 'box':
-                    product.unit_measure = str(product.unit_measure) + 'es'
+                #Generation of SLC number
+                if len(Product.objects.all()) != 0:
+                    no = int((Product.objects.latest('id')).slc_number) + 1
+                    product.slc_number = str(no)
+                    for i in range(6-len(product.slc_number)):
+                        product.slc_number = '0' + product.slc_number
                 else:
-                    product.unit_measure = str(product.unit_measure) + 's'
+                    product.slc_number = '000000'
 
-            product.amount = float(form2.data['unit_cost']) * \
-                float(form2.data['quantity'])
-            product.save()
+                #Assignment of values in Product model
+                for key in form.data.keys():
+                    setattr(product, key, form1.data[key])
+                    setattr(product, key, form2.data[key])
+                    setattr(product, key, form3.data[key])
 
-            #Displaying of blank forms
-            form1 = forms.ProductForm1()
-            form2 = forms.ProductForm2()
-            form3 = forms.ProductForm3()
+                product.purchased_from = Supplier.objects.get(id=request.POST['fsave'])
+                product.inv_station_no = inv
+                if form2.data['expiry_date'] == '':
+                    product.expiry_date = None
 
-            return render(request, 'WISH/product_add.html', {'form3': form3,\
-             'form1':form1, 'form2': form2, 'msg': 'Product -' + product.item_name \
-             + '- (SLC No: ' + product.slc_number + ') was added successfully.'})
-        else:
-            return redirect('index')
+                if int(form2.data['quantity']) > 1:
+                    if form2.data['unit_measure'] == 'box':
+                        product.unit_measure = str(product.unit_measure) + 'es'
+                    else:
+                        product.unit_measure = str(product.unit_measure) + 's'
 
+                product.amount = float(form2.data['unit_cost']) * \
+                    float(form2.data['quantity'])
+                product.save()
+
+                #Displaying of blank forms
+                form1 = forms.ProductForm1()
+                form2 = forms.ProductForm2()
+                form3 = forms.ProductForm3()
+
+                return render(request, 'WISH/product_add.html', {'form3': form3,\
+                 'form1':form1, 'form2': form2, 'msg': 'Product -' + product.item_name \
+                 + '- (SLC No: ' + product.slc_number + ') was added successfully.'})
+            else:
+                return render(request, 'WISH/product_add.html', {'form3': form3,\
+                 'form1':form1, 'form2': form2, 'error': 'No supplier added.'})
 
     else:
         #Displaying of blank forms

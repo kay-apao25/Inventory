@@ -53,8 +53,6 @@ class ProductForm2(forms.Form):
         ('Pending', 'Pending'),
     )
 
-    
-
     unit_cost = forms.DecimalField(label='Unit cost*', decimal_places=2, required=True)
     quantity = forms.IntegerField(min_value=0, initial='1', label='Quantity *', required=True)
     classification = forms.CharField(label='Classification*', max_length=30, required=True)
@@ -75,6 +73,7 @@ class ProductForm3(forms.Form):
     model = forms.CharField(label='Model *', max_length=25, required=True)
     description = forms.CharField(label='Description*', max_length=25, required=True)
     remarks = forms.CharField(max_length=25, required=False)
+
 
 class ProductForm5(forms.ModelForm):
     """ProductForm5"""
@@ -163,12 +162,11 @@ class ProductCheckForm(forms.Form):
 
 class SupplierCheckForm(forms.Form):
     def __init__(self, *args, **kwargs):
-        inv = kwargs.pop('inv')
         q = kwargs.pop('q')
         super(SupplierCheckForm, self).__init__(*args, **kwargs)
 
         self.fields['purchased_from'] = forms.ModelMultipleChoiceField(widget=forms.CheckboxSelectMultiple,\
-            required=True, label='', queryset=Supplier.objects.filter(supplier_name__contains=q))
+            required=True, label='', queryset=q)
         self.fields['purchased_from'].widget.attrs = {'id': 'myCustomId'}
 
 class SupplierCheckForm1(forms.Form):

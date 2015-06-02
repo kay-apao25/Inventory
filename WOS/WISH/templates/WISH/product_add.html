@@ -8,8 +8,11 @@
           width:300px;
         }
         ul{
-    list-style-type: none;
-  }
+          list-style-type: none;
+        }
+      table.fields label {
+          color: white;
+        }
       </style>
 
   {% if name|length != 0 %}
@@ -23,22 +26,21 @@
     <div class="page-header">
         	<!--<img src=""></img>-->
        	<h2 align="center">Fill for Product Record</h2>
-	</div>
-   
-  <div align="center"><a class="save btn btn-default" data-toggle="modal" data-target="#prod">Add Supplier</a></div>
-    
+	</div>   
     <form action="{% url 'new_product' %}" method="POST" class="product-form">{% csrf_token %}
     <strong><p style="font-size:15px">Fields with asterisk are required.</p></strong><br><br>
-
-    
-
 
     {%if msg%}
     <div class="alert alert-success" style="width:400px">
         {{ msg }}
     </div>
     {% endif %}
-  <table width="50%" >
+    {%if error%}
+    <div class="alert alert-danger" style="width:400px">
+        {{ error }}
+    </div>
+    {% endif %}
+  <table width="50%" id="fields">
     <tr>
     <td>
      {% for field in form1 %}
@@ -63,13 +65,15 @@
     </td>
     </tr>
   </table>
-
-    {% if q %}
-    <div align="center"> <button value="{{q}}" name="save" type="submit" class="save btn btn-default">Save</button></div>
-    {% else %}
-    <div align="center"> <button name="save" type="submit" class="save btn btn-default">Save</button></div>
-    {% endif %}
-
+    <div align="center">
+      <a class="save btn btn-default" data-toggle="modal" data-target="#prod">Add Supplier</a>
+      {% if q %}
+        <button value="{{q}}" name="fsave" type="submit" class="save btn btn-default">Save</button>
+      {% else %}
+        <button name="fsave" type="submit" class="save btn btn-default">Save</button>
+      {% endif %}
+    </div>
+    
     </form>
     <!--MODAL-->
 
@@ -81,15 +85,44 @@
                 <h4 class="modal-title" id="myModalLabel">Supplier List</h4>
               </div>
               <div class="modal-body" id="mycontent">
-                <form action="" method="get">
+                <form action="{% url 'new_product' %}" method="get">
                     <div class="input-group">
                       <!-- USE TWITTER TYPEAHEAD JSON WITH API TO SEARCH -->
                       <input class="form-control" id="system-search" name="q" placeholder="Search for" >
                     </div>
+                    <br>
+                    {%if error1%}
+                      <div class="alert alert-danger" style="width:400px">
+                      {{ error1 }}
+                      </div>
+                    {% endif %}
+                    {% if entry %}
+                    {% if slist|length %}
+                    <p style="font-size:15px"><strong>Mark the supplier for this product.</strong></p>
+                    <div align="center">
+                    <table style="text-align:center">
                       {% for field in pform %}
-                        &nbsp;&nbsp;{{field | bootstrap}}&nbsp;&nbsp;&nbsp;
+                        <tr><td>
+                        {% for f in field %}
+                          {{ f }}&nbsp;&nbsp;
+                          {% if forloop.counter|divisibleby:"3"%}
+                            </td></tr><tr><td>
+                          {% endif %}
+                          {% if forloop.last %}
+                            </td></tr>
+                          {% endif %}
+                        {% endfor %}
                       {%endfor%}
+                    </table>
+                     <br>
                       <div align="center"><button name="add" class="save btn btn-default">Ok</button></div>
+                    </div>
+                    {% else %}
+                    <table style="text-align:center">
+                      <p style="font-size:15px" id="none"><strong>No supplier matches this query.</strong></p>
+                    </table>
+                    {% endif %}
+                    {% endif %}
                 </form>
                 
               </div>
