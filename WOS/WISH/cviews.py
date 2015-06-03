@@ -108,7 +108,6 @@ class WRSRep(ListView):
     template_name = 'WISH/wrs_reports.html'
 
     def get_queryset(self):
-
         if 'q' in self.request.GET and self.request.GET['q']:
             q = self.request.GET['q']
             return models.IRR.objects.filter(wrs_number__icontains=q)
@@ -298,19 +297,55 @@ class AddCC(CreateView):
     model = models.CostCenter
     form_class = forms.CClib
     template_name='WISH/add_cost_center.html'
-    success_url = reverse_lazy('cost_center')
+    success_url = reverse_lazy('add_cost_center')
+
+    def get_context_data(self, **kwargs):
+        if self.request.method == 'POST':
+            form = forms.CClib(self.request.POST)
+            if form.is_valid():
+                context = super(AddCC, self).get_context_data(**kwargs)
+                context['msg'] = 'Cost Center was successfully added.'
+            else:
+                context = super(AddCC, self).get_context_data(**kwargs)
+        else:
+            context = super(AddCC, self).get_context_data(**kwargs)
+        return context
 
 class AddInvStat(CreateView):
     model = models.InventoryStat
     form_class = forms.Statlib
     template_name='WISH/add_inv_stat.html'
-    success_url = reverse_lazy('inv_stat')
+    success_url = reverse_lazy('add_inv_stat')
+
+    def get_context_data(self, **kwargs):
+        if self.request.method == 'POST':
+            form = forms.Statlib(self.request.POST)
+            if form.is_valid():
+                context = super(AddInvStat, self).get_context_data(**kwargs)
+                context['msg'] = 'Inventory station was successfully added.'
+            else:
+                context = super(AddInvStat, self).get_context_data(**kwargs)
+        else:
+            context = super(AddInvStat, self).get_context_data(**kwargs)
+        return context
 
 class AddEmp(CreateView):
     model = models.Employee
     form_class = forms.Emlib
     template_name='WISH/add_employee.html'
-    success_url = reverse_lazy('employee')
+    success_url = reverse_lazy('add_employee')
+
+    def get_context_data(self, **kwargs):
+        if self.request.method == 'POST':
+            form = forms.Emlib(self.request.POST)
+            if form.is_valid():
+                context = super(AddEmp, self).get_context_data(**kwargs)
+                context['msg'] = 'Employee was successfully added.'
+            else:
+                context = super(AddEmp, self).get_context_data(**kwargs)
+        else:
+            context = super(AddEmp, self).get_context_data(**kwargs)
+        return context
 
 class InvStatRes(ListView):
     context_object_name='inv_list_res'
