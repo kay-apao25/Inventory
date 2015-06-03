@@ -43,11 +43,13 @@
 
                                   </table>
                               </div>
+                              {% if request.user.is_superuser %}
                               <div class="panel-footer panel-footer-landing">
                                   <a href="{% url 'costcen_entry' pk=cc.pk %}" class="btn btn-price btn-info btn-lg">Edit</a>
                                   <a href="{% url 'costcen_del' pk=cc.pk %}" class="btn btn-price btn-info btn-lg">Delete</a>
 
                               </div>
+                              {% endif %}
                           </div>
                       </div>
                   </div>

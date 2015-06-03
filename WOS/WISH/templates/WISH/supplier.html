@@ -25,6 +25,7 @@
           </li>
     </ul>
     <br>
+    {% if request.user.is_superuser %}
     <div align="right">
       <a href="{% url 'add_supplier' %}" class="save btn btn-info">
         <i class="glyphicon glyphicon-plus"></i>
@@ -35,6 +36,7 @@
         Restore Supplier
       </a>
     </div>
+    {% endif %}
     <br>
     <div id="supplier">
         <br>

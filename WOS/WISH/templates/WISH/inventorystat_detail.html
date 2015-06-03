@@ -42,9 +42,11 @@
                                       </tr>
                                   </table>
                               </div>
+                              {% if request.user.is_superuser %}
                               <div class="panel-footer panel-footer-landing">
                                   <a href="{% url 'invstat_entry' pk=invs.pk %}" class="btn btn-price btn-info btn-lg">Edit</a>
                                   <a href="{% url 'invstat_del' pk=invs.pk %}" class="btn btn-price btn-info btn-lg">Delete</a>
+                                {% endif %}
                               </div>
                           </div>
                       </div>

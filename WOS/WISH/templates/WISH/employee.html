@@ -30,11 +30,13 @@
 <!--End Tabbing-->
 
 <!--Start Header-->
+{% if request.user.is_superuser %}
 <div align="right"><a href="{% url 'add_employee' %}" class="save btn btn-info">
     <i class="glyphicon glyphicon-plus"></i> Add Employee</a>
     <a href="{% url 'employee_res' %}" class="save btn btn-info">
     <i class="glyphicon glyphicon"></i> Restore Employee</a>
 </div><br>
+{% endif %}
 <!--End Header-->
 
 <!--Start Body-->
