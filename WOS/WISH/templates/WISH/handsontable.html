@@ -4,7 +4,6 @@
 
 <link href="{% static 'css/handsontable.full.css' %}" rel="stylesheet">
 <script src="{% static 'js/handsontable.full.js' %}"></script>
-<script src="{% static 'js/main.js' %}"></script>
 <link href="{% static 'css/handsontable.full.min.css' %}" rel="stylesheet">
 <script src="{% static 'js/handsontable.full.min.js' %}"></script>
 <!--AJAX request and response-->
@@ -34,6 +33,7 @@
     </div>
   </form>
     <br><br>
+    
 
 <script type="text/javascript">
     var
@@ -59,7 +59,10 @@
         {data: 'qty_r'},
         {data: 'qty_b'}
       ],
-      outsideClickDeselects: false
+      outsideClickDeselects: false,
+      {% if prods|length == 0%}
+      minSpareRows: 2,
+      {% endif %}
     });
 
     $('#post-form').on('submit', function(event){

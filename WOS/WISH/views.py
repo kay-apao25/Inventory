@@ -36,7 +36,7 @@ def log_in(request):
                     emp = Employee.objects.get(dce=dce)
                 except:
                     return render(request, 'WISH/login.html', {'form':form, \
-                         'form1': form1, 'error': "Employee does not exist.", 'form2':form2})
+                         'form1': form1, 'error1': "Employee does not exist.", 'form2':form2})
                 try:
                     if emp.position == "Property Custodian":
                         user = User.objects.create_superuser(username=form1.data\
@@ -58,10 +58,6 @@ def log_in(request):
                     return render(request, 'WISH/login.html', \
                         {'error1': 'Username already exists.',\
                          'form':form, 'form1': form1, 'form2':form2})
-            else:
-                return render(request, 'WISH/login.html', \
-                    {'error1': 'Username already exists.',\
-                    'form':form, 'form1': form1, 'form2':form2})
 
         elif 'login' in request.POST:
             form = forms.LoginForm(request.POST or None)
@@ -212,7 +208,7 @@ def irr_entry(request):
         form2 = forms.IRRentryForm2(request.POST, name=name)
 
         #Non-empty forms are to be validated.
-        if form1.is_valid() and form2.is_valid():
+        if form.is_valid() and form1.is_valid() and form2.is_valid():
             irr_entry = form.save(commit=False)
 
             #Assignment of values in IRR header model
@@ -242,17 +238,16 @@ def irr_entry(request):
              pk=irr_entry.pk, inv=int(irr_entry.inv_station_no_id), sup=Supplier.objects.get(supplier_number=int(sup[0])).id)
     else:
         prodlist = Product.objects.filter(inv_station_no=inv)
+        form1 = forms.IRRentryForm1()
+        form2 = forms.IRRentryForm2(name=name)
 
         if len(prodlist) == 0:
             #If true return this exit message
             return render(request, 'WISH/irr_entry.html',\
               {'exit': 'No available products to be made with IRR record.'})
-        else:
-            #else display blank forms.
-            form1 = forms.IRRentryForm1()
-            form2 = forms.IRRentryForm2(name=str(name))
-            return render(request, 'WISH/irr_entry.html',\
-                {'form1': form1, 'form2': form2})
+
+    return render(request, 'WISH/irr_entry.html', {'form1': form1, 'form2': form2})
+
 
 def miv_entry(request, pk):
     """function"""

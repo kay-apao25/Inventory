@@ -138,16 +138,14 @@ class IRRentryForm2(forms.Form):
             is_delete=False).filter(cost_center_no=Employee.objects.get(\
                 name=name).cost_center_no), label='Approved by *', required=True)
         self.fields['proc_date'] = forms.DateField(widget=DateTimePicker(\
-        options={"format": "YYYY-MM-DD", "pickTime": False}), \
-        label='Proc date *', required=True)
+            options={"format": "YYYY-MM-DD", "pickTime": False}), \
+            label='Proc date *', required=True)
         self.fields['approved_date'] = forms.DateField(widget=DateTimePicker(\
-        options={"format": "YYYY-MM-DD", "pickTime": False}),\
-         label='Approved date*', required=True)
-        """self.fields['date_dlvrd'] = forms.DateField(widget=DateTimePicker(\
-        options={"format": "YYYY-MM-DD", "pickTime": False}), \
-        label='Delivery date *', required=True)"""
+            options={"format": "YYYY-MM-DD", "pickTime": False}),\
+            label='Approved date*', required=True)
 
     dr_number = forms.CharField(label='DR number *', required=True)
+    type_n = forms.CharField(label='Type *', required=True)
 
 class IRRentrycontForm(forms.ModelForm):
     """IRR_entry_cont_Form"""
@@ -235,7 +233,7 @@ class PARForm(forms.ModelForm):
     class Meta:
         """Meta"""
         model = PAR
-        fields = ('par_no', 'dce', 'approved_by', 'date_acquired', 'remarks', 'wo_number',)
+        fields = ('par_no', 'dce', 'approved_by', 'date_acquired', 'wo_number', 'remarks',)
 
 
 class ProducttoPARForm(forms.Form):
