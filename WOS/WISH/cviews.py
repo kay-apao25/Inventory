@@ -140,12 +140,35 @@ class WRSRep(ListView):
 class WRSRep1(ListView):
     context_object_name='wrs_list'
     template_name = 'WISH/wrs_reports1.html'
-    extra_context={'user': 'user'}
-
+    
     def get_queryset(self):
-        return models.IRR.objects.filter(irr_headkey__in=[i.id for i in (\
-        models.IRRHeader.objects.filter(dce_user=(\
-        models.Employee.objects.get(name=str(self.kwargs['user'])))))])
+        if 'q' in self.request.GET and self.request.GET['q']:
+            q = self.request.GET['q']
+            return models.IRR.objects.filter(wrs_number__icontains=q)
+        else:
+            today = datetime.datetime.now()
+            this_year = today.year
+            this_month = today.month
+
+            return models.IRR.objects.filter(irr_headkey__in=[i.id for i in (\
+            models.IRRHeader.objects.filter(dce_custodian=(\
+            models.Employee.objects.get(name=str(self.request.user.\
+            first_name) + ' ' + str(self.request.user.last_name)))))])\
+            .filter(date_recv__year=str(this_year), date_recv__month=str(this_month))
+
+    def get_context_data(self, **kwargs):
+        if 'q' in self.request.GET and self.request.GET['q']:
+            context = super(WRSRep1, self).get_context_data(**kwargs)
+            q = self.request.GET['q']
+            if len(models.IRR.objects.filter(irr_no__icontains=q)):
+                context['msg'] = 'Results Found:'
+            else:
+                context['error'] = 'No Results Found'
+            return context
+
+        else:
+            context = super(WRSRep1, self).get_context_data(**kwargs)
+            return context
 
 class PARRep(ListView):
     context_object_name='par_list'

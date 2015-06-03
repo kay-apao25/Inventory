@@ -77,11 +77,13 @@
 	              </ul>
 	            </li>
                 {% else %}
-                
+                <li>
+                    <li><a href="{% url 'wrs_reports1' %}">WRS Reports </a></li>
+                </li>
                 {% endif %}
 
 				<li>
-					<li><a id="lib_list" href="{% url 'inv_stat' %}"><span ></span> Libraries </a></li>
+					<li><a id="lib_list" href="{% url 'inv_stat' %}">Libraries </a></li>
 	            </li>
 
 	          </ul>
