@@ -3,21 +3,21 @@
 {% load staticfiles %}
 {% block content %}
 {% load selectable_tags %}
-{% load bootstrap %}    
+{% load bootstrap %}
     <style type="text/css">
         .form-group{
           width:300px;
         }
     </style>
-    <link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.3/themes/base/jquery-ui.css" type="text/css">
-    <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.3/jquery-ui.js"></script>
+    <link rel="stylesheet" href= "{% static 'jquery_ui/jquery-ui.css' %}" type="text/css">
+    <script src="{% static 'jquery_ui/jquery-ui.js' %}"></script>
     {{ form3.media.css }}
     {{ form3.media.js }}
-    
+
     <div class="page-header">
         	<!--<img src=""></img>-->
        	<h2 align="center">Fill for Product Record</h2>
-  	</div>   
+  	</div>
     <form action="{% url 'new_product' %}" method="POST" class="product-form">{% csrf_token %}
     <strong><p style="font-size:15px">Fields with asterisk are required.</p></strong><br><br>
 
@@ -39,14 +39,14 @@
          {%endfor%}
          </div>
         </td>
-        
+
         <td style="padding:5px">
          {% for field in form2 %}
           &nbsp;&nbsp;{{field | bootstrap_horizontal:'col-lg-4'}}&nbsp;&nbsp;&nbsp;
          {%endfor%}
          <br><br><br>
         </td>
-        
+
         <td style="padding:5px">
          {% for field in form3 %}
           &nbsp;&nbsp;{{field | bootstrap_horizontal:'col-lg-4'}}&nbsp;&nbsp;&nbsp;
@@ -58,7 +58,7 @@
     <div align="center">
       <button type="submit" class="save btn btn-default">Save</button>
     </div>
-    
+
     </form>
 
 
