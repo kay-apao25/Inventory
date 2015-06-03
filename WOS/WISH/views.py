@@ -32,27 +32,37 @@ def log_in(request):
             form2 = forms.GuestForm()
             if form1.is_valid():
                 dce = form1.data['dce']
-                emp = Employee.objects.get(dce=dce)
-                if emp.position == "Property Custodian":
-                    try:
+                try:
+                    emp = Employee.objects.get(dce=dce)
+                except:
+                    return render(request, 'WISH/login.html', {'form':form, \
+                         'form1': form1, 'error': "Employee does not exist.", 'form2':form2})
+                try:
+                    if emp.position == "Property Custodian":
                         user = User.objects.create_superuser(username=form1.data\
-                        ['username1'], first_name=form1.data['first_name'],
-                        last_name=form1.data['last_name'], password=\
-                        form1.data['password1'], email=None)
-
+                            ['username1'], first_name=form1.data['first_name'],
+                            last_name=form1.data['last_name'], password=\
+                            form1.data['password1'], email=None)
                         emp.user_id_id = user.id
                         emp.save()
-                        form1 = forms.SignUpForm()
-                        return render(request, 'WISH/login.html', {'form':form, \
+                    else:
+                        user = User.objects.create_user(username=form1.data\
+                            ['username1'], first_name=form1.data['first_name'],
+                            last_name=form1.data['last_name'], password=\
+                            form1.data['password1'], email=None)
+
+                    form1 = forms.SignUpForm()
+                    return render(request, 'WISH/login.html', {'form':form, \
                          'form1': form1, 'msg': "You've successfully created an account.", 'form2':form2})
-                    except:
-                        return render(request, 'WISH/login.html', \
+                except:
+                    return render(request, 'WISH/login.html', \
                         {'error1': 'Username already exists.',\
                          'form':form, 'form1': form1, 'form2':form2})
-                else:
-                    return render(request, 'WISH/login.html', \
-                        {'error1': 'Does not match any custodian profile.',\
-                         'form':form, 'form1': form1})
+            else:
+                return render(request, 'WISH/login.html', \
+                    {'error1': 'Username already exists.',\
+                    'form':form, 'form1': form1, 'form2':form2})
+
         elif 'login' in request.POST:
             form = forms.LoginForm(request.POST or None)
             form1 = forms.SignUpForm()
@@ -112,30 +122,13 @@ def add_supplier(request):
 
             sup.supplier_name = form.data['supplier_name']
             sup.save()
-
-            form = forms.Suplib()
-            form1 = forms.Suplib1()
-            form2 = forms.Suplib2()
-            return render(request, 'WISH/add_supplier.html', \
-              {'form1': form1, 'form2': form2, 'msg':'Supplier ' +\
-              'was added successfully.'})
+            return redirect('inv_stat')
     else:
         form = forms.Suplib()
         form1 = forms.Suplib1()
         form2 = forms.Suplib2()
     return render(request, 'WISH/add_supplier.html', \
         {'form1': form1, 'form2': form2})
-
-"""@ajax
-def list_view(request):
-    c = request.POST.get('data')
-    if 'delete' in request.POST:
-        d = request.POST.get('data2')
-        del prods[int(c):(int(d)+1)]
-    else:
-        del prod_to_irr[:]
-        for c in json.loads(c):
-            prod_to_irr.append(c)"""
 
 def product_new(request):
     """function"""

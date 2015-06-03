@@ -14,7 +14,7 @@ urlpatterns = [
     url(r'^log_in/$', views.log_in, name='login'),
     url(r'^logout/$', login_required(views.log_out), \
         name='logout'),
-    #url(r'^guest/(?P<user>.*)/$', views.guest, name='guest'),
+    url(r'^guest/$', login_required(cviews.index), name='guest'),
     #URL patterns for Log In and Out (end)
 
     #URL patterns for File and Product Fill-Up Forms (start)
@@ -27,12 +27,12 @@ urlpatterns = [
      name='new_miv'),
     url(r'^miv_entry/(?P<pk>[0-9]+)/$', login_required(views.miv_entry), \
         name='new_miv_s'),
-    url(r'^garv_entry_f/(?P<user>.*)/$', cviews.GarvF.as_view(), \
+    url(r'^garv_entry_f/(?P<user>.*)/$', login_required(cviews.GarvF.as_view()), \
     name='new_garv_s'),
     url(r'^garv_entry_f/$', login_required(cviews.GarvF.as_view()), \
     name='new_garv_s'),
-    url(r'^product_to_garv/(?P<pk>[0-9]+)/$', views.\
-        product_to_garv, name='new_garv'),
+    url(r'^product_to_garv/(?P<pk>[0-9]+)/$', login_required(views.product_to_garv), \
+        name='new_garv'),
     url(r'^product_to_irr/(?P<pk>[0-9]+)/(?P<inv>[0-9]+)/(?P<sup>[0-9]+)/$', login_required(\
         views.product_to_irr), name='new_irr_cont'),
     #URL patterns for File and Product Fill-Up Forms (end)
@@ -100,7 +100,7 @@ urlpatterns = [
     name='add_cost_center'),
     url(r'^add_inv_stat/$', login_required(cviews.AddInvStat.as_view()),\
      name='add_inv_stat'),
-    url(r'^add_supplier/$', views.add_supplier, name='add_supplier'),
+    url(r'^add_supplier/$', login_required(views.add_supplier), name='add_supplier'),
     url(r'^add_employee/$', login_required(cviews.AddEmp.as_view()),\
      name='add_employee'),
     #URL patterns for Adding Libraries (end)
@@ -112,18 +112,18 @@ urlpatterns = [
      name='miv_reports'),
     url(r'^wrs_reports/$', login_required(cviews.WRSRep.as_view()),\
      name='wrs_reports'),
-    url(r'^wrs_reports/(?P<user>.*)$', cviews.WRSRep1.as_view(),\
+    url(r'^wrs_reports1/$', cviews.WRSRep1.as_view(),\
      name='wrs_reports1'),
     url(r'^par_reports/$', login_required(cviews.PARRep.as_view()),\
      name='par_reports'),
     url(r'^garv_reports/$', login_required(cviews.GARVRep.as_view()),\
      name='garv_reports'),
-    url(r'^garv_reports/(?P<user>.*)$', cviews.GARVRep1.as_view(),\
+    url(r'^garv_reports1/$', cviews.GARVRep1.as_view(),\
      name='garv_reports1'),
     url(r'^product_reports/$', login_required(cviews.ProdRep.as_view()),\
      name='product_reports'),
     #for guest (start)
-    #url(r'^wrs_entry/(?P<user>.*)/$', views.wrs_entry, name='wrs_entry'),
+    #url(r'^wrs_entry/$', views.wrs_entry, name='wrs_entry'),
     #for guest (end)
     #URL patterns for File and Product Reports (end)
 
@@ -146,8 +146,6 @@ urlpatterns = [
      name='supplier_res'),
     url(r'^employee_res/$', login_required(cviews.EmpRes.as_view()),\
      name='employee_res'),
-
-
 
     #URL patterns for details of restore libraries
     url(r'^inv_stat_details_res/(?P<pk>[0-9]+)/$', \
