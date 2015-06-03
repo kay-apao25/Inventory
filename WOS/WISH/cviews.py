@@ -233,14 +233,50 @@ class InvStatRep(ListView):
     template_name = 'WISH/inv_stat.html'
 
     def get_queryset(self):
-        return models.InventoryStat.objects.filter(is_delete=False)
+        if 'q' in self.request.GET and self.request.GET['q']:
+            q = self.request.GET['q']
+            return models.InventoryStat.objects.filter(inv_station_no__icontains=q)
+        else:
+            return models.InventoryStat.objects.filter(is_delete=False).order_by('-id')[:1]
+
+    def get_context_data(self, **kwargs):
+        if 'q' in self.request.GET and self.request.GET['q']:
+            context = super(InvStatRep, self).get_context_data(**kwargs)
+            q = self.request.GET['q']
+            if len(models.InventoryStat.objects.filter(inv_station_no__icontains=q)):
+                context['msg'] = 'Results Found:'
+            else:
+                context['error'] = 'No Results Found'
+            return context
+
+        else:
+            context = super(InvStatRep, self).get_context_data(**kwargs)
+            return context
 
 class CCRep(ListView):
     context_object_name='cc_list'
     template_name = 'WISH/cost_center.html'
 
     def get_queryset(self):
-        return models.CostCenter.objects.filter(is_delete=False)
+        if 'q' in self.request.GET and self.request.GET['q']:
+            q = self.request.GET['q']
+            return models.CostCenter.objects.filter(cost_center_name__icontains=q)
+        else:
+            return models.CostCenter.objects.filter(is_delete=False).order_by('-id')[:1]
+
+    def get_context_data(self, **kwargs):
+        if 'q' in self.request.GET and self.request.GET['q']:
+            context = super(CCRep, self).get_context_data(**kwargs)
+            q = self.request.GET['q']
+            if len(models.CostCenter.objects.filter(cost_center_name__icontains=q)):
+                context['msg'] = 'Results Found:'
+            else:
+                context['error'] = 'No Results Found'
+            return context
+
+        else:
+            context = super(CCRep, self).get_context_data(**kwargs)
+            return context
 
 class SupRep(ListView):
     context_object_name='sup_list'
@@ -254,10 +290,28 @@ class EmpRep(ListView):
     template_name = 'WISH/employee.html'
 
     def get_queryset(self):
-        return models.Employee.objects.filter(is_delete=False).\
-        filter(cost_center_no_id=(models.Employee.objects.get(\
-        name=str(self.request.user.first_name) + ' ' + str(self.\
-        request.user.last_name)).cost_center_no_id))
+        if 'q' in self.request.GET and self.request.GET['q']:
+            q = self.request.GET['q']
+            return models.Employee.objects.filter(dce__icontains=q)
+        else:
+            return models.Employee.objects.filter(is_delete=False).\
+            filter(cost_center_no_id=(models.Employee.objects.get(\
+            name=str(self.request.user.first_name) + ' ' + str(self.\
+            request.user.last_name)).cost_center_no_id)).order_by('-dce')[:1]
+
+    def get_context_data(self, **kwargs):
+        if 'q' in self.request.GET and self.request.GET['q']:
+            context = super(EmpRep, self).get_context_data(**kwargs)
+            q = self.request.GET['q']
+            if len(models.Employee.objects.filter(dce__icontains=q)):
+                context['msg'] = 'Results Found:'
+            else:
+                context['error'] = 'No Results Found'
+            return context
+
+        else:
+            context = super(EmpRep, self).get_context_data(**kwargs)
+            return context
 
 class InvStatEntry(UpdateView):
     model = models.InventoryStat
