@@ -126,7 +126,7 @@ class WRSRep(ListView):
         if 'q' in self.request.GET and self.request.GET['q']:
             context = super(WRSRep, self).get_context_data(**kwargs)
             q = self.request.GET['q']
-            if len(models.IRR.objects.filter(irr_no__icontains=q)):
+            if len(models.IRR.objects.filter(wrs_number__icontains=q)):
                 context['msg'] = 'Results Found:'
             else:
                 context['error'] = 'No Results Found'
@@ -151,16 +151,15 @@ class WRSRep1(ListView):
             this_month = today.month
 
             return models.IRR.objects.filter(irr_headkey__in=[i.id for i in (\
-            models.IRRHeader.objects.filter(dce_custodian=(\
-            models.Employee.objects.get(name=str(self.request.user.\
-            first_name) + ' ' + str(self.request.user.last_name)))))])\
+            models.IRRHeader.objects.filter(dce_user=(\
+            models.Employee.objects.get(name=str(self.request.user.get_full_name())))))])\
             .filter(date_recv__year=str(this_year), date_recv__month=str(this_month))
 
     def get_context_data(self, **kwargs):
         if 'q' in self.request.GET and self.request.GET['q']:
             context = super(WRSRep1, self).get_context_data(**kwargs)
             q = self.request.GET['q']
-            if len(models.IRR.objects.filter(irr_no__icontains=q)):
+            if len(models.IRR.objects.filter(wrs_number__icontains=q)):
                 context['msg'] = 'Results Found:'
             else:
                 context['error'] = 'No Results Found'
