@@ -325,7 +325,7 @@ class CClib(forms.ModelForm):
     class Meta:
         """Meta"""
         model = CostCenter
-        fields = ('cost_center_name', 'functional_group',)
+        fields = ('cost_center_name', 'functional_group', 'inv_station_no',)
 
 class Supplierlib(forms.ModelForm):
 
