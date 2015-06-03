@@ -236,7 +236,7 @@ class InvStatRep(ListView):
             q = self.request.GET['q']
             return models.InventoryStat.objects.filter(inv_station_no__icontains=q)
         else:
-            return models.InventoryStat.objects.filter(is_delete=False).order_by('-id')[:15]
+            return models.InventoryStat.objects.filter(is_delete=False).order_by('-id')[:13]
 
     def get_context_data(self, **kwargs):
         if 'q' in self.request.GET and self.request.GET['q']:
@@ -261,7 +261,7 @@ class CCRep(ListView):
             q = self.request.GET['q']
             return models.CostCenter.objects.filter(cost_center_name__icontains=q)
         else:
-            return models.CostCenter.objects.filter(is_delete=False).order_by('-id')[:15]
+            return models.CostCenter.objects.filter(is_delete=False).order_by('-id')[:13]
 
     def get_context_data(self, **kwargs):
         if 'q' in self.request.GET and self.request.GET['q']:
@@ -286,7 +286,7 @@ class SupRep(ListView):
             q = self.request.GET['q']
             return models.Supplier.objects.filter(supplier_number__icontains=q)
         else:
-            return models.Supplier.objects.filter(is_delete=False).order_by('-supplier_number')[:15]
+            return models.Supplier.objects.filter(is_delete=False).order_by('-supplier_number')[:13]
 
     def get_context_data(self, **kwargs):
         if 'q' in self.request.GET and self.request.GET['q']:
@@ -314,7 +314,7 @@ class EmpRep(ListView):
             return models.Employee.objects.filter(is_delete=False).\
             filter(cost_center_no_id=(models.Employee.objects.get(\
             name=str(self.request.user.first_name) + ' ' + str(self.\
-            request.user.last_name)).cost_center_no_id)).order_by('-dce')[:15]
+            request.user.last_name)).cost_center_no_id)).order_by('-dce')[:13]
 
     def get_context_data(self, **kwargs):
         if 'q' in self.request.GET and self.request.GET['q']:
