@@ -1,6 +1,9 @@
 {% extends 'WISH/index.html' %}
 
 {% block content %}
+<style type="text/css">
+  
+</style>
 {% if irr_list|length == 0 %}
   <div class="alert alert-warning" style="width:400px">
     No IRR Record(s) to be made with MIV Record.
@@ -51,7 +54,8 @@
       {% endfor %}
   </table>
   {% endif %}
-  <script type="text/javascript">
+{% endblock %}
+<script type="text/javascript">
   $(document).ready(function() {
     var activeSystemClass = $('.list-group-item.active');
 
@@ -99,4 +103,3 @@
     });
 });
   </script>
-{% endblock %}
