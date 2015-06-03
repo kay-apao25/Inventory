@@ -516,6 +516,7 @@ def garv_form(request, pk):
     """function"""
     garvs = get_object_or_404(GARV, pk=pk)
     products = garvs.product_to_GARV
+    wo_number = IRR.objects.get(wo_no=PAR.objects.get(par_no=products[0]['PAR_number']).wo_number)
     for product in products:
         pro = Product.objects.get(id=product['Product'])
         product['pros'] = pro
@@ -524,12 +525,12 @@ def garv_form(request, pk):
         if len(products) % 3 != 0:
             loop = loop + 1
             remain = 3 - (len(products) % 3)
-        return render(request, 'WISH/garv_form.html', {'garvs':garvs, \
+        return render(request, 'WISH/garv_form.html', {'garvs':garvs, 'wo_number':wo_number,\
          'products': products, 'loop': range(loop), 'remain': range(remain)})
     else:
         loop = 1
         remain = 3 - len(products)
-        return render(request, 'WISH/garv_form.html', {'garvs': garvs, \
+        return render(request, 'WISH/garv_form.html', {'garvs': garvs, 'wo_number':wo_number,\
             'products': products, 'remain': range(remain), 'loop': range(loop)})
 
 def irr_form(request, pk):
