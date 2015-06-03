@@ -282,7 +282,25 @@ class SupRep(ListView):
     template_name = 'WISH/supplier.html'
 
     def get_queryset(self):
-        return models.Supplier.objects.filter(is_delete=False)
+        if 'q' in self.request.GET and self.request.GET['q']:
+            q = self.request.GET['q']
+            return models.Supplier.objects.filter(supplier_number__icontains=q)
+        else:
+            return models.Supplier.objects.filter(is_delete=False).order_by('-supplier_number')[:15]
+
+    def get_context_data(self, **kwargs):
+        if 'q' in self.request.GET and self.request.GET['q']:
+            context = super(SupRep, self).get_context_data(**kwargs)
+            q = self.request.GET['q']
+            if len(models.Supplier.objects.filter(supplier_number__icontains=q)):
+                context['msg'] = 'Results Found:'
+            else:
+                context['error'] = 'No Results Found'
+            return context
+
+        else:
+            context = super(SupRep, self).get_context_data(**kwargs)
+            return context
 
 class EmpRep(ListView):
     context_object_name='em_list'
