@@ -653,26 +653,31 @@ def product_to_irr(request, pk, inv, sup):
     elif 'save' in request.POST:
         iform = forms.IRRentrycontForm(request.POST)
         if iform.is_valid():
-            for p in prod_to_irr:
-                if 'qty_a' and 'qty_b' and 'qty_r' in p:
-                    if p['qty_a'] != '' and p['qty_b'] != '' and p['qty_r'] != '':
-                        if Product.objects.get(id=p['product']).quantity < int(p['qty_a']):
+            if len(prod_to_irr) != 0:
+                for p in prod_to_irr:
+                    if 'qty_a' and 'qty_b' and 'qty_r' in p:
+                        if p['qty_a'] != '' and p['qty_b'] != '' and p['qty_r'] != '':
+                            if Product.objects.get(id=p['product']).quantity < int(p['qty_a']):
+                                return render(request, 'WISH/product_to_irr.html', \
+                                {'iform': iform, 'error': 'Accepted quantity is greater than ' + \
+                                'the number of stocked items.', 'pk': pk, 'inv':inv, 'sup':sup})
+                        else:
                             return render(request, 'WISH/product_to_irr.html', \
-                            {'iform': iform, 'error': 'Accepted quantity is greater than ' + \
-                            'the number of stocked items.', 'pk': pk, 'inv':inv, 'sup':sup})
+                                {'iform': iform, 'error': 'Some required fields are not filled.', \
+                                'pk': pk, 'inv':inv, 'sup':sup, 'prods': prods, 'prod_to_irr':prod_to_irr})
                     else:
                         return render(request, 'WISH/product_to_irr.html', \
-                            {'iform': iform, 'error': 'Some required fields are not filled.', \
-                            'pk': pk, 'inv':inv, 'sup':sup, 'prods': prods, 'prod_to_irr':prod_to_irr})
-                else:
-                    return render(request, 'WISH/product_to_irr.html', \
-                        {'iform': iform, 'error': 'Some required fields are not filled.', 'pk': \
-                        pk, 'inv':inv, 'sup':sup, 'prods': prods, 'prod_to_irr':prod_to_irr})
-                p['is_par'] = False
-                p['quantity_par'] = p['qty_a']
-                p = Product.objects.get(id=p['product'])
-                p.is_irr = True
-                p.save()
+                            {'iform': iform, 'error': 'Some required fields are not filled.', 'pk': \
+                            pk, 'inv':inv, 'sup':sup, 'prods': prods, 'prod_to_irr':prod_to_irr})
+                    p['is_par'] = False
+                    p['quantity_par'] = p['qty_a']
+                    p = Product.objects.get(id=p['product'])
+                    p.is_irr = True
+                    p.save()
+            else:
+                return render(request, 'WISH/product_to_irr.html', \
+                            {'iform': iform, 'error': 'No product added.', 'pk': \
+                            pk, 'inv':inv, 'sup':sup, 'prods': prods, 'prod_to_irr':prod_to_irr})
 
             irr = iform.save(commit=False)
 
