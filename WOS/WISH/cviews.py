@@ -1,4 +1,4 @@
-from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
+from django.views.generic import ListView, DetailView, CreateView, UpdateView
 from WISH.models import Supplier, CostCenter, InventoryStat, Employee, MIV, GARV, IRR, PAR, Product
 from django.shortcuts import get_object_or_404, redirect, render
 from django.core.urlresolvers import reverse_lazy
@@ -7,38 +7,46 @@ from . import forms
 import datetime
 
 class ParF(ListView):
-    context_object_name='irr_list'
+    """function"""
+    context_object_name = 'irr_list'
     template_name = 'WISH/par_f.html'
 
     def get_queryset(self):
+        """function"""
         return models.IRR.objects.filter(irr_headkey__in=[i.id for i in (\
         models.IRRHeader.objects.filter(dce_custodian=(models.Employee.objects.get(\
         name=str(self.request.user.first_name) + ' ' + str(self.request.user.last_name\
         )))))]).filter(is_par=False)
 
 class MivF(ListView):
-    context_object_name='irr_list'
+    """function"""
+    context_object_name = 'irr_list'
     template_name = 'WISH/miv_entry_f.html'
 
     def get_queryset(self):
+        """function"""
         return models.IRR.objects.filter(irr_headkey__in=[i.id for i in (\
         models.IRRHeader.objects.filter(dce_custodian=(models.Employee.objects.\
         get(name=str(self.request.user.first_name) + ' ' + str(self.request.user.\
         last_name)))))]).filter(is_miv=False)
 
 class GarvF(ListView):
-    context_object_name='par_list'
+    """function"""
+    context_object_name = 'par_list'
     template_name = 'WISH/garv_entry_f.html'
 
     def get_queryset(self):
+        """function"""
         return models.PAR.objects.filter(is_garv=False)
 
 class IRRRep(ListView):
-    context_object_name='irr_list'
+    """function"""
+    context_object_name = 'irr_list'
     template_name = 'WISH/irr_reports.html'
 
 
     def get_queryset(self):
+        """function"""
         if 'q' in self.request.GET and self.request.GET['q']:
             q = self.request.GET['q']
             return models.IRR.objects.filter(irr_no__icontains=q)
@@ -55,6 +63,7 @@ class IRRRep(ListView):
 
 
     def get_context_data(self, **kwargs):
+        """function"""
         if 'q' in self.request.GET and self.request.GET['q']:
             context = super(IRRRep, self).get_context_data(**kwargs)
             q = self.request.GET['q']
@@ -69,7 +78,8 @@ class IRRRep(ListView):
             return context
 
 class MIVRep(ListView):
-    context_object_name='miv_list'
+    """function"""
+    context_object_name = 'miv_list'
     template_name = 'WISH/miv_reports.html'
 
     def get_queryset(self):
@@ -90,6 +100,7 @@ class MIVRep(ListView):
             date_issued__month=str(this_month))
 
     def get_context_data(self, **kwargs):
+        """function"""
         if 'q' in self.request.GET and self.request.GET['q']:
             context = super(MIVRep, self).get_context_data(**kwargs)
             q = self.request.GET['q']
@@ -104,10 +115,12 @@ class MIVRep(ListView):
             return context
 
 class WRSRep(ListView):
-    context_object_name='wrs_list'
+    """function"""
+    context_object_name = 'wrs_list'
     template_name = 'WISH/wrs_reports.html'
 
     def get_queryset(self):
+        """function"""
         if 'q' in self.request.GET and self.request.GET['q']:
             q = self.request.GET['q']
             return models.IRR.objects.filter(wrs_number__icontains=q)
@@ -123,6 +136,7 @@ class WRSRep(ListView):
             .filter(date_recv__year=str(this_year), date_recv__month=str(this_month))
 
     def get_context_data(self, **kwargs):
+        """function"""
         if 'q' in self.request.GET and self.request.GET['q']:
             context = super(WRSRep, self).get_context_data(**kwargs)
             q = self.request.GET['q']
@@ -138,10 +152,12 @@ class WRSRep(ListView):
 
 
 class WRSRep1(ListView):
-    context_object_name='wrs_list'
+    """function"""
+    context_object_name = 'wrs_list'
     template_name = 'WISH/wrs_reports1.html'
-    
+
     def get_queryset(self):
+        """function"""
         if 'q' in self.request.GET and self.request.GET['q']:
             q = self.request.GET['q']
             return models.IRR.objects.filter(wrs_number__icontains=q)
@@ -156,6 +172,7 @@ class WRSRep1(ListView):
             .filter(date_recv__year=str(this_year), date_recv__month=str(this_month))
 
     def get_context_data(self, **kwargs):
+        """function"""
         if 'q' in self.request.GET and self.request.GET['q']:
             context = super(WRSRep1, self).get_context_data(**kwargs)
             q = self.request.GET['q']
@@ -170,29 +187,31 @@ class WRSRep1(ListView):
             return context
 
 class PARRep(ListView):
-    context_object_name='par_list'
+    """function"""
+    context_object_name = 'par_list'
     template_name = 'WISH/par_reports.html'
 
     def get_queryset(self):
-
+        """function"""
         if 'q' in self.request.GET and self.request.GET['q']:
             q = self.request.GET['q']
-            return models.PAR.objects.filter(par_no__icontains=q)
+            return models.PAR.objects.filter(par_no__icontains= q)
         else:
             today = datetime.datetime.now()
             this_year = today.year
             this_month = today.month
 
-            return models.PAR.objects.filter(issued_by=(models.Employee.objects.get(\
+            return models.PAR.objects.filter(issued_by = (models.Employee.objects.get(\
             name=str(self.request.user.first_name) + ' ' + str(self.request.user.\
             last_name)))).filter(par_date__year=str(this_year), \
             par_date__month=str(this_month))
 
     def get_context_data(self, **kwargs):
+        """function"""
         if 'q' in self.request.GET and self.request.GET['q']:
             context = super(PARRep, self).get_context_data(**kwargs)
             q = self.request.GET['q']
-            if len(models.PAR.objects.filter(par_no__icontains=q)):
+            if len(models.PAR.objects.filter(par_no__icontains = q)):
                 context['msg'] = 'Results Found:'
             else:
                 context['error'] = 'No Results Found'
@@ -203,10 +222,12 @@ class PARRep(ListView):
             return context
 
 class GARVRep(ListView):
-    context_object_name='garv_list'
+    """function"""
+    context_object_name = 'garv_list'
     template_name = 'WISH/garv_reports.html'
 
     def get_queryset(self):
+        """function"""
         if 'q' in self.request.GET and self.request.GET['q']:
             q = self.request.GET['q']
             return models.GARV.objects.filter(garv_no__icontains=q)
@@ -221,10 +242,11 @@ class GARVRep(ListView):
             garv_date__month=str(this_month))
 
     def get_context_data(self, **kwargs):
+        """function"""
         if 'q' in self.request.GET and self.request.GET['q']:
             context = super(GARVRep, self).get_context_data(**kwargs)
             q = self.request.GET['q']
-            if len(models.GARV.objects.filter(garv_no__icontains=q)):
+            if len(models.GARV.objects.filter(garv_no__icontains = q)):
                 context['msg'] = 'Results Found:'
             else:
                 context['error'] = 'No Results Found'
@@ -235,25 +257,32 @@ class GARVRep(ListView):
             return context
 
 class GARVRep1(ListView):
-    context_object_name='garv_list'
+    """function"""
+    context_object_name = 'garv_list'
     template_name = 'WISH/garv_reports1.html'
 
     def get_queryset(self):
-        return models.GARV.objects.filter(dce=(models.Employee.objects.get(\
+        """function"""
+        return models.GARV.objects.filter(dce = (models.Employee.objects.get(\
         name=str(self.kwargs['user'])).dce))
 
 class ProdRep(ListView):
-    context_object_name='product_list'
+    """function"""
+    context_object_name ='product_list'
     template_name = 'WISH/product_reports.html'
 
     def get_queryset(self):
-        return models.Product.objects.filter(inv_station_no=(models.Employee.objects.get(name=str(self.request.user.get_full_name())).cost_center_no.inv_station_no))
+    	"""function"""
+        return models.Product.objects.filter(inv_station_no = (models.Employee.objects.get(name=\
+        	str(self.request.user.get_full_name())).cost_center_no.inv_station_no))
 
 class InvStatRep(ListView):
-    context_object_name='inv_list'
+    """function"""
+    context_object_name = 'inv_list'
     template_name = 'WISH/inv_stat.html'
 
     def get_queryset(self):
+        """function"""
         if 'q' in self.request.GET and self.request.GET['q']:
             q = self.request.GET['q']
             return models.InventoryStat.objects.filter(inv_station_no__icontains=q)
@@ -261,6 +290,7 @@ class InvStatRep(ListView):
             return models.InventoryStat.objects.filter(is_delete=False).order_by('-id')[:13]
 
     def get_context_data(self, **kwargs):
+        """function"""
         if 'q' in self.request.GET and self.request.GET['q']:
             context = super(InvStatRep, self).get_context_data(**kwargs)
             q = self.request.GET['q']
@@ -275,10 +305,12 @@ class InvStatRep(ListView):
             return context
 
 class CCRep(ListView):
-    context_object_name='cc_list'
+    """function"""
+    context_object_name = 'cc_list'
     template_name = 'WISH/cost_center.html'
 
     def get_queryset(self):
+        """function"""
         if 'q' in self.request.GET and self.request.GET['q']:
             q = self.request.GET['q']
             return models.CostCenter.objects.filter(cost_center_name__icontains=q)
@@ -286,6 +318,7 @@ class CCRep(ListView):
             return models.CostCenter.objects.filter(is_delete=False).order_by('-id')[:13]
 
     def get_context_data(self, **kwargs):
+        """function"""
         if 'q' in self.request.GET and self.request.GET['q']:
             context = super(CCRep, self).get_context_data(**kwargs)
             q = self.request.GET['q']
@@ -300,10 +333,12 @@ class CCRep(ListView):
             return context
 
 class SupRep(ListView):
-    context_object_name='sup_list'
+    """function"""
+    context_object_name ='sup_list'
     template_name = 'WISH/supplier.html'
 
     def get_queryset(self):
+    	"""function"""
         if 'q' in self.request.GET and self.request.GET['q']:
             q = self.request.GET['q']
             return models.Supplier.objects.filter(supplier_name__icontains=q)
@@ -311,6 +346,7 @@ class SupRep(ListView):
             return models.Supplier.objects.filter(is_delete=False).order_by('-supplier_number')[:13]
 
     def get_context_data(self, **kwargs):
+        """function"""
         if 'q' in self.request.GET and self.request.GET['q']:
             context = super(SupRep, self).get_context_data(**kwargs)
             q = self.request.GET['q']
@@ -325,10 +361,12 @@ class SupRep(ListView):
             return context
 
 class EmpRep(ListView):
-    context_object_name='em_list'
+    """function"""
+    context_object_name ='em_list'
     template_name = 'WISH/employee.html'
 
     def get_queryset(self):
+        """function"""
         if 'q' in self.request.GET and self.request.GET['q']:
             q = self.request.GET['q']
             return models.Employee.objects.filter(dce__icontains=q)
@@ -339,6 +377,7 @@ class EmpRep(ListView):
             request.user.last_name)).cost_center_no_id)).order_by('-dce')[:13]
 
     def get_context_data(self, **kwargs):
+        """function"""
         if 'q' in self.request.GET and self.request.GET['q']:
             context = super(EmpRep, self).get_context_data(**kwargs)
             q = self.request.GET['q']
@@ -353,102 +392,123 @@ class EmpRep(ListView):
             return context
 
 class InvStatEntry(UpdateView):
+    """function"""
     model = models.InventoryStat
     form_class = forms.Statlib1
     success_url = reverse_lazy('inv_stat')
 
 class CostCenEntry(UpdateView):
+    """function"""
     model = models.CostCenter
     form_class = forms.CClib
     success_url = reverse_lazy('cost_center')
 
 class EmpEntry(UpdateView):
+    """function"""
     model = models.Employee
     form_class = forms.Employeelib
     success_url = reverse_lazy('employee')
 
 class ProdDetails(DetailView):
+    """function"""
     model = models.Product
     context_object_name = 'prod'
 
 class InvStatDetails(DetailView):
+    """function"""
     model = models.InventoryStat
     context_object_name = 'invs'
 
 class CCDetails(DetailView):
+    """function"""
     model = models.CostCenter
     context_object_name = 'cc'
 
 class SupDetails(DetailView):
+    """function"""
     model = models.Supplier
     context_object_name = 'sup'
 
 class EmpDetails(DetailView):
+    """function"""
     model = models.Employee
     context_object_name = 'em'
 
 class AddCC(CreateView):
+    """function"""
     model = models.CostCenter
     form_class = forms.CClib
-    template_name='WISH/add_cost_center.html'
+    template_name ='WISH/add_cost_center.html'
     success_url = reverse_lazy('add_cost_center')
 
 class AddInvStat(CreateView):
+    """function"""
     model = models.InventoryStat
     form_class = forms.Statlib
-    template_name='WISH/add_inv_stat.html'
+    template_name ='WISH/add_inv_stat.html'
     success_url = reverse_lazy('add_inv_stat')
 
 class AddEmp(CreateView):
+    """function"""
     model = models.Employee
     form_class = forms.Emlib
-    template_name='WISH/add_employee.html'
+    template_name ='WISH/add_employee.html'
     success_url = reverse_lazy('add_employee')
 
 class InvStatRes(ListView):
-    context_object_name='inv_list_res'
+    """function"""
+    context_object_name ='inv_list_res'
     template_name = 'WISH/inv_stat_res.html'
 
     def get_queryset(self):
         return models.InventoryStat.objects.filter(is_delete=True)
 
 class CCRes(ListView):
-    context_object_name='cc_list'
+    """function"""
+    context_object_name ='cc_list'
     template_name = 'WISH/cost_center_res.html'
 
     def get_queryset(self):
+        """function"""
         return models.CostCenter.objects.filter(is_delete=True)
 
 class SupRes(ListView):
-    context_object_name='sup_list'
+    """function"""
+    context_object_name ='sup_list'
     template_name = 'WISH/supplier_res.html'
 
     def get_queryset(self):
+        """function"""
         return models.Supplier.objects.filter(is_delete=True)
 
 class EmpRes(ListView):
-    context_object_name='em_list'
+    """function"""
+    context_object_name ='em_list'
     template_name = 'WISH/employee_res.html'
 
     def get_queryset(self):
         return models.Employee.objects.filter(is_delete=True)
 
 class InvStatDetailsRes(DetailView):
+    """function"""
     model = models.InventoryStat
     context_object_name = 'invs'
     template_name = 'WISH/inv_stat_details_res.html'
 
 class CCDetailsRes(DetailView):
+    """function"""
     model = models.CostCenter
     context_object_name = 'cc'
     template_name = 'WISH/costcenter_detail_res.html'
 
 class SupDetailsRes(DetailView):
+    """function"""
     model = models.Supplier
     context_object_name = 'sup'
     template_name = 'WISH/supplier_detail_res.html'
 
 class EmpDetailsRes(DetailView):
+    """function"""
     model = models.Employee
     context_object_name = 'em'
     template_name = 'WISH/employee_detail_res.html'

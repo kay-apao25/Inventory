@@ -37,19 +37,13 @@
         {% if error1 or msg or form1.errors%}
             <script type="text/javascript">
                 $( document ).ready( function() {
-                    $('#anotherModal').modal({show:true});
+                    $('#signUp').modal({show:true});
                 });
             </script>
         {% elif error or form.errors %}
             <script type="text/javascript">
                 $( document ).ready( function() {
-                    $('#smallModal').modal({show:true});
-                });
-            </script>
-        {% elif error2 or form2.errors %}
-            <script type="text/javascript">
-                $( document ).ready( function() {
-                    $('#otherModal').modal({show:true});
+                    $('#logIn').modal({show:true});
                 });
             </script>
         {% endif %}

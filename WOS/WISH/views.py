@@ -28,7 +28,6 @@ def log_in(request):
         if 'signup' in request.POST:
             form = forms.LoginForm()
             form1 = forms.SignUpForm(request.POST or None)
-            form2 = forms.GuestForm()
             if form1.is_valid():
                 dce = form1.data['dce']
                 try:
@@ -52,16 +51,14 @@ def log_in(request):
 
                     form1 = forms.SignUpForm()
                     return render(request, 'WISH/login.html', {'form':form, \
-                         'form1': form1, 'msg': "You've successfully created an account.", 'form2':form2})
+                         'form1': form1, 'msg': "You've successfully created an account."})
                 except:
                     return render(request, 'WISH/login.html', \
                         {'error1': 'Username already exists.',\
-                         'form':form, 'form1': form1, 'form2':form2})
-
+                         'form':form, 'form1': form1})
         elif 'login' in request.POST:
             form = forms.LoginForm(request.POST or None)
             form1 = forms.SignUpForm()
-            form2 = forms.GuestForm()
             if form.is_valid():
                 user = authenticate(username=form.data['username'], \
                     password=form.data['password'])
@@ -72,26 +69,12 @@ def log_in(request):
                 else:
                     return render(request, 'WISH/login.html', \
                         {'error': 'Username and password does not match.',\
-                         'form':form, 'form1': form1, 'form2':form2})
-        elif 'guest' in request.POST:
-            form = forms.LoginForm()
-            form1 = forms.SignUpForm()
-            form2 = forms.GuestForm(request.POST or None)
-            if form2.is_valid():
-                if len(Employee.objects.filter(dce=int(form2.data['dce']))) != 0:
-                    name = Employee.objects.get(dce=int(form2.data['dce'])).name
-                    form2 = forms.GuestForm()
-                    return redirect('guest', user=name)
-                else:
-                    return render(request, 'WISH/login.html', \
-                        {'error2': 'Employee does not exist.',\
-                         'form':form, 'form1': form1, 'form2':form2})
+                         'form':form, 'form1': form1})
     else:
         form = forms.LoginForm()
         form1 = forms.SignUpForm()
-        form2 = forms.GuestForm()
         return render(request, 'WISH/login.html', \
-            {'form': form, 'form1': form1, 'form2':form2})
+            {'form': form, 'form1': form1})
 
 def log_out(request):
     """function"""
@@ -119,7 +102,6 @@ def add_supplier(request):
             sup.save()
             return redirect('inv_stat')
     else:
-        form = forms.Suplib()
         form1 = forms.Suplib1()
         form2 = forms.Suplib2()
     return render(request, 'WISH/add_supplier.html', \
@@ -294,7 +276,6 @@ def miv_entry(request, pk):
                 + ') was successfully added.', 'exit': 'Exit'})
     else:
         form = forms.MIVentryForm()
-
     return render(request, 'WISH/miv_entry.html', {'form': form})
 
 def product_to_garv(request, pk):
@@ -653,26 +634,31 @@ def product_to_irr(request, pk, inv, sup):
     elif 'save' in request.POST:
         iform = forms.IRRentrycontForm(request.POST)
         if iform.is_valid():
-            for p in prod_to_irr:
-                if 'qty_a' and 'qty_b' and 'qty_r' in p:
-                    if p['qty_a'] != '' and p['qty_b'] != '' and p['qty_r'] != '':
-                        if Product.objects.get(id=p['product']).quantity < int(p['qty_a']):
+            if len(prod_to_irr) != 0:
+                for p in prod_to_irr:
+                    if 'qty_a' and 'qty_b' and 'qty_r' in p:
+                        if p['qty_a'] != '' and p['qty_b'] != '' and p['qty_r'] != '':
+                            if Product.objects.get(id=p['product']).quantity < int(p['qty_a']):
+                                return render(request, 'WISH/product_to_irr.html', \
+                                {'iform': iform, 'error': 'Accepted quantity is greater than ' + \
+                                'the number of stocked items.', 'pk': pk, 'inv':inv, 'sup':sup})
+                        else:
                             return render(request, 'WISH/product_to_irr.html', \
-                            {'iform': iform, 'error': 'Accepted quantity is greater than ' + \
-                            'the number of stocked items.', 'pk': pk, 'inv':inv, 'sup':sup})
+                                {'iform': iform, 'error': 'Some required fields are not filled.', \
+                                'pk': pk, 'inv':inv, 'sup':sup, 'prods': prods, 'prod_to_irr':prod_to_irr})
                     else:
                         return render(request, 'WISH/product_to_irr.html', \
-                            {'iform': iform, 'error': 'Some required fields are not filled.', \
-                            'pk': pk, 'inv':inv, 'sup':sup, 'prods': prods, 'prod_to_irr':prod_to_irr})
-                else:
-                    return render(request, 'WISH/product_to_irr.html', \
-                        {'iform': iform, 'error': 'Some required fields are not filled.', 'pk': \
-                        pk, 'inv':inv, 'sup':sup, 'prods': prods, 'prod_to_irr':prod_to_irr})
-                p['is_par'] = False
-                p['quantity_par'] = p['qty_a']
-                p = Product.objects.get(id=p['product'])
-                p.is_irr = True
-                p.save()
+                            {'iform': iform, 'error': 'Some required fields are not filled.', 'pk': \
+                            pk, 'inv':inv, 'sup':sup, 'prods': prods, 'prod_to_irr':prod_to_irr})
+                    p['is_par'] = False
+                    p['quantity_par'] = p['qty_a']
+                    p = Product.objects.get(id=p['product'])
+                    p.is_irr = True
+                    p.save()
+            else:
+                return render(request, 'WISH/product_to_irr.html', \
+                            {'iform': iform, 'error': 'No product added.', 'pk': \
+                            pk, 'inv':inv, 'sup':sup, 'prods': prods, 'prod_to_irr':prod_to_irr})
 
             irr = iform.save(commit=False)
 
@@ -747,7 +733,6 @@ def par(request, inv):
 
         elif form.is_valid() and iform.is_valid():
             par_entry = form.save(commit=False)
-
             par_no = form.data['par_no']
 
             for prod in products.product:
@@ -786,7 +771,6 @@ def par(request, inv):
             par_entry.product = json.dumps(prod_to_par)
             par_entry.inv_stat_no_id = IRR.objects.get(irr_no=inv).\
             irr_headkey.inv_station_no.id
-
             par_entry.issued_by = Employee.objects.get\
             (name=(str(request.user.get_full_name())))
 
