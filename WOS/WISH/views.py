@@ -21,7 +21,6 @@ prod_to_irr = []
 prod_to_garv = []
 prod_to_wrs = []
 prods = []
-query = 0
 
 def log_in(request):
     """function"""
@@ -158,7 +157,8 @@ def product_new(request):
                 if key == 'purchased_from':
                     sup = form3.data['purchased_from']
                     sup = sup.split(', ')
-                    product.purchased_from = Supplier.objects.filter(supplier_name=sup[1]).get(supplier_number=int(sup[0]))
+                    product.purchased_from = Supplier.objects.filter(supplier_name=sup[1]\
+                        ).get(supplier_number=int(sup[0]))
                 else:
                     setattr(product, key, form1.data[key])
                     setattr(product, key, form2.data[key])
@@ -220,7 +220,8 @@ def irr_entry(request):
                 if key == 'supplier':
                     sup = form1.data['supplier']
                     sup = sup.split(', ')
-                    irr_entry.supplier = Supplier.objects.filter(supplier_name=sup[1]).get(supplier_number=int(sup[0]))
+                    irr_entry.supplier = Supplier.objects.filter(supplier_name=sup[1]).get(\
+                        supplier_number=int(sup[0]))
                 else:
                     setattr(irr_entry, key, form1.data[key1])
                     setattr(irr_entry, key, form2.data[key1])
@@ -235,7 +236,8 @@ def irr_entry(request):
                     , 'form1': form1, 'form2': form2})
             del prods[:]
             return redirect('new_irr_cont',\
-             pk=irr_entry.pk, inv=int(irr_entry.inv_station_no_id), sup=Supplier.objects.get(supplier_number=int(sup[0])).id)
+             pk=irr_entry.pk, inv=int(irr_entry.inv_station_no_id), sup=Supplier.objects.get(\
+                supplier_number=int(sup[0])).id)
     else:
         prodlist = Product.objects.filter(inv_station_no=inv)
         form1 = forms.IRRentryForm1()
@@ -322,7 +324,6 @@ def product_to_garv(request, pk):
 
         elif form.is_valid() and iform.is_valid():
             garv = form.save(commit=False)
-
             garv_no = form.data['garv_no']
 
             for prod in products.product:
@@ -661,12 +662,12 @@ def product_to_irr(request, pk, inv, sup):
                             'the number of stocked items.', 'pk': pk, 'inv':inv, 'sup':sup})
                     else:
                         return render(request, 'WISH/product_to_irr.html', \
-                            {'iform': iform, 'error': 'Some required fields are not filled.', 'pk': pk, 'inv':inv, 'sup':sup, 'prods': prods, \
-                            'prod_to_irr':prod_to_irr})
+                            {'iform': iform, 'error': 'Some required fields are not filled.', \
+                            'pk': pk, 'inv':inv, 'sup':sup, 'prods': prods, 'prod_to_irr':prod_to_irr})
                 else:
                     return render(request, 'WISH/product_to_irr.html', \
-                        {'iform': iform, 'error': 'Some required fields are not filled.', 'pk': pk, 'inv':inv, 'sup':sup, 'prods': prods, \
-                        'prod_to_irr':prod_to_irr})
+                        {'iform': iform, 'error': 'Some required fields are not filled.', 'pk': \
+                        pk, 'inv':inv, 'sup':sup, 'prods': prods, 'prod_to_irr':prod_to_irr})
                 p['is_par'] = False
                 p['quantity_par'] = p['qty_a']
                 p = Product.objects.get(id=p['product'])
