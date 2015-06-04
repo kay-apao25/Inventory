@@ -73,19 +73,6 @@ def log_in(request):
                     return render(request, 'WISH/login.html', \
                         {'error': 'Username and password does not match.',\
                          'form':form, 'form1': form1, 'form2':form2})
-        elif 'guest' in request.POST:
-            form = forms.LoginForm()
-            form1 = forms.SignUpForm()
-            form2 = forms.GuestForm(request.POST or None)
-            if form2.is_valid():
-                if len(Employee.objects.filter(dce=int(form2.data['dce']))) != 0:
-                    name = Employee.objects.get(dce=int(form2.data['dce'])).name
-                    form2 = forms.GuestForm()
-                    return redirect('guest', user=name)
-                else:
-                    return render(request, 'WISH/login.html', \
-                        {'error2': 'Employee does not exist.',\
-                         'form':form, 'form1': form1, 'form2':form2})
     else:
         form = forms.LoginForm()
         form1 = forms.SignUpForm()
@@ -119,7 +106,6 @@ def add_supplier(request):
             sup.save()
             return redirect('inv_stat')
     else:
-        form = forms.Suplib()
         form1 = forms.Suplib1()
         form2 = forms.Suplib2()
     return render(request, 'WISH/add_supplier.html', \
@@ -294,7 +280,6 @@ def miv_entry(request, pk):
                 + ') was successfully added.', 'exit': 'Exit'})
     else:
         form = forms.MIVentryForm()
-
     return render(request, 'WISH/miv_entry.html', {'form': form})
 
 def product_to_garv(request, pk):
@@ -752,7 +737,6 @@ def par(request, inv):
 
         elif form.is_valid() and iform.is_valid():
             par_entry = form.save(commit=False)
-
             par_no = form.data['par_no']
 
             for prod in products.product:
@@ -791,7 +775,6 @@ def par(request, inv):
             par_entry.product = json.dumps(prod_to_par)
             par_entry.inv_stat_no_id = IRR.objects.get(irr_no=inv).\
             irr_headkey.inv_station_no.id
-
             par_entry.issued_by = Employee.objects.get\
             (name=(str(request.user.get_full_name())))
 
