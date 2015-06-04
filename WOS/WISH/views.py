@@ -28,7 +28,6 @@ def log_in(request):
         if 'signup' in request.POST:
             form = forms.LoginForm()
             form1 = forms.SignUpForm(request.POST or None)
-            form2 = forms.GuestForm()
             if form1.is_valid():
                 dce = form1.data['dce']
                 try:
@@ -52,16 +51,14 @@ def log_in(request):
 
                     form1 = forms.SignUpForm()
                     return render(request, 'WISH/login.html', {'form':form, \
-                         'form1': form1, 'msg': "You've successfully created an account.", 'form2':form2})
+                         'form1': form1, 'msg': "You've successfully created an account."})
                 except:
                     return render(request, 'WISH/login.html', \
                         {'error1': 'Username already exists.',\
-                         'form':form, 'form1': form1, 'form2':form2})
-
+                         'form':form, 'form1': form1})
         elif 'login' in request.POST:
             form = forms.LoginForm(request.POST or None)
             form1 = forms.SignUpForm()
-            form2 = forms.GuestForm()
             if form.is_valid():
                 user = authenticate(username=form.data['username'], \
                     password=form.data['password'])
@@ -72,13 +69,12 @@ def log_in(request):
                 else:
                     return render(request, 'WISH/login.html', \
                         {'error': 'Username and password does not match.',\
-                         'form':form, 'form1': form1, 'form2':form2})
+                         'form':form, 'form1': form1})
     else:
         form = forms.LoginForm()
         form1 = forms.SignUpForm()
-        form2 = forms.GuestForm()
         return render(request, 'WISH/login.html', \
-            {'form': form, 'form1': form1, 'form2':form2})
+            {'form': form, 'form1': form1})
 
 def log_out(request):
     """function"""
