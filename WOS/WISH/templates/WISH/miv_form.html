@@ -6,9 +6,7 @@
     <head>
     	<meta name="viewport" content="width=device-width, initial-scale=1">
     	<link rel="stylesheet" type="text/css" href="{% static 'css/forms_style.css' %}">
-
-        <title>miv_form</title>
-
+        <title>MIV Form</title>
     </head>
 
     <body>
@@ -16,10 +14,9 @@
 		    <div id="border" style="width:826px;height:1169px;border:1px solid #000;">
 		    	<p align="left" class="left_marg" style="margin-bottom: 0px;">REPUBLIC OF THE PHILIPPINES<br>NATIONAL POWER CORPORATION</p>
 				<p align="right" class="right_marg" style="margin-bottom: 0px;">MINDANAO REGIONAL CENTER<br>
-																								MINDANAO GENERATION - CENTRAL WAREHOUSE</p>
+																				MINDANAO GENERATION - CENTRAL WAREHOUSE</p>
 
 		        <h1 align="center">MATERIALS ISSUE VOUCHER</h1>
-
 				<p align ="right" class="right_marg_norm">Date: {{mivs.doc_date}}</p>
 
 				<table style="width:90%" align="center">
@@ -49,7 +46,7 @@
 						<th class="miv">T</th>
 						<th class="miv">JO/WO</th>
 					</tr>
-           {% for product in products|slice:"-6:"%}
+           			{% for product in products|slice:"-6:"%}
 					<tr>
 						<td><br>{{product.pros.nsn}}<br><br><br></td> <!--NAPOCOR SUPPLY NO.-->
 						<td><br>{{product.pros.item_name}}, {{product.pros.description}}<br><br><br></td> <!--PARTICULARS-->
@@ -65,17 +62,17 @@
 						<td></td> <!--ACT-->
 						<td></td> <!--USA-->
 					</tr>
-          {{products.pop.0}}
-      	  {% endfor %}
-      	  {% if forloop.last %}
-            <tr>
-      			<td colspan="13">
-      			 {% for i in remain %}
-					<br><br><br><br><br>
-      			 {% endfor %}
-      			</td>
-      		</tr>
-      	  {% endif %}
+          			{{products.pop.0}}
+      	  			{% endfor %}
+		      	  	{% if forloop.last %}
+		            <tr>
+		      			<td colspan="13">
+		      			 {% for i in remain %}
+							<br><br><br><br><br>
+		      			 {% endfor %}
+		      			</td>
+		      		</tr>
+		      	  	{% endif %}
 				</table>
 
 				<table style="width:90%" class="tbl3">
@@ -89,11 +86,14 @@
 				<table style="width:90%" class="tbl3">
 					<tr style="font-size: 15px">
 						<td >Approved by: <center> <br><u>{{mivs.irr_no.irr_headkey.dce_approved}}</u><br>IS Cost Center Head<br>
-              DCE:{{mivs.irr_no.irr_headkey.dce_approved.dce}}<br>Date: {{mivs.irr_no.irr_headkey.approved_date}}</center></td>
+              			DCE:{{mivs.irr_no.irr_headkey.dce_approved.dce}}<br>Date: {{mivs.irr_no.irr_headkey.approved_date}}</center></td>
+						
 						<td >Issued by: <center><br> <u>{{mivs.irr_no.irr_headkey.dce_custodian}}</u><br>Property Custodian
-              <br>DCE:{{mivs.irr_no.irr_headkey.dce_custodian.dce}}<br>Date: {{mivs.irr_no.date_recv}}</center></td>
+              			<br>DCE:{{mivs.irr_no.irr_headkey.dce_custodian.dce}}<br>Date: {{mivs.irr_no.date_recv}}</center></td>
+						
 						<td >Received item/s as stated above:<center><br><u>{{mivs.irr_no.irr_headkey.dce_user}}</u>
-              <br>Requisitioners/Representatives<br>DCE:{{mivs.irr_no.irr_headkey.dce_user.dce}}<br>Date: {{mivs.irr_no.irr_headkey.proc_date}} </center></td>
+              			<br>Requisitioners/Representatives<br>DCE:{{mivs.irr_no.irr_headkey.dce_user.dce}}<br>Date: {{mivs.irr_no.irr_headkey.proc_date}} </center></td>
+						
 						<td ><center>MIV <br>IS No. {{mivs.irr_no.irr_headkey.inv_station_no.inv_station_no}} <br> NO {{mivs.id}}<br><br></center> </td>
 					</tr>
 				</table>
@@ -102,21 +102,19 @@
       				<button id="printpagebutton" onclick="myFunction()" >Print this Form</button>
      			{% endif %}
 			</div>
-      <br><br>
-
-      <style type="text/css">
+      	<br><br>
+      	<style type="text/css">
           @page { margin: 0; }
-        </style>
-        
-        <script>
-      function myFunction() {
-        var printButton = document.getElementById("printpagebutton");
-        printButton.style.visibility = 'hidden';
+       	</style>
 
-        window.print();
-        printButton.style.visibility = 'visible';
-      }
-  </script>
+        <script>
+      		function myFunction() {
+	        	var printButton = document.getElementById("printpagebutton");
+	        	printButton.style.visibility = 'hidden';
+	        	window.print();
+	        	printButton.style.visibility = 'visible';
+      		}
+  		</script>
 		</center>
 	</body>
 </html>

@@ -1,21 +1,25 @@
 {% extends 'WISH/index.html' %}
 
 {% block content %}
-<style type="text/css">
-  
-</style>
+
 {% if irr_list|length == 0 %}
+
   <div class="alert alert-warning" style="width:400px">
     No IRR Record(s) to be made with MIV Record.
   </div>
   <div align="center"><a href= "{% url 'index' %}"><i class="glyphicon glyphicon-share-alt"></i> Exit </a></div>
+
 {% else %}
+  <!-- Start of header -->
   <div class="page-header">
     <h2 align="center">Select IRR Record to be created with MIV Report</h2>
   </div>
+  <!-- End of header -->
+
+  <!-- Start of search input form-->
   {% if irr_list|length <= 20 %}
     <div class="col-md-2" style="margin-left: 160px"></div>
-   {% else %}
+  {% else %}
     <div class="col-md-2" style="padding-right: 0px; margin-left: 300px; padding-left: 0px;">
     <form action="#" method="get">
       <div class="input-group">
@@ -24,37 +28,43 @@
       </div>
     </form>
   </div>
-   {% endif %}
+  {% endif %}
+  <!-- End of search input form -->
+  
   <div class="col-md-5" style="padding-left: 10px;">
-   <table class="table table-list-search" width="50px" style="text-align:center">    
-   <thead>
-     	<th>IRR No.</th>
-       <th>Cost Center Name</th>
-       <th>Date Received</th>
-       <th>Work Order No.</th>
-    </thead>
-     	{% for irr in irr_list %}
-      	<tr>
-          <td>
-            <a href="{% url 'new_miv_s' pk=irr.pk %}">
-              {{ irr.irr_no}}
-            </a>
-          </td>
-        </td>
-        <td>
-          {{irr.cost_center_no}}
-        </td>
-        <td>
-          {{irr.date_recv}}
-        </td>
-        <td>
-          {{irr.wo_no}}
-        </td>
-      	</tr>
-      {% endfor %}
-  </table>
+      <!-- Start of table -->
+      <table class="table table-list-search" width="50px" style="text-align:center">    
+          <thead>
+           	<th>IRR No.</th>
+             <th>Cost Center Name</th>
+             <th>Date Received</th>
+             <th>Work Order No.</th>
+          </thead>
+          {% for irr in irr_list %}
+          	<tr>
+              <td>
+                <a href="{% url 'new_miv_s' pk=irr.pk %}">
+                  {{ irr.irr_no}}
+                </a>
+              </td>
+            </td>
+            <td>
+              {{irr.cost_center_no}}
+            </td>
+            <td>
+              {{irr.date_recv}}
+            </td>
+            <td>
+              {{irr.wo_no}}
+            </td>
+          	</tr>
+          {% endfor %}
+      </table>
+      <!-- End of table -->
+  </div>
   {% endif %}
 {% endblock %}
+<!-- Start of script for automatic search -->
 <script type="text/javascript">
   $(document).ready(function() {
     var activeSystemClass = $('.list-group-item.active');
@@ -100,6 +110,7 @@
         {
             tableBody.append('<tr class="search-sf"><td class="text-muted" colspan="6">No entries found.</td></tr>');
         }
-    });
-});
-  </script>
+    }); 
+  });
+</script>
+<!-- End of script for automatic search -->

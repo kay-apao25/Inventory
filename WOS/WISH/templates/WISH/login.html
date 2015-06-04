@@ -16,7 +16,7 @@
         <meta name="author" content="Codrops" />
         <link rel="shortcut icon" href="../favicon.ico">
         <link rel="stylesheet" type="text/css" href="{% static 'css/demo.css' %}" />
-        <link rel="stylesheet" type="text/css" href="{% static 'css/style1.css' %}" />
+        <link rel="stylesheet" type="text/css" href="{% static 'css/login.css' %}" />
         <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
         <script src="{% static 'js/jquery.js' %}"></script>
         <script src="{% static 'js/jquery.min.js' %}"></script>
@@ -33,55 +33,49 @@
             <li><span>Image 05</span></li>
             <li><span>Image 06</span></li>
         </ul>
+
         {% if error1 or msg or form1.errors%}
-        <script type="text/javascript">
-            $( document ).ready( function() {
-                $('#anotherModal').modal({show:true});
-            });
-        </script>
+            <script type="text/javascript">
+                $( document ).ready( function() {
+                    $('#anotherModal').modal({show:true});
+                });
+            </script>
         {% elif error or form.errors %}
-        <script type="text/javascript">
-            $( document ).ready( function() {
-                $('#smallModal').modal({show:true});
-            });
-        </script>
+            <script type="text/javascript">
+                $( document ).ready( function() {
+                    $('#smallModal').modal({show:true});
+                });
+            </script>
         {% elif error2 or form2.errors %}
-        <script type="text/javascript">
-            $( document ).ready( function() {
-                $('#otherModal').modal({show:true});
-            });
-        </script>
+            <script type="text/javascript">
+                $( document ).ready( function() {
+                    $('#otherModal').modal({show:true});
+                });
+            </script>
         {% endif %}
+        
         <script type="text/javascript">
         $( document ).ready( function() {
             $('#l_in').click(function(){
-                $('#anotherModal').modal('hide');
-                $('#otherModal').modal('hide');
+                $('#signUp').modal('hide');
             });
             $('#s_in').click(function(){
-                $('#smallModal').modal('hide');
-                $('#otherModal').modal('hide');
+                $('#logIn').modal('hide');
             });
-            $('#g_in').click(function(){
-                $('#smallModal').modal('hide');
-                $('#anotherModal').modal('hide');
-            });
-
          });
         </script>
+        
+        <!-- Start of nav-bar -->
         <div class="container1">
             <!-- Codrops top bar -->
             <div class="codrops-top" style="width:1375px">
-                <img src="{% static 'images/header1.png' %}" style="margin-left: 20px;"></img>
+                <img src="{% static 'images/header1.png' %}" style="margin-left: 20px;"/>
 
                 <span class="right">
-                        <!--<a href="#popup" id="g_in" class="login" data-toggle="modal" data-target="#otherModal"
-                            style="text-decoration:none;margin-right:10px">
-                            <span class="glyphicon glyphicon-user"></span>&nbsp;Guest</a>-->
-                        <a href="#popup" id="s_in" class="login" data-toggle="modal" data-target="#anotherModal"
+                        <a href="#popup" id="s_in" class="login" data-toggle="modal" data-target="#signUp"
                             style="text-decoration:none;margin-right:10px">
                             <span class="glyphicon glyphicon-pencil"></span>&nbsp;Sign Up</a>
-                        <a href="#popup" id="l_in" class="login" data-toggle="modal" data-target="#smallModal"
+                        <a href="#popup" id="l_in" class="login" data-toggle="modal" data-target="#logIn"
                             style="text-decoration:none;margin-right:30px">
                             <span class="glyphicon glyphicon-log-in"></span>&nbsp; Log In</a>
                 </span>
@@ -89,9 +83,10 @@
                 <div class="clr"></div>
             </div>
         </div>
-
-           <!--MODAL-->
-        <div class="modal fade" id="smallModal" tabindex="-1" role="dialog" aria-labelledby="smallModal" aria-hidden="true" style="margin-top: 100px; position: fixed; z-index:10000 opacity:0.5">
+        <!-- End of nav-bar -->
+        
+        <!-- start of logIn Modal-->
+        <div class="modal fade" id="logIn" tabindex="-1" role="dialog" aria-labelledby="logIn" aria-hidden="true" style="margin-top: 100px; position: fixed; z-index:10000 opacity:0.5">
           <div class="modal-dialog modal-sm">
             <div class="modal-content">
               <div class="modal-header">
@@ -128,70 +123,33 @@
             </div>
           </div>
         </div>
-            <!--END OF MODAL-->
+        <!--END OF logIn Modal-->
 
-            <!--start of anothermodal-->
-        <div class="modal fade" id="anotherModal" tabindex="-1" role="dialog" aria-labelledby="anotherModal" aria-hidden="true" style="margin-top: 100px; position: fixed; z-index:10000 opacity:0.5">
-              <div class="modal-dialog modal-sm">
+        <!--start of signUp Modal-->
+        <div class="modal fade" id="signUp" tabindex="-1" role="dialog" aria-labelledby="signUp" aria-hidden="true" style="margin-top: 100px; position: fixed; z-index:10000 opacity:0.5">
+            <div class="modal-dialog modal-sm">
                 <div class="modal-content">
                   <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                     <h4 class="modal-title" id="myModalLabel">Sign Up</h4>
-                    <!--<p><span class="glyphicon glyphicon-warning-sign"></span>&nbsp;Note: Only custodians can sign up.</p>-->
                   </div>
                   <div class="modal-body" id="mycontent" style="padding-top: 0px;">
+                    
                     {% if msg %}
-                        <div class="alert alert-success" style="width:270px; height:50px">
+                        <div class="alert alert-info" style="width:270px; height:50px">
                             <strong><p style="font-size:12px; text-align:center;">{{ msg }}</p></strong>
                         </div>
                     {% endif %}
+                    
                     {% if error1 %}
                         <div class="alert alert-danger" style="width:270px; height:50px">
                             <strong><p style="font-size:12px; text-align:center;">{{ error1 }}</p></strong>
                         </div>
                     {% endif %}
 
-
+                    <!-- Start of form -->
                     <form method="post" action="/log_in/">
-                    {% for field in form1 %}
-                    {% csrf_token %}
-                    <table>
-                    <tr>
-                        <td>{{ field | bootstrap_horizontal:'col-lg-5' }}</td><br>
-                    </tr>
-                    </table>
-                    {% endfor %}
-                    <br>
-                    <div align="center" class="modal-footer">
-                        <button name="signup" type="submit" style="margin-right: 90px;" class="save btn btn-info" id="save">Save</button>
-                    </div>
-                    </form>
-
-                  </div>
-                </div>
-              </div>
-            </div>
-                <!--END OF MODAL-->
-
-                <!--start of othermodal-->
-            <div class="modal fade" id="otherModal" tabindex="-1" role="dialog" aria-labelledby="otherModal" aria-hidden="true" style="margin-top: 100px; position: fixed; z-index:10000 opacity:0.5">
-                  <div class="modal-dialog modal-sm">
-                    <div class="modal-content">
-                      <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                        <h4 class="modal-title" id="myModalLabel">Guest Log In</h4>
-
-                      </div>
-                      <div class="modal-body" id="mycontent" style="padding-top: 0px;">
-                        {% if error2 %}
-                            <div class="alert alert-danger" style="width:270px; height:50px">
-                                <strong><p style="font-size:12px; text-align:center;">{{ error2 }}</p></strong>
-                            </div>
-                        {% endif %}
-
-
-                        <form method="post" action="/log_in/">
-                        {% for field in form2 %}
+                        {% for field in form1 %}
                         {% csrf_token %}
                         <table>
                         <tr>
@@ -201,15 +159,15 @@
                         {% endfor %}
                         <br>
                         <div align="center" class="modal-footer">
-                            <button name="guest" type="submit" style="margin-right: 90px;" class="save btn btn-info" id="save">OK</button>
+                            <button name="signup" type="submit" style="margin-right: 90px;" class="save btn btn-info" id="save">Save</button>
                         </div>
-                        </form>
-
-                      </div>
-                    </div>
+                    </form>
+                    <!-- End of form -->
                   </div>
                 </div>
-                    <!--END OF MODAL-->
+            </div>
+        </div>
+        <!--END OF signUp Modal-->
 
         <p style="text-align: center; margin-top: 550px; position: relative; z-index: 10000; ">All Rights Reserved &copy; 2015 NPC-MinGen</p>
     </body>

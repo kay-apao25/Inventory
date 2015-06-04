@@ -1,98 +1,90 @@
-
+<!DOCTYPE html>
 {% load staticfiles %}
 {% for i in loop %}
 <html>
     <head>
     	<link rel="stylesheet" type="text/css" href= "{% static 'css/forms_style.css' %}">
-
-        <title>irr_form</title>
-
+        <title>IRR Form</title>
     </head>
 
     <body>
-    <center>
-    <div id="border" style="width:826px;height:1169px;border:1px solid #000;">
-    	<p align="left" class="left_marg" style="margin-bottom: 0px;">REPUBLIC OF THE PHILIPPINES<br>NATIONAL POWER CORPORATION</p>
-		<p align="right" class="right_marg" style="margin-bottom: 0px;">MINDANAO REGIONAL CENTER<br>MINDANAO GENERATION - CENTRAL WAREHOUSE</p>
+	    <center>
+	    <div id="border" style="width:826px;height:1169px;border:1px solid #000;">
+	    	<p align="left" class="left_marg" style="margin-bottom: 0px;">REPUBLIC OF THE PHILIPPINES<br>NATIONAL POWER CORPORATION</p>
+			<p align="right" class="right_marg" style="margin-bottom: 0px;">MINDANAO REGIONAL CENTER<br>MINDANAO GENERATION - CENTRAL WAREHOUSE</p>
 
-        <h1 align="center">INSPECTION AND RECEIVING REPORT</h1>
-        <p align="left" class="left_marg_norm">Type: {{irs.irr_headkey.type_n}}</p>
+	        <h1 align="center">INSPECTION AND RECEIVING REPORT</h1>
+	        <p align="left" class="left_marg_norm">Type: {{irs.irr_headkey.type_n}}</p>
 
-		<p align ="right" class="right_marg_norm">Date: {{irs.irr_headkey.proc_date}}</p>
+			<p align ="right" class="right_marg_norm">Date: {{irs.irr_headkey.proc_date}}</p>
 
+			<table style="width:90%" align="center" >
+				<tr>
+					<td rowspan="5" colspan="3">Supplier Name:<br> <center>{{irs.irr_headkey.supplier.supplier_name}}</center>&nbsp;</td>
+					<td rowspan="2">Supplier DCE:<br><center> {{irs.irr_headkey.supplier.supplier_number}} </center>&nbsp;</td>
+					<th colspan="2"><center>For materials transferred/transshipped</center></th>
+				</tr>
 
-		<table style="width:90%" align="center" >
-			<tr>
+				<tr>
+					<td>I/Prop.Cust: {{irs.irr_headkey.dce_custodian.name}}</td>
+					<td>DCE: {{irs.irr_headkey.dce_custodian.dce}}</td>
+				</tr>
+			</table>
 
-				<td rowspan="5" colspan="3">Supplier Name:<br> <center>{{irs.irr_headkey.supplier.supplier_name}}</center>&nbsp;</td>
-				<td rowspan="2">Supplier DCE:<br><center> {{irs.irr_headkey.supplier.supplier_number}} </center>&nbsp;</td>
-				<th colspan="2"><center>For materials transferred/transshipped</center></th>
+			<table style="width: 90%" class="tbl3">
+				<tr>
+					<td>
+						<input type="checkbox" name="type" value="">PO
+						<input type="checkbox" name="type" value="">RPO
+						<input type="checkbox" name="type" value="">LPO <br>
+						<input type="checkbox" name="type" value="">SCL
+						<input type="checkbox" name="type" value="">IO
+						<input type="checkbox" name="type" value="">SCF No.:
+	          			{{irs.irr_headkey.po_number}}
+					</td>
+					<td>Date Dlvrd: <br> &nbsp;&nbsp;&nbsp;&nbsp;{{irs.irr_headkey.invoice_number}} </td>
+					<td>Issuing Inventory Station <br> &nbsp;&nbsp;&nbsp;&nbsp; {{irs.irr_headkey.inv_station_no.station_description}} </td>
+					<td>MTI NO. </td>
+					<td>BL NO. </td>
+				</tr>
+			</table>
 
-			</tr>
-
-			<tr>
-
-				<td>I/Prop.Cust: {{irs.irr_headkey.dce_custodian.name}}</td>
-				<td>DCE: {{irs.irr_headkey.dce_custodian.dce}}</td>
-
-			</tr>
-		</table>
-
-		<table style="width: 90%" class="tbl3">
-			<tr>
-				<td>
-					<input type="checkbox" name="type" value="">PO
-					<input type="checkbox" name="type" value="">RPO
-					<input type="checkbox" name="type" value="">LPO <br>
-					<input type="checkbox" name="type" value="">SCL
-					<input type="checkbox" name="type" value="">IO
-					<input type="checkbox" name="type" value="">SCF No.:
-          {{irs.irr_headkey.po_number}}
-				</td>
-
-				<td>Date Dlvrd: <br> &nbsp;&nbsp;&nbsp;&nbsp;{{irs.irr_headkey.invoice_number}} </td>
-				<td>Issuing Inventory Station <br> &nbsp;&nbsp;&nbsp;&nbsp; {{irs.irr_headkey.inv_station_no.station_description}} </td>
-				<td>MTI NO. </td>
-				<td>BL NO. </td>
-			</tr>
-		</table>
-
-		<table style="width: 90%" class="tbl3">
-			<tr>
-				<th>ITEM</th>
-				<th>NPC SUPP NO.</th>
-				<th>PARTICULARS</th>
-				<th>QTY ACCEPTED</th>
-				<th>QTY REJECTED</th>
-				<th>UNIT</th>
-				<th>UNIT PRICE</th>
-				<th>AMOUNT</th>
-			</tr>
-	  {% for product in products|slice:"-6:"%}
-			<tr>
-				<td>{{product.pros.id}}<br><br><br></td>
-				<td>{{product.pros.nsn}}<br><br><br></td>
-				<td>{{product.pros.item_name}} - {{product.pros.description}}<br><br><br></td>
-				<td>{{product.qty_a}}<br><br><br></td>
-				<td>{{product.qty_r}}<br><br><br></td>
-				<td>{{product.pros.unit_measure }}<br><br><br></td>
-				<td>{{product.pros.unit_cost }}<br><br><br></td>
-				<td>{{ product.amount }}<br><br><br></td>
-      </tr>
-      {{products.pop.0}}
-      {% endfor %}
-      {% if forloop.last %}
-      <tr>
-        <td colspan="9" style="text-align:right"><br>Total: {{ total }}<br></td>
-      </tr>
-      <tr>
-      <td colspan="8">
-      	{% for i in remain %}
-			<br><br><br>
-      	{% endfor %}
-      </td>
-      </tr>
-      {% endif %}
+			<table style="width: 90%" class="tbl3">
+				<tr>
+					<th>ITEM</th>
+					<th>NPC SUPP NO.</th>
+					<th>PARTICULARS</th>
+					<th>QTY ACCEPTED</th>
+					<th>QTY REJECTED</th>
+					<th>UNIT</th>
+					<th>UNIT PRICE</th>
+					<th>AMOUNT</th>
+				</tr>
+		  		{% for product in products|slice:"-6:"%}
+				<tr>
+					<td>{{product.pros.id}}<br><br><br></td>
+					<td>{{product.pros.nsn}}<br><br><br></td>
+					<td>{{product.pros.item_name}} - {{product.pros.description}}<br><br><br></td>
+					<td>{{product.qty_a}}<br><br><br></td>
+					<td>{{product.qty_r}}<br><br><br></td>
+					<td>{{product.pros.unit_measure }}<br><br><br></td>
+					<td>{{product.pros.unit_cost }}<br><br><br></td>
+					<td>{{ product.amount }}<br><br><br></td>
+	      		</tr>
+	      		{{products.pop.0}}
+	      		{% endfor %}
+	      	{% if forloop.last %}
+	      	<tr>
+	        	<td colspan="9" style="text-align:right"><br>Total: {{ total }}<br></td>
+	      	</tr>
+	      	<tr>
+	      		<td colspan="8">
+	      		{% for i in remain %}
+					<br><br><br>
+	      		{% endfor %}
+	      		</td>
+	      	</tr>
+	      	{% endif %}
 		</table>
 
 		<table style="width:90%" class="tbl3">
@@ -101,35 +93,39 @@
 
 		<table style="width: 90%" class="tbl3">
 			<td style="width: 35%">  INSPECTED & ACCEPTED BY:<center><br><u>{{irs.irr_headkey.dce_user.name}}</u><br>
-        QA/Deputized Inspector<br>DCE:{{irs.irr_headkey.dce_user.dce}}<br>Date of inspection:{{irs.irr_headkey.proc_date}}</center></td>
+	    	QA/Deputized Inspector<br>DCE:{{irs.irr_headkey.dce_user.dce}}<br>Date of inspection:{{irs.irr_headkey.proc_date}}</center></td>
+			
 			<td>RECEIVED BY: <center><br><u>{{irs.irr_headkey.dce_custodian.name}}</u><br>
-        Property Custodian<br>DCE:{{irs.irr_headkey.dce_custodian.dce}}<br>Date of inspection: {{irs.date_recv}}</center></td>
-			<td>APPROVED BY: <center><br><u>{{irs.irr_headkey.dce_approved.name}}</u><br>
-        IS Cost Center Head<br>DCE:{{irs.irr_headkey.dce_approved.dce}}<br>Date of inspection: {{irs.irr_headkey.approved_date}}</center></td>
+	        Property Custodian<br>DCE:{{irs.irr_headkey.dce_custodian.dce}}<br>Date of inspection: {{irs.date_recv}}</center></td>
+			
+			<td>APPROVED BY: <center><br><u>{{irs.irr_headkey.dce_approved.name}}</u><br>IS Cost Center Head<br>
+			DCE:{{irs.irr_headkey.dce_approved.dce}}<br>Date of inspection: {{irs.irr_headkey.approved_date}}</center></td>
+			
 			<td>IRR<br>B->{{irs.irr_headkey.inv_station_no.inv_station_no}}<br>No.{{irs.pk}}</td>
 		</table>
 		<br><br>
+		
 		{% if forloop.last %}
-      		<button id="printpagebutton" onclick="myFunction()" >Print this Form</button>
-     	{% endif %}
+	    	<button id="printpagebutton" onclick="myFunction()" >Print this Form</button>
+	    {% endif %}
 
 
-		</div>
-    <br><br>
+	</div>
+		<br><br>
+	    
+	    <style type="text/css">
+	    	@page { margin: 0; }
+	    </style>
 
-    <style type="text/css">
-    	@page { margin: 0; }
-    </style>
-
-    <script type="text/javascript">
-    	function myFunction() {
-      	var printButton = document.getElementById("printpagebutton");
-      	printButton.style.visibility = 'hidden';
-      	window.print();
-      	printButton.style.visibility = 'visible';
-    	}
-    </script>
-	</center>
-  </body>
+		<script type="text/javascript">
+		  	function myFunction() {
+		      	var printButton = document.getElementById("printpagebutton");
+		      	printButton.style.visibility = 'hidden';
+		      	window.print();
+		      	printButton.style.visibility = 'visible';
+		   	}
+		</script>
+		</center>
+  	</body>
 </html>
 {% endfor %}

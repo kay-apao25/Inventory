@@ -1,13 +1,12 @@
 <!DOCTYPE html>
 {% load selectable_tags %}
 {% load staticfiles %}
-
 <html>
 	<head>
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 	    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
-        <link rel="stylesheet" href="{% static 'css/style.css' %}">
-        <link rel="stylesheet" href="{% static 'css/style2.css' %}">
+        <link rel="stylesheet" href="{% static 'css/index.css' %}">
+        <link rel="stylesheet" href="{% static 'css/card.css' %}">
         <script src="{% static 'jquery_ui/jquery.min.js' %}"></script>
 	    <script src="{% static 'js/bootstrap.min.js' %}"></script>
 	    <script src="{% static 'js/dropdown.min.js' %}"></script>
@@ -15,10 +14,11 @@
 			<script src="{% static 'js/index.js' %}"></script>
 		{% endif %}
 
-			<!--Datepicker-->
+		<!--Datepicker-->
         <link href="{% static 'css/bootstrap-datetimepicker.min.css' %}" type="text/css" media="all" rel="stylesheet">
         <script type="text/javascript" src="{% static 'js/moment.min.js' %}"></script>
         <script type="text/javascript" src="{% static 'js/bootstrap-datetimepicker.min.js' %}"></script>
+        <!--end Datepicker -->
         <style type="text/css">
             body {
                 background-image: url("{% static 'images/bg.jpg' %}"); 
@@ -29,246 +29,252 @@
             }
         </style>
     </head>
-	<body style="padding-right:0px; padding-left:0px; padding-top: 0px;">
+	
+    <body style="padding-right:0px; padding-left:0px; padding-top: 0px;">
 		<header id="headerback">
       		<img src ="{% static 'images/header.png' %}" style="width:100%" >
     	</header>
 
 		<!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~NAVIGATION~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
 
-		 <nav id="navbar"class="navbar navbar-inverse">
-	      <div class="container-fluid">
-	        <div class="navbar-header">
-	          <div class = "navbar-brand" id = "inv"> Inventory </div>
-	          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar" >
-	            <span class="icon-bar"></span>
-	            <span class="icon-bar"></span>
-	            <span class="icon-bar"></span>
-	          </button>
-	        </div>
+		<nav id="navbar"class="navbar navbar-inverse">
+	        <div class="container-fluid">
+	            <div class="navbar-header">
+	               <div class = "navbar-brand" id = "inv"> Inventory </div>
+                   <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar" >
+	                   <span class="icon-bar"></span>
+	                   <span class="icon-bar"></span>
+	                   <span class="icon-bar"></span>
+                   </button>
+	            </div>
 
-	        <div class="collapse navbar-collapse" id="myNavbar">
-	          <ul class="nav navbar-nav">
+    	        <div class="collapse navbar-collapse" id="myNavbar">
+    	            <ul class="nav navbar-nav">
+                        <li><a href="{% url 'index' %}">Dashboard</a></li>
+        				{% if request.user.is_superuser %}
+                        
+                        <li id="addrec" class="dropdown">
+                            <a class="dropdown-toggle" data-toggle="dropdown" href="#">Add Records<span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="{% url 'new_product' %}">Add Product Record</a></li>
+                                <li class="dropdown-submenu"><a href="#">Add File Record</a>
+                                    <ul class="dropdown-menu">
+                                        <li><a href="{% url 'new_irr' %}">Add IRR Record</a></li>
+                                        <li><a href="{% url 'new_miv' %}">Add MIV Record</a></li>
+                                        <li><a href="{% url 'new_par_s' %}">Add PAR Record</a></li>
+                                        <li><a href="{% url 'new_garv_s' %}">Add GARV Record</a></li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </li>
+        	            
+                        <li class="dropdown">
+        	               <a class="dropdown-toggle" data-toggle="dropdown" href="#">Reports<span class="caret"></span></a>
+        	               <ul class="dropdown-menu">
+        	               	   <li><a href="{% url 'irr_reports' %}">File Reports</a></li>
+        	              	    <li><a href="{% url 'product_reports' %}">Product Reports</a></li>
+        	              </ul>
+        	            </li>
+                        
+                        {% else %}
+                        <li>
+                            <li><a href="{% url 'wrs_reports1' %}">WRS Reports </a></li>
+                        </li>
+                        {% endif %}
 
-                <li><a href="{% url 'index' %}">Dashboard</a></li>
-                
-				{% if request.user.is_superuser %}
-                <li id="addrec" class="dropdown">
-                  <a class="dropdown-toggle" data-toggle="dropdown" href="#">Add Records<span class="caret"></span></a>
-                  <ul class="dropdown-menu">
-                    <li><a href="{% url 'new_product' %}">Add Product Record</a></li>
-                    <li class="dropdown-submenu"><a href="#">Add File Record</a>
-                        <ul class="dropdown-menu">
-                            <li><a href="{% url 'new_irr' %}">Add IRR Record</a></li>
-                            <li><a href="{% url 'new_miv' %}">Add MIV Record</a></li>
-                                            <li><a href="{% url 'new_par_s' %}">Add PAR Record</a></li>
-                            <li><a href="{% url 'new_garv_s' %}">Add GARV Record</a></li>
-                        </ul>
-                    </li>
-                  </ul>
-                </li>
-	            <li class="dropdown">
-	              <a class="dropdown-toggle" data-toggle="dropdown" href="#">Reports<span class="caret"></span></a>
-	              <ul class="dropdown-menu">
-	              	<li><a href="{% url 'irr_reports' %}">File Reports</a></li>
-	              	<li><a href="{% url 'product_reports' %}">Product Reports</a></li>
-	              </ul>
-	            </li>
-                {% else %}
-                <li>
-                    <li><a href="{% url 'wrs_reports1' %}">WRS Reports </a></li>
-                </li>
-                {% endif %}
+        				<li>
+        					<li><a id="lib_list" href="{% url 'inv_stat' %}">Libraries </a></li>
+        	            </li>
+    	            </ul>
 
-				<li>
-					<li><a id="lib_list" href="{% url 'inv_stat' %}">Libraries </a></li>
-	            </li>
-
-	          </ul>
-
-	          <ul class="nav navbar-nav navbar-right">
-				    <li><a>Hi, {{ request.user.get_full_name }}!</a></li>
-					<li><a href="{% url 'logout' %}">
-                        <span class="glyphicon glyphicon-log-out"></span>Log out
-                    </a></li>
-	          </ul>
-	        </div>
-	      </div>
+    	            <ul class="nav navbar-nav navbar-right">
+    				    <li><a>Hi, {{ request.user.get_full_name }}!</a></li>
+    					<li><a href="{% url 'logout' %}"><span class="glyphicon glyphicon-log-out"></span>Log out</a></li>
+    	            </ul>
+    	        </div>
+	       </div>
 	    </nav>
-		<div align="center">
+		
+        <div align="center">
 		{% block content %}
-        <section id="t-cards">
-            <div class="container" align="center" style="opacity:0.8">
-                <div class="row" align="center">
-                     <div class="col-sm-6 col-md-4">
-                        <div class="panel panel-default panel-card">
-                            <div class="panel-heading">
-                                <img src="{% static 'images/product.jpg' %}" />
-                            </div>
-                            <div class="panel-figure">
-                                <img class="img-responsive img-circle" src="{% static 'images/product1.jpeg' %}" />
-                            </div>
-                            <div class="panel-body text-center">
-                                <h4 class="panel-header">Latest Product Reports</h4>
-                                <small>A short report goes here.</small>
-                            </div>
-                            <div class="panel-thumbnails" style="text-align:center">
-                                <div class="row">
-                                    {% if product|length == 0%}
-                                    <div align="center">
-                                        <div class="thumbnail" style="width:500px; height:86px">
-                                        <br>
-                                            <strong>No new product reports</strong>
+            <section id="t-cards">
+                <div class="container" align="center" style="opacity:0.8">
+                    <div class="row" align="center">
+                        <!-- Start of card for Product reports -->
+                        <div class="col-sm-6 col-md-4">
+                            <div class="panel panel-default panel-card">
+                                <div class="panel-heading">
+                                    <img src="{% static 'images/product.jpg' %}" />
+                                </div>
+                                <div class="panel-figure">
+                                    <img class="img-responsive img-circle" src="{% static 'images/product1.jpeg' %}" />
+                                </div>
+                                <div class="panel-body text-center">
+                                    <h4 class="panel-header">Latest Product Reports</h4>
+                                    <small>A short report goes here.</small>
+                                </div>
+                                <div class="panel-thumbnails" style="text-align:center">
+                                    <div class="row">
+                                        {% if product|length == 0%}
+                                        <div align="center">
+                                            <div class="thumbnail" style="width:500px; height:86px">
+                                            <br>
+                                                <strong>No new product reports</strong>
+                                            </div>
                                         </div>
-                                    </div>
-                                    {% else %}
-                                    <div align="center">
-                                         <div class="thumbnail" style="width:500px; height:86px">
-                                	{% for prod in product%}
-                                            {% if request.user.is_superuser %}
-                                            <div align="center"><a href="{% url 'prod_details' pk=prod.pk%}">
-                                            	{{prod.item_name}} - {{ prod.description }}
-                                            </a></div>
-                                            {% else %}
-                                            <div align="center">{{prod.item_name}} - {{ prod.description }}</div>
-                                            {% endif %}
-                                    {% endfor %}
+                                        {% else %}
+                                        <div align="center">
+                                             <div class="thumbnail" style="width:500px; height:86px">
+                                    	{% for prod in product%}
+                                                {% if request.user.is_superuser %}
+                                                <div align="center"><a href="{% url 'prod_details' pk=prod.pk%}">
+                                                	{{prod.item_name}} - {{ prod.description }}
+                                                </a></div>
+                                                {% else %}
+                                                <div align="center">{{prod.item_name}} - {{ prod.description }}</div>
+                                                {% endif %}
+                                        {% endfor %}
+                                            </div>
                                         </div>
+                                        {% endif %}
                                     </div>
-                                    {% endif %}
                                 </div>
                             </div>
-                        </div>
-            		</div>
-        		    <div class="col-sm-6 col-md-4">
-                	    <div class="panel panel-default panel-card">
-                            <div class="panel-heading">
-                                <img src="{% static 'images/file2.jpeg' %}" />
-                            </div>
-                            <div class="panel-figure">
-                                <img class="img-responsive img-circle" src="{% static 'images/file.jpg' %}" />
-                            </div>
-                            <div class="panel-body text-center">
-                                <h4 class="panel-header">Latest File Reports</h4>
-                                <small>A short report goes here.</small>
-                            </div>
-                            <div class="panel-thumbnails">
-                                <div class="row">
-                                    <div align="center">
-                                         <div class="thumbnail" style="width:500px; height:86px;">
-                                         	{% if irr != null %}
-                                                {% if request.user.is_superuser %}
-                                        		<a href="{% url 'irr_form' pk=irr.pk%}">
-                                            		IRR Record: {{irr.irr_no}} - {{irr.date_recv}}
-                                            	</a>
-                                                {% else %}
-                                                    IRR Record: {{irr.irr_no}} - {{irr.date_recv}}
+                		</div>
+                        <!-- End of card for Product reports -->
+                        <!-- Start of card for File reports -->
+            		    <div class="col-sm-6 col-md-4">
+                    	    <div class="panel panel-default panel-card">
+                                <div class="panel-heading">
+                                    <img src="{% static 'images/file2.jpeg' %}" />
+                                </div>
+                                <div class="panel-figure">
+                                    <img class="img-responsive img-circle" src="{% static 'images/file.jpg' %}" />
+                                </div>
+                                <div class="panel-body text-center">
+                                    <h4 class="panel-header">Latest File Reports</h4>
+                                    <small>A short report goes here.</small>
+                                </div>
+                                <div class="panel-thumbnails">
+                                    <div class="row">
+                                        <div align="center">
+                                             <div class="thumbnail" style="width:500px; height:86px;">
+                                             	{% if irr != null %}
+                                                    {% if request.user.is_superuser %}
+                                            		<a href="{% url 'irr_form' pk=irr.pk%}">
+                                                		IRR Record: {{irr.irr_no}} - {{irr.date_recv}}
+                                                	</a>
+                                                    {% else %}
+                                                        IRR Record: {{irr.irr_no}} - {{irr.date_recv}}
+                                                    {% endif %}
+                                                {%else%}
+                                                	<strong>IRR Record: No new report recorded.</strong>
                                                 {% endif %}
-                                            {%else%}
-                                            	<strong>IRR Record: No new report recorded.</strong>
-                                            {% endif %}
-                                            <br>
-                                            {% if par != null %}
-                                             {% if request.user.is_superuser %}
-                                                <a href="{% url 'par_form' pk=par.pk%}">
+                                                <br>
+                                                {% if par != null %}
+                                                 {% if request.user.is_superuser %}
+                                                    <a href="{% url 'par_form' pk=par.pk%}">
+                                                        PAR Record: {{par.par_no}} - {{par.date_acquired}}
+                                                    </a>
+                                                 {% else %}
                                                     PAR Record: {{par.par_no}} - {{par.date_acquired}}
-                                                </a>
-                                             {% else %}
-                                                PAR Record: {{par.par_no}} - {{par.date_acquired}}
-                                             {% endif %}
-                                            {%else%}
-                                                <strong>PAR Record: No new report recorded.</strong>
-                                            {% endif %}
-                                            <br>
-                                            {% if garv != null %}
-                                                {% if request.user.is_superuser %}
-                                                <a href="{% url 'garv_form' pk=garv.pk%}">
-                                                    GARV Record: {{garv.garv_no}} - {{garv.garv_date}}
-                                                </a>
-                                                {% else %}
-                                                    GARV Record: {{garv.garv_no}} - {{garv.garv_date}}
+                                                 {% endif %}
+                                                {%else%}
+                                                    <strong>PAR Record: No new report recorded.</strong>
                                                 {% endif %}
-                                            {%else%}
-                                                <strong>GARV Record: No new report recorded.</strong>
-                                            {% endif %}
-                                            <br>
-                                            {% if miv != null %}
-                                                {% if request.user.is_superuser %}
-                                                <a href="{% url 'miv_form' pk=miv.pk%}">
-                                                    MIV Record: {{miv.miv_no}} - {{miv.date_issued}}
-                                                </a>
-                                                {% else %}
-                                                    MIV Record: {{miv.miv_no}} - {{miv.date_issued}}
+                                                <br>
+                                                {% if garv != null %}
+                                                    {% if request.user.is_superuser %}
+                                                    <a href="{% url 'garv_form' pk=garv.pk%}">
+                                                        GARV Record: {{garv.garv_no}} - {{garv.garv_date}}
+                                                    </a>
+                                                    {% else %}
+                                                        GARV Record: {{garv.garv_no}} - {{garv.garv_date}}
+                                                    {% endif %}
+                                                {%else%}
+                                                    <strong>GARV Record: No new report recorded.</strong>
                                                 {% endif %}
-                                            {%else%}
-                                                <strong>MIV Record: No new report recorded.</strong>
-                                            {% endif %}
+                                                <br>
+                                                {% if miv != null %}
+                                                    {% if request.user.is_superuser %}
+                                                    <a href="{% url 'miv_form' pk=miv.pk%}">
+                                                        MIV Record: {{miv.miv_no}} - {{miv.date_issued}}
+                                                    </a>
+                                                    {% else %}
+                                                        MIV Record: {{miv.miv_no}} - {{miv.date_issued}}
+                                                    {% endif %}
+                                                {%else%}
+                                                    <strong>MIV Record: No new report recorded.</strong>
+                                                {% endif %}
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                    	</div>
-            		</div>
-                    <div class="col-sm-6 col-md-4">
-                        <div class="panel panel-default panel-card">
-                            <div class="panel-heading">
-                                <img src="{% static 'images/lib4.jpg' %}" />
-                            </div>
-                            <div class="panel-figure">
-                                <img class="img-responsive img-circle" style="height:72px;width:80px" src="{% static 'images/library2.jpg' %}" />
-                            </div>
-                            <div class="panel-body text-center">
-                                <h4 class="panel-header">Latest Added Libraries</h4>
-                                <small>A short report goes here.</small>
-                            </div>
-                            <div class="panel-thumbnails">
-                                <div class="row">
-                                    <div align="center">
-                                        <div class="thumbnail" style="width:500px; height:86px;">
-                                        	{% if inv != null %}
-                                                {% if request.user.is_superuser %}
-                                        		<a href="{% url 'invstat_details' pk=inv.pk%}">
-                                            		Inventory Station: {{inv.inv_station_no}} - {{inv.station_description}}
-                                            	</a>
-                                                {% else %}
-                                                    Inventory Station: {{inv.inv_station_no}} - {{inv.station_description}}
+                        	</div>
+                		</div>
+                        <!-- End of card for File reports -->
+                        <!-- Start of card for Library reports -->
+                        <div class="col-sm-6 col-md-4">
+                            <div class="panel panel-default panel-card">
+                                <div class="panel-heading">
+                                    <img src="{% static 'images/lib4.jpg' %}" />
+                                </div>
+                                <div class="panel-figure">
+                                    <img class="img-responsive img-circle" style="height:72px;width:80px" src="{% static 'images/library2.jpg' %}" />
+                                </div>
+                                <div class="panel-body text-center">
+                                    <h4 class="panel-header">Latest Added Libraries</h4>
+                                    <small>A short report goes here.</small>
+                                </div>
+                                <div class="panel-thumbnails">
+                                    <div class="row">
+                                        <div align="center">
+                                            <div class="thumbnail" style="width:500px; height:86px;">
+                                            	{% if inv != null %}
+                                                    {% if request.user.is_superuser %}
+                                            		<a href="{% url 'invstat_details' pk=inv.pk%}">
+                                                		Inventory Station: {{inv.inv_station_no}} - {{inv.station_description}}
+                                                	</a>
+                                                    {% else %}
+                                                        Inventory Station: {{inv.inv_station_no}} - {{inv.station_description}}
+                                                    {% endif %}
+                                                {%else%}
+                                                	<strong>No new inventory station added.</strong>
+                                               	{% endif %}
+                                                <br>
+                                                {% if cc != null %}
+                                                    {% if request.user.is_superuser %}
+                                                    <a href="{% url 'costcen_details' pk=cc.pk%}">
+                                                        Cost Center: {{cc.id}} - {{cc.functional_group}}
+                                                    </a>
+                                                    {% else %}
+                                                        Cost Center: {{cc.id}} - {{cc.functional_group}}
+                                                    {% endif %}
+                                                {%else%}
+                                                    <strong>No new cost center added.</strong>
                                                 {% endif %}
-                                            {%else%}
-                                            	<strong>No new inventory station added.</strong>
-                                           	{% endif %}
-                                            <br>
-                                            {% if cc != null %}
-                                                {% if request.user.is_superuser %}
-                                                <a href="{% url 'costcen_details' pk=cc.pk%}">
-                                                    Cost Center: {{cc.id}} - {{cc.functional_group}}
-                                                </a>
-                                                {% else %}
-                                                    Cost Center: {{cc.id}} - {{cc.functional_group}}
+                                                <br>
+                                                {% if sup != null %}
+                                                    {% if request.user.is_superuser %}
+                                                    <a href="{% url 'supplier_details' pk=sup.pk%}">
+                                                        Supplier: {{sup.supplier_number}} - {{sup.supplier_name}}
+                                                    </a>
+                                                    {% else %}
+                                                        Supplier: {{sup.supplier_number}} - {{sup.supplier_name}}
+                                                    {% endif %}
+                                                {%else%}
+                                                    <strong>No new supplier added.</strong>
                                                 {% endif %}
-                                            {%else%}
-                                                <strong>No new cost center added.</strong>
-                                            {% endif %}
-                                            <br>
-                                            {% if sup != null %}
-                                                {% if request.user.is_superuser %}
-                                                <a href="{% url 'supplier_details' pk=sup.pk%}">
-                                                    Supplier: {{sup.supplier_number}} - {{sup.supplier_name}}
-                                                </a>
-                                                {% else %}
-                                                    Supplier: {{sup.supplier_number}} - {{sup.supplier_name}}
-                                                {% endif %}
-                                            {%else%}
-                                                <strong>No new supplier added.</strong>
-                                            {% endif %}
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                    	</div>
-            		</div>
-        	    </div>
-            </div>
-        </section>
+                        	</div>
+                		</div>
+                        <!-- Start of card for Library reports -->
+            	    </div>
+                </div>
+            </section>
 	  	{% endblock %}
 		</div>
 	</body>

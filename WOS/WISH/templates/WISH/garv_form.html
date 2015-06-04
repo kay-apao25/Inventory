@@ -1,27 +1,22 @@
 <!DOCTYPE html>
-
-
 {% load staticfiles %}
 {% for i in loop %}
 <html>
 	<head>
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<link rel="stylesheet" type="text/css" href="{% static 'css/forms_style.css' %}">
-
-		<title>garv_form</title>
+		<title>GARV Form</title>
 	</head>
-
 	<body>
 		<center>
 		    <div style="width:1169px;height:826px;border:1px solid #000;">
+		    	<img src="{% static 'images/npclogo.png' %}" class="left_marg_npclogo" align="left"/>
+		    	&nbsp;
+		    	<p align="left" class="left_marg_par" style="margin-bottom: 0px;">Republic of the Philippines<br>
+		    	National Power Corporation<br>MINDANAO GENERATION<br>(MINGEN)<br>Maria Cristina, Iligan City</p><br>
 
-				    	<img src="{% static 'images/npclogo.png' %}" class="left_marg_npclogo" align="left">
-				    	&nbsp;
-				    	<p align="left" class="left_marg_par" style="margin-bottom: 0px;">Republic of the Philippines<br>National Power Corporation<br>MINDANAO GENERATION<br>(MINGEN)<br>Maria Cristina, Iligan City</p> <br>
-
-				    	<h1 align="center">GPE ACCOUNTABILITY RELIEF VOUCHER</h1>
-
-				    	<p align ="right" class="right_marg_norm">Date: <u>{{ garvs.garv_date }}</u></p>
+		    	<h1 align="center">GPE ACCOUNTABILITY RELIEF VOUCHER</h1>
+		    	<p align ="right" class="right_marg_norm">Date: <u>{{ garvs.garv_date }}</u></p>
 
 		    	<table style="width: 95%">
 		    		<tr>
@@ -71,6 +66,7 @@
       						</tr>
       	  				{% endif %}
 		    	</table>
+
 		    	<table style="width: 95%" class="tbl3">
 		    		<tr>
 		    			<td>NATURE:</td>
@@ -113,22 +109,17 @@
 		    	Purchased from: {{ pro.purchased_from.supplier_name }}<br>
 		    	P.O. No.: {{ wo_number.irr_headkey.po_number }}<br>
 		    	CSI No.: {{ wo_number.irr_headkey.invoice_number}}</p>
-		    	<br>
-		    	<br>
-		    	<br>
-		    	<br>
-		    	<br>
-		    	<br>
-					{% if forloop.last %}
-      					<div align="center"><button id="printpagebutton" onclick="myFunction()" >Print this Form</button></div>
-     				{% endif %}
-		    </div>
-				<br><br>
+		    	<br><br><br><br><br><br>
 
+				{% if forloop.last %}
+  					<div align="center"><button id="printpagebutton" onclick="myFunction()" >Print this Form</button></div>
+ 				{% endif %}
+		    </div>
+			<br><br>
 		    <style type="text/css">
 		        @page { margin: 0; }
-		      </style>
-		      <script>
+		    </style>
+		    <script type="text/javascript">
 		    function myFunction() {
 		      var printButton = document.getElementById("printpagebutton");
 		      printButton.style.visibility = 'hidden';
@@ -136,7 +127,7 @@
 		      window.print();
 		      printButton.style.visibility = 'visible';
 		    }
-		</script>
+			</script>
 		</center>
 	</body>
 </html>

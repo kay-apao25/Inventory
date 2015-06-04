@@ -1,60 +1,62 @@
 <!--style="font-family: 'Cinzel', serif;"-->
 {% extends 'WISH/index.html' %}
-{% load staticfiles %}
-{% block content %}
 {% load selectable_tags %}
+{% load staticfiles %}
 {% load bootstrap %}
-    <style type="text/css">
-        .form-group{
-          width:300px;
-        }
-    </style>
-    <link rel="stylesheet" href= "{% static 'jquery_ui/jquery-ui.css' %}" type="text/css">
-    <script src="{% static 'jquery_ui/jquery-ui.js' %}"></script>
-    {{ form3.media.css }}
-    {{ form3.media.js }}
 
+{% block content %}
+  <!-- Start of style -->    
+      <style type="text/css">
+          .form-group{
+            width:300px;
+          }
+      </style>
+  <!-- End of style --> 
+
+  <!-- Start of script -->   
+      <link rel="stylesheet" href= "{% static 'jquery_ui/jquery-ui.css' %}" type="text/css">
+      <script src="{% static 'jquery_ui/jquery-ui.js' %}"></script>
+      {{ form3.media.css }}
+      {{ form3.media.js }}
+  <!-- End of script -->
+
+  <!-- Start of form -->
     <form action="{% url 'new_product' %}" method="POST" class="product-form">{% csrf_token %}
-    <strong><p style="font-size:15px">Fields with asterisk are required.</p></strong>
+      <strong><p style="font-size:15px">Fields with asterisk are required.</p></strong>
 
         {%if msg%}
-        <div class="alert alert-success" style="width:400px">
+        <div class="alert alert-info" style="width: 400px; margin-bottom: 0px;">
             {{ msg }}
         </div>
-        {% else %}
         {% endif %}
-        {%if error%}
-        <div class="alert alert-danger" style="width:400px">
-            {{ error }}
-        </div>
-        {% else %}
-        {% endif %}
-      <table width="50%" id="fields" align="center">
-        <tr>
-          <td>
-           {% for field in form1 %}
-            &nbsp;&nbsp;{{field | bootstrap_horizontal:'col-lg-4'}}&nbsp;&nbsp;&nbsp;
-           {%endfor%}
-          </td>
-          <td>
-           {% for field in form2 %}
-            &nbsp;&nbsp;{{field | bootstrap_horizontal:'col-lg-4'}}&nbsp;&nbsp;&nbsp;
-           {%endfor%}
-           <br>
-          </td>
-          <td style="padding:5px">
-           {% for field in form3 %}
-            &nbsp;&nbsp;{{field | bootstrap_horizontal:'col-lg-4'}}&nbsp;&nbsp;&nbsp;
-           {%endfor%}
-           <br>
-          </td>
-        </tr>
-  </table>
+        
+        <!-- Start of table -->
+        <table width="50%" id="fields" align="center">
+          <tr>
+            <td>
+             {% for field in form1 %}
+              &nbsp;&nbsp;{{field | bootstrap_horizontal:'col-lg-4'}}&nbsp;&nbsp;&nbsp;
+             {%endfor%}
+            </td>
+            <td>
+             {% for field in form2 %}
+              &nbsp;&nbsp;{{field | bootstrap_horizontal:'col-lg-4'}}&nbsp;&nbsp;&nbsp;
+             {%endfor%}
+             <br>
+            </td>
+            <td style="padding:5px">
+             {% for field in form3 %}
+              &nbsp;&nbsp;{{field | bootstrap_horizontal:'col-lg-4'}}&nbsp;&nbsp;&nbsp;
+             {%endfor%}
+             <br>
+            </td>
+          </tr>
+        </table>
+        <!-- End of table -->
+
         <div align="center">
           <button type="submit" class="save btn btn-default">Save</button>
         </div>
-</form>
-
-
-
+    </form>
+    <!-- End of form -->
 {% endblock %}
