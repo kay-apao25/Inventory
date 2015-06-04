@@ -44,7 +44,7 @@
     <form action="" method="get">
       <div class="input-group">
         <!-- USE TWITTER TYPEAHEAD JSON WITH API TO SEARCH -->
-          <input class="form-control" id="system-search4" name="q" placeholder="Search" required>
+          <input class="form-control" id="system-search4" name="q" placeholder="Name" required>
       </div>
     </form>
 
@@ -67,7 +67,7 @@
           <div class="col-md-8">
             <table class="table table-list-search4">
              {%if msg%}
-           <div class="alert alert-success" style="width:400px">
+           <div class="alert alert-info" style="width:400px">
              {{ msg }}
            </div>
          {% endif %}
@@ -136,7 +136,8 @@
         //all tr elements are hidden
         if(tableRowsClass.children(':visible').length == 0)
         {
-            tableBody.append('<tr class="search-sf"><td class="text-muted" colspan="6">No entries found.</td></tr>');
+            tableBody.append('<tr class="search-sf"><td class="text-muted" colspan="6">This entry is not found in this latest list.' + 
+              '<br>Just hit the Enter button to search further.</td></tr>');
         }
     });
   });

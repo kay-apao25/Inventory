@@ -306,7 +306,7 @@ class SupRep(ListView):
     def get_queryset(self):
         if 'q' in self.request.GET and self.request.GET['q']:
             q = self.request.GET['q']
-            return models.Supplier.objects.filter(supplier_number__icontains=q)
+            return models.Supplier.objects.filter(supplier_name__icontains=q)
         else:
             return models.Supplier.objects.filter(is_delete=False).order_by('-supplier_number')[:13]
 
