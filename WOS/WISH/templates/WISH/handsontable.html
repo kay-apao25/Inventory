@@ -11,7 +11,7 @@
 <script type="text/javascript" src="{% static 'js/jquery.ajax-plugin.min.js' %}"></script>
 <br>
   <form method="POST" id="post-form" action="{% url 'new_irr_cont' inv=inv sup=sup pk=pk%}">{% csrf_token %}
-  <table style="margin-left:170px">
+  <table style="margin-left:165px">
       <tr>
         <td width="30%">
         <div id="handson" style="margin-right:30px"></div>
@@ -26,21 +26,26 @@
     <div align="center">
       <a class="save btn btn-default" data-toggle="modal" data-target="#product">Add Items</a>
       {% if prods|length != 0%}
-      <a class="save btn btn-default" id="delete" name="delete">Delete Items</a>
+      <button id="delete" name="delete" type="submit" class="save btn btn-default">Delete Items</button>
       {% endif %}
       <button name="save" type="submit" class="save btn btn-default">Save</button>
       <button name="cancel" type="submit" class="save btn btn-default">Cancel</button>
     </div>
   </form>
-    <br><br>
+  <br><br>
     
-
 <script type="text/javascript">
     var
       nestedObjects = [
-        {% for prod in prods %}
-          {product: '{{prod.id}}'},//, select: false},
+        {% if prod_to_irr|length %}
+        {% for prod in prod_to_irr %}
+          {product: '{{prod.product}}', qty_a: '{{prod.qty_a}}', qty_r: '{{prod.qty_r}}', qty_b: '{{prod.qty_b}}'},
         {% endfor %}
+        {% else %}
+        {% for prod in prods %}
+          {product: '{{prod.id}}'},
+        {% endfor %}
+        {% endif %}
       ],
       container4 = document.getElementById('handson'),
       hot4;
@@ -60,16 +65,13 @@
         {data: 'qty_b'}
       ],
       outsideClickDeselects: false,
-      {% if prods|length == 0%}
-      minSpareRows: 2,
-      {% endif %}
     });
-
-    $('#post-form').on('submit', function(event){
-    ajaxPost("{% url 'list_view' %}", {"data": JSON.stringify(hot4.getData())},
-      function(content){
-            console.log(content)
-        });
+    alert = function() {};
+    $('#post-form').on('submit', function(){
+      ajaxPost("{% url 'list_view' %}", {"data": JSON.stringify(hot4.getData())},
+       function(content){
+        console.log(content);
+       });
     });
     $('#delete').on('click', function () {
       var selection = hot4.getSelected();
@@ -81,10 +83,6 @@
         hot4.alter('remove_row', selection[0], selection[2]);
       }
       ajaxPost("{% url 'list_view' %}", {"data": JSON.stringify(selection[0]), 
-                              "data2": JSON.stringify(selection[2]), "delete":1},
-      function(content){
-        console.log(content)
-      });
+                              "data2": JSON.stringify(selection[2]), "delete":1});
     });
 </script>
-{% endblock %}

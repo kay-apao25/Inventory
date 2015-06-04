@@ -262,7 +262,7 @@ def miv_entry(request, pk):
 
             #Generation of MIV number
             if len(MIV.objects.all()) != 0:
-                no = int((MIV.objects.latest('id')).miv_no) + 1
+                no = int((MIV.objects.latest('miv_no')).miv_no) + 1
                 miv_entry.miv_no = str(no)
                 if (6-len(miv_entry.miv_no)) > 0:
                     for i in range(6-len(miv_entry.miv_no)):
@@ -392,6 +392,9 @@ def product_to_garv(request, pk):
 
     if len(prod_list) == 1:
         remove_add = 1
+    if len(prod_list) == 0:
+        return render(request, 'WISH/par_entry.html', \
+                 {'exit': 'Exit', 'msg1': 'No products to be made with GARV Record in this PAR record.'})
 
     if int(msg) == 0:
         return render(request, 'WISH/garv_entry.html', {'form': form, \
@@ -610,7 +613,6 @@ def list_view(request):
     c = request.POST.get('data')
     if 'delete' in request.POST:
         d = request.POST.get('data2')
-        #return c, d
         del prods[int(c):(int(d)+1)]
     else:
         del prod_to_irr[:]
@@ -642,19 +644,29 @@ def product_to_irr(request, pk, inv, sup):
         return render(request, 'WISH/product_to_irr.html', \
             {'iform': iform, 'pk': pk, 'prods': prods, \
             'inv': inv, 'sup': sup})
+    elif 'delete' in request.POST:
+        iform = forms.IRRentrycontForm()
+        return render(request, 'WISH/product_to_irr.html', \
+            {'iform': iform, 'pk': pk, 'prods': prods, \
+            'inv': inv, 'sup': sup})
     elif 'save' in request.POST:
         iform = forms.IRRentrycontForm(request.POST)
         if iform.is_valid():
             for p in prod_to_irr:
                 if 'qty_a' and 'qty_b' and 'qty_r' in p:
-                    if Product.objects.get(id=p['product']).quantity < int(p['qty_a']):
+                    if p['qty_a'] != '' and p['qty_b'] != '' and p['qty_r'] != '':
+                        if Product.objects.get(id=p['product']).quantity < int(p['qty_a']):
+                            return render(request, 'WISH/product_to_irr.html', \
+                            {'iform': iform, 'error': 'Accepted quantity is greater than ' + \
+                            'the number of stocked items.', 'pk': pk, 'inv':inv, 'sup':sup})
+                    else:
                         return render(request, 'WISH/product_to_irr.html', \
-                        {'iform': iform, 'error': 'Accepted quantity is greater than ' + \
-                        'the number of stocked items.', 'pk': pk, 'inv':inv, 'sup':sup})
+                            {'iform': iform, 'error': 'Some required fields are not filled.', 'pk': pk, 'inv':inv, 'sup':sup, 'prods': prods, \
+                            'prod_to_irr':prod_to_irr})
                 else:
                     return render(request, 'WISH/product_to_irr.html', \
-                        {'iform': iform, 'error': 'No entry for quantity accepted, ' +
-                        'rejected and balance', 'pk': pk, 'inv':inv, 'sup':sup, 'prods': prods})
+                        {'iform': iform, 'error': 'Some required fields are not filled.', 'pk': pk, 'inv':inv, 'sup':sup, 'prods': prods, \
+                        'prod_to_irr':prod_to_irr})
                 p['is_par'] = False
                 p['quantity_par'] = p['qty_a']
                 p = Product.objects.get(id=p['product'])
@@ -694,8 +706,6 @@ def product_to_irr(request, pk, inv, sup):
             return render(request, 'WISH/product_to_irr.html', \
             {'msg': 'IRR record (IRR No. - '+ irr.irr_no + \
             ') was successfully added.'})
-        else:
-            return redirect('index')
     elif 'cancel' in request.POST:
         del prod_to_irr[:]
         del prods[:]
@@ -706,7 +716,7 @@ def product_to_irr(request, pk, inv, sup):
 
     return render(request, 'WISH/product_to_irr.html', \
         {'iform': iform, 'pk': pk,'prods': prods,\
-        'inv': inv, 'sup': sup})
+        'inv': inv, 'sup': sup, 'prod_to_irr':prod_to_irr})
 
 def par(request, inv):
     """function"""
@@ -809,6 +819,9 @@ def par(request, inv):
 
     if len(prod_list) == 1:
         remove_add = 1
+    if len(prod_list) == 0:
+        return render(request, 'WISH/par_entry.html', \
+                 {'exit': 'Exit', 'msg1': 'No products to be made with PAR Record in this IRR record.'})
 
     if int(msg) == 0:
         return render(request, 'WISH/par_entry.html', \

@@ -2,47 +2,47 @@
 {% load bootstrap %}
 {% load staticfiles%}
 
-<br><br>
-
-{% block content %}
-
-    <style type="text/css">
+<style type="text/css">
       .form-group{
         width:400px;
       }
+
       #myCustomId{
         padding-right: 173px;
       }
+
       ul{
         list-style-type: none;
       }
-    </style>
+</style>
+{% block content %}
+    <br><br>
     {% if q %}
      <script type="text/javascript">
         $( document ).ready( function() {
             $('#product').modal({show:true});
         });
       </script>
-   {% endif %}
-   {% if exit and msg%}
-      <div class="alert alert-success" style="width:400px">
+    {% endif %}
+    {% if exit and msg%}
+      <div class="alert alert-info" style="width:400px">
         {{ msg }}
       </div>
       <div class="alert alert-warning" style="width:400px">
           {{ exit }}
       </div>
       <div align="center"><a href= "{% url 'index' %}"><i class="glyphicon glyphicon-share-alt"></i> Exit</a></div>
-   {% elif msg %}
-      <div class="alert alert-success" style="width:400px">
+    {% elif msg %}
+      <div class="alert alert-info" style="width:400px">
         {{ msg }}
       </div>
       <div align="center"><a href= "{% url 'index' %}"><i class="glyphicon glyphicon-share-alt"></i> Exit</a></div>
-   {% elif exit %}
+    {% elif exit %}
       <div class="alert alert-danger" style="width:400px">
-          {{ exit }}
+        {{ exit }}
       </div>
       <div align="center"><a href= "{% url 'index' %}"><i class="glyphicon glyphicon-share-alt"></i> Exit</a></div>
-   {% else %}
+    {% else %}
       {%if error%}
         <div class="alert alert-danger" style="width:400px">
           {{ error }}
@@ -52,7 +52,7 @@
       {% include 'WISH/handsontable.html'%}
     {% endif %}
 
-      <!--MODAL-->
+    <!--MODAL-->
         <div class="modal fade" id="product" tabindex="-1" role="dialog" aria-labelledby="product" aria-hidden="true" style="margin-top: 100px; position: fixed; z-index:1000 opacity:0.5; height:auto">
           <div class="modal-dialog modal-sm" style="width: 526px">
             <div class="modal-content">
@@ -67,11 +67,13 @@
                       <input class="form-control" id="system-search" name="q" placeholder="SLC No." >
                     </div>
                     <br>
+                    
                     {%if error1%}
                       <div class="alert alert-danger" style="width:400px">
                       {{ error1 }}
                       </div>
                     {% endif %}
+                    
                     {% if q %}
                     {% if prodlist|length %}
                     <p style="font-size:15px"><strong>Mark the items to be included in this IRR record.</strong></p>
@@ -94,17 +96,16 @@
                       <div align="center"><button name="add" class="save btn btn-default">Ok</button></div>
                     </div>
                     {% else %}
+                    
                     <table style="text-align:center">
                       <p style="font-size:15px" id="none"><strong>No product matches this query.</strong></p>
                     </table>
                     {% endif %}
                     {% endif %}
                 </form>
-                
               </div>
             </div>
           </div>
         </div>
       <!--END OF MODAL-->
-
 {% endblock %}

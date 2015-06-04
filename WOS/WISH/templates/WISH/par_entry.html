@@ -11,63 +11,72 @@
           width:400px;
         }
 </style>
-    <form method="POST" class="post-form">{% csrf_token %}
+
+<form method="POST" class="post-form">{% csrf_token %}
     {% if exit %}
-      {%if msg%}
-        <div class="alert alert-success" style="width:400px">
-          {{ msg }}
-        </div>
-        <div align="center"><a href= "{% url 'index' %}"><i class="glyphicon glyphicon-share-alt"></i> {{ exit }}</a></div>
-      {% endif %}
+        {%if msg%}
+          <div class="alert alert-info" style="width:400px">
+            {{ msg }}
+          </div>
+          <div align="center"><a href= "{% url 'index' %}"><i class="glyphicon glyphicon-share-alt"></i> {{ exit }}</a></div>
+        {% endif %}
+        
+        {%if msg1%}
+          <div class="alert alert-warning" style="width:450px">
+            {{ msg1 }}
+          </div>
+          <div align="center"><a href= "{% url 'index' %}"><i class="glyphicon glyphicon-share-alt"></i> {{ exit }}</a></div>
+        {% endif %}
     {% else %}
-    <strong><p style="font-size:15px">Fields with asterisk are required.</p></strong>
-    {%if msg%}
-        <div class="alert alert-success" style="width:400px">
-    {{ msg }}
-        </div>
-    {% endif %}
-    {%if error%}
-        <div class="alert alert-danger" style="width:400px">
-    {{ error }}
-        </div>
-    {% endif %}
-    <table width="90%">
-    <tr>
-    <td width="30%">
-      <h4>Added item/s:</h4>
-
-            {% if product|length != 0%}
-
-            {% for prod in product %}
-            <div>
-            <span align:"center" >
-             <button type="submit" name="delete" value="{{forloop.counter|add:'-1'}}" class="save btn btn-default">Delete</button>
-              Product: {{prod.pros.item_name}} - {{prod.pros.description}},<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-              Quantity: {{prod.Quantity}},<br>
-           </span>
+        <strong><p style="font-size:15px">Fields with asterisk are required.</p></strong>
+        {%if msg%}
+            <div class="alert alert-info" style="width:400px">
+              {{ msg }}
             </div>
-            {% endfor %}
-            {% endif %}
-            </td>
-    <td style="padding:25px">
-     {% for field in iform %}
-      &nbsp;&nbsp;{{field | bootstrap_horizontal:'col-lg-4'}} &nbsp;&nbsp;&nbsp;
-     {%endfor%}
-  </td>
-  <td style="padding:25px">
-    {% for field in form %}
-     &nbsp;&nbsp;{{field | bootstrap_horizontal:'col-lg-4'}} &nbsp;&nbsp;&nbsp;
-    {%endfor%}
-    <br>
-  </td>
-</tr>
-</table>
-<div align="center">
-  {% if remove_add == 1%}
-  {% else %}
-    <button name="add" type="submit" class="save btn btn-default">Add Another Item</button>
-  {% endif %}
-  <button name="add" type="submit" class="save btn btn-default">Save</button>
-</div>
-{% endif %}
+        {% endif %}
+        
+        {%if error%}
+            <div class="alert alert-danger" style="width:400px">
+              {{ error }}
+            </div>
+        {% endif %}
+      
+      <table width="90%">
+          <tr>
+              <td width="30%">
+                  <h4>Added item/s:</h4>
+                    {% if product|length != 0%}
+                      {% for prod in product %}
+                        <div>
+                          <span align:"center" >
+                            <button type="submit" name="delete" value="{{forloop.counter|add:'-1'}}" class="save btn btn-default">Delete</button>
+                            Product: {{prod.pros.item_name}} - {{prod.pros.description}},<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Quantity: {{prod.Quantity}},<br>
+                          </span>
+                        </div>
+                      {% endfor %}
+                    {% endif %}
+              </td>
+              <td style="padding:25px">
+                  {% for field in iform %}
+                      &nbsp;&nbsp;{{field | bootstrap_horizontal:'col-lg-4'}} &nbsp;&nbsp;&nbsp;
+                  {%endfor%}
+              </td>
+              <td style="padding:25px">
+                  {% for field in form %}
+                      &nbsp;&nbsp;{{field | bootstrap_horizontal:'col-lg-4'}} &nbsp;&nbsp;&nbsp;
+                  {%endfor%}
+                  <br>
+              </td>
+          </tr>
+      </table>
+      
+      <div align="center">
+          {% if remove_add == 1%}
+          {% else %}
+            <button name="add" type="submit" class="save btn btn-default">Add Another Item</button>
+          {% endif %}
+          <button name="add" type="submit" class="save btn btn-default">Save</button>
+      </div>
+    {% endif %}
+</form>
 {% endblock %}
