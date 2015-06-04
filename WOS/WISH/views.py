@@ -34,7 +34,7 @@ def log_in(request):
                     emp = Employee.objects.get(dce=dce)
                 except:
                     return render(request, 'WISH/login.html', {'form':form, \
-                         'form1': form1, 'error1': "Employee does not exist.", 'form2':form2})
+                         'form1': form1, 'error1': "Employee does not exist."})
                 try:
                     if emp.position == "Property Custodian":
                         user = User.objects.create_superuser(username=form1.data\
