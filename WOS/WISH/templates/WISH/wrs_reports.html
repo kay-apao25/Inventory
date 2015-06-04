@@ -139,7 +139,8 @@
                 //all tr elements are hidden
                 if(tableRowsClass.children(':visible').length == 0)
                 {
-                    tableBody.append('<tr class="search-sf"><td class="text-muted" colspan="6">No such IRR entry found for this MONTH.</td></tr>');
+                    tableBody.append('<tr class="search-sf"><td class="text-muted" colspan="6">This entry is not found in this monthly list.' + 
+                    '<br>Just hit the Enter button to search further.</td></tr>');
                 }
             });
           });
