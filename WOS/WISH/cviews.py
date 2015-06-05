@@ -372,9 +372,9 @@ class EmpRep(ListView):
             return models.Employee.objects.filter(dce__icontains=q)
         else:
             return models.Employee.objects.filter(is_delete=False).\
-            filter(cost_center_no_id=(models.Employee.objects.get(\
-            name=str(self.request.user.first_name) + ' ' + str(self.\
-            request.user.last_name)).cost_center_no_id)).order_by('-dce')[:13]
+            filter(cost_center_no=(models.Employee.objects.get(\
+            name=str(self.request.user.get_full_name())).cost_center_no_id\
+            )).order_by('-dce')[:13]
 
     def get_context_data(self, **kwargs):
         """function"""
