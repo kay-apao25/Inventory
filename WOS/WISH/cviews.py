@@ -439,21 +439,21 @@ class AddCC(CreateView):
     model = models.CostCenter
     form_class = forms.CClib
     template_name ='WISH/add_cost_center.html'
-    success_url = reverse_lazy('add_cost_center')
+    success_url = reverse_lazy('cost_center')
 
 class AddInvStat(CreateView):
     """function"""
     model = models.InventoryStat
     form_class = forms.Statlib
     template_name ='WISH/add_inv_stat.html'
-    success_url = reverse_lazy('add_inv_stat')
+    success_url = reverse_lazy('inv_stat')
 
 class AddEmp(CreateView):
     """function"""
     model = models.Employee
     form_class = forms.Emlib
     template_name ='WISH/add_employee.html'
-    success_url = reverse_lazy('add_employee')
+    success_url = reverse_lazy('employee')
 
 class InvStatRes(ListView):
     """function"""
