@@ -372,9 +372,9 @@ class EmpRep(ListView):
             return models.Employee.objects.filter(dce__icontains=q)
         else:
             return models.Employee.objects.filter(is_delete=False).\
-            filter(cost_center_no_id=(models.Employee.objects.get(\
-            name=str(self.request.user.first_name) + ' ' + str(self.\
-            request.user.last_name)).cost_center_no_id)).order_by('-dce')[:13]
+            filter(cost_center_no=(models.Employee.objects.get(\
+            name=str(self.request.user.get_full_name())).cost_center_no_id\
+            )).order_by('-dce')[:13]
 
     def get_context_data(self, **kwargs):
         """function"""
@@ -439,21 +439,21 @@ class AddCC(CreateView):
     model = models.CostCenter
     form_class = forms.CClib
     template_name ='WISH/add_cost_center.html'
-    success_url = reverse_lazy('add_cost_center')
+    success_url = reverse_lazy('cost_center')
 
 class AddInvStat(CreateView):
     """function"""
     model = models.InventoryStat
     form_class = forms.Statlib
     template_name ='WISH/add_inv_stat.html'
-    success_url = reverse_lazy('add_inv_stat')
+    success_url = reverse_lazy('inv_stat')
 
 class AddEmp(CreateView):
     """function"""
     model = models.Employee
     form_class = forms.Emlib
     template_name ='WISH/add_employee.html'
-    success_url = reverse_lazy('add_employee')
+    success_url = reverse_lazy('employee')
 
 class InvStatRes(ListView):
     """function"""
