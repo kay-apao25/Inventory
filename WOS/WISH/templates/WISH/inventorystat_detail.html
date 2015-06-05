@@ -5,15 +5,11 @@
     <head>
         <title>Inventory station details</title>
         <style type="text/css" >
-        	table, th, td{
-        		text-align: left;
-        	}
         	th, td {
         		padding: 5px
         	}
         </style>
     </head>
-<br><br>
     <body>
       <link rel="stylesheet" href="{% static 'css/font-awesome.min.css' %}">
       <link rel="stylesheet" href="{% static 'css/details.css' %}">
@@ -31,7 +27,7 @@
                                   Details
                               </div>
                               <div class="panel-body panel-body-landing">
-                                  <table class="table">
+                                  <table class="table" style="text-align:center">
                                       <tr>
                                           <td width="50%">Inventory Station No. :</td>
                                           <td>{{invs.inv_station_no}}</td>
