@@ -1,5 +1,6 @@
-<!--style="font-family: 'Cinzel', serif;"-->
 {% extends 'WISH/index.html' %}
+{% load selectable_tags %}
+{% load staticfiles %}
 {% block content %}
 {% load bootstrap %}
 
@@ -8,6 +9,14 @@
             width:300px;
           }
   </style>
+
+  <!-- Start of script -->   
+      <link rel="stylesheet" href= "{% static 'jquery_ui/jquery-ui.css' %}" type="text/css">
+      <script src="{% static 'jquery_ui/jquery-ui.js' %}"></script>
+      {{ form3.media.css }}
+      {{ form3.media.js }}
+  <!-- End of script -->
+
     <div class="page-header">
         	<!--<img src=""></img>-->
        	<h2 align="center">Product Record</h2>

@@ -595,6 +595,10 @@ def index(request):
     except:
         product = []
     try:
+        product_pen = Product.objects.filter(status='Pending').order_by('id')[:4]
+    except:
+        product_pen = []
+    try:
         irr = IRR.objects.latest('wrs_number')
     except:
         irr = None
@@ -623,7 +627,8 @@ def index(request):
     except:
         cc = None
     return render(request, 'WISH/index.html', {'product': product, 'irr': irr, \
-    'par': par, 'garv': garv, 'miv': miv, 'inv': inv, 'sup': sup, 'cc': cc})
+        'par': par, 'garv': garv, 'miv': miv, 'inv': inv, 'sup': sup, 'cc': cc,\
+        'product_pen': product_pen,})
 
 def aboutus(request):
     """function"""
