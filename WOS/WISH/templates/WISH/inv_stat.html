@@ -31,11 +31,11 @@
 
 <!--Start Header-->
 {% if request.user.is_superuser %}
-<div align="right"><a href="{% url 'add_inv_stat' %}" class="save btn btn-info">
+<div align="center" style="margin-right: 80px"><a href="{% url 'add_inv_stat' %}" class="save btn">
     <i class="glyphicon glyphicon-plus"></i> Add Inventory station</a>
-    <a href="{% url 'inv_stat_res' %}" class="save btn btn-info">
-    <i class="glyphicon glyphicon"></i> Restore Inventory station</a>
-</div><br>
+    <a href="{% url 'inv_stat_res' %}" class="save btn">
+    <i class="glyphicon glyphicon-folder-close"></i> Restore Inventory station</a>
+</div>
 {% endif %}
 <!--End Header-->
 

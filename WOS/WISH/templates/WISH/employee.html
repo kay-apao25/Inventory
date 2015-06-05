@@ -31,11 +31,11 @@
 
 <!--Start Header-->
 {% if request.user.is_superuser %}
-<div align="right"><a href="{% url 'add_employee' %}" class="save btn btn-info">
+<div align="center" style="margin-right: 90px;"><a href="{% url 'add_employee' %}" class="save btn">
     <i class="glyphicon glyphicon-plus"></i> Add Employee</a>
-    <a href="{% url 'employee_res' %}" class="save btn btn-info">
-    <i class="glyphicon glyphicon"></i> Restore Employee</a>
-</div><br>
+    <a href="{% url 'employee_res' %}" class="save btn">
+    <i class="glyphicon glyphicon-folder-close"></i> Restore Employee</a>
+</div>
 {% endif %}
 <!--End Header-->
 
@@ -67,7 +67,7 @@
       </div>
 {% else %}
     <div class="col-md-8">
-      <table class="table table-list-search5">
+      <table class="table table-list-search5" style="text-align: center;">
       {%if msg%}
            <div class="alert alert-info" style="width:400px">
              {{ msg }}
@@ -75,8 +75,8 @@
          {% endif %}
        <thead>
          <tr>
-           <th>DCE</th>
-           <th>Name</th>
+           <th><center>DCE Number</center></th>
+           <th><center>Employee Name</center></th>
          </tr>
        </thead>
        {% for ems in em_list %}

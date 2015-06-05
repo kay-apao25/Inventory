@@ -26,20 +26,19 @@
     </ul>
     <br>
     {% if request.user.is_superuser %}
-    <div align="right">
-      <a href="{% url 'add_supplier' %}" class="save btn btn-info">
+    <div align="center" style="margin-right: 100px;">
+      <a href="{% url 'add_supplier' %}" class="save btn">
         <i class="glyphicon glyphicon-plus"></i>
         Add Supplier
       </a>
-      <a href="{% url 'supplier_res' %}" class="save btn btn-info">
-        <i class="glyphicon glyphicon"></i> 
+      <a href="{% url 'supplier_res' %}" class="save btn">
+        <i class="glyphicon glyphicon-folder-close"></i> 
         Restore Supplier
       </a>
     </div>
     {% endif %}
     <br>
     <div id="supplier">
-        <br>
   <div class="col-md-2" align='left'>
     <form action="" method="get">
       <div class="input-group">
@@ -65,15 +64,15 @@
       </div>
 {% else %}
           <div class="col-md-8">
-            <table class="table table-list-search4">
+            <table class="table table-list-search4" style="text-align: center;">
              {%if msg%}
            <div class="alert alert-info" style="width:400px">
              {{ msg }}
            </div>
          {% endif %}
                   <thead>
-                    <th>Supplier Number</th>
-                    <th>Supplier Name</th>
+                    <th><center>Supplier Number</center></th>
+                    <th><center>Supplier Name</center></th>
                   </thead>
                 {% for sups in sup_list %}
                   <tr>
