@@ -15,8 +15,7 @@ class ParF(ListView):
         """function"""
         return models.IRR.objects.filter(irr_headkey__in=[i.id for i in (\
         models.IRRHeader.objects.filter(dce_custodian=(models.Employee.objects.get(\
-        name=str(self.request.user.first_name) + ' ' + str(self.request.user.last_name\
-        )))))]).filter(is_par=False)
+        name=str(self.request.user.get_full_name())))))]).filter(is_par=False)
 
 class MivF(ListView):
     """function"""
@@ -27,8 +26,7 @@ class MivF(ListView):
         """function"""
         return models.IRR.objects.filter(irr_headkey__in=[i.id for i in (\
         models.IRRHeader.objects.filter(dce_custodian=(models.Employee.objects.\
-        get(name=str(self.request.user.first_name) + ' ' + str(self.request.user.\
-        last_name)))))]).filter(is_miv=False)
+        get(name=str(self.request.user.get_full_name())))))]).filter(is_miv=False)
 
 class GarvF(ListView):
     """function"""
@@ -37,45 +35,47 @@ class GarvF(ListView):
 
     def get_queryset(self):
         """function"""
-        return models.PAR.objects.filter(is_garv=False)
+        return models.PAR.objects.filter(is_garv=False).filter(issued_by=(\
+            models.Employee.objects.get(name=str(self.request.user.get_full_name()))))
 
 class IRRRep(ListView):
     """function"""
     context_object_name = 'irr_list'
     template_name = 'WISH/irr_reports.html'
 
-
     def get_queryset(self):
         """function"""
         if 'q' in self.request.GET and self.request.GET['q']:
             q = self.request.GET['q']
-            return models.IRR.objects.filter(irr_no__icontains=q)
+            return models.IRR.objects.filter(irr_no__icontains=q).filter(\
+                irr_headkey__in=[i.id for i in (models.IRRHeader.objects.filter(\
+                dce_custodian=(models.Employee.objects.get(name=str(\
+                self.request.user.get_full_name())))))])
         else:
             today = datetime.datetime.now()
             this_year = today.year
             this_month = today.month
 
-
             return models.IRR.objects.filter(irr_headkey__in=[i.id for i in (\
             models.IRRHeader.objects.filter(dce_custodian=(models.Employee.objects.get(\
-            name=str(self.request.user.first_name) + ' ' + str(self.request.user.last_name\
-            )))))]).filter(date_recv__year=str(this_year), date_recv__month=str(this_month))
-
+            name=str(self.request.user.get_full_name())))))]).filter(date_recv__year=\
+            str(this_year), date_recv__month=str(this_month))
 
     def get_context_data(self, **kwargs):
         """function"""
         if 'q' in self.request.GET and self.request.GET['q']:
             context = super(IRRRep, self).get_context_data(**kwargs)
             q = self.request.GET['q']
-            if len(models.IRR.objects.filter(irr_no__icontains=q)):
+            if len(models.IRR.objects.filter(irr_no__icontains=q).filter(\
+                irr_headkey__in=[i.id for i in (models.IRRHeader.objects.filter(\
+                dce_custodian=(models.Employee.objects.get(name=str(self.request.\
+                user.get_full_name())))))])):
                 context['msg'] = 'Results Found:'
             else:
                 context['error'] = 'No Results Found'
-            return context
-
         else:
             context = super(IRRRep, self).get_context_data(**kwargs)
-            return context
+        return context
 
 class MIVRep(ListView):
     """function"""
@@ -86,7 +86,10 @@ class MIVRep(ListView):
 
         if 'q' in self.request.GET and self.request.GET['q']:
             q = self.request.GET['q']
-            return models.MIV.objects.filter(miv_no__icontains=q)
+            return models.MIV.objects.filter(miv_no__icontains=q).filter(irr_no=\
+                models.IRR.objects.filter(irr_headkey__in=[i.id for i in (\
+                models.IRRHeader.objects.filter(dce_custodian=(models.Employee.\
+                objects.get(name=str(self.request.user.get_full_name())))))]))
         else:
             today = datetime.datetime.now()
             this_year = today.year
@@ -95,8 +98,7 @@ class MIVRep(ListView):
             return models.MIV.objects.filter(irr_no=models.IRR.objects.filter(\
             irr_headkey__in=[i.id for i in (models.IRRHeader.objects.filter(\
             dce_custodian=(models.Employee.objects.get(name=str(self.request.user.\
-            first_name) + ' ' + str(self.request.user.last_name)))))]))\
-            .filter(date_issued__year=str(this_year), \
+            get_full_name())))))])).filter(date_issued__year=str(this_year), \
             date_issued__month=str(this_month))
 
     def get_context_data(self, **kwargs):
@@ -104,15 +106,16 @@ class MIVRep(ListView):
         if 'q' in self.request.GET and self.request.GET['q']:
             context = super(MIVRep, self).get_context_data(**kwargs)
             q = self.request.GET['q']
-            if len(models.MIV.objects.filter(miv_no__icontains=q)):
+            if len(mmodels.MIV.objects.filter(miv_no__icontains=q).filter(irr_no=\
+                models.IRR.objects.filter(irr_headkey__in=[i.id for i in (\
+                models.IRRHeader.objects.filter(dce_custodian=(models.Employee.\
+                objects.get(name=str(self.request.user.get_full_name())))))]))):
                 context['msg'] = 'Results Found:'
             else:
                 context['error'] = 'No Results Found'
-            return context
-
         else:
             context = super(MIVRep, self).get_context_data(**kwargs)
-            return context
+        return context
 
 class WRSRep(ListView):
     """function"""
@@ -123,33 +126,35 @@ class WRSRep(ListView):
         """function"""
         if 'q' in self.request.GET and self.request.GET['q']:
             q = self.request.GET['q']
-            return models.IRR.objects.filter(wrs_number__icontains=q)
+            return models.IRR.objects.filter(wrs_number__icontains=q).filter(\
+                irr_headkey__in=[i.id for i in (models.IRRHeader.objects.filter(\
+                dce_custodian=(models.Employee.objects.get(name=str(self.request.user.\
+                get_full_name())))))])
         else:
             today = datetime.datetime.now()
             this_year = today.year
             this_month = today.month
 
             return models.IRR.objects.filter(irr_headkey__in=[i.id for i in (\
-            models.IRRHeader.objects.filter(dce_custodian=(\
-            models.Employee.objects.get(name=str(self.request.user.\
-            first_name) + ' ' + str(self.request.user.last_name)))))])\
-            .filter(date_recv__year=str(this_year), date_recv__month=str(this_month))
+                models.IRRHeader.objects.filter(dce_custodian=(models.Employee.\
+                objects.get(name=str(self.request.user.get_full_name())))))]).\
+                filter(date_recv__year=str(this_year), date_recv__month=str(this_month))
 
     def get_context_data(self, **kwargs):
         """function"""
         if 'q' in self.request.GET and self.request.GET['q']:
             context = super(WRSRep, self).get_context_data(**kwargs)
             q = self.request.GET['q']
-            if len(models.IRR.objects.filter(wrs_number__icontains=q)):
+            if len(models.IRR.objects.filter(wrs_number__icontains=q).filter(\
+                irr_headkey__in=[i.id for i in (models.IRRHeader.objects.filter(\
+                dce_custodian=(models.Employee.objects.get(name=str(self.request.user.\
+                get_full_name())))))])):
                 context['msg'] = 'Results Found:'
             else:
                 context['error'] = 'No Results Found'
-            return context
-
         else:
             context = super(WRSRep, self).get_context_data(**kwargs)
-            return context
-
+        return context
 
 class WRSRep1(ListView):
     """function"""
@@ -160,7 +165,10 @@ class WRSRep1(ListView):
         """function"""
         if 'q' in self.request.GET and self.request.GET['q']:
             q = self.request.GET['q']
-            return models.IRR.objects.filter(wrs_number__icontains=q)
+            return models.IRR.objects.filter(wrs_number__icontains=q).filter(\
+                irr_headkey__in=[i.id for i in (models.IRRHeader.objects.filter(\
+                dce_user=(models.Employee.objects.get(name=str(self.request.user.\
+                get_full_name())))))])
         else:
             today = datetime.datetime.now()
             this_year = today.year
@@ -168,23 +176,25 @@ class WRSRep1(ListView):
 
             return models.IRR.objects.filter(irr_headkey__in=[i.id for i in (\
             models.IRRHeader.objects.filter(dce_user=(\
-            models.Employee.objects.get(name=str(self.request.user.get_full_name())))))])\
-            .filter(date_recv__year=str(this_year), date_recv__month=str(this_month))
+            models.Employee.objects.get(name=str(self.request.user.\
+            get_full_name())))))]).filter(date_recv__year=str(this_year), \
+            date_recv__month=str(this_month))
 
     def get_context_data(self, **kwargs):
         """function"""
         if 'q' in self.request.GET and self.request.GET['q']:
             context = super(WRSRep1, self).get_context_data(**kwargs)
             q = self.request.GET['q']
-            if len(models.IRR.objects.filter(wrs_number__icontains=q)):
+            if len(models.IRR.objects.filter(wrs_number__icontains=q).filter(\
+                irr_headkey__in=[i.id for i in (models.IRRHeader.objects.filter(\
+                dce_user=(models.Employee.objects.get(name=str(self.request.user.\
+                get_full_name())))))])):
                 context['msg'] = 'Results Found:'
             else:
                 context['error'] = 'No Results Found'
-            return context
-
         else:
             context = super(WRSRep1, self).get_context_data(**kwargs)
-            return context
+        return context
 
 class PARRep(ListView):
     """function"""
@@ -195,31 +205,32 @@ class PARRep(ListView):
         """function"""
         if 'q' in self.request.GET and self.request.GET['q']:
             q = self.request.GET['q']
-            return models.PAR.objects.filter(par_no__icontains= q)
+            return models.PAR.objects.filter(par_no__icontains= q).filter(\
+                issued_by=(models.Employee.objects.get(name=str(\
+                self.request.user.get_full_name()))))
         else:
             today = datetime.datetime.now()
             this_year = today.year
             this_month = today.month
 
-            return models.PAR.objects.filter(issued_by = (models.Employee.objects.get(\
-            name=str(self.request.user.first_name) + ' ' + str(self.request.user.\
-            last_name)))).filter(par_date__year=str(this_year), \
-            par_date__month=str(this_month))
+            return models.PAR.objects.filter(issued_by=(models.Employee.objects.get(\
+                name=str(self.request.user.get_full_name())))).filter(par_date__year=str(\
+                this_year), par_date__month=str(this_month))
 
     def get_context_data(self, **kwargs):
         """function"""
         if 'q' in self.request.GET and self.request.GET['q']:
             context = super(PARRep, self).get_context_data(**kwargs)
             q = self.request.GET['q']
-            if len(models.PAR.objects.filter(par_no__icontains = q)):
+            if len(models.PAR.objects.filter(par_no__icontains= q).filter(\
+                issued_by=(models.Employee.objects.get(name=str(\
+                self.request.user.get_full_name()))))):
                 context['msg'] = 'Results Found:'
             else:
                 context['error'] = 'No Results Found'
-            return context
-
         else:
             context = super(PARRep, self).get_context_data(**kwargs)
-            return context
+        return context
 
 class GARVRep(ListView):
     """function"""
@@ -230,31 +241,32 @@ class GARVRep(ListView):
         """function"""
         if 'q' in self.request.GET and self.request.GET['q']:
             q = self.request.GET['q']
-            return models.GARV.objects.filter(garv_no__icontains=q)
+            return models.GARV.objects.filter(garv_no__icontains=q).filter(\
+                confirmed_by=(models.Employee.objects.get(name=str(\
+                self.request.user.get_full_name()))))
         else:
             today = datetime.datetime.now()
             this_year = today.year
             this_month = today.month
 
             return models.GARV.objects.filter(confirmed_by=(models.Employee.objects.get(\
-            name=str(self.request.user.first_name) + ' ' + str(self.request.user.\
-            last_name)))).filter(garv_date__year=str(this_year), \
-            garv_date__month=str(this_month))
+            name=str(self.request.user.get_full_name())))).filter(garv_date__year=str(\
+            this_year), garv_date__month=str(this_month))
 
     def get_context_data(self, **kwargs):
         """function"""
         if 'q' in self.request.GET and self.request.GET['q']:
             context = super(GARVRep, self).get_context_data(**kwargs)
             q = self.request.GET['q']
-            if len(models.GARV.objects.filter(garv_no__icontains = q)):
+            if len(models.GARV.objects.filter(garv_no__icontains=q).filter(\
+                confirmed_by=(models.Employee.objects.get(name=str(\
+                self.request.user.get_full_name()))))):
                 context['msg'] = 'Results Found:'
             else:
                 context['error'] = 'No Results Found'
-            return context
-
         else:
             context = super(GARVRep, self).get_context_data(**kwargs)
-            return context
+        return context
 
 class GARVRep1(ListView):
     """function"""
@@ -273,8 +285,8 @@ class ProdRep(ListView):
 
     def get_queryset(self):
     	"""function"""
-        return models.Product.objects.filter(inv_station_no = (models.Employee.objects.get(name=\
-        	str(self.request.user.get_full_name())).cost_center_no.inv_station_no))
+        return models.Product.objects.filter(inv_station_no = (models.Employee.objects.get(\
+            name=str(self.request.user.get_full_name())).cost_center_no.inv_station_no))
 
 class InvStatRep(ListView):
     """function"""
@@ -285,7 +297,8 @@ class InvStatRep(ListView):
         """function"""
         if 'q' in self.request.GET and self.request.GET['q']:
             q = self.request.GET['q']
-            return models.InventoryStat.objects.filter(inv_station_no__icontains=q)
+            return models.InventoryStat.objects.filter(inv_station_no__icontains=q).filter\
+                (is_delete=False).order_by('-id')
         else:
             return models.InventoryStat.objects.filter(is_delete=False).order_by('-id')[:13]
 
@@ -294,15 +307,14 @@ class InvStatRep(ListView):
         if 'q' in self.request.GET and self.request.GET['q']:
             context = super(InvStatRep, self).get_context_data(**kwargs)
             q = self.request.GET['q']
-            if len(models.InventoryStat.objects.filter(inv_station_no__icontains=q)):
+            if len(models.InventoryStat.objects.filter(inv_station_no__icontains=q).filter(\
+                is_delete=False).order_by('-id')):
                 context['msg'] = 'Results Found:'
             else:
                 context['error'] = 'No Results Found'
-            return context
-
         else:
             context = super(InvStatRep, self).get_context_data(**kwargs)
-            return context
+        return context
 
 class CCRep(ListView):
     """function"""
@@ -313,7 +325,8 @@ class CCRep(ListView):
         """function"""
         if 'q' in self.request.GET and self.request.GET['q']:
             q = self.request.GET['q']
-            return models.CostCenter.objects.filter(cost_center_name__icontains=q)
+            return models.CostCenter.objects.filter(cost_center_name__icontains=q).filter(\
+                is_delete=False).order_by('-id')
         else:
             return models.CostCenter.objects.filter(is_delete=False).order_by('-id')[:13]
 
@@ -322,15 +335,14 @@ class CCRep(ListView):
         if 'q' in self.request.GET and self.request.GET['q']:
             context = super(CCRep, self).get_context_data(**kwargs)
             q = self.request.GET['q']
-            if len(models.CostCenter.objects.filter(cost_center_name__icontains=q)):
+            if len(models.CostCenter.objects.filter(cost_center_name__icontains=q).filter(\
+                is_delete=False).order_by('-id')):
                 context['msg'] = 'Results Found:'
             else:
                 context['error'] = 'No Results Found'
-            return context
-
         else:
             context = super(CCRep, self).get_context_data(**kwargs)
-            return context
+        return context
 
 class SupRep(ListView):
     """function"""
@@ -341,24 +353,25 @@ class SupRep(ListView):
     	"""function"""
         if 'q' in self.request.GET and self.request.GET['q']:
             q = self.request.GET['q']
-            return models.Supplier.objects.filter(supplier_name__icontains=q)
+            return models.Supplier.objects.filter(supplier_name__icontains=q\
+                ).filter(is_delete=False).order_by('-supplier_number')
         else:
-            return models.Supplier.objects.filter(is_delete=False).order_by('-supplier_number')[:13]
+            return models.Supplier.objects.filter(is_delete=False).order_by(\
+                '-supplier_number')[:13]
 
     def get_context_data(self, **kwargs):
         """function"""
         if 'q' in self.request.GET and self.request.GET['q']:
             context = super(SupRep, self).get_context_data(**kwargs)
             q = self.request.GET['q']
-            if len(models.Supplier.objects.filter(supplier_number__icontains=q)):
+            if len(models.Supplier.objects.filter(supplier_number__icontains=q\
+                ).filter(is_delete=False).order_by('-supplier_number')):
                 context['msg'] = 'Results Found:'
             else:
                 context['error'] = 'No Results Found'
-            return context
-
         else:
             context = super(SupRep, self).get_context_data(**kwargs)
-            return context
+        return context
 
 class EmpRep(ListView):
     """function"""
@@ -369,7 +382,10 @@ class EmpRep(ListView):
         """function"""
         if 'q' in self.request.GET and self.request.GET['q']:
             q = self.request.GET['q']
-            return models.Employee.objects.filter(dce__icontains=q)
+            return models.Employee.objects.filter(dce__icontains=q).filter(\
+                is_delete=False).filter(cost_center_no=(models.Employee.objects.get(\
+                name=str(self.request.user.get_full_name())).cost_center_no_id\
+                )).order_by('-dce')
         else:
             return models.Employee.objects.filter(is_delete=False).\
             filter(cost_center_no=(models.Employee.objects.get(\
@@ -381,15 +397,16 @@ class EmpRep(ListView):
         if 'q' in self.request.GET and self.request.GET['q']:
             context = super(EmpRep, self).get_context_data(**kwargs)
             q = self.request.GET['q']
-            if len(models.Employee.objects.filter(dce__icontains=q)):
+            if len(models.Employee.objects.filter(dce__icontains=q).filter(\
+                is_delete=False).filter(cost_center_no=(models.Employee.objects.get(\
+                name=str(self.request.user.get_full_name())).cost_center_no_id\
+                )).order_by('-dce')):
                 context['msg'] = 'Results Found:'
             else:
                 context['error'] = 'No Results Found'
-            return context
-
         else:
             context = super(EmpRep, self).get_context_data(**kwargs)
-            return context
+        return context
 
 class InvStatEntry(UpdateView):
     """function"""
