@@ -2,18 +2,15 @@
 # pylint: disable=bare-except,invalid-name, too-many-branches, unused-variable, too-many-statements, too-many-locals
 
 """views"""
-from django.shortcuts import render, redirect, get_object_or_404, HttpResponse
+from django.shortcuts import render, redirect, get_object_or_404
 from WISH.models import Supplier, Product, PAR, GARV, CostCenter, \
         InventoryStat, Employee, IRR, MIV
 from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.decorators import login_required
-from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.models import User
 from django_ajax.decorators import ajax
 from django.db import IntegrityError
 from WISH import forms
 import time
-import ast
 import json
 
 prod_to_par = []
