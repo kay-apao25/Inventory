@@ -20,7 +20,7 @@ class Supplier(models.Model):
     is_delete = models.BooleanField(default=False)
     history = HistoricalRecords()
 
-    def __unicode__(self):
+    def __str__(self):
         return self.supplier_number + ", " + self.supplier_name
 
 class InventoryStat(models.Model):
@@ -30,7 +30,7 @@ class InventoryStat(models.Model):
     is_delete = models.BooleanField(default=False)
     history = HistoricalRecords()
 
-    def __unicode__(self):
+    def __str__(self):
         return self.station_description
 
 class CostCenter(models.Model):
@@ -41,7 +41,7 @@ class CostCenter(models.Model):
     is_delete = models.BooleanField(default=False)
     history = HistoricalRecords()
 
-    def __unicode__(self):
+    def __str__(self):
         return self.cost_center_name
 
 
@@ -60,7 +60,7 @@ class Employee(models.Model):
                                  password='guest')"""
     user_id = models.ForeignKey(User, default=1)
 
-    def __unicode__(self):
+    def __str__(self):
         return self.name
 
 
@@ -73,7 +73,7 @@ class Customer(models.Model):
     balance_amount = models.FloatField()
     history = HistoricalRecords()
 
-    def __unicode__(self):
+    def __str__(self):
         return self.dce
 
 
@@ -107,7 +107,7 @@ class Product(models.Model):
     balance = models.PositiveIntegerField(default=0, null=True, blank=True)
     is_irr = models.BooleanField(default=False)
 
-    def __unicode__(self):
+    def __str__(self):
         return self.item_name + " , " + self.description
 
 
@@ -129,7 +129,7 @@ class IRRHeader(models.Model):
     supplier = models.ForeignKey(Supplier, related_name="s_iFK")
     history = HistoricalRecords()
 
-    def __unicode__(self):
+    def __str__(self):
         return str(self.id)
 
     class Meta:
@@ -150,7 +150,7 @@ class IRR(models.Model):
     is_miv = models.BooleanField(default=False)
     history = HistoricalRecords()
 
-    def __unicode__(self):
+    def __str__(self):
         return str(self.irr_no)
 
 
@@ -164,7 +164,7 @@ class MIV(models.Model):
     remarks = models.CharField(max_length=40, null=True, blank=True)
     history = HistoricalRecords()
 
-    def __unicode__(self):
+    def __str__(self):
         return str(self.irr_no)
 
 
@@ -184,7 +184,7 @@ class PAR(models.Model):
     is_garv = models.BooleanField(default=False)
     history = HistoricalRecords()
 
-    def __unicode__(self):
+    def __str__(self):
         return self.par_no
 
 class GARV(models.Model):
@@ -203,7 +203,7 @@ class GARV(models.Model):
     is_approved = models.BooleanField(default=False)
     history = HistoricalRecords()
 
-    def __unicode__(self):
+    def __str__(self):
         return str(self.garv_no)
 
 class WRSPending(models.Model):
@@ -213,5 +213,5 @@ class WRSPending(models.Model):
     cost_center_no = models.ForeignKey(CostCenter, related_name="cc_wFK")
     wrs_number = models.CharField(max_length=8)
 
-    def __unicode__(self):
+    def __str__(self):
         return str(self.inv_station_no)
