@@ -285,8 +285,25 @@ class ProdRep(ListView):
 
     def get_queryset(self):
         """function"""
-        return models.Product.objects.filter(inv_station_no = (models.Employee.objects.get(\
-            name=str(self.request.user.get_full_name())).cost_center_no.inv_station_no))
+        if 'q' in self.request.GET and self.request.GET['q']:
+            q = self.request.GET['q']
+            return models.Product.objects.filter(item_name__icontains=q).order_by('-id')
+        else:
+            return models.Product.objects.filter(inv_station_no = (models.Employee.objects.get(\
+            name=str(self.request.user.get_full_name())).cost_center_no.inv_station_no)).order_by('-id')[:13]
+
+    def get_context_data(self, **kwargs):
+        """function"""
+        if 'q' in self.request.GET and self.request.GET['q']:
+            context = super(ProdRep, self).get_context_data(**kwargs)
+            q = self.request.GET['q']
+            if len(models.Product.objects.filter(item_name__icontains=q).order_by('-id')):
+                context['msg'] = 'Results Found:'
+            else:
+                context['error'] = 'No Results Found'
+        else:
+            context = super(ProdRep, self).get_context_data(**kwargs)
+        return context
 
 class InvStatRep(ListView):
     """function"""
