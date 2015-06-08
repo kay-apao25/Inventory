@@ -65,8 +65,8 @@ class ProductForm2(forms.Form):
     unit_cost = forms.DecimalField(label='Unit cost*', decimal_places=2, required=True)
     quantity = forms.IntegerField(min_value=0, initial='1', label='Quantity *', required=True)
     classification = forms.CharField(label='Classification*', max_length=30, required=True)
-    stock = forms.CharField(label='Stock *', max_length=10, required=True)
-    block = forms.CharField(label='Block *', max_length=10, required=True)
+    stock = forms.CharField(label='Stock *', max_length=10, required=False)
+    block = forms.CharField(label='Block *', max_length=10, required=False)
     unit_measure = forms.ChoiceField(label='Unit measure *',\
      choices=UNIT_CHOICES, required=True)
     status = forms.ChoiceField(label='Status *', choices=STATUS_CHOICES, required=True)
@@ -74,12 +74,12 @@ class ProductForm2(forms.Form):
 class ProductForm3(forms.Form):
     """ProductForm3"""
     purchased_from = forms.CharField(
-        label='Purchased from *', 
+        label='Purchased from *',
         widget=selectable.AutoCompleteWidget(SupplierLookUp),
         required=True
     )
-    average_amount = forms.FloatField(label='Average amount *', required=True)
-    balance_limit = forms.FloatField(label='Balance limit *', required=True)
+    average_amount = forms.FloatField(label='Average amount *', required=False)
+    balance_limit = forms.FloatField(label='Balance limit *', required=False)
     serial_number = forms.CharField(max_length=15, required=False)
     model = forms.CharField(label='Model *', max_length=25, required=True)
     description = forms.CharField(label='Description*', max_length=25, required=True)
@@ -115,7 +115,7 @@ class IRRentryForm1(forms.Form):
     """IRR_entryForm1"""
 
     supplier = forms.CharField(
-        label='Supplier *', 
+        label='Supplier *',
         widget=selectable.AutoCompleteWidget(SupplierLookUp),
         required=True
     )
@@ -335,6 +335,7 @@ class CClib(forms.ModelForm):
 class Supplierlib(forms.ModelForm):
 
     """Supplier_lib"""
+
     class Meta:
         """Meta"""
         model = Supplier
@@ -344,13 +345,19 @@ class Supplierlib(forms.ModelForm):
 
 class Supplierlib1(forms.ModelForm):
     """Supplier_lib1"""
+    telephone_number = forms.CharField(label='Telephone Number', required=False)
     class Meta:
         """Meta"""
         model = Supplier
         fields = ('telephone_number', 'credit_limit', \
             'supplier_name', 'supplier_address', )
+
+
+
 class Supplierlib2(forms.ModelForm):
     """Supplier_lib2p"""
+    contact_person = forms.CharField(required=False)
+    remarks = forms.CharField(required=False)
     class Meta:
         model = Supplier
         fields = ('debit_amount', 'credit_amount', \
