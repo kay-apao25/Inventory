@@ -95,7 +95,7 @@ class Product(models.Model):
     unit_measure = models.CharField(max_length=20)
     status = models.CharField(max_length=20)
     purchased_from = models.ForeignKey(Supplier, related_name="s_pFK")
-    average_amount = models.FloatField()
+    average_amount = models.FloatField(default=0)
     balance_limit = models.FloatField()
     serial_number = models.CharField(max_length=25, null=True, blank=True)
     model = models.CharField(max_length=25)
