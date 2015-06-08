@@ -32,6 +32,8 @@
           {{field | bootstrap}}&nbsp;&nbsp;&nbsp;
       {%endfor%}
     </table>
-    <div align="center"><button type="submit" class="save btn btn-default">Save</button></div>
-</form>
+    <div align="center"><button type="submit" class="save btn btn-default">Save</button>
+    </form>
+    <a href= "{% url 'employee' %}" name="cancel" class="save btn btn-default">Cancel</a>
+    </div>
 {% endblock %}
