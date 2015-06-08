@@ -150,6 +150,8 @@ def product_new(request):
             if int(form2.data['quantity']) > 1:
                 if form2.data['unit_measure'] == 'box':
                     product.unit_measure = str(product.unit_measure) + 'es'
+                elif form2.data['unit_measure'] == 'foot':
+                    product.unit_measure = form2.data['unit_measure'].replace('oo', 'ee')
                 else:
                     product.unit_measure = str(product.unit_measure) + 's'
 
@@ -433,11 +435,15 @@ def product_form(request, pk):
             not (product.unit_measure.endswith('s')):
                 if form2.data['unit_measure'] == 'box':
                     product.unit_measure = str(product.unit_measure) + 'es'
+                elif form2.data['unit_measure'] == 'foot':
+                    product.unit_measure = form2.data['unit_measure'].replace('oo', 'ee')
                 else:
                     product.unit_measure = str(product.unit_measure) + 's'
             if int(form2.data['quantity']) == 1 and (product.unit_measure.endswith('s')):
                 if product.unit_measure.startswith('b'):
                     product.unit_measure = product.unit_measure[:-2]
+                elif product.unit_measure == 'feet':
+                    product.unit_measure = product.unit_measure.replace('ee', 'oo')
                 else:
                     product.unit_measure = product.unit_measure[:-1]
 
