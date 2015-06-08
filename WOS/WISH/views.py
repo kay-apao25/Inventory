@@ -295,7 +295,7 @@ def product_to_garv(request, pk):
         if prod['is_garv'] == False:
             prod_list.append(int(prod['Product']))
     if request.method == "POST":
-        form = forms.GARVentryForm(request.POST, pk=pk)
+        form = forms.GARVentryForm(request.POST, pk=pk, name=request.user.get_full_name())
         iform = forms.ProducttoGARVform(request.POST, prodlist=prod_list)
 
         if 'delete' in request.POST:
@@ -364,7 +364,7 @@ def product_to_garv(request, pk):
                 msg = 0
                 garv.save()
                 del prod_to_garv[:]
-                form = forms.GARVentryForm(pk=pk)
+                form = forms.GARVentryForm(pk=pk, name=request.user.get_full_name())
                 iform = forms.ProducttoGARVform(prodlist=prod_list)
             else:
                 msg = 1
@@ -376,7 +376,7 @@ def product_to_garv(request, pk):
             iform = forms.ProducttoGARVform(prodlist=prod_list)
 
     else:
-        form = forms.GARVentryForm(pk=pk)
+        form = forms.GARVentryForm(pk=pk, name=request.user.get_full_name())
         iform = forms.ProducttoGARVform(prodlist=prod_list)
 
     if len(prod_list) == 1:

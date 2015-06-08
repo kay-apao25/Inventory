@@ -193,7 +193,7 @@ class GARV(models.Model):
     dce = models.ForeignKey(Employee, related_name="d_gFK")
     garv_date = models.DateField()
     garv_no = models.CharField(max_length=10, primary_key=True)
-    cc_number = models.ForeignKey(CostCenter, related_name="cc_gFK")
+    cc_number = models.CharField(max_length=8)
     wo_number = models.PositiveIntegerField()
     inspected_by = models.ForeignKey(Employee, related_name='dce_FK4')
     date_inspected = models.DateField(null=True, blank=True)

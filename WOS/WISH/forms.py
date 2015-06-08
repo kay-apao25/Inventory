@@ -222,6 +222,7 @@ class PARForm(forms.ModelForm):
             Employee.objects.get(name=name).cost_center_no.inv_station_no)]), \
             label='Approved by*', required=True)
 
+    par_no = forms.CharField(label="PAR Number *", required=True, max_length=10)
     date_acquired = forms.DateField(widget=DateTimePicker(\
         options={"format": "YYYY-MM-DD", "pickTime": False}),\
          label='Date acquired*', required=True)
@@ -244,17 +245,18 @@ class ProducttoPARForm(forms.Form):
         [Product.objects.get(id=p).id for p in prodlist])\
         , label='Product *', required=True)
         self.fields['quantity'] = forms.IntegerField(\
-            min_value=0, required=True, intial=1, label='Quantity *')
+            min_value=0, required=True, initial=1, label='Quantity *')
 
 class GARVentryForm(forms.ModelForm):
     """GARV_entryForm"""
 
     def __init__(self, *args, **kwargs):
         pk = kwargs.pop('pk')
+        name = kwargs.pop('name')
         super(GARVentryForm, self).__init__(*args, **kwargs)
 
-        self.fields['cc_number'] = forms.ModelChoiceField(\
-            queryset=CostCenter.objects.all(), label='CC number *', required=True)
+        self.fields['cc_number'] = forms.CharField(max_length=10, label='CC number *', \
+            required=True)
 
         self.fields['inspected_by'] = forms.ModelChoiceField(\
             queryset=Employee.objects.filter(is_delete=False).filter(\
@@ -268,6 +270,7 @@ class GARVentryForm(forms.ModelForm):
             Employee.objects.get(name=name).cost_center_no.inv_station_no)]), \
             label='Noted by *', required=True)
 
+    garv_no = forms.CharField(label="GARV Number*", required=True, max_length=10)
     date_inspected = forms.DateField(widget=DateTimePicker\
         (options={"format": "YYYY-MM-DD", "pickTime": False}), \
         label='Date inspected*', required=True)
