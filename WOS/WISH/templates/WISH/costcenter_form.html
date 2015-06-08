@@ -32,7 +32,10 @@
       {{field | bootstrap}}&nbsp;&nbsp;&nbsp;
       {%endfor%}
   </table>
-  <div align="center"><button type="submit" class="save btn btn-default">Save</button></div>
+  <div align="center"><button type="submit" class="save btn btn-default">Save</button>
 </form>
+  <a href= "{% url 'cost_center' %}" name="cancel" class="save btn btn-default">Cancel</a>
+  </div>
+
 <!--End Form-->
 {% endblock %}
