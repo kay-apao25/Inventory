@@ -215,3 +215,10 @@ class WRSPending(models.Model):
 
     def __str__(self):
         return str(self.inv_station_no)
+
+class Unit_Measure(models.Model):
+    """unit measure"""
+    unit_measure = models.CharField(max_length = 30)
+
+    def __str__(self):
+        return str(self.unit_measure)
