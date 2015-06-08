@@ -36,9 +36,7 @@ class ProductForm1(forms.Form):
          "pickTime": False}), required=True)
     expiry_date = forms.DateField(widget=DateTimePicker(\
         options={"format": "YYYY-MM-DD", "pickTime": False}), required=False)
-    """inv_station_no = forms.ModelChoiceField(label=\
-        'Inventory station *', queryset=\
-        InventoryStat.objects.filter(is_delete=False), required=True)"""
+
 
 class ProductForm2(forms.Form):
     """ProductForm2"""
@@ -137,13 +135,15 @@ class IRRentryForm2(forms.Form):
         super(IRRentryForm2, self).__init__(*args, **kwargs)
 
         self.fields['dce_user'] = forms.ModelChoiceField(\
-            queryset=Employee.objects.filter(\
-            is_delete=False).filter(cost_center_no=Employee.objects.get(\
-                name=name).cost_center_no), label='End User *', required=True)
+            queryset=Employee.objects.filter(is_delete=False).filter(\
+            cost_center_no_id__in=[p.id for p in CostCenter.objects.filter(inv_station_no=\
+            Employee.objects.get(name=name).cost_center_no.inv_station_no.id)]), \
+            label='End User *', required=True)
         self.fields['dce_approved'] = forms.ModelChoiceField(\
-            queryset=Employee.objects.filter(\
-            is_delete=False).filter(cost_center_no=Employee.objects.get(\
-                name=name).cost_center_no), label='Approved by *', required=True)
+            queryset=Employee.objects.filter(is_delete=False).filter(\
+            cost_center_no_id__in=[p.id for p in CostCenter.objects.filter(inv_station_no=\
+            Employee.objects.get(name=name).cost_center_no.inv_station_no.id)]), \
+            label='Approved by *', required=True)
         self.fields['proc_date'] = forms.DateField(widget=DateTimePicker(\
             options={"format": "YYYY-MM-DD", "pickTime": False}), \
             label='Proc date *', required=True)
@@ -224,13 +224,15 @@ class PARForm(forms.ModelForm):
         super(PARForm, self).__init__(*args, **kwargs)
 
         self.fields['dce'] = forms.ModelChoiceField(\
-            queryset=Employee.objects.filter(\
-            cost_center_no=Employee.objects.get(name=name).cost_center_no.id),
+            queryset=Employee.objects.filter(is_delete=False).filter(\
+            cost_center_no_id__in=[p.id for p in CostCenter.objects.filter(inv_station_no=\
+            Employee.objects.get(name=name).cost_center_no.inv_station_no)]), \
             label='Accountable Employee*', required=True)
         self.fields['approved_by'] = forms.ModelChoiceField(\
-            queryset=Employee.objects.filter(\
-        cost_center_no=Employee.objects.get(name=name).cost_center_no.id),
-        label='Approved by*', required=True)
+            queryset=Employee.objects.filter(is_delete=False).filter(\
+            cost_center_no_id__in=[p.id for p in CostCenter.objects.filter(inv_station_no=\
+            Employee.objects.get(name=name).cost_center_no.inv_station_no)]), \
+            label='Approved by*', required=True)
 
     date_acquired = forms.DateField(widget=DateTimePicker(\
         options={"format": "YYYY-MM-DD", "pickTime": False}),\
@@ -267,10 +269,16 @@ class GARVentryForm(forms.ModelForm):
             queryset=CostCenter.objects.all(), label='CC number *', required=True)
 
         self.fields['inspected_by'] = forms.ModelChoiceField(\
-            queryset=Employee.objects.all(), label='Inspected by *', required=True)
+            queryset=Employee.objects.filter(is_delete=False).filter(\
+            cost_center_no_id__in=[p.id for p in CostCenter.objects.filter(inv_station_no=\
+            Employee.objects.get(name=name).cost_center_no.inv_station_no)]), \
+            label='Inspected by *', required=True)
 
         self.fields['noted_by'] = forms.ModelChoiceField(\
-            queryset=Employee.objects.all(), label='Noted by *', required=True)
+            queryset=Employee.objects.filter(is_delete=False).filter(\
+            cost_center_no_id__in=[p.id for p in CostCenter.objects.filter(inv_station_no=\
+            Employee.objects.get(name=name).cost_center_no.inv_station_no)]), \
+            label='Noted by *', required=True)
 
     date_inspected = forms.DateField(widget=DateTimePicker\
         (options={"format": "YYYY-MM-DD", "pickTime": False}), \
