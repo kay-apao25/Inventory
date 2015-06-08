@@ -155,6 +155,11 @@ def product_new(request):
 
             product.amount = float(form2.data['unit_cost']) * \
                 float(form2.data['quantity'])
+
+            if len(Product.objects.filter(model=form3.data['model'])) >= 1 and \
+            len(Product.objects.filter(description=form3.data['description'])) >= 1:
+                product.average_amount = (Product.objects.filter(model=form3.data['model']).filter(\
+                    description=form3.data['description']).latest('id').unit_cost + float(product.unit_cost)) / 2
             product.save()
 
             #Displaying of blank forms
