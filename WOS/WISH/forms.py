@@ -49,6 +49,11 @@ class ProductForm2(forms.Form):
         ('pack', 'pack'),
         ('pad', 'pad'),
         ('ream', 'ream'),
+        ('centimeter', 'centimeter'),
+        ('meter', 'meter'),
+        ('millimeter', 'millimeter'),
+        ('feet', 'feet'),
+        ('yard', 'yard'),
     )
     STATUS_CHOICES = (
         ('Complete', 'Complete'),
