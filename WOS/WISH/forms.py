@@ -14,7 +14,7 @@ class ProductForm(forms.ModelForm):
     class Meta:
         """Meta"""
         model = Product
-        exclude = ('item_name', 'nsn', \
+        exclude = ('item_name', 'nsn', 'average_amount',\
             'generic_name', 'brand', 'part_number', 'manufacture_date',\
              'expiry_date', 'classification', \
             'stock', 'block', 'unit_measure', 'unit_cost', 'quantity', \
