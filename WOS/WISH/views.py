@@ -4,7 +4,7 @@
 """views"""
 from django.shortcuts import render, redirect, get_object_or_404
 from WISH.models import Supplier, Product, PAR, GARV, CostCenter, \
-        InventoryStat, Employee, IRR, MIV
+        InventoryStat, Employee, IRR, MIV, IRRHeader
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django_ajax.decorators import ajax
@@ -391,6 +391,7 @@ def product_to_garv(request, pk):
 def product_form(request, pk):
     """function"""
     product = get_object_or_404(Product, pk=pk)
+    inv = Employee.objects.get(name=str(request.user.get_full_name())).cost_center_no.inv_station_no
     if request.method == 'POST':
         form = forms.ProductForm5(request.POST)
         form1 = forms.ProductForm1(request.POST)
@@ -398,12 +399,17 @@ def product_form(request, pk):
         form3 = forms.ProductForm3(request.POST)
         if form1.is_valid() and form2.is_valid() and form3.is_valid():
             for key in form.data.keys():
-                key1 = key
-                if key == 'inv_station_no' or key == 'purchased_from':
-                    key = key + '_id'
-                setattr(product, key, form1.data[key1])
-                setattr(product, key, form2.data[key1])
-                setattr(product, key, form3.data[key1])
+                if key == 'purchased_from':
+                    sup = form3.data['purchased_from']
+                    sup = sup.split(', ')
+                    product.purchased_from = Supplier.objects.filter(supplier_name=sup[1]\
+                        ).get(supplier_number=int(sup[0]))
+                else:
+                    setattr(product, key, form1.data[key])
+                    setattr(product, key, form2.data[key])
+                    setattr(product, key, form3.data[key])
+
+            product.inv_station_no = inv
             if form2.data['expiry_date'] == '':
                 product.expiry_date = None
             if int(form2.data['quantity']) > 1 and \
@@ -600,6 +606,7 @@ def list_view(request):
 
 def product_to_irr(request, pk, inv, sup):
     """function"""
+    irrheader = IRRHeader.objects.get(id=pk)
     if len(prods) != 0:
         prodlist = Product.objects.filter(inv_station_no=inv).filter(\
                 purchased_from=sup).filter(quantity__gt=0).exclude(\
@@ -614,7 +621,8 @@ def product_to_irr(request, pk, inv, sup):
         iform = forms.IRRentrycontForm()
         return render(request, 'WISH/product_to_irr.html', \
         {'iform': iform,  'pk': pk,'prods': prods, 'q': 1,\
-        'pform': pform, 'inv': inv, 'sup': sup, 'prodlist': prodlist})
+        'pform': pform, 'inv': inv, 'sup': sup, 'prodlist': prodlist,\
+        'irrheader': irrheader})
     elif 'add' in request.GET:
         q = request.GET.getlist('product')
         for q in q:
@@ -622,12 +630,12 @@ def product_to_irr(request, pk, inv, sup):
         iform = forms.IRRentrycontForm()
         return render(request, 'WISH/product_to_irr.html', \
             {'iform': iform, 'pk': pk, 'prods': prods, \
-            'inv': inv, 'sup': sup})
+            'inv': inv, 'sup': sup, 'irrheader': irrheader})
     elif 'delete' in request.POST:
         iform = forms.IRRentrycontForm()
         return render(request, 'WISH/product_to_irr.html', \
             {'iform': iform, 'pk': pk, 'prods': prods, \
-            'inv': inv, 'sup': sup})
+            'inv': inv, 'sup': sup, 'irrheader': irrheader})
     elif 'save' in request.POST:
         iform = forms.IRRentrycontForm(request.POST)
         if iform.is_valid():
@@ -638,15 +646,18 @@ def product_to_irr(request, pk, inv, sup):
                             if Product.objects.get(id=p['product']).quantity < int(p['qty_a']):
                                 return render(request, 'WISH/product_to_irr.html', \
                                 {'iform': iform, 'error': 'Accepted quantity is greater than ' + \
-                                'the number of stocked items.', 'pk': pk, 'inv':inv, 'sup':sup})
+                                'the number of stocked items.', 'pk': pk, 'inv':inv, 'sup':sup,\
+                                'irrheader': irrheader})
                         else:
                             return render(request, 'WISH/product_to_irr.html', \
                                 {'iform': iform, 'error': 'Some required fields are not filled.', \
-                                'pk': pk, 'inv':inv, 'sup':sup, 'prods': prods, 'prod_to_irr':prod_to_irr})
+                                'pk': pk, 'inv':inv, 'sup':sup, 'prods': prods, 'prod_to_irr':prod_to_irr,\
+                                'irrheader': irrheader})
                     else:
                         return render(request, 'WISH/product_to_irr.html', \
                             {'iform': iform, 'error': 'Some required fields are not filled.', 'pk': \
-                            pk, 'inv':inv, 'sup':sup, 'prods': prods, 'prod_to_irr':prod_to_irr})
+                            pk, 'inv':inv, 'sup':sup, 'prods': prods, 'prod_to_irr':prod_to_irr,\
+                            'irrheader': irrheader})
                     p['is_par'] = False
                     p['quantity_par'] = p['qty_a']
                     p = Product.objects.get(id=p['product'])
@@ -655,7 +666,8 @@ def product_to_irr(request, pk, inv, sup):
             else:
                 return render(request, 'WISH/product_to_irr.html', \
                             {'iform': iform, 'error': 'No product added.', 'pk': \
-                            pk, 'inv':inv, 'sup':sup, 'prods': prods, 'prod_to_irr':prod_to_irr})
+                            pk, 'inv':inv, 'sup':sup, 'prods': prods, 'prod_to_irr':prod_to_irr,\
+                            'irrheader': irrheader})
 
             irr = iform.save(commit=False)
 
@@ -700,7 +712,7 @@ def product_to_irr(request, pk, inv, sup):
 
     return render(request, 'WISH/product_to_irr.html', \
         {'iform': iform, 'pk': pk,'prods': prods,\
-        'inv': inv, 'sup': sup, 'prod_to_irr':prod_to_irr})
+        'inv': inv, 'sup': sup, 'prod_to_irr':prod_to_irr, 'irrheader': irrheader})
 
 def par(request, inv):
     """function"""

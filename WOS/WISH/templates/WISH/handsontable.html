@@ -43,7 +43,7 @@
         {% endfor %}
         {% else %}
         {% for prod in prods %}
-          {product: '{{prod.id}}'},
+          {product: '{{prod.id}}', qty_a: 1, qty_r: 0, qty_b: 0},
         {% endfor %}
         {% endif %}
       ],

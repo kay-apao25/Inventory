@@ -2,7 +2,7 @@
 from selectable.base import ModelLookup
 from selectable.registry import registry
 from WISH.models import Supplier, Product, PAR, GARV, CostCenter, \
-        InventoryStat, Employee, IRRHeader, IRR, MIV
+        InventoryStat, Employee, IRRHeader, IRR, MIV, Unit_Measure
 
 class SupplierLookUp(ModelLookup):
     """Supplier model"""
@@ -10,6 +10,15 @@ class SupplierLookUp(ModelLookup):
     search_fields = ('supplier_name__icontains',)
 
 registry.register(SupplierLookUp)
+
+class Unit_MeasureLookUp(ModelLookup):
+    """unit measure model"""
+    model = Unit_Measure
+    search_fields = ('unit_measure__icontains',)
+
+registry.register(Unit_MeasureLookUp)
+
+
 
 """class InventoryStat(ModelLookup):
     """"Inventory_stat models""""

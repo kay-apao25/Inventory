@@ -25,7 +25,7 @@ class Supplier(models.Model):
 
 class InventoryStat(models.Model):
     """Inventory_stat models"""
-    inv_station_no = models.CharField(max_length=40)
+    inv_station_no = models.CharField(max_length=8)
     station_description = models.CharField(max_length=20)
     is_delete = models.BooleanField(default=False)
     history = HistoricalRecords()
@@ -95,7 +95,7 @@ class Product(models.Model):
     unit_measure = models.CharField(max_length=20)
     status = models.CharField(max_length=20)
     purchased_from = models.ForeignKey(Supplier, related_name="s_pFK")
-    average_amount = models.FloatField(default=0)
+    average_amount = models.FloatField(default=0, null=True, blank=True)
     balance_limit = models.FloatField()
     serial_number = models.CharField(max_length=25, null=True, blank=True)
     model = models.CharField(max_length=25)
@@ -122,8 +122,8 @@ class IRRHeader(models.Model):
     dce_custodian = models.ForeignKey(Employee, related_name='dce1')
     dce_user = models.ForeignKey(Employee, related_name='dce2')
     dce_approved = models.ForeignKey(Employee, related_name='dce3')
-    proc_date = models.DateField()
-    approved_date = models.DateField()
+    proc_date = models.DateField(null=True, blank=True)
+    approved_date = models.DateField(null=True, blank=True)
     type_n = models.CharField(max_length=20)
     date_dlvrd = models.DateField()
     supplier = models.ForeignKey(Supplier, related_name="s_iFK")
@@ -215,3 +215,10 @@ class WRSPending(models.Model):
 
     def __str__(self):
         return str(self.inv_station_no)
+
+class Unit_Measure(models.Model):
+    """unit measure"""
+    unit_measure = models.CharField(max_length = 30)
+
+    def __str__(self):
+        return str(self.unit_measure)
