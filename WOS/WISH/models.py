@@ -25,7 +25,7 @@ class Supplier(models.Model):
 
 class InventoryStat(models.Model):
     """Inventory_stat models"""
-    inv_station_no = models.CharField(max_length=40)
+    inv_station_no = models.CharField(max_length=8)
     station_description = models.CharField(max_length=20)
     is_delete = models.BooleanField(default=False)
     history = HistoricalRecords()
@@ -215,3 +215,10 @@ class WRSPending(models.Model):
 
     def __str__(self):
         return str(self.inv_station_no)
+
+class Unit_Measure(models.Model):
+    """unit measure"""
+    unit_measure = models.CharField(max_length = 30)
+
+    def __str__(self):
+        return str(self.unit_measure)

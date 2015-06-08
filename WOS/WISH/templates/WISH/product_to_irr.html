@@ -16,7 +16,6 @@
       }
 </style>
 {% block content %}
-    <br><br>
     {% if q %}
      <script type="text/javascript">
         $( document ).ready( function() {
@@ -48,6 +47,9 @@
           {{ error }}
         </div>
       {% endif %}
+      <div class="page-header">
+        <h2>IRR Details</h2>
+      </div>
       <strong><p style="font-size:15px">Fields with asterisk are required.</p></strong>
       {% include 'WISH/handsontable.html'%}
     {% endif %}
