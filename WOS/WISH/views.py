@@ -391,6 +391,7 @@ def product_to_garv(request, pk):
 def product_form(request, pk):
     """function"""
     product = get_object_or_404(Product, pk=pk)
+    inv = Employee.objects.get(name=str(request.user.get_full_name())).cost_center_no.inv_station_no
     if request.method == 'POST':
         form = forms.ProductForm5(request.POST)
         form1 = forms.ProductForm1(request.POST)
@@ -398,12 +399,17 @@ def product_form(request, pk):
         form3 = forms.ProductForm3(request.POST)
         if form1.is_valid() and form2.is_valid() and form3.is_valid():
             for key in form.data.keys():
-                key1 = key
-                if key == 'inv_station_no' or key == 'purchased_from':
-                    key = key + '_id'
-                setattr(product, key, form1.data[key1])
-                setattr(product, key, form2.data[key1])
-                setattr(product, key, form3.data[key1])
+                if key == 'purchased_from':
+                    sup = form3.data['purchased_from']
+                    sup = sup.split(', ')
+                    product.purchased_from = Supplier.objects.filter(supplier_name=sup[1]\
+                        ).get(supplier_number=int(sup[0]))
+                else:
+                    setattr(product, key, form1.data[key])
+                    setattr(product, key, form2.data[key])
+                    setattr(product, key, form3.data[key])
+
+            product.inv_station_no = inv
             if form2.data['expiry_date'] == '':
                 product.expiry_date = None
             if int(form2.data['quantity']) > 1 and \
