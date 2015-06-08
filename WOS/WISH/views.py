@@ -213,6 +213,11 @@ def irr_entry(request):
             irr_entry.inv_station_no = inv
             irr_entry.dce_custodian = Employee.objects.get(name=name)
 
+            if form2.data['approved_date'] == '':
+                irr_entry.approved_date = None
+            if form2.data['proc_date'] == '':
+                irr_entry.proc_date = None
+                
             try:
                 irr_entry.save()
             except IntegrityError as e:

@@ -134,10 +134,10 @@ class IRRentryForm2(forms.Form):
             label='Approved by *', required=True)
         self.fields['proc_date'] = forms.DateField(widget=DateTimePicker(\
             options={"format": "YYYY-MM-DD", "pickTime": False}), \
-            label='Proc date', required=False, null=True)
+            label='Proc date', required=False)
         self.fields['approved_date'] = forms.DateField(widget=DateTimePicker(\
             options={"format": "YYYY-MM-DD", "pickTime": False}),\
-            label='Approved date', required=False, null=True)
+            label='Approved date', required=False)
 
     dr_number = forms.CharField(label='DR number *', required=True)
     type_n = forms.CharField(label='Type', required=False)
