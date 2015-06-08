@@ -350,7 +350,7 @@ class SupRep(ListView):
     template_name = 'WISH/supplier.html'
 
     def get_queryset(self):
-    	"""function"""
+        """function"""
         if 'q' in self.request.GET and self.request.GET['q']:
             q = self.request.GET['q']
             return models.Supplier.objects.filter(supplier_name__icontains=q\
