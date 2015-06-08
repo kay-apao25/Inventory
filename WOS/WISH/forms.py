@@ -47,9 +47,9 @@ class ProductForm2(forms.Form):
 
     unit_cost = forms.DecimalField(label='Unit cost*', decimal_places=4, required=True)
     quantity = forms.IntegerField(min_value=0, initial=1, label='Quantity *', required=True)
-    classification = forms.CharField(label='Classification*', max_length=30, required=False)
-    stock = forms.CharField(label='Stock *', max_length=10, required=False)
-    block = forms.CharField(label='Block *', max_length=10, required=False)
+    classification = forms.CharField(label='Classification', max_length=30, required=False)
+    stock = forms.CharField(label='Stock', max_length=10, required=False)
+    block = forms.CharField(label='Block', max_length=10, required=False)
     unit_measure = forms.CharField(
         label='unit measure *',
         widget=selectable.AutoCompleteWidget(Unit_MeasureLookUp),
