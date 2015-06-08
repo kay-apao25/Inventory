@@ -97,7 +97,7 @@ def add_supplier(request):
 
             sup.supplier_name = form.data['supplier_name']
             sup.save()
-            return redirect('inv_stat')
+            return redirect('supplier')
     else:
         form1 = forms.Suplib1()
         form2 = forms.Suplib2()
