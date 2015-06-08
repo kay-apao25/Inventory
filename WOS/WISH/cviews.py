@@ -284,7 +284,7 @@ class ProdRep(ListView):
     template_name = 'WISH/product_reports.html'
 
     def get_queryset(self):
-    	"""function"""
+        """function"""
         return models.Product.objects.filter(inv_station_no = (models.Employee.objects.get(\
             name=str(self.request.user.get_full_name())).cost_center_no.inv_station_no))
 

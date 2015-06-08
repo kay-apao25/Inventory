@@ -51,7 +51,7 @@ class ProductForm2(forms.Form):
     stock = forms.CharField(label='Stock *', max_length=10, required=False)
     block = forms.CharField(label='Block *', max_length=10, required=False)
     unit_measure = forms.CharField(
-        label='unit_measure *',
+        label='unit measure *',
         widget=selectable.AutoCompleteWidget(Unit_MeasureLookUp),
         required=True
         )
