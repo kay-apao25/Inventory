@@ -4,7 +4,7 @@
 """views"""
 from django.shortcuts import render, redirect, get_object_or_404
 from WISH.models import Supplier, Product, PAR, GARV, CostCenter, \
-        InventoryStat, Employee, IRR, MIV
+        InventoryStat, Employee, IRR, MIV, IRRHeader
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django_ajax.decorators import ajax
@@ -606,6 +606,7 @@ def list_view(request):
 
 def product_to_irr(request, pk, inv, sup):
     """function"""
+    irrheader = IRRHeader.objects.get(id=pk)
     if len(prods) != 0:
         prodlist = Product.objects.filter(inv_station_no=inv).filter(\
                 purchased_from=sup).filter(quantity__gt=0).exclude(\
@@ -620,7 +621,8 @@ def product_to_irr(request, pk, inv, sup):
         iform = forms.IRRentrycontForm()
         return render(request, 'WISH/product_to_irr.html', \
         {'iform': iform,  'pk': pk,'prods': prods, 'q': 1,\
-        'pform': pform, 'inv': inv, 'sup': sup, 'prodlist': prodlist})
+        'pform': pform, 'inv': inv, 'sup': sup, 'prodlist': prodlist,\
+        'irrheader': irrheader})
     elif 'add' in request.GET:
         q = request.GET.getlist('product')
         for q in q:
@@ -628,12 +630,12 @@ def product_to_irr(request, pk, inv, sup):
         iform = forms.IRRentrycontForm()
         return render(request, 'WISH/product_to_irr.html', \
             {'iform': iform, 'pk': pk, 'prods': prods, \
-            'inv': inv, 'sup': sup})
+            'inv': inv, 'sup': sup, 'irrheader': irrheader})
     elif 'delete' in request.POST:
         iform = forms.IRRentrycontForm()
         return render(request, 'WISH/product_to_irr.html', \
             {'iform': iform, 'pk': pk, 'prods': prods, \
-            'inv': inv, 'sup': sup})
+            'inv': inv, 'sup': sup, 'irrheader': irrheader})
     elif 'save' in request.POST:
         iform = forms.IRRentrycontForm(request.POST)
         if iform.is_valid():
@@ -644,15 +646,18 @@ def product_to_irr(request, pk, inv, sup):
                             if Product.objects.get(id=p['product']).quantity < int(p['qty_a']):
                                 return render(request, 'WISH/product_to_irr.html', \
                                 {'iform': iform, 'error': 'Accepted quantity is greater than ' + \
-                                'the number of stocked items.', 'pk': pk, 'inv':inv, 'sup':sup})
+                                'the number of stocked items.', 'pk': pk, 'inv':inv, 'sup':sup,\
+                                'irrheader': irrheader})
                         else:
                             return render(request, 'WISH/product_to_irr.html', \
                                 {'iform': iform, 'error': 'Some required fields are not filled.', \
-                                'pk': pk, 'inv':inv, 'sup':sup, 'prods': prods, 'prod_to_irr':prod_to_irr})
+                                'pk': pk, 'inv':inv, 'sup':sup, 'prods': prods, 'prod_to_irr':prod_to_irr,\
+                                'irrheader': irrheader})
                     else:
                         return render(request, 'WISH/product_to_irr.html', \
                             {'iform': iform, 'error': 'Some required fields are not filled.', 'pk': \
-                            pk, 'inv':inv, 'sup':sup, 'prods': prods, 'prod_to_irr':prod_to_irr})
+                            pk, 'inv':inv, 'sup':sup, 'prods': prods, 'prod_to_irr':prod_to_irr,\
+                            'irrheader': irrheader})
                     p['is_par'] = False
                     p['quantity_par'] = p['qty_a']
                     p = Product.objects.get(id=p['product'])
@@ -661,7 +666,8 @@ def product_to_irr(request, pk, inv, sup):
             else:
                 return render(request, 'WISH/product_to_irr.html', \
                             {'iform': iform, 'error': 'No product added.', 'pk': \
-                            pk, 'inv':inv, 'sup':sup, 'prods': prods, 'prod_to_irr':prod_to_irr})
+                            pk, 'inv':inv, 'sup':sup, 'prods': prods, 'prod_to_irr':prod_to_irr,\
+                            'irrheader': irrheader})
 
             irr = iform.save(commit=False)
 
@@ -706,7 +712,7 @@ def product_to_irr(request, pk, inv, sup):
 
     return render(request, 'WISH/product_to_irr.html', \
         {'iform': iform, 'pk': pk,'prods': prods,\
-        'inv': inv, 'sup': sup, 'prod_to_irr':prod_to_irr})
+        'inv': inv, 'sup': sup, 'prod_to_irr':prod_to_irr, 'irrheader': irrheader})
 
 def par(request, inv):
     """function"""

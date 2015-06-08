@@ -60,8 +60,8 @@ class ProductForm2(forms.Form):
         ('Pending', 'Pending'),
     )
 
-    unit_cost = forms.DecimalField(label='Unit cost*', decimal_places=2, required=True)
-    quantity = forms.IntegerField(min_value=0, initial='1', label='Quantity *', required=True)
+    unit_cost = forms.DecimalField(label='Unit cost*', decimal_places=4, required=True)
+    quantity = forms.IntegerField(min_value=0, initial=1, label='Quantity *', required=True)
     classification = forms.CharField(label='Classification*', max_length=30, required=True)
     stock = forms.CharField(label='Stock *', max_length=10, required=True)
     block = forms.CharField(label='Block *', max_length=10, required=True)
@@ -76,8 +76,8 @@ class ProductForm3(forms.Form):
         widget=selectable.AutoCompleteWidget(SupplierLookUp),
         required=True
     )
-    average_amount = forms.FloatField(label='Average amount *', required=True)
-    balance_limit = forms.FloatField(label='Balance limit *', required=True)
+    #average_amount = forms.DecimalField(label='Average amount*', decimal_places=4, required=True)
+    balance_limit = forms.DecimalField(label='Balance limit*', initial=0, decimal_places=4, required=True)
     serial_number = forms.CharField(max_length=15, required=False)
     model = forms.CharField(label='Model *', max_length=25, required=True)
     description = forms.CharField(label='Description*', max_length=25, required=True)
@@ -256,7 +256,7 @@ class ProducttoPARForm(forms.Form):
         [Product.objects.get(id=p).id for p in prodlist])\
         , label='Product *', required=True)
         self.fields['quantity'] = forms.IntegerField(\
-            min_value=0, required=True, label='Quantity *')
+            min_value=0, required=True, intial=1, label='Quantity *')
 
 class GARVentryForm(forms.ModelForm):
     """GARV_entryForm"""
@@ -306,13 +306,13 @@ class ProducttoGARVform(forms.Form):
         [Product.objects.get(id=p).id for p in prodlist]),\
             label='Product *', required=True)
         self.fields['quantity'] = forms.IntegerField(\
-            min_value=0, required=True, label='Quantity *')
+            min_value=0, required=True, label='Quantity *', initial=1)
         self.fields['remarks'] = forms.CharField(required=False)
 
 class Statlib(forms.ModelForm):
     """Stat_lib"""
 
-    inv_station_no = forms.CharField(label='Inventory station no*', required=True)
+    inv_station_no = forms.CharField(label='Inventory station no*', required=True, max_length=8)
     station_description = forms.CharField(label='Station description*', required=True)
 
     class Meta:
@@ -341,8 +341,8 @@ class CClib(forms.ModelForm):
         fields = ('cost_center_name', 'functional_group', 'inv_station_no',)
 
 class Supplierlib(forms.ModelForm):
-
     """Supplier_lib"""
+
     class Meta:
         """Meta"""
         model = Supplier
@@ -352,6 +352,8 @@ class Supplierlib(forms.ModelForm):
 
 class Supplierlib1(forms.ModelForm):
     """Supplier_lib1"""
+
+    credit_limit = forms.DecimalField(initial=0, decimal_places=4, required=True)
     class Meta:
         """Meta"""
         model = Supplier
@@ -359,6 +361,10 @@ class Supplierlib1(forms.ModelForm):
             'supplier_name', 'supplier_address', )
 class Supplierlib2(forms.ModelForm):
     """Supplier_lib2p"""
+
+    credit_amount = forms.DecimalField(initial=0, decimal_places=6, required=True)
+    debit_amount = forms.DecimalField(initial=0, decimal_places=6, required=True)
+    balance_amount =  forms.DecimalField(initial=0, decimal_places=6, required=True)
     class Meta:
         model = Supplier
         fields = ('debit_amount', 'credit_amount', \
@@ -374,6 +380,8 @@ class Suplib(forms.ModelForm):
 
 class Suplib1(forms.ModelForm):
     """Sup_lib1"""
+
+    credit_limit = forms.DecimalField(initial=0, decimal_places=6, required=True)
     class Meta:
         model = Supplier
         fields = ('supplier_number', 'telephone_number', 'credit_limit',\
@@ -381,6 +389,10 @@ class Suplib1(forms.ModelForm):
 
 class Suplib2(forms.ModelForm):
     """Sup_lib2"""
+
+    credit_amount = forms.DecimalField(initial=0, decimal_places=6, required=True)
+    debit_amount = forms.DecimalField(initial=0, decimal_places=6, required=True)
+    balance_amount =  forms.DecimalField(initial=0, decimal_places=6, required=True)
     class Meta:
         model = Supplier
         fields = ('debit_amount', 'credit_amount', 'balance_amount', \
@@ -390,6 +402,8 @@ class Employeelib(forms.ModelForm):
     """Employee_lib"""
     cost_center_no = forms.ModelChoiceField(\
         queryset=CostCenter.objects.filter(is_delete=False), required=True)
+    charging_cc_no = forms.CharField(max_length=8)
+
     class Meta:
         model = Employee
         fields = ('name', 'position', 'cost_center_no', 'charging_cc_no',)
@@ -398,6 +412,7 @@ class Emlib(forms.ModelForm):
     """Em_lib"""
     cost_center_no = forms.ModelChoiceField(\
         queryset=CostCenter.objects.filter(is_delete=False), required=True)
+    dce = forms.CharField(max_length=8)
     class Meta:
         model = Employee
         fields = ('dce', 'name', 'position', 'cost_center_no',\

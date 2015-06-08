@@ -25,7 +25,7 @@ class Supplier(models.Model):
 
 class InventoryStat(models.Model):
     """Inventory_stat models"""
-    inv_station_no = models.CharField(max_length=40)
+    inv_station_no = models.CharField(max_length=8)
     station_description = models.CharField(max_length=20)
     is_delete = models.BooleanField(default=False)
     history = HistoricalRecords()
