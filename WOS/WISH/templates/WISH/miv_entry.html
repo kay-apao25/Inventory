@@ -27,7 +27,10 @@
 
       {{form | bootstrap }}
       <br>
-      <div align="center"><button type="submit" class="save btn btn-default">Save</button></div>
+      <div align="center">
+        <button name="save" type="submit" class="save btn btn-default">Save</button>
+        <button name="cancel" type="submit" class="save btn btn-default">Cancel</button>
+      </div>
       </form>
     {% endif %}
 {% endblock %}

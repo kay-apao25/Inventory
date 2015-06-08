@@ -245,9 +245,11 @@ def miv_entry(request, pk):
     if request.method == "POST":
         #Forms containing the entries entered by the user
         form = forms.MIVentryForm(request.POST)
+        if 'cancel' in request.POST:
+            return redirect('index')
 
         #Non-empty forms are to be validated.
-        if form.is_valid():
+        elif form.is_valid():
             miv_entry = form.save(commit=False)
             miv_entry.irr_no_id = pk
 
@@ -309,6 +311,11 @@ def product_to_garv(request, pk):
             products.save()
             prod_to_garv.remove(prod_to_garv[k])
             iform = forms.ProducttoGARVform(prodlist=prod_list)
+
+        elif 'cancel' in request.POST:
+                del prod_to_garv[:]
+                del prod_list[:]
+                return redirect('index')
 
         elif form.is_valid() and iform.is_valid():
             garv = form.save(commit=False)
@@ -750,6 +757,11 @@ def par(request, inv):
             products.save()
             prod_to_par.remove(prod_to_par[k])
             iform = forms.ProducttoPARForm(prodlist=prod_list)
+
+        elif 'cancel' in request.POST:
+                del prod_to_par[:]
+                del prod_list[:]
+                return redirect('index')
 
         elif form.is_valid() and iform.is_valid():
             par_entry = form.save(commit=False)
