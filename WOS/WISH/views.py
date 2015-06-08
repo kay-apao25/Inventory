@@ -123,8 +123,8 @@ def product_new(request):
             product = form.save(commit=False)
 
             #Generation of SLC number
-            if len(Product.objects.all()) != 0:
-                no = int((Product.objects.latest('id')).slc_number) + 1
+            if len(Product.objects.filter(inv_station_no=inv)) != 0:
+                no = int((Product.objects.filter(inv_station_no=inv).latest('id')).slc_number) + 1
                 product.slc_number = str(no)
                 for i in range(6-len(product.slc_number)):
                     product.slc_number = '0' + product.slc_number
@@ -155,6 +155,11 @@ def product_new(request):
 
             product.amount = float(form2.data['unit_cost']) * \
                 float(form2.data['quantity'])
+
+            if len(Product.objects.filter(model=form3.data['model'])) >= 1 and \
+            len(Product.objects.filter(description=form3.data['description'])) >= 1:
+                product.average_amount = (Product.objects.filter(model=form3.data['model']).filter(\
+                    description=form3.data['description']).latest('id').unit_cost + float(product.unit_cost)) / 2
             product.save()
 
             #Displaying of blank forms
@@ -687,8 +692,8 @@ def product_to_irr(request, pk, inv, sup):
                 request.user.get_full_name())).cost_center_no
 
             #Generation of WRS number
-            if len(IRR.objects.all()) != 0:
-                no = int((IRR.objects.latest\
+            if len(IRR.objects.filter(inv_station_no=inv)) != 0:
+                no = int((IRR.objects.filter(inv_station_no=inv).latest\
                     ('wrs_number')).wrs_number) + 1
                 irr.wrs_number = str(no)
             else:

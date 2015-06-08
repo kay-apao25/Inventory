@@ -18,7 +18,7 @@ class ProductForm(forms.ModelForm):
             'generic_name', 'brand', 'part_number', 'manufacture_date',\
              'expiry_date', 'classification', \
             'stock', 'block', 'unit_measure', 'unit_cost', 'quantity', \
-            'average_amount', 'status', 'balance_limit', 'serial_number',\
+             'status', 'balance_limit', 'serial_number',\
             'model', 'description', 'remarks', \
             'purchased_from', 'inv_station_no',\
             'slc_number', 'amount', 'balance', 'is_irr')
@@ -47,11 +47,11 @@ class ProductForm2(forms.Form):
 
     unit_cost = forms.DecimalField(label='Unit cost*', decimal_places=4, required=True)
     quantity = forms.IntegerField(min_value=0, initial=1, label='Quantity *', required=True)
-    classification = forms.CharField(label='Classification*', max_length=30, required=True)
-    stock = forms.CharField(label='Stock *', max_length=10, required=True)
-    block = forms.CharField(label='Block *', max_length=10, required=True)
+    classification = forms.CharField(label='Classification*', max_length=30, required=False)
+    stock = forms.CharField(label='Stock *', max_length=10, required=False)
+    block = forms.CharField(label='Block *', max_length=10, required=False)
     unit_measure = forms.CharField(
-        label='unit measure *', 
+        label='unit measure *',
         widget=selectable.AutoCompleteWidget(Unit_MeasureLookUp),
         required=True
         )
@@ -65,7 +65,7 @@ class ProductForm3(forms.Form):
         required=True
     )
     #average_amount = forms.DecimalField(label='Average amount*', decimal_places=4, required=True)
-    balance_limit = forms.DecimalField(label='Balance limit*', initial=0, decimal_places=4, required=True)
+    balance_limit = forms.DecimalField(label='Balance limit*', initial=0, decimal_places=4, required=False)
     serial_number = forms.CharField(max_length=15, required=False)
     model = forms.CharField(label='Model *', max_length=25, required=True)
     description = forms.CharField(label='Description*', max_length=25, required=True)
@@ -134,13 +134,13 @@ class IRRentryForm2(forms.Form):
             label='Approved by *', required=True)
         self.fields['proc_date'] = forms.DateField(widget=DateTimePicker(\
             options={"format": "YYYY-MM-DD", "pickTime": False}), \
-            label='Proc date *', required=True)
+            label='Proc date', required=False, null=True)
         self.fields['approved_date'] = forms.DateField(widget=DateTimePicker(\
             options={"format": "YYYY-MM-DD", "pickTime": False}),\
-            label='Approved date*', required=True)
+            label='Approved date', required=False, null=True)
 
     dr_number = forms.CharField(label='DR number *', required=True)
-    type_n = forms.CharField(label='Type *', required=True)
+    type_n = forms.CharField(label='Type', required=False)
 
 class IRRentrycontForm(forms.ModelForm):
     """IRR_entry_cont_Form"""
@@ -340,16 +340,19 @@ class Supplierlib(forms.ModelForm):
 
 class Supplierlib1(forms.ModelForm):
     """Supplier_lib1"""
-
-    credit_limit = forms.DecimalField(initial=0, decimal_places=4, required=True)
+    telephone_number = forms.CharField(label='Telephone Number', required=False)
     class Meta:
         """Meta"""
         model = Supplier
         fields = ('telephone_number', 'credit_limit', \
             'supplier_name', 'supplier_address', )
+
+
+
 class Supplierlib2(forms.ModelForm):
     """Supplier_lib2p"""
-
+    contact_person = forms.CharField(required=False)
+    remarks = forms.CharField(required=False)
     credit_amount = forms.DecimalField(initial=0, decimal_places=6, required=True)
     debit_amount = forms.DecimalField(initial=0, decimal_places=6, required=True)
     balance_amount =  forms.DecimalField(initial=0, decimal_places=6, required=True)
@@ -390,7 +393,7 @@ class Employeelib(forms.ModelForm):
     """Employee_lib"""
     cost_center_no = forms.ModelChoiceField(\
         queryset=CostCenter.objects.filter(is_delete=False), required=True)
-    charging_cc_no = forms.CharField(max_length=8)
+    charging_cc_no = forms.CharField(max_length=7)
 
     class Meta:
         model = Employee
