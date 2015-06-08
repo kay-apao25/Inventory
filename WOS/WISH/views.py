@@ -713,6 +713,7 @@ def product_to_irr(request, pk, inv, sup):
             {'msg': 'IRR record (IRR No. - '+ irr.irr_no + \
             ') was successfully added.'})
     elif 'cancel' in request.POST:
+        IRRHeader.objects.get(id=pk).delete()
         del prod_to_irr[:]
         del prods[:]
         return render(request, 'WISH/product_to_irr.html', \
