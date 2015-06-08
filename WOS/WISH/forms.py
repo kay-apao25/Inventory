@@ -343,7 +343,10 @@ class Supplierlib(forms.ModelForm):
 
 class Supplierlib1(forms.ModelForm):
     """Supplier_lib1"""
-    telephone_number = forms.CharField(label='Telephone Number', required=False)
+    #telephone_number = forms.CharField(label='Telephone Number', required=False)
+    supplier_name = forms.CharField(label='supplier_name *', required=True)
+    supplier_address = forms.CharField(label='supplier_address *', required=True)
+
     class Meta:
         """Meta"""
         model = Supplier
@@ -356,9 +359,9 @@ class Supplierlib2(forms.ModelForm):
     """Supplier_lib2p"""
     contact_person = forms.CharField(required=False)
     remarks = forms.CharField(required=False)
-    credit_amount = forms.DecimalField(initial=0, decimal_places=6, required=True)
-    debit_amount = forms.DecimalField(initial=0, decimal_places=6, required=True)
-    balance_amount =  forms.DecimalField(initial=0, decimal_places=6, required=True)
+    credit_amount = forms.DecimalField(label='Credit amount *', initial=0, decimal_places=6, required=True)
+    debit_amount = forms.DecimalField(label='Debit amount *', initial=0, decimal_places=6, required=True)
+    balance_amount =  forms.DecimalField(label='Balance amount *', initial=0, decimal_places=6, required=True)
     class Meta:
         model = Supplier
         fields = ('debit_amount', 'credit_amount', \
@@ -374,8 +377,10 @@ class Suplib(forms.ModelForm):
 
 class Suplib1(forms.ModelForm):
     """Sup_lib1"""
-
-    credit_limit = forms.DecimalField(initial=0, decimal_places=6, required=True)
+    supplier_number = forms.CharField(label='supplier_number*', required=True)
+    supplier_name = forms.CharField(label='supplier_name*', required=True)
+    supplier_address = forms.CharField(label='supplier_address*', required=True)
+    credit_limit = forms.DecimalField(label='credit limit*', initial=0, decimal_places=6, required=True)
     class Meta:
         model = Supplier
         fields = ('supplier_number', 'telephone_number', 'credit_limit',\
@@ -384,9 +389,9 @@ class Suplib1(forms.ModelForm):
 class Suplib2(forms.ModelForm):
     """Sup_lib2"""
 
-    credit_amount = forms.DecimalField(initial=0, decimal_places=6, required=True)
-    debit_amount = forms.DecimalField(initial=0, decimal_places=6, required=True)
-    balance_amount =  forms.DecimalField(initial=0, decimal_places=6, required=True)
+    credit_amount = forms.DecimalField(label='Credit amount *', initial=0, decimal_places=6, required=True)
+    debit_amount = forms.DecimalField(label='Debit amount *', initial=0, decimal_places=6, required=True)
+    balance_amount =  forms.DecimalField(label='Balance amount *', initial=0, decimal_places=6, required=True)
     class Meta:
         model = Supplier
         fields = ('debit_amount', 'credit_amount', 'balance_amount', \
