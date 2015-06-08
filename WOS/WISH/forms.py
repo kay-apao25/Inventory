@@ -390,7 +390,7 @@ class Employeelib(forms.ModelForm):
     """Employee_lib"""
     cost_center_no = forms.ModelChoiceField(\
         queryset=CostCenter.objects.filter(is_delete=False), required=True)
-    charging_cc_no = forms.CharField(max_length=8)
+    charging_cc_no = forms.CharField(max_length=7)
 
     class Meta:
         model = Employee

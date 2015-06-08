@@ -1,0 +1,146 @@
+{% block content %}
+{% load staticfiles %}
+{% load bootstrap %}
+
+<link href="{% static 'css/handsontable.full.css' %}" rel="stylesheet">
+<script src="{% static 'js/handsontable.full.js' %}"></script>
+<link href="{% static 'css/handsontable.full.min.css' %}" rel="stylesheet">
+<script src="{% static 'js/handsontable.full.min.js' %}"></script>
+<!--AJAX request and response-->
+<script type="text/javascript" src="{% static 'js/jquery.ajax.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/jquery.ajax-plugin.min.js' %}"></script>
+<br>
+  <table style="border: solid 2px; background: white; opacity:0.8">
+      <tr>
+        <td>
+        <p></p>
+        <p align="center"><b><u>IRR Header:</u></b></p>
+        <!--<div id="handson1" style="margin-right:30px"></div>-->
+        <table class="table table-list-search" width="1px" align="center">
+          <thead>
+             <th><center>Inventory Station No.</center></th>
+             <th><center>Reference</center></th>
+             <th><center>Invoice Number</center></th>
+             <th><center>PO number</center></th>
+             <th><center>PR number</center></th>
+             <th><center>DR number</center></th>
+             <th><center>Custodian</center></th>
+          </thead>
+
+           <tbody id="myTable">
+             <tr>
+               <td>
+                  <center>{{irrheader.inv_station_no}}</center>
+                  </a>
+                </td>
+               <td>
+                  <center>{{irrheader.reference}}</center>
+               </td>
+               <td>
+                  <center>{{irrheader.invoice_number}}</center>
+               </td>
+               <td>
+                  <center>{{irrheader.po_number}}</center>
+               </td>
+               <td>
+                  <center>{{irrheader.pr_number}}</center>
+               </td>
+               <td>
+                  <center>{{irrheader.dr_number}}</center>
+               </td>
+               <td>
+                  <center>{{irrheader.dce_custodian}}</center>
+               </td>
+
+             </tr>
+          </tbody>
+        </table>
+        <table class="table table-list-search" align="center">
+
+          <thead>
+             <th><center>End user</center></th>
+             <th><center>Approved by</center></th>
+             <th><center>Proc date</center></th>
+             <th><center>Approved date</center></th>
+             <th><center>Type</center></th>
+             <th><center>Date delivered</center></th>
+             <th><center>Supplier</center></th>
+          </thead>
+
+           <tbody id="myTable">
+             <tr>
+               <td>
+                  <center>{{irrheader.dce_user}}</center>
+               </td>
+               <td>
+                  <center>{{irrheader.dce_approved}}</center>
+               </td>
+               <td>
+                  <center>{{irrheader.proc_date}}</center>
+               </td>
+               <td>
+                  <center>{{irrheader.approved_date}}</center>
+               </td>
+               <td>
+                  <center>{{irrheader.type_n}}</center>
+               </td>
+               <td>
+                  <center>{{irrheader.date_dlvrd}}</center>
+               </td>
+               <td>
+                  <center>{{irrheader.supplier.supplier_name}}</center>
+               </td>
+
+             </tr>
+          </tbody>
+        </table>
+        </td>
+      </tr>
+    </table>
+<!--<script type="text/javascript">
+    var
+      nestedObjects = [
+        {inv_station: '{{irrheader.inv_station_no}}', reference: '{{irrheader.reference}}', invoice_no: '{{irrheader.invoice_number}}', 
+        po_no: '{{irrheader.po_number}}', pr_no:'{{irrheader.pr_number}}', dr_no:'{{irrheader.dr_number}}', custodian:'{{irrheader.dce_custodian}}', user:'{{irrheader.dce_user}}', approv_by:'{{irrheader.dce_approved}}', proc_date:'{{irrheader.proc_date}}', approv_date:'{{irrheader.approved_date}}', type:'{{irrheader.type_n}}', date_dlvrd:'{{irrheader.date_dlvrd}}', supplier:'{{irrheader.supplier.supplier_name}}' },
+      ],
+      container4 = document.getElementById('handson1'),
+      hot4;
+
+      hot4 = new Handsontable(container4, {
+      data: nestedObjects,
+      colHeaders: [
+        'Inventory station',
+        'Reference',
+        'Invoive number',
+        'PO number',
+        'PR number',
+        'DR number',
+        'Custodian',
+        'End User',
+        'Approved by',
+        'Proc date',
+        'Approved date',
+        'Type',
+        'Date delivered',
+        'Supplier'
+      ],
+      columns: [
+        {data: 'inv_station'},
+        {data: 'reference'},
+        {data: 'invoice_no'},
+        {data: 'po_no'},
+        {data: 'pr_no'},
+        {data: 'dr_no'},
+        {data: 'custodian'},
+        {data: 'user'},
+        {data: 'approv_by'},
+        {data: 'proc_date'},
+        {data: 'approv_date'},
+        {data: 'type'},
+        {data: 'date_dlvrd'},
+        {data: 'supplier'}
+      ],
+      outsideClickDeselects: false,
+    });
+</script>
+{% endblock %}-->
