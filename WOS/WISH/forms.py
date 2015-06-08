@@ -51,7 +51,7 @@ class ProductForm2(forms.Form):
     stock = forms.CharField(label='Stock *', max_length=10, required=True)
     block = forms.CharField(label='Block *', max_length=10, required=True)
     unit_measure = forms.CharField(
-        label='unit_measure *', 
+        label='unit measure *', 
         widget=selectable.AutoCompleteWidget(Unit_MeasureLookUp),
         required=True
         )
@@ -60,7 +60,7 @@ class ProductForm2(forms.Form):
 class ProductForm3(forms.Form):
     """ProductForm3"""
     purchased_from = forms.CharField(
-        label='Purchased from *', 
+        label='Purchased from *',
         widget=selectable.AutoCompleteWidget(SupplierLookUp),
         required=True
     )
@@ -101,7 +101,7 @@ class IRRentryForm1(forms.Form):
     """IRR_entryForm1"""
 
     supplier = forms.CharField(
-        label='Supplier *', 
+        label='Supplier *',
         widget=selectable.AutoCompleteWidget(SupplierLookUp),
         required=True
     )
