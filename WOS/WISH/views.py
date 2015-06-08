@@ -698,7 +698,7 @@ def product_to_irr(request, pk, inv, sup):
 
             #Generation of WRS number
             if len(IRRHeader.objects.filter(inv_station_no=inv)) != 0:
-                no = int((IRR.objects.filter(irr_headkey_id=pk).latest\
+                no = int((IRR.objects.latest\
                     ('wrs_number')).wrs_number) + 1
                 irr.wrs_number = str(no)
             else:
