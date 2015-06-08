@@ -1,12 +1,12 @@
 """forms"""
 from django import forms
 from WISH.models import Supplier, Product, PAR, GARV, CostCenter, \
-        InventoryStat, Employee, IRRHeader, IRR, MIV, WRSPending
+        InventoryStat, Employee, IRRHeader, IRR, MIV, WRSPending, Unit_Measure
 from bootstrap3_datetime.widgets import DateTimePicker
 from django.forms.models import BaseInlineFormSet
 from django.forms.models import inlineformset_factory
 import selectable.forms as selectable
-from WISH.lookups import SupplierLookUp
+from WISH.lookups import SupplierLookUp, Unit_MeasureLookUp
 
 class ProductForm(forms.ModelForm):
     """ProductForm"""
@@ -42,21 +42,6 @@ class ProductForm1(forms.Form):
 
 class ProductForm2(forms.Form):
     """ProductForm2"""
-    UNIT_CHOICES = (
-        ('unit', 'unit'),
-        ('piece', 'piece'),
-        ('box', 'box'),
-        ('pack', 'pack'),
-        ('pad', 'pad'),
-        ('ream', 'ream'),
-        ('cm', 'cm'),
-        ('m', 'm'),
-        ('mm', 'mm'),
-        ('ft', 'ft'),
-        ('yard', 'yard'),
-        ('liter', 'liter'),
-        ('gallon', 'gallon'),
-    )
     STATUS_CHOICES = (
         ('Complete', 'Complete'),
         ('Pending', 'Pending'),
@@ -67,8 +52,11 @@ class ProductForm2(forms.Form):
     classification = forms.CharField(label='Classification*', max_length=30, required=True)
     stock = forms.CharField(label='Stock *', max_length=10, required=True)
     block = forms.CharField(label='Block *', max_length=10, required=True)
-    unit_measure = forms.ChoiceField(label='Unit measure *',\
-     choices=UNIT_CHOICES, required=True)
+    unit_measure = forms.CharField(
+        label='unit_measure *', 
+        widget=selectable.AutoCompleteWidget(Unit_MeasureLookUp),
+        required=True
+        )
     status = forms.ChoiceField(label='Status *', choices=STATUS_CHOICES, required=True)
 
 class ProductForm3(forms.Form):
