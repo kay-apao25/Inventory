@@ -2,31 +2,48 @@
 {% block content %}
 
     <!-- condition for no products or there are product -->
-    {% if product_list|length == 0 %}
-        <br>
-        <br>
-          <div class="alert alert-warning" style="width:400px">
-             No Product Record(s) found.
-          </div>
-    {% else %}
+
        <div class="page-header">
           <h2 align="center">Product Reports</h2>
        </div>
-       {% if product_list|length <= 15  %}
-          <div class="col-md-2" style="margin-left: 170px"></div>
-       {% else %}
-          <div class="col-md-2" style="padding-right: 0px; margin-left: 300px; padding-left: 0px;">
-          <form action="#" method="get">
+       <div class="col-md-2" style="padding-right: 0px; margin-left: 300px; padding-left: 0px;">
+          <form action="" method="get">
             <div class="input-group">
               <!-- USE TWITTER TYPEAHEAD JSON WITH API TO SEARCH -->
               <input class="form-control" id="system-search" name="q" placeholder="Search for" required>
             </div>
           </form>
         </div>
-       {% endif %}
+         {% if product_list|length == 0 and error %}
+
+      <div class="alert alert-warning" style="width:400px;margin-left:200px">
+      {{error}}
+          </div>
+        {% elif product_list|length == 0 %}
+        <br>
+        <br>
+          <div class="alert alert-warning" style="width:400px">
+             No Product Record(s) found.
+          </div>
+      
+
+
+    {% elif product_list|length == 0 %}
+    <br>
+    <br>
+      <div class="alert alert-warning" style="width:400px">
+        No Inventory Station Record(s) found.
+      </div>
+   {% else %}
+
        <!--end of condition-->
          <div class="col-md-5" style="padding-left: 10px;">
            <table class="table table-list-search">
+           {%if msg%}
+           <div class="alert alert-info" style="width:400px">
+             {{ msg }}
+           </div>
+         {% endif %}
           <thead>
           	<th><center>Item name w/ description</center></th>
             <th><center>Product number</center></th>
@@ -62,8 +79,8 @@
           		</tr>
           	{% endfor %}
        </table>
+       {% endif %}
       </div>
-      {% endif %}
       <script type="text/javascript">
       $(document).ready(function() {
         var activeSystemClass = $('.list-group-item.active');
@@ -107,7 +124,7 @@
             //all tr elements are hidden
             if(tableRowsClass.children(':visible').length == 0)
             {
-                tableBody.append('<tr class="search-sf"><td class="text-muted" colspan="6">No entries found.</td></tr>');
+                tableBody.append('<tr class="search-sf"><td class="text-muted" colspan="6">This entry is not found in this list.<br>Just hit the Enter button to search further.</td></tr>');
             }
         });
     });

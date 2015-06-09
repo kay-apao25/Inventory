@@ -45,7 +45,7 @@ class ProductForm2(forms.Form):
         ('Pending', 'Pending'),
     )
 
-    unit_cost = forms.DecimalField(label='Unit cost*', decimal_places=4, required=True)
+    unit_cost = forms.DecimalField(label='Unit cost*', decimal_places=6, required=True)
     quantity = forms.IntegerField(min_value=0, initial=1, label='Quantity *', required=True)
     classification = forms.CharField(label='Classification', max_length=30, required=False)
     stock = forms.CharField(label='Stock', max_length=10, required=False)
@@ -64,8 +64,7 @@ class ProductForm3(forms.Form):
         widget=selectable.AutoCompleteWidget(SupplierLookUp),
         required=True
     )
-    #average_amount = forms.DecimalField(label='Average amount*', decimal_places=4, required=True)
-    balance_limit = forms.DecimalField(label='Balance limit*', initial=0, decimal_places=4, required=False)
+    balance_limit = forms.DecimalField(label='Balance limit*', initial=0, decimal_places=6, required=False)
     serial_number = forms.CharField(max_length=15, required=False)
     model = forms.CharField(label='Model *', max_length=25, required=True)
     description = forms.CharField(label='Description*', max_length=25, required=True)
@@ -377,10 +376,10 @@ class Suplib(forms.ModelForm):
 
 class Suplib1(forms.ModelForm):
     """Sup_lib1"""
-    supplier_number = forms.CharField(label='supplier_number*', required=True)
-    supplier_name = forms.CharField(label='supplier_name*', required=True)
-    supplier_address = forms.CharField(label='supplier_address*', required=True)
-    credit_limit = forms.DecimalField(label='credit limit*', initial=0, decimal_places=6, required=True)
+    supplier_number = forms.CharField(label='Supplier number*', required=True, max_length=8)
+    supplier_name = forms.CharField(label='Supplier name*', required=True)
+    supplier_address = forms.CharField(label='Supplier address*', required=True)
+    credit_limit = forms.DecimalField(label='Credit limit*', initial=0, decimal_places=6, required=True)
     class Meta:
         model = Supplier
         fields = ('supplier_number', 'telephone_number', 'credit_limit',\

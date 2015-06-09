@@ -112,4 +112,27 @@ INSERT INTO "WISH_unit_measure"
   (unit_measure)
 VALUES 
   ('pieces');
-
+INSERT INTO "WISH_unit_measure"
+  (unit_measure)
+VALUES 
+  ('lot');
+INSERT INTO "WISH_unit_measure"
+  (unit_measure)
+VALUES 
+  ('span');
+INSERT INTO "WISH_unit_measure"
+  (unit_measure)
+VALUES 
+  ('acre');
+INSERT INTO "WISH_unit_measure"
+  (unit_measure)
+VALUES 
+  ('grain');
+INSERT INTO "WISH_unit_measure"
+  (unit_measure)
+VALUES 
+  ('quart');
+INSERT INTO "WISH_unit_measure"
+  (unit_measure)
+VALUES 
+  ('lot');

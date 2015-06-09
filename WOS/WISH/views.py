@@ -150,6 +150,8 @@ def product_new(request):
             if int(form2.data['quantity']) > 1:
                 if form2.data['unit_measure'] == 'box':
                     product.unit_measure = str(product.unit_measure) + 'es'
+                elif form2.data['unit_measure'] == 'foot':
+                    product.unit_measure = form2.data['unit_measure'].replace('oo', 'ee')
                 else:
                     product.unit_measure = str(product.unit_measure) + 's'
 
@@ -245,9 +247,11 @@ def miv_entry(request, pk):
     if request.method == "POST":
         #Forms containing the entries entered by the user
         form = forms.MIVentryForm(request.POST)
+        if 'cancel' in request.POST:
+            return redirect('index')
 
         #Non-empty forms are to be validated.
-        if form.is_valid():
+        elif form.is_valid():
             miv_entry = form.save(commit=False)
             miv_entry.irr_no_id = pk
 
@@ -309,6 +313,11 @@ def product_to_garv(request, pk):
             products.save()
             prod_to_garv.remove(prod_to_garv[k])
             iform = forms.ProducttoGARVform(prodlist=prod_list)
+
+        elif 'cancel' in request.POST:
+                del prod_to_garv[:]
+                del prod_list[:]
+                return redirect('index')
 
         elif form.is_valid() and iform.is_valid():
             garv = form.save(commit=False)
@@ -426,11 +435,15 @@ def product_form(request, pk):
             not (product.unit_measure.endswith('s')):
                 if form2.data['unit_measure'] == 'box':
                     product.unit_measure = str(product.unit_measure) + 'es'
+                elif form2.data['unit_measure'] == 'foot':
+                    product.unit_measure = form2.data['unit_measure'].replace('oo', 'ee')
                 else:
                     product.unit_measure = str(product.unit_measure) + 's'
             if int(form2.data['quantity']) == 1 and (product.unit_measure.endswith('s')):
                 if product.unit_measure.startswith('b'):
                     product.unit_measure = product.unit_measure[:-2]
+                elif product.unit_measure == 'feet':
+                    product.unit_measure = product.unit_measure.replace('ee', 'oo')
                 else:
                     product.unit_measure = product.unit_measure[:-1]
 
@@ -750,6 +763,11 @@ def par(request, inv):
             products.save()
             prod_to_par.remove(prod_to_par[k])
             iform = forms.ProducttoPARForm(prodlist=prod_list)
+
+        elif 'cancel' in request.POST:
+                del prod_to_par[:]
+                del prod_list[:]
+                return redirect('index')
 
         elif form.is_valid() and iform.is_valid():
             par_entry = form.save(commit=False)
